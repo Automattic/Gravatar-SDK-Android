@@ -14,12 +14,20 @@ import okhttp3.Request
 import okhttp3.Response
 import java.io.File
 import java.io.IOException
+import java.net.SocketTimeoutException
 import java.util.concurrent.TimeUnit
 
 object GravatarApi {
     private const val API_BASE_URL = "https://api.gravatar.com/v1/"
     private const val DEFAULT_TIMEOUT = 15000
     private const val LOG_TAG = "Gravatar"
+
+    enum class ErrorType {
+        SERVER,
+        TIMEOUT,
+        UNKNOWN
+    }
+
     private fun createClient(accessToken: String): OkHttpClient {
         val httpClientBuilder = OkHttpClient.Builder()
         // This should help with recovery from the SocketTimeoutException
@@ -67,36 +75,29 @@ object GravatarApi {
         createClient(accessToken).newCall(request).enqueue(
             object : Callback {
                 override fun onResponse(call: Call, response: Response) {
-                    if (!response.isSuccessful) {
-                        // response's body can only be read once so, keep it in a local variable
-                        val responseBody: String = try {
-                            response.body!!.string()
-                        } catch (e: IOException) {
-                            "null"
-                        }
-                        Log.w(LOG_TAG, "Network call unsuccessful trying to upload Gravatar: "
-                                    + responseBody
-                        )
-                    }
                     Handler(Looper.getMainLooper()).post {
                         if (response.isSuccessful) {
                             gravatarUploadListener.onSuccess()
                         } else {
-                            gravatarUploadListener.onError("", "")
+                            // Log the response body for debugging purposes if the response is not successful
+                            Log.w(LOG_TAG, "Network call unsuccessful trying to upload Gravatar: $response.body")
+                            val error: ErrorType = when (response.code) {
+                                408 -> ErrorType.TIMEOUT
+                                in 500..599 -> ErrorType.SERVER
+                                else -> ErrorType.UNKNOWN
+                            }
+                            gravatarUploadListener.onError(error)
                         }
                     }
                 }
 
                 override fun onFailure(call: Call, e: IOException) {
-                    val exceptionClass : String = e.javaClass.canonicalName?: ""
-                    val exceptionMessage : String = e.message?: ""
-                    Log.w(
-                        LOG_TAG, "Network call failure trying to upload Gravatar!"
-                                + exceptionMessage
-                    )
-
+                    val error: ErrorType = when (e) {
+                        is SocketTimeoutException -> ErrorType.TIMEOUT
+                        else -> ErrorType.UNKNOWN
+                    }
                     Handler(Looper.getMainLooper()).post {
-                        gravatarUploadListener.onError(exceptionClass, exceptionMessage)
+                        gravatarUploadListener.onError(error)
                     }
                 }
             })
@@ -104,6 +105,6 @@ object GravatarApi {
 
     interface GravatarUploadListener {
         fun onSuccess()
-        fun onError(exceptionClass: String, exceptionMessage: String)
+        fun onError(errorType: ErrorType)
     }
 }
