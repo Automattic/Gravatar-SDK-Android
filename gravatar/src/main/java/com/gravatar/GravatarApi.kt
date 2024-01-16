@@ -18,10 +18,12 @@ import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import java.util.concurrent.TimeUnit
 
-object GravatarApi {
-    private const val API_BASE_URL = "https://api.gravatar.com/v1/"
-    private const val DEFAULT_TIMEOUT = 15000
-    private const val LOG_TAG = "Gravatar"
+class GravatarApi {
+    private companion object {
+        const val API_BASE_URL = "https://api.gravatar.com/v1/"
+        const val DEFAULT_TIMEOUT = 15000
+        const val LOG_TAG = "Gravatar"
+    }
 
     enum class ErrorType {
         SERVER,
@@ -54,8 +56,7 @@ object GravatarApi {
         return httpClientBuilder.build()
     }
 
-    @JvmStatic
-    fun prepareGravatarUpload(email: String, file: File): Request {
+    private fun prepareGravatarUpload(email: String, file: File): Request {
         return Request.Builder()
             .url(API_BASE_URL + "upload-image")
             .post(
@@ -68,7 +69,6 @@ object GravatarApi {
             .build()
     }
 
-    @JvmStatic
     fun uploadGravatar(
         file: File, email: String, accessToken: String,
         gravatarUploadListener: GravatarUploadListener
@@ -82,7 +82,10 @@ object GravatarApi {
                             gravatarUploadListener.onSuccess()
                         } else {
                             // Log the response body for debugging purposes if the response is not successful
-                            Log.w(LOG_TAG, "Network call unsuccessful trying to upload Gravatar: $response.body")
+                            Log.w(
+                                LOG_TAG,
+                                "Network call unsuccessful trying to upload Gravatar: $response.body"
+                            )
                             val error: ErrorType = when (response.code) {
                                 408 -> ErrorType.TIMEOUT
                                 in 500..599 -> ErrorType.SERVER
