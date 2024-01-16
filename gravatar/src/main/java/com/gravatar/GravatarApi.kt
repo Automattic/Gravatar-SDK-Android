@@ -15,15 +15,15 @@ import java.io.File
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
-
 class GravatarApi(okHttpClient: OkHttpClient? = null) {
     private val retrofit: Retrofit
 
     init {
-        retrofit = Retrofit.Builder().apply {
-            okHttpClient?.let { client(it) }
-            baseUrl(API_BASE_URL)
-        }.build()
+        retrofit =
+            Retrofit.Builder().apply {
+                okHttpClient?.let { client(it) }
+                baseUrl(API_BASE_URL)
+            }.build()
     }
 
     private companion object {
@@ -35,49 +35,63 @@ class GravatarApi(okHttpClient: OkHttpClient? = null) {
         SERVER,
         TIMEOUT,
         NETWORK,
-        UNKNOWN
+        UNKNOWN,
     }
 
-    fun uploadGravatar(file: File, email: String, accessToken: String,
-                       gravatarUploadListener: GravatarUploadListener) {
+    fun uploadGravatar(
+        file: File,
+        email: String,
+        accessToken: String,
+        gravatarUploadListener: GravatarUploadListener,
+    ) {
         val service = retrofit.create(GravatarApiService::class.java)
         val identity = MultipartBody.Part.createFormData("account", email)
         val filePart = MultipartBody.Part.createFormData("filedata", file.name, file.asRequestBody())
 
         service.uploadImage("Bearer $accessToken", identity, filePart).enqueue(
             object : Callback<ResponseBody> {
-                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                override fun onResponse(
+                    call: Call<ResponseBody>,
+                    response: Response<ResponseBody>,
+                ) {
                     Handler(Looper.getMainLooper()).post {
                         if (response.isSuccessful) {
                             gravatarUploadListener.onSuccess()
                         } else {
                             // Log the response body for debugging purposes if the response is not successful
                             Log.w(LOG_TAG, "Network call unsuccessful trying to upload Gravatar: $response.body")
-                            val error: ErrorType = when (response.code()) {
-                                408 -> ErrorType.TIMEOUT
-                                in 500..599 -> ErrorType.SERVER
-                                else -> ErrorType.UNKNOWN
-                            }
+                            val error: ErrorType =
+                                when (response.code()) {
+                                    408 -> ErrorType.TIMEOUT
+                                    in 500..599 -> ErrorType.SERVER
+                                    else -> ErrorType.UNKNOWN
+                                }
                             gravatarUploadListener.onError(error)
                         }
                     }
                 }
 
-                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    val error: ErrorType = when (t) {
-                        is SocketTimeoutException -> ErrorType.TIMEOUT
-                        is UnknownHostException -> ErrorType.NETWORK
-                        else -> ErrorType.UNKNOWN
-                    }
+                override fun onFailure(
+                    call: Call<ResponseBody>,
+                    t: Throwable,
+                ) {
+                    val error: ErrorType =
+                        when (t) {
+                            is SocketTimeoutException -> ErrorType.TIMEOUT
+                            is UnknownHostException -> ErrorType.NETWORK
+                            else -> ErrorType.UNKNOWN
+                        }
                     Handler(Looper.getMainLooper()).post {
                         gravatarUploadListener.onError(error)
                     }
                 }
-            })
+            },
+        )
     }
 
     interface GravatarUploadListener {
         fun onSuccess()
+
         fun onError(errorType: ErrorType)
     }
 }
