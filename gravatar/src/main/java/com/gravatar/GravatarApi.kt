@@ -11,30 +11,17 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
-import retrofit2.http.Header
-import retrofit2.http.Multipart
-import retrofit2.http.POST
-import retrofit2.http.Part
 import java.io.File
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
-import java.util.concurrent.TimeUnit
 
 
-interface GravatarApiService {
-    @Multipart
-    @POST("upload-image")
-    fun uploadImage(
-        @Header("Authorization") authorization: String,
-        @Part identity: MultipartBody.Part,
-        @Part data: MultipartBody.Part
-    ) : Call<ResponseBody>
-}
-
-object GravatarApi {
-    private const val API_BASE_URL = "https://api.gravatar.com/v1/"
-    private const val DEFAULT_TIMEOUT = 15000
-    private const val LOG_TAG = "Gravatar"
+class GravatarApi {
+    private val retrofit: Retrofit
+    private companion object {
+        const val API_BASE_URL = "https://api.gravatar.com/v1/"
+        const val LOG_TAG = "Gravatar"
+    }
 
     enum class ErrorType {
         SERVER,
@@ -43,18 +30,21 @@ object GravatarApi {
         UNKNOWN
     }
 
-    @JvmStatic
-    fun uploadGravatar(
-        file: File, email: String, accessToken: String,
-        gravatarUploadListener: GravatarUploadListener
-    ) {
-        val okHttpClient = OkHttpClient.Builder()
-            .readTimeout(DEFAULT_TIMEOUT.toLong(), TimeUnit.MILLISECONDS)
-            .build()
-        val retrofit = Retrofit.Builder()
-            .client(okHttpClient)
+    constructor() {
+        retrofit = Retrofit.Builder()
             .baseUrl(API_BASE_URL)
             .build()
+    }
+
+    constructor(httpClient: OkHttpClient) {
+        retrofit = Retrofit.Builder()
+            .client(httpClient)
+            .baseUrl(API_BASE_URL)
+            .build()
+    }
+
+    fun uploadGravatar(file: File, email: String, accessToken: String,
+                       gravatarUploadListener: GravatarUploadListener) {
         val service = retrofit.create(GravatarApiService::class.java)
         val identity = MultipartBody.Part.createFormData("account", email)
         val filePart = MultipartBody.Part.createFormData("filedata", file.name, file.asRequestBody())
