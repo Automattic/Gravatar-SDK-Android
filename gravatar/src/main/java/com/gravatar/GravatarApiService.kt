@@ -14,6 +14,6 @@ interface GravatarApiService {
     fun uploadImage(
         @Header("Authorization") authorization: String,
         @Part identity: MultipartBody.Part,
-        @Part data: MultipartBody.Part
-    ) : Call<ResponseBody>
+        @Part data: MultipartBody.Part,
+    ): Call<ResponseBody>
 }
