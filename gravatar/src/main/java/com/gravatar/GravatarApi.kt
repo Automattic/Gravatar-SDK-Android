@@ -16,8 +16,16 @@ import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
 
-class GravatarApi {
+class GravatarApi(okHttpClient: OkHttpClient? = null) {
     private val retrofit: Retrofit
+
+    init {
+        retrofit = Retrofit.Builder().apply {
+            okHttpClient?.let { client(it) }
+            baseUrl(API_BASE_URL)
+        }.build()
+    }
+
     private companion object {
         const val API_BASE_URL = "https://api.gravatar.com/v1/"
         const val LOG_TAG = "Gravatar"
@@ -28,19 +36,6 @@ class GravatarApi {
         TIMEOUT,
         NETWORK,
         UNKNOWN
-    }
-
-    constructor() {
-        retrofit = Retrofit.Builder()
-            .baseUrl(API_BASE_URL)
-            .build()
-    }
-
-    constructor(httpClient: OkHttpClient) {
-        retrofit = Retrofit.Builder()
-            .client(httpClient)
-            .baseUrl(API_BASE_URL)
-            .build()
     }
 
     fun uploadGravatar(file: File, email: String, accessToken: String,
