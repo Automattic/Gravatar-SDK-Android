@@ -15,6 +15,7 @@ import okhttp3.Response
 import java.io.File
 import java.io.IOException
 import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 import java.util.concurrent.TimeUnit
 
 object GravatarApi {
@@ -25,6 +26,7 @@ object GravatarApi {
     enum class ErrorType {
         SERVER,
         TIMEOUT,
+        NETWORK,
         UNKNOWN
     }
 
@@ -94,6 +96,7 @@ object GravatarApi {
                 override fun onFailure(call: Call, e: IOException) {
                     val error: ErrorType = when (e) {
                         is SocketTimeoutException -> ErrorType.TIMEOUT
+                        is UnknownHostException -> ErrorType.NETWORK
                         else -> ErrorType.UNKNOWN
                     }
                     Handler(Looper.getMainLooper()).post {
