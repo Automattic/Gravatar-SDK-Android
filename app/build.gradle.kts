@@ -1,6 +1,9 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+
+    // Ktlint
+    id("org.jlleitschuh.gradle.ktlint")
 }
 
 android {
