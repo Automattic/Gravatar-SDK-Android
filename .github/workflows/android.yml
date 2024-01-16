@@ -1,4 +1,4 @@
-name: Android CI
+name: Code Style and Build check
 
 on:
   push:
