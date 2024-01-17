@@ -62,8 +62,8 @@ class GravatarApi(okHttpClient: OkHttpClient? = null) {
                             Log.w(LOG_TAG, "Network call unsuccessful trying to upload Gravatar: $response.body")
                             val error: ErrorType =
                                 when (response.code()) {
-                                    408 -> ErrorType.TIMEOUT
-                                    in 500..599 -> ErrorType.SERVER
+                                    HttpResponseCode.HTTP_CLIENT_TIMEOUT -> ErrorType.TIMEOUT
+                                    in HttpResponseCode.SERVER_ERRORS -> ErrorType.SERVER
                                     else -> ErrorType.UNKNOWN
                                 }
                             gravatarUploadListener.onError(error)
