@@ -26,3 +26,14 @@ You can also try to let Ktlint fix the code style issues. Just use:
 ./gradlew :gravatar:ktlintFormat
 ./gradlew :app:ktlintFormat
 ```
+
+## Code static analysis
+
+We use [Detekt](https://github.com/detekt/detekt) to perform static code analysis. You can run
+Detekt via a gradle command:
+
+```
+./gradlew detekt
+./gradlew :gravatar:detekt
+./gradlew :app:detekt
+```
