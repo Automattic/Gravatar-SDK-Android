@@ -5,4 +5,7 @@ plugins {
 
     // Ktlint
     id("org.jlleitschuh.gradle.ktlint") version "12.1.0" apply false
+
+    // Detekt
+    id("io.gitlab.arturbosch.detekt") version "1.23.4" apply false
 }
