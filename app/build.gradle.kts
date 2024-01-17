@@ -4,6 +4,9 @@ plugins {
 
     // Ktlint
     id("org.jlleitschuh.gradle.ktlint")
+
+    // Detekt
+    id("io.gitlab.arturbosch.detekt")
 }
 
 android {
@@ -32,6 +35,13 @@ android {
     }
     kotlinOptions {
         jvmTarget = "1.8"
+    }
+    detekt {
+        config.setFrom("${project.rootDir}/config/detekt/detekt.yml")
+        source.setFrom("src")
+        autoCorrect = false
+        buildUponDefaultConfig = true
+        parallel = false
     }
 }
 

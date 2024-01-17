@@ -24,5 +24,7 @@ jobs:
       run: chmod +x gradlew
     - name: Check code style
       run: ./gradlew ktlintcheck
+    - name: Static code analysis
+      run: ./gradlew detekt
     - name: Build with Gradle
       run: ./gradlew build
