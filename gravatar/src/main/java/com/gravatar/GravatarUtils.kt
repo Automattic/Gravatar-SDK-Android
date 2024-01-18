@@ -11,22 +11,30 @@ fun String.sha256Hash(): String {
     return MessageDigest.getInstance("SHA-256").digest(this.toByteArray()).toHex()
 }
 
-fun String.emailAddressToGravatarHash(): String {
-    return this.trim().lowercase().sha256Hash()
+fun emailAddressToGravatarHash(email: String): String {
+    return email.trim().lowercase().sha256Hash()
 }
 
-fun String.gravatarUrl(
+fun emailAddressToGravatarUrl(
     email: String,
     defaultAvatarImage: DefaultAvatarImage? = null,
     size: Int? = null,
 ): String {
+    return emailAddressToGravatarUri(email, defaultAvatarImage, size).toString()
+}
+
+fun emailAddressToGravatarUri(
+    email: String,
+    defaultAvatarImage: DefaultAvatarImage? = null,
+    size: Int? = null,
+): Uri {
     return Uri.Builder()
         .scheme("https")
         .authority("www.gravatar.com")
         .appendPath("avatar")
-        .appendPath(email.emailAddressToGravatarHash())
+        .appendPath(emailAddressToGravatarHash(email))
         .apply {
             defaultAvatarImage?.let { appendQueryParameter("d", it.style) }
             size?.let { appendQueryParameter("size", it.toString()) }
-        }.build().toString()
+        }.build()
 }
