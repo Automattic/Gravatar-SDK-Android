@@ -1,5 +1,7 @@
 # Gravatar-Android
 
+[![Code Style and Build check](https://github.com/gravatar/Gravatar-SDK-Android/actions/workflows/android.yml/badge.svg)](https://github.com/gravatar/Gravatar-SDK-Android/actions/workflows/android.yml)
+
 Gravatar Android library
 
 ## Tests
