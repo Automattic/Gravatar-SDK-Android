@@ -5,11 +5,6 @@ import org.junit.Test
 
 class GravatarUtilsUnitTest {
     @Test
-    fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
-    }
-
-    @Test
     fun sha256Hash_isCorrect() {
         assertEquals(
             "7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069",
