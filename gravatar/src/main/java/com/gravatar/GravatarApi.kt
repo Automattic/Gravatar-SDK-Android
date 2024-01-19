@@ -3,6 +3,7 @@ package com.gravatar
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import com.gravatar.GravatarConstants.GRAVATAR_API_BASE_URL
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -22,12 +23,11 @@ class GravatarApi(okHttpClient: OkHttpClient? = null) {
         retrofit =
             Retrofit.Builder().apply {
                 okHttpClient?.let { client(it) }
-                baseUrl(API_BASE_URL)
+                baseUrl(GRAVATAR_API_BASE_URL)
             }.build()
     }
 
     private companion object {
-        const val API_BASE_URL = "https://api.gravatar.com/v1/"
         const val LOG_TAG = "Gravatar"
     }
 

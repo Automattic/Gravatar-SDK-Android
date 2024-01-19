@@ -1,6 +1,8 @@
 package com.gravatar
 
 import android.net.Uri
+import com.gravatar.GravatarConstants.GRAVATAR_IMAGE_HOST
+import com.gravatar.GravatarConstants.GRAVATAR_IMAGE_PATH
 import java.security.MessageDigest
 
 private fun ByteArray.toHex(): String {
@@ -30,8 +32,8 @@ fun emailAddressToGravatarUri(
 ): Uri {
     return Uri.Builder()
         .scheme("https")
-        .authority("www.gravatar.com")
-        .appendPath("avatar")
+        .authority(GRAVATAR_IMAGE_HOST)
+        .appendPath(GRAVATAR_IMAGE_PATH)
         .appendPath(emailAddressToGravatarHash(email))
         .apply {
             defaultAvatarImage?.let { appendQueryParameter("d", it.style) }
