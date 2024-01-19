@@ -1,5 +1,6 @@
 package com.gravatar
 
+import android.net.Uri
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
@@ -48,6 +49,17 @@ class GravatarUtilsInstrumentedTest {
             "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe970a1e66" +
                 "?d=monsterid&size=42",
             emailAddressToGravatarUrl("example@example.com", DefaultAvatarImage.MONSTER, 42),
+        )
+    }
+
+    @Test
+    fun gravatarUriWithAvatarDefaultImageAndSizeParameter_isCorrect() {
+        assertEquals(
+            Uri.parse(
+                "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe" +
+                    "970a1e66?d=identicon&size=42",
+            ),
+            emailAddressToGravatarUri("example@example.com", DefaultAvatarImage.IDENTICON, 42),
         )
     }
 }
