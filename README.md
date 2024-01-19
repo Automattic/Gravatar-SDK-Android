@@ -12,12 +12,6 @@ Run unit tests on your machine via the following command:
 ./gradlew test
 ```
 
-Run instrumented tests on connected devices via the following command:
-
-```sh
-./gradlew cAT
-```
-
 ## Coding Style
 
 We use [Ktlint](https://pinterest.github.io/ktlint) to enforce a consistent coding style. It
