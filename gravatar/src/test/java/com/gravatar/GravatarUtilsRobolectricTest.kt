@@ -1,13 +1,13 @@
 package com.gravatar
 
 import android.net.Uri
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 
-@RunWith(AndroidJUnit4::class)
-class GravatarUtilsInstrumentedTest {
+@RunWith(RobolectricTestRunner::class)
+class GravatarUtilsRobolectricTest {
     @Test
     fun gravatarUrl_isCorrect() {
         assertEquals(
