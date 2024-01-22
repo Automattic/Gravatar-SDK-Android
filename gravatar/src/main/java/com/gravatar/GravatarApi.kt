@@ -3,7 +3,7 @@ package com.gravatar
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import com.gravatar.GravatarConstants.GRAVATAR_API_BASE_URL
+import com.gravatar.di.container.GravatarSdkContainer
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -11,22 +11,11 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
 import java.io.File
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
-class GravatarApi(okHttpClient: OkHttpClient? = null) {
-    private val retrofit: Retrofit
-
-    init {
-        retrofit =
-            Retrofit.Builder().apply {
-                okHttpClient?.let { client(it) }
-                baseUrl(GRAVATAR_API_BASE_URL)
-            }.build()
-    }
-
+class GravatarApi(private val okHttpClient: OkHttpClient? = null) {
     private companion object {
         const val LOG_TAG = "Gravatar"
     }
@@ -44,9 +33,10 @@ class GravatarApi(okHttpClient: OkHttpClient? = null) {
         accessToken: String,
         gravatarUploadListener: GravatarUploadListener,
     ) {
-        val service = retrofit.create(GravatarApiService::class.java)
+        val service = GravatarSdkContainer.instance.getGravatarApiService(okHttpClient)
         val identity = MultipartBody.Part.createFormData("account", email)
-        val filePart = MultipartBody.Part.createFormData("filedata", file.name, file.asRequestBody())
+        val filePart =
+            MultipartBody.Part.createFormData("filedata", file.name, file.asRequestBody())
 
         service.uploadImage("Bearer $accessToken", identity, filePart).enqueue(
             object : Callback<ResponseBody> {
@@ -59,7 +49,10 @@ class GravatarApi(okHttpClient: OkHttpClient? = null) {
                             gravatarUploadListener.onSuccess()
                         } else {
                             // Log the response body for debugging purposes if the response is not successful
-                            Log.w(LOG_TAG, "Network call unsuccessful trying to upload Gravatar: $response.body")
+                            Log.w(
+                                LOG_TAG,
+                                "Network call unsuccessful trying to upload Gravatar: $response.body",
+                            )
                             val error: ErrorType =
                                 when (response.code()) {
                                     HttpResponseCode.HTTP_CLIENT_TIMEOUT -> ErrorType.TIMEOUT
