@@ -1,9 +1,9 @@
 package com.gravatar
 
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import com.gravatar.di.container.GravatarSdkContainer
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -27,6 +27,8 @@ class GravatarApi(private val okHttpClient: OkHttpClient? = null) {
         UNKNOWN,
     }
 
+    val coroutineScope = CoroutineScope(GravatarSdkContainer.instance.dispatcherDefault)
+
     fun uploadGravatar(
         file: File,
         email: String,
@@ -44,7 +46,7 @@ class GravatarApi(private val okHttpClient: OkHttpClient? = null) {
                     call: Call<ResponseBody>,
                     response: Response<ResponseBody>,
                 ) {
-                    Handler(Looper.getMainLooper()).post {
+                    coroutineScope.launch {
                         if (response.isSuccessful) {
                             gravatarUploadListener.onSuccess()
                         } else {
@@ -74,7 +76,7 @@ class GravatarApi(private val okHttpClient: OkHttpClient? = null) {
                             is UnknownHostException -> ErrorType.NETWORK
                             else -> ErrorType.UNKNOWN
                         }
-                    Handler(Looper.getMainLooper()).post {
+                    coroutineScope.launch {
                         gravatarUploadListener.onError(error)
                     }
                 }

@@ -3,6 +3,7 @@ package com.gravatar
 import io.mockk.mockk
 import io.mockk.verify
 import junit.framework.TestCase.assertTrue
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -20,24 +21,25 @@ class GravatarApiTest {
     }
 
     @Test
-    fun `given an file, email and accessToken when uploading avatar then Gravatar service is invoked`() {
-        gravatarApi.uploadGravatar(File("avatarFile"), "email", "accessToken", mockk())
-        verify(exactly = 1) {
-            gravatarSdkTest.gravatarApiServiceMock.uploadImage(
-                "Bearer accessToken",
-                withArg {
-                    assertTrue(
-                        it.headers?.values("Content-Disposition").toString().contains("account"),
-                    )
-                },
-                withArg {
-                    assertTrue(
-                        with(it.headers?.values("Content-Disposition").toString()) {
-                            contains("filedata") && contains("avatarFile")
-                        },
-                    )
-                },
-            )
+    fun `given an file, email and accessToken when uploading avatar then Gravatar service is invoked`() =
+        runTest {
+            gravatarApi.uploadGravatar(File("avatarFile"), "email", "accessToken", mockk())
+            verify(exactly = 1) {
+                gravatarSdkTest.gravatarApiServiceMock.uploadImage(
+                    "Bearer accessToken",
+                    withArg {
+                        assertTrue(
+                            it.headers?.values("Content-Disposition").toString().contains("account"),
+                        )
+                    },
+                    withArg {
+                        assertTrue(
+                            with(it.headers?.values("Content-Disposition").toString()) {
+                                contains("filedata") && contains("avatarFile")
+                            },
+                        )
+                    },
+                )
+            }
         }
-    }
 }
