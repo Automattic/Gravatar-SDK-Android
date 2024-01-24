@@ -1,6 +1,5 @@
 package com.gravatar
 
-import android.util.Log
 import com.gravatar.di.container.GravatarSdkContainer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -51,7 +50,7 @@ class GravatarApi(private val okHttpClient: OkHttpClient? = null) {
                             gravatarUploadListener.onSuccess()
                         } else {
                             // Log the response body for debugging purposes if the response is not successful
-                            Log.w(
+                            GravatarSdkContainer.instance.logger.w(
                                 LOG_TAG,
                                 "Network call unsuccessful trying to upload Gravatar: $response.body",
                             )
