@@ -17,7 +17,7 @@ private fun Uri.Builder.appendGravatarQueryParameters(
 ): Uri.Builder {
     return this.apply {
         defaultAvatarImage?.let { appendQueryParameter("d", it.style) } // eg. default monster, "d=monsterid"
-        size?.let { appendQueryParameter("size", it.toString()) } // eg. size 42, "s=42"
+        size?.let { appendQueryParameter("s", it.toString()) } // eg. size 42, "s=42"
         rating?.let { appendQueryParameter("r", it.rating) } // eg. rated pg, "r=pg"
         forceDefaultAvatarImage?.let { appendQueryParameter("f", "y") } // eg. force yes, "f=y"
     }
