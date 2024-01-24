@@ -8,4 +8,5 @@ enum class DefaultAvatarImage(val style: String) {
     WAVATAR("wavatar"),
     RETRO("retro"),
     BLANK("blank"),
+    ROBOHASH("robohash"),
 }
