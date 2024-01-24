@@ -1,6 +1,7 @@
 package com.gravatar
 
 import android.net.Uri
+import com.gravatar.GravatarConstants.AVATAR_SIZE_RANGE
 import com.gravatar.GravatarConstants.GRAVATAR_IMAGE_HOST
 import com.gravatar.GravatarConstants.GRAVATAR_IMAGE_PATH
 import java.security.MessageDigest
@@ -15,6 +16,7 @@ private fun Uri.Builder.appendGravatarQueryParameters(
     rating: ImageRating? = null,
     forceDefaultAvatarImage: Boolean? = null,
 ): Uri.Builder {
+    size?.let { require(it in AVATAR_SIZE_RANGE) { "Size parameter must be in range $AVATAR_SIZE_RANGE" } }
     return this.apply {
         defaultAvatarImage?.let { appendQueryParameter("d", it.style) } // eg. default monster, "d=monsterid"
         size?.let { appendQueryParameter("s", it.toString()) } // eg. size 42, "s=42"
