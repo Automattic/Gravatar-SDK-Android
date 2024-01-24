@@ -41,10 +41,7 @@ class GravatarApi(private val okHttpClient: OkHttpClient? = null) {
 
         service.uploadImage("Bearer $accessToken", identity, filePart).enqueue(
             object : Callback<ResponseBody> {
-                override fun onResponse(
-                    call: Call<ResponseBody>,
-                    response: Response<ResponseBody>,
-                ) {
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                     coroutineScope.launch {
                         if (response.isSuccessful) {
                             gravatarUploadListener.onSuccess()
@@ -65,10 +62,7 @@ class GravatarApi(private val okHttpClient: OkHttpClient? = null) {
                     }
                 }
 
-                override fun onFailure(
-                    call: Call<ResponseBody>,
-                    t: Throwable,
-                ) {
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                     val error: ErrorType =
                         when (t) {
                             is SocketTimeoutException -> ErrorType.TIMEOUT

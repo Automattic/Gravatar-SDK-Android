@@ -2,5 +2,10 @@
 root = true
 
 [*.{kt,kts}]
+ktlint_code_style = ktlint_official
 ktlint_function_naming_ignore_when_annotated_with = Composable
 max_line_length=120
+ktlint_function_signature_body_expression_wrapping = default
+ktlint_function_signature_rule_force_multiline_when_parameter_count_greater_or_equal_than = 6
+ktlint_standard_multiline-expression-wrapping = disabled
+ktlint_standard_string-template-indent = disabled
