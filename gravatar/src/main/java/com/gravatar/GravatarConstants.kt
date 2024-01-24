@@ -8,4 +8,9 @@ object GravatarConstants {
 
     // Gravatar API
     const val GRAVATAR_API_BASE_URL = "https://api.gravatar.com/v1/"
+
+    // Minimum and maximum size of the avatar
+    const val MINIMUM_AVATAR_SIZE = 1
+    const val MAXIMUM_AVATAR_SIZE = 2048
+    val AVATAR_SIZE_RANGE = MINIMUM_AVATAR_SIZE..MAXIMUM_AVATAR_SIZE
 }
