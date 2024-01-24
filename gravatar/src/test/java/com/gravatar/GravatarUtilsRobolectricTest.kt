@@ -22,7 +22,7 @@ class GravatarUtilsRobolectricTest {
     fun gravatarUrlWithSizeParameter_isCorrect() {
         assertEquals(
             "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe970a1e66" +
-                "?size=42",
+                "?s=42",
             emailAddressToGravatarUrl("example@example.com", size = 42),
         )
     }
@@ -31,7 +31,7 @@ class GravatarUtilsRobolectricTest {
     fun gravatarUrlWithBigSizeParameter_isCorrect() {
         assertEquals(
             "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe970a1e66" +
-                "?size=1000",
+                "?s=1000",
             emailAddressToGravatarUrl("example@example.com", size = 1000),
         )
     }
@@ -49,7 +49,7 @@ class GravatarUtilsRobolectricTest {
     fun gravatarUrlWithAvatarDefaultImageAndSizeParameter_isCorrect() {
         assertEquals(
             "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe970a1e66" +
-                "?d=monsterid&size=42",
+                "?d=monsterid&s=42",
             emailAddressToGravatarUrl("example@example.com", 42, DefaultAvatarImage.MONSTER),
         )
     }
@@ -59,7 +59,7 @@ class GravatarUtilsRobolectricTest {
         assertEquals(
             Uri.parse(
                 "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe" +
-                    "970a1e66?d=identicon&size=42",
+                    "970a1e66?d=identicon&s=42",
             ),
             emailAddressToGravatarUri("example@example.com", 42, DefaultAvatarImage.IDENTICON),
         )
@@ -70,7 +70,7 @@ class GravatarUtilsRobolectricTest {
         assertEquals(
             Uri.parse(
                 "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe" +
-                    "970a1e66?d=robohash&size=42&r=x&f=y",
+                    "970a1e66?d=robohash&s=42&r=x&f=y",
             ),
             emailAddressToGravatarUri("example@example.com", 42, DefaultAvatarImage.ROBOHASH, ImageRating.X, true),
         )
@@ -82,7 +82,7 @@ class GravatarUtilsRobolectricTest {
             "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe970a1e66",
             gravatarImageUrlToGravatarImageUrl(
                 "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe" +
-                    "970a1e66?d=identicon&size=42",
+                    "970a1e66?d=identicon&s=42",
             ),
         )
     }
@@ -91,7 +91,7 @@ class GravatarUtilsRobolectricTest {
     fun `rewrite gravatar url must add all supported parameters`() {
         assertEquals(
             "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe970a1e66" +
-                "?d=identicon&size=42&r=pg&f=y",
+                "?d=identicon&s=42&r=pg&f=y",
             gravatarImageUrlToGravatarImageUrl(
                 "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe" +
                     "970a1e66",
@@ -109,7 +109,7 @@ class GravatarUtilsRobolectricTest {
             "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe970a1e66",
             gravatarImageUrlToGravatarImageUrl(
                 "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe" +
-                    "970a1e66?d=identicon&size=42",
+                    "970a1e66?d=identicon&s=42",
             ),
         )
     }
@@ -120,7 +120,7 @@ class GravatarUtilsRobolectricTest {
             "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe970a1e66",
             gravatarImageUrlToGravatarImageUrl(
                 "https://gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe" +
-                    "970a1e66?d=identicon&size=42",
+                    "970a1e66?d=identicon&s=42",
             ),
         )
     }
@@ -129,10 +129,10 @@ class GravatarUtilsRobolectricTest {
     fun `rewrite host on gravatar urls and set parameters`() {
         assertEquals(
             "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe970a1e66" +
-                "?d=identicon&size=42",
+                "?d=identicon&s=42",
             gravatarImageUrlToGravatarImageUrl(
                 "https://gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe" +
-                    "970a1e66?d=identicon&size=42",
+                    "970a1e66?d=identicon&s=42",
                 42,
                 DefaultAvatarImage.IDENTICON,
             ),
