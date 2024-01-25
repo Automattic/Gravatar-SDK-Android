@@ -1,6 +1,6 @@
 # Gravatar-Android
 
-[![Code Style and Build check](https://github.com/gravatar/Gravatar-SDK-Android/actions/workflows/android.yml/badge.svg)](https://github.com/gravatar/Gravatar-SDK-Android/actions/workflows/android.yml)
+[![Build status](https://badge.buildkite.com/8859512adb21ccf83f8f0aa03249356c6f972ff594bcae602d.svg?branch=trunk)](https://buildkite.com/automattic/gravatar-sdk-android)
 
 Gravatar Android library
 

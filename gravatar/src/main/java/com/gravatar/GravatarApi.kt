@@ -1,9 +1,8 @@
 package com.gravatar
 
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
-import com.gravatar.di.container.GravatarSdkContainer
+import com.gravatar.logger.Logger
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -14,6 +13,7 @@ import retrofit2.Response
 import java.io.File
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
+import com.gravatar.di.container.GravatarSdkContainer.Companion.instance as GravatarSdkDI
 
 class GravatarApi(private val okHttpClient: OkHttpClient? = null) {
     private companion object {
@@ -27,29 +27,28 @@ class GravatarApi(private val okHttpClient: OkHttpClient? = null) {
         UNKNOWN,
     }
 
+    val coroutineScope = CoroutineScope(GravatarSdkDI.dispatcherDefault)
+
     fun uploadGravatar(
         file: File,
         email: String,
         accessToken: String,
         gravatarUploadListener: GravatarUploadListener,
     ) {
-        val service = GravatarSdkContainer.instance.getGravatarApiService(okHttpClient)
+        val service = GravatarSdkDI.getGravatarApiService(okHttpClient)
         val identity = MultipartBody.Part.createFormData("account", email)
         val filePart =
             MultipartBody.Part.createFormData("filedata", file.name, file.asRequestBody())
 
         service.uploadImage("Bearer $accessToken", identity, filePart).enqueue(
             object : Callback<ResponseBody> {
-                override fun onResponse(
-                    call: Call<ResponseBody>,
-                    response: Response<ResponseBody>,
-                ) {
-                    Handler(Looper.getMainLooper()).post {
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                    coroutineScope.launch {
                         if (response.isSuccessful) {
                             gravatarUploadListener.onSuccess()
                         } else {
                             // Log the response body for debugging purposes if the response is not successful
-                            Log.w(
+                            Logger.w(
                                 LOG_TAG,
                                 "Network call unsuccessful trying to upload Gravatar: $response.body",
                             )
@@ -64,17 +63,14 @@ class GravatarApi(private val okHttpClient: OkHttpClient? = null) {
                     }
                 }
 
-                override fun onFailure(
-                    call: Call<ResponseBody>,
-                    t: Throwable,
-                ) {
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                     val error: ErrorType =
                         when (t) {
                             is SocketTimeoutException -> ErrorType.TIMEOUT
                             is UnknownHostException -> ErrorType.NETWORK
                             else -> ErrorType.UNKNOWN
                         }
-                    Handler(Looper.getMainLooper()).post {
+                    coroutineScope.launch {
                         gravatarUploadListener.onError(error)
                     }
                 }

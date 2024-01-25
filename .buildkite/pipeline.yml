@@ -1,8 +1,7 @@
-# Nodes with values to reuse in the pipeline.
-common_params:
-  # Common plugin settings to use with the `plugins` key.
-  - &ci_toolkit
-      automattic/a8c-ci-toolkit#3.0.1
+# yaml-language-server: $schema=https://raw.githubusercontent.com/buildkite/pipeline-schema/main/schema.json
+---
+
+# Variables used in this pipeline are defined in `shared-pipeline-vars`, which is `source`'d before calling `buidkite-agent pipeline upload`
 
 agents:
   queue: "android"
@@ -11,7 +10,7 @@ steps:
   - label: "Gradle Wrapper Validation"
     command: |
       validate_gradle_wrapper
-    plugins: [*ci_toolkit]
+    plugins: [$CI_TOOLKIT]
 
   # Wait for Gradle Wrapper to be validated before running any other jobs
   - wait
@@ -20,22 +19,17 @@ steps:
     command: |
       echo "--- 🧹 Linting"
       ./gradlew ktlintcheck detekt
-    plugins: [*ci_toolkit]
-    artifact_paths:
-      - "**/build/reports/ktlint/*"
-      - "**/build/reports/detekt/detekt.html"
 
   - label: "Build"
     command: |
       echo "--- ⚒️ Building"
+      # `build` task would also run tasks, which are executed in a separate job
       ./gradlew assemble
-    plugins: [*ci_toolkit]
 
   - label: "Unit tests"
     command: |
       echo "--- 🧪 Testing"
       ./gradlew test
-    plugins: [*ci_toolkit]
     artifact_paths:
       - "**/build/test-results/*/*.xml"
 
