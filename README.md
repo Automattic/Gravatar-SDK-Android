@@ -53,9 +53,9 @@ Detekt via a gradle command:
 The SDK is published to the Automattic's S3 instance via [`publish-to-s3`](https://github.com/Automattic/publish-to-s3-gradle-plugin) Gradle plugin.
 
 The published version is calculated depending on the Git context, in this order:
-- if there's a tag, version is <tag name>
-- if there's a PR, version is <pr number>-<commit hash>
-- else <branch name>-<commit hash>
+- if there's a tag, version is `<tag name>`
+- if there's a PR, version is `<pr number>-<commit hash>`
+- else `<branch name>-<commit hash>`
 
 To use the repository, it's needed to add the custom repository:
 
