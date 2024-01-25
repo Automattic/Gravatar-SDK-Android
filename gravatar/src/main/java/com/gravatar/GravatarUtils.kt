@@ -60,14 +60,14 @@ fun emailAddressToGravatarUri(
         .build()
 }
 
-fun gravatarImageUrlToGravatarImageUrl(
+fun rewriteGravatarImageUrlQueryParams(
     url: String,
     size: Int? = null,
     defaultAvatarImage: DefaultAvatarImage? = null,
     rating: ImageRating? = null,
     forceDefaultAvatarImage: Boolean? = null,
 ): String {
-    return gravatarImageUrlToGravatarImageUri(url, size, defaultAvatarImage, rating, forceDefaultAvatarImage).toString()
+    return rewriteGravatarImageUriQueryParams(url, size, defaultAvatarImage, rating, forceDefaultAvatarImage).toString()
 }
 
 /**
@@ -79,7 +79,7 @@ fun gravatarImageUrlToGravatarImageUrl(
  * @param rating Image rating. Optional: default to General, suitable for display on all websites with any audience
  * @param forceDefaultAvatarImage Force default avatar image. Optional: default to false
  */
-fun gravatarImageUrlToGravatarImageUri(
+fun rewriteGravatarImageUriQueryParams(
     url: String,
     size: Int? = null,
     defaultAvatarImage: DefaultAvatarImage? = null,
