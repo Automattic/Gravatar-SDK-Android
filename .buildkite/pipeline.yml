@@ -21,9 +21,6 @@ steps:
       echo "--- 🧹 Linting"
       ./gradlew ktlintcheck detekt
     plugins: [*ci_toolkit]
-    artifact_paths:
-      - "**/build/reports/ktlint/**"
-      - "**/build/reports/detekt/detekt.html"
 
   - label: "Build"
     command: |
