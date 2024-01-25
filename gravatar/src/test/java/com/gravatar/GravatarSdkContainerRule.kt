@@ -1,7 +1,6 @@
 package com.gravatar
 
 import com.gravatar.di.container.GravatarSdkContainer
-import com.gravatar.logger.Logger
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject
@@ -17,7 +16,6 @@ class GravatarSdkContainerRule : TestRule {
 
     var gravatarSdkContainerMock = mockk<GravatarSdkContainer>()
     var gravatarApiServiceMock = mockk<GravatarApiService>()
-    var logger = mockk<Logger>(relaxed = true)
 
     override fun apply(base: Statement, description: Description): Statement {
         return object : Statement() {
@@ -28,7 +26,6 @@ class GravatarSdkContainerRule : TestRule {
                 every { GravatarSdkContainer.instance } returns gravatarSdkContainerMock
                 every { gravatarSdkContainerMock.dispatcherDefault } returns testDispatcher
                 every { gravatarSdkContainerMock.getGravatarApiService(any()) } returns gravatarApiServiceMock
-                every { gravatarSdkContainerMock.logger } returns logger
 
                 base.evaluate()
             }

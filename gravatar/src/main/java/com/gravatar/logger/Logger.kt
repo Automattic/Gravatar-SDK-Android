@@ -2,7 +2,7 @@ package com.gravatar.logger
 
 import android.util.Log
 
-class Logger {
+object Logger {
     fun i(tag: String, message: String) = Log.i(tag, message)
 
     fun w(tag: String, message: String) = Log.w(tag, message)

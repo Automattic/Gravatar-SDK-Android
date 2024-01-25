@@ -10,12 +10,15 @@ import okhttp3.ResponseBody
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 import retrofit2.Call
 import retrofit2.Callback
 import java.io.File
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
+@RunWith(RobolectricTestRunner::class)
 class GravatarApiTest {
     @get:Rule
     var containerRule = GravatarSdkContainerRule()

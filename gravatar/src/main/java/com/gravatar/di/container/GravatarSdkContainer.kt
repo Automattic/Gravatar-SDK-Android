@@ -2,7 +2,6 @@ package com.gravatar.di.container
 
 import com.gravatar.GravatarApiService
 import com.gravatar.GravatarConstants.GRAVATAR_API_BASE_URL
-import com.gravatar.logger.Logger
 import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -18,8 +17,6 @@ class GravatarSdkContainer private constructor() {
 
     val dispatcherDefault = Dispatchers.Default
     val dispatcherIO = Dispatchers.IO
-
-    val logger = Logger()
 
     fun getGravatarApiService(okHttpClient: OkHttpClient? = null): GravatarApiService {
         return getRetrofitBuilder().apply {

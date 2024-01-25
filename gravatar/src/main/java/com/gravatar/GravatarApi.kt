@@ -1,6 +1,6 @@
 package com.gravatar
 
-import com.gravatar.di.container.GravatarSdkContainer
+import com.gravatar.logger.Logger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
@@ -13,6 +13,7 @@ import retrofit2.Response
 import java.io.File
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
+import com.gravatar.di.container.GravatarSdkContainer.Companion.instance as GravatarSdkDI
 
 class GravatarApi(private val okHttpClient: OkHttpClient? = null) {
     private companion object {
@@ -26,7 +27,7 @@ class GravatarApi(private val okHttpClient: OkHttpClient? = null) {
         UNKNOWN,
     }
 
-    val coroutineScope = CoroutineScope(GravatarSdkContainer.instance.dispatcherDefault)
+    val coroutineScope = CoroutineScope(GravatarSdkDI.dispatcherDefault)
 
     fun uploadGravatar(
         file: File,
@@ -34,7 +35,7 @@ class GravatarApi(private val okHttpClient: OkHttpClient? = null) {
         accessToken: String,
         gravatarUploadListener: GravatarUploadListener,
     ) {
-        val service = GravatarSdkContainer.instance.getGravatarApiService(okHttpClient)
+        val service = GravatarSdkDI.getGravatarApiService(okHttpClient)
         val identity = MultipartBody.Part.createFormData("account", email)
         val filePart =
             MultipartBody.Part.createFormData("filedata", file.name, file.asRequestBody())
@@ -47,7 +48,7 @@ class GravatarApi(private val okHttpClient: OkHttpClient? = null) {
                             gravatarUploadListener.onSuccess()
                         } else {
                             // Log the response body for debugging purposes if the response is not successful
-                            GravatarSdkContainer.instance.logger.w(
+                            Logger.w(
                                 LOG_TAG,
                                 "Network call unsuccessful trying to upload Gravatar: $response.body",
                             )
