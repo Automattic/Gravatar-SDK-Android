@@ -25,11 +25,7 @@ fun emailAddressToGravatarUrl(
     return emailAddressToGravatarUri(email, defaultAvatarImage, size).toString()
 }
 
-fun emailAddressToGravatarUri(
-    email: String,
-    defaultAvatarImage: DefaultAvatarImage? = null,
-    size: Int? = null,
-): Uri {
+fun emailAddressToGravatarUri(email: String, defaultAvatarImage: DefaultAvatarImage? = null, size: Int? = null): Uri {
     return Uri.Builder()
         .scheme("https")
         .authority(GRAVATAR_IMAGE_HOST)
