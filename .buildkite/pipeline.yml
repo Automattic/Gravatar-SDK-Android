@@ -23,6 +23,7 @@ steps:
   - label: "Build"
     command: |
       echo "--- ⚒️ Building"
+      # `build` task would also run tasks, which are executed in a separate job
       ./gradlew assemble
 
   - label: "Unit tests"
