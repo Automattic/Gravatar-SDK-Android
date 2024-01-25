@@ -42,16 +42,14 @@ steps:
   - wait: ~
     if: build.branch == "trunk" || build.tag != null
 
-  - group: 🚀 Publish to S3
-    key: publish-to-s3
-    steps:
-      - label: "🚀 Publish :gravatar"
-        command: | 
-          ./gradlew \
-          :gravatar:prepareToPublishToS3 $(prepare_to_publish_to_s3_params) \
-          :gravatar:publish \
-          --no-configuration-cache
-        plugins: [*ci_toolkit]
-        notify:
-          - github_commit_status:
-              context: "Publish :gravatar"
+  - label: "Publish to S3"
+    command: |
+      echo "--- 🚀 Publishing"
+      ./gradlew \
+      :gravatar:prepareToPublishToS3 $(prepare_to_publish_to_s3_params) \
+      :gravatar:publish \
+      --no-configuration-cache
+    plugins: [*ci_toolkit]
+    notify:
+      - github_commit_status:
+          context: "Publish :gravatar"
