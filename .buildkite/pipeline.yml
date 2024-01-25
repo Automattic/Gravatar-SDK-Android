@@ -1,9 +1,3 @@
-# Nodes with values to reuse in the pipeline.
-common_params:
-  # Common plugin settings to use with the `plugins` key.
-  - &ci_toolkit
-      automattic/a8c-ci-toolkit#3.0.1
-
 agents:
   queue: "android"
 
@@ -11,7 +5,7 @@ steps:
   - label: "Gradle Wrapper Validation"
     command: |
       validate_gradle_wrapper
-    plugins: [*ci_toolkit]
+    plugins: [$CI_TOOLKIT]
 
   # Wait for Gradle Wrapper to be validated before running any other jobs
   - wait
