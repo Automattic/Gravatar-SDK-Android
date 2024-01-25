@@ -38,3 +38,18 @@ steps:
     plugins: [*ci_toolkit]
     artifact_paths:
       - "**/build/test-results/*/*.xml"
+
+  - wait: ~
+    if: build.branch == "trunk" || build.tag != null
+
+  - group: 🚀 Publish to S3
+    key: publish-to-s3
+    steps:
+      - label: "🚀 Publish :gravatar"
+        command: |
+          :gravatar:prepareToPublishToS3 $(prepare_to_publish_to_s3_params) \
+          :gravatar:publish
+        plugins: [*ci_toolkit]
+        notify:
+          - github_commit_status:
+              context: "Publish :gravatar"
