@@ -63,6 +63,8 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
+    implementation(project(":gravatar"))
+    implementation("io.coil-kt:coil-compose:2.5.0")
 
     // Unit Test dependencies
     testImplementation("junit:junit:4.13.2")
