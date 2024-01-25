@@ -89,7 +89,7 @@ class GravatarUtilsTest {
     fun `rewrite gravatar url must replace size and default`() {
         assertEquals(
             "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe970a1e66",
-            gravatarImageUrlToGravatarImageUrl(
+            rewriteGravatarImageUrlQueryParams(
                 "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe" +
                     "970a1e66?d=identicon&s=42",
             ),
@@ -101,7 +101,7 @@ class GravatarUtilsTest {
         assertEquals(
             "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe970a1e66" +
                 "?d=identicon&s=42&r=pg&f=y",
-            gravatarImageUrlToGravatarImageUrl(
+            rewriteGravatarImageUrlQueryParams(
                 "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe" +
                     "970a1e66",
                 42,
@@ -116,7 +116,7 @@ class GravatarUtilsTest {
     fun `rewrite gravatar url must remove size and default if no parameter given`() {
         assertEquals(
             "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe970a1e66",
-            gravatarImageUrlToGravatarImageUrl(
+            rewriteGravatarImageUrlQueryParams(
                 "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe" +
                     "970a1e66?d=identicon&s=42",
             ),
@@ -127,7 +127,7 @@ class GravatarUtilsTest {
     fun `keep url scheme on gravatar urls and drop parameters`() {
         assertEquals(
             "http://gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe970a1e66",
-            gravatarImageUrlToGravatarImageUrl(
+            rewriteGravatarImageUrlQueryParams(
                 "http://gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe" +
                     "970a1e66?d=identicon",
             ),
@@ -139,7 +139,7 @@ class GravatarUtilsTest {
         assertEquals(
             "https://gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe970a1e66" +
                 "?d=identicon&s=42",
-            gravatarImageUrlToGravatarImageUrl(
+            rewriteGravatarImageUrlQueryParams(
                 "https://gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe" +
                     "970a1e66?d=identicon&s=42",
                 42,
@@ -153,7 +153,7 @@ class GravatarUtilsTest {
         assertEquals(
             "https://1.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe970a1e66" +
                 "?d=identicon&s=42",
-            gravatarImageUrlToGravatarImageUrl(
+            rewriteGravatarImageUrlQueryParams(
                 "https://1.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe" +
                     "970a1e66?d=identicon&s=42",
                 42,
@@ -165,7 +165,7 @@ class GravatarUtilsTest {
     @Test
     fun `rewrite gravatar url fails on a non gravatar URL`() {
         assertThrows(IllegalArgumentException::class.java) {
-            gravatarImageUrlToGravatarImageUrl(
+            rewriteGravatarImageUrlQueryParams(
                 "https://example.com/avatar/oiresntioes",
             )
         }
