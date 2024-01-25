@@ -3,11 +3,6 @@ common_params:
   # Common plugin settings to use with the `plugins` key.
   - &ci_toolkit
       automattic/a8c-ci-toolkit#3.0.1
-  - &test_collector
-      test-collector#v1.10.0
-  - &test_collector_common_params
-    files: "gravatar/build/buildkite-test-analytics/*.xml"
-    format: "junit"
 
 agents:
   queue: "android"
@@ -41,8 +36,5 @@ steps:
       ./gradlew test
     plugins:
       - *ci_toolkit
-      - *test_collector :
-          <<: *test_collector_common_params
-          api-token-env-name: "BUILDKITE_ANALYTICS_TOKEN_UNIT_TESTS"
     artifact_paths:
       - "**/build/test-results/*/*.xml"
