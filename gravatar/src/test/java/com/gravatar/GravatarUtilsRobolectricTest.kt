@@ -48,7 +48,7 @@ class GravatarUtilsRobolectricTest {
         assertEquals(
             "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe970a1e66" +
                 "?d=monsterid&size=42",
-            emailAddressToGravatarUrl("example@example.com", DefaultAvatarImage.MONSTER, 42),
+            emailAddressToGravatarUrl("example@example.com", 42, DefaultAvatarImage.MONSTER),
         )
     }
 
@@ -59,7 +59,7 @@ class GravatarUtilsRobolectricTest {
                 "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe" +
                     "970a1e66?d=identicon&size=42",
             ),
-            emailAddressToGravatarUri("example@example.com", DefaultAvatarImage.IDENTICON, 42),
+            emailAddressToGravatarUri("example@example.com", 42, DefaultAvatarImage.IDENTICON),
         )
     }
 }
