@@ -1,0 +1,48 @@
+# Nodes with values to reuse in the pipeline.
+common_params:
+  # Common plugin settings to use with the `plugins` key.
+  - &ci_toolkit
+      automattic/a8c-ci-toolkit#3.0.1
+  - &test_collector
+      test-collector#v1.10.0
+  - &test_collector_common_params
+    files: "gravatar/build/buildkite-test-analytics/*.xml"
+    format: "junit"
+
+agents:
+  queue: "android"
+
+steps:
+  - label: "Gradle Wrapper Validation"
+    command: |
+      validate_gradle_wrapper
+    plugins: [*ci_toolkit]
+
+  # Wait for Gradle Wrapper to be validated before running any other jobs
+  - wait
+
+  - label: "Static code analysis"
+    command: |
+      echo "--- 🧹 Linting"
+      ./gradlew ktlintcheck detekt
+    plugins: [*ci_toolkit]
+    artifact_paths:
+      - "**/build/reports/ktlint/ktlintMainSourceSetCheck"
+      - "**/build/reports/detekt/detekt.html"
+
+  - label: "Build"
+    command: |
+      echo "--- ⚒️ Building"
+      ./gradlew assemble
+
+  - label: "Unit tests"
+    command: |
+      echo "--- 🧪 Testing"
+      ./gradlew test
+    plugins:
+      - *ci_toolkit
+      - *test_collector :
+          <<: *test_collector_common_params
+          api-token-env-name: "BUILDKITE_ANALYTICS_TOKEN_UNIT_TESTS"
+    artifact_paths:
+      - "**/build/test-results/*/*.xml"
