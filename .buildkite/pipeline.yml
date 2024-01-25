@@ -46,7 +46,8 @@ steps:
     key: publish-to-s3
     steps:
       - label: "🚀 Publish :gravatar"
-        command: |
+        command: | 
+          ./gradlew \
           :gravatar:prepareToPublishToS3 $(prepare_to_publish_to_s3_params) \
           :gravatar:publish
         plugins: [*ci_toolkit]
