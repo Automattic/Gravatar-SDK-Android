@@ -20,18 +20,15 @@ steps:
     command: |
       echo "--- 🧹 Linting"
       ./gradlew ktlintcheck detekt
-    plugins: [*ci_toolkit]
 
   - label: "Build"
     command: |
       echo "--- ⚒️ Building"
       ./gradlew assemble
-    plugins: [*ci_toolkit]
 
   - label: "Unit tests"
     command: |
       echo "--- 🧪 Testing"
       ./gradlew test
-    plugins: [*ci_toolkit]
     artifact_paths:
       - "**/build/test-results/*/*.xml"
