@@ -7,6 +7,7 @@ plugins {
 
     // Detekt
     id("io.gitlab.arturbosch.detekt")
+    id("com.automattic.android.publish-to-s3")
 }
 
 android {
@@ -62,4 +63,18 @@ dependencies {
 
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+}
+
+project.afterEvaluate {
+    publishing {
+        publications {
+            create<MavenPublication>("maven") {
+                from(components["release"])
+
+                groupId = "com.gravatar"
+                artifactId = "gravatar"
+                // version is set by `publish-to-s3` plugin
+            }
+        }
+    }
 }
