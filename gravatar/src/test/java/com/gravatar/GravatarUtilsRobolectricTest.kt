@@ -6,7 +6,6 @@ import org.junit.Assert.assertThrows
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import java.lang.IllegalArgumentException
 
 @RunWith(RobolectricTestRunner::class)
 class GravatarUtilsRobolectricTest {
@@ -125,23 +124,37 @@ class GravatarUtilsRobolectricTest {
     }
 
     @Test
-    fun `rewrite host on gravatar urls and drop parameters`() {
+    fun `keep url scheme on gravatar urls and drop parameters`() {
         assertEquals(
-            "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe970a1e66",
+            "http://gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe970a1e66",
             gravatarImageUrlToGravatarImageUrl(
-                "https://gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe" +
-                    "970a1e66?d=identicon&s=42",
+                "http://gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe" +
+                    "970a1e66?d=identicon",
             ),
         )
     }
 
     @Test
-    fun `rewrite host on gravatar urls and set parameters`() {
+    fun `keep host on gravatar dot com urls and set parameters`() {
         assertEquals(
-            "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe970a1e66" +
+            "https://gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe970a1e66" +
                 "?d=identicon&s=42",
             gravatarImageUrlToGravatarImageUrl(
                 "https://gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe" +
+                    "970a1e66?d=identicon&s=42",
+                42,
+                DefaultAvatarImage.IDENTICON,
+            ),
+        )
+    }
+
+    @Test
+    fun `keep host on 1 dot gravatar dot com urls and set parameters`() {
+        assertEquals(
+            "https://1.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe970a1e66" +
+                "?d=identicon&s=42",
+            gravatarImageUrlToGravatarImageUrl(
+                "https://1.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe" +
                     "970a1e66?d=identicon&s=42",
                 42,
                 DefaultAvatarImage.IDENTICON,
