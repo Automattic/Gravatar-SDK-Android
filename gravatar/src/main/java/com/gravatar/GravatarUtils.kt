@@ -4,6 +4,7 @@ import android.net.Uri
 import com.gravatar.GravatarConstants.AVATAR_SIZE_RANGE
 import com.gravatar.GravatarConstants.GRAVATAR_IMAGE_HOST
 import com.gravatar.GravatarConstants.GRAVATAR_IMAGE_PATH
+import com.gravatar.GravatarConstants.GRAVATAR_IMAGE_RAW_HOST
 import java.security.MessageDigest
 
 private fun ByteArray.toHex(): String {
@@ -86,10 +87,10 @@ fun gravatarImageUrlToGravatarImageUri(
     forceDefaultAvatarImage: Boolean? = null,
 ): Uri {
     val uri = Uri.parse(url)
-    require(uri.host?.let { GRAVATAR_IMAGE_HOST.contains(it, true) } == true) { "Not a gravatar URL" }
+    require(uri.host?.contains(GRAVATAR_IMAGE_RAW_HOST, true) == true) { "Not a gravatar URL: $uri.host" }
     return Uri.Builder()
-        .scheme("https")
-        .authority(GRAVATAR_IMAGE_HOST)
+        .scheme(uri.scheme)
+        .authority(uri.host)
         .appendEncodedPath(uri.pathSegments.joinToString("/"))
         .appendGravatarQueryParameters(size, defaultAvatarImage, rating, forceDefaultAvatarImage)
         .build()
