@@ -19,13 +19,13 @@ fun emailAddressToGravatarHash(email: String): String {
 
 fun emailAddressToGravatarUrl(
     email: String,
-    defaultAvatarImage: DefaultAvatarImage? = null,
     size: Int? = null,
+    defaultAvatarImage: DefaultAvatarImage? = null,
 ): String {
-    return emailAddressToGravatarUri(email, defaultAvatarImage, size).toString()
+    return emailAddressToGravatarUri(email, size, defaultAvatarImage).toString()
 }
 
-fun emailAddressToGravatarUri(email: String, defaultAvatarImage: DefaultAvatarImage? = null, size: Int? = null): Uri {
+fun emailAddressToGravatarUri(email: String, size: Int? = null, defaultAvatarImage: DefaultAvatarImage? = null): Uri {
     return Uri.Builder()
         .scheme("https")
         .authority(GRAVATAR_IMAGE_HOST)
