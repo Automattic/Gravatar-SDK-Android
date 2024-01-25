@@ -8,7 +8,7 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
-class GravatarUtilsRobolectricTest {
+class GravatarUtilsTest {
     @Test
     fun `emailAddressToGravatarUrl must not add any query param if not set`() {
         assertEquals(
@@ -169,5 +169,61 @@ class GravatarUtilsRobolectricTest {
                 "https://example.com/avatar/oiresntioes",
             )
         }
+    }
+
+    @Test
+    fun `hashing an input string with sha256 returns a valid hex string`() {
+        assertEquals(
+            "7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069",
+            "Hello World!".sha256Hash(),
+        )
+    }
+
+    @Test
+    fun `hashing a valid email address returns the expected hex string`() {
+        assertEquals(
+            "31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe970a1e66",
+            emailAddressToGravatarHash("example@example.com"),
+        )
+    }
+
+    @Test
+    fun `hashing an email address trim left most empty spaces`() {
+        assertEquals(
+            emailAddressToGravatarHash("   example@example.com"),
+            emailAddressToGravatarHash("example@example.com"),
+        )
+    }
+
+    @Test
+    fun `hashing an email address trim right most empty spaces`() {
+        assertEquals(
+            emailAddressToGravatarHash("example@example.com  "),
+            emailAddressToGravatarHash("example@example.com"),
+        )
+    }
+
+    @Test
+    fun `hashing an email address trim left and right most empty spaces`() {
+        assertEquals(
+            emailAddressToGravatarHash("    example@example.com   "),
+            emailAddressToGravatarHash("example@example.com"),
+        )
+    }
+
+    @Test
+    fun `hashing an email address lowercase inputs`() {
+        assertEquals(
+            emailAddressToGravatarHash("example@EXAMPLE.com"),
+            emailAddressToGravatarHash("example@example.com"),
+        )
+    }
+
+    @Test
+    fun `hashing an email address lowercase inputs and trim left and right most empty spaces`() {
+        assertEquals(
+            emailAddressToGravatarHash(" EXample@EXAMPLE.com  "),
+            emailAddressToGravatarHash("example@example.com"),
+        )
     }
 }

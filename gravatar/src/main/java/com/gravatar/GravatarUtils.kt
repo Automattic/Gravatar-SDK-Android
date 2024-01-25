@@ -87,7 +87,7 @@ fun gravatarImageUrlToGravatarImageUri(
     forceDefaultAvatarImage: Boolean? = null,
 ): Uri {
     val uri = Uri.parse(url)
-    require(uri.host?.contains(GRAVATAR_IMAGE_RAW_HOST, true) == true) { "Not a gravatar URL: $uri.host" }
+    require(uri.host?.contains(GRAVATAR_IMAGE_RAW_HOST, true) ?: false) { "Not a gravatar URL: ${uri.host}" }
     return Uri.Builder()
         .scheme(uri.scheme)
         .authority(uri.host)
