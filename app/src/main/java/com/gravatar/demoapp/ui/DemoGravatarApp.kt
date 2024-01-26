@@ -6,8 +6,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenuItem
@@ -27,7 +25,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.gravatar.DefaultAvatarImage
@@ -101,40 +98,6 @@ fun GravatarGeneratedUrl(gravatarUrl: String) {
 @Composable
 fun GravatarImage(gravatarUrl: String) = AsyncImage(model = gravatarUrl, contentDescription = null)
 
-@Composable
-fun GravatarImageSettings(
-    email: String,
-    size: Int? = null,
-    onEmailChanged: (String) -> Unit,
-    onSizeChange: (Int?) -> Unit,
-    onLoadGravatarClicked: () -> Unit,
-    defaultAvatarImageEnabled: Boolean,
-    onDefaultAvatarImageEnabledChanged: (Boolean) -> Unit,
-    selectedDefaultAvatarImage: DefaultAvatarImage,
-    onDefaultAvatarImageChanged: (DefaultAvatarImage) -> Unit,
-    defaultAvatarOptions: List<DefaultAvatarImage>,
-) {
-    GravatarEmailInput(email = email, onValueChange = onEmailChanged, Modifier.fillMaxWidth())
-    DefaultAvatarImageDropdown(
-        enabled = defaultAvatarImageEnabled,
-        selectedOption = selectedDefaultAvatarImage,
-        onEnabledChanged = onDefaultAvatarImageEnabledChanged,
-        onSelectedOptionChange = onDefaultAvatarImageChanged,
-        defaultAvatarOptions = defaultAvatarOptions,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp),
-    )
-    TextField(
-        value = size?.toString() ?: "",
-        onValueChange = { value -> onSizeChange(value.toIntOrNull()) },
-        label = { Text(stringResource(R.string.gravatar_size_input_label)) },
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-        modifier = Modifier.padding(vertical = 8.dp),
-    )
-    Button(onClick = onLoadGravatarClicked) { Text(text = "Load Gravatar") }
-}
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DefaultAvatarImageDropdown(
@@ -159,6 +122,7 @@ fun DefaultAvatarImageDropdown(
         ExposedDropdownMenuBox(
             expanded = expanded,
             onExpandedChange = { expanded = !expanded },
+            modifier = Modifier.fillMaxWidth(),
         ) {
             TextField(
                 readOnly = true,
@@ -166,7 +130,9 @@ fun DefaultAvatarImageDropdown(
                 onValueChange = { },
                 label = { Text(stringResource(R.string.default_avatar_image_label)) },
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                modifier = Modifier.menuAnchor(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .menuAnchor(),
             )
             ExposedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
                 defaultAvatarOptions.forEach { selectionOption ->
