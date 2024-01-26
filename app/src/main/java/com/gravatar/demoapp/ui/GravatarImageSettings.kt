@@ -1,10 +1,12 @@
 package com.gravatar.demoapp.ui
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -30,6 +32,8 @@ fun GravatarImageSettings(
     selectedDefaultAvatarImage: DefaultAvatarImage,
     onDefaultAvatarImageChanged: (DefaultAvatarImage) -> Unit,
     defaultAvatarOptions: List<DefaultAvatarImage>,
+    forceDefaultAvatar: Boolean,
+    onForceDefaultAvatarChanged: (Boolean) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -47,6 +51,12 @@ fun GravatarImageSettings(
                 .fillMaxWidth()
                 .padding(vertical = 8.dp),
         )
+        GravatarForceDefaultAvatarImage(
+            enabled = forceDefaultAvatar,
+            onEnabledChanged = onForceDefaultAvatarChanged,
+            modifier = Modifier
+                .fillMaxWidth(),
+        )
         TextField(
             value = size?.toString() ?: "",
             onValueChange = { value -> onSizeChange(value.toIntOrNull()) },
@@ -55,6 +65,24 @@ fun GravatarImageSettings(
             modifier = Modifier.padding(vertical = 8.dp),
         )
         Button(onClick = onLoadGravatarClicked) { Text(text = "Load Gravatar") }
+    }
+}
+
+@Composable
+fun GravatarForceDefaultAvatarImage(
+    enabled: Boolean,
+    onEnabledChanged: (Boolean) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Checkbox(
+            checked = enabled,
+            onCheckedChange = { onEnabledChanged(!enabled) },
+        )
+        Text(text = stringResource(R.string.force_default_avatar_image_label))
     }
 }
 
@@ -73,6 +101,8 @@ fun GravatarImageSettingsPreview() {
             selectedDefaultAvatarImage = DefaultAvatarImage.BLANK,
             onDefaultAvatarImageChanged = {},
             defaultAvatarOptions = DefaultAvatarImage.entries,
+            forceDefaultAvatar = false,
+            onForceDefaultAvatarChanged = {},
         )
     }
 }

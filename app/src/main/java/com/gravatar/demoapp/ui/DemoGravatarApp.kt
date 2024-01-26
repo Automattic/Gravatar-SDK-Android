@@ -33,6 +33,7 @@ fun DemoGravatarApp() {
     var defaultAvatarImageEnabled by remember { mutableStateOf(false) }
     var selectedDefaultAvatar by remember { mutableStateOf(DefaultAvatarImage.MONSTER) }
     val defaultAvatarOptions = DefaultAvatarImage.entries
+    var forceDefaultAvatar by remember { mutableStateOf(false) }
 
     GravatarDemoAppTheme {
         Surface {
@@ -53,6 +54,7 @@ fun DemoGravatarApp() {
                             email = email,
                             size = avatarSize,
                             defaultAvatarImage = if (defaultAvatarImageEnabled) selectedDefaultAvatar else null,
+                            forceDefaultAvatarImage = if (forceDefaultAvatar) true else null,
                         )
                     },
                     onDefaultAvatarImageEnabledChanged = {
@@ -62,6 +64,8 @@ fun DemoGravatarApp() {
                     selectedDefaultAvatarImage = selectedDefaultAvatar,
                     onDefaultAvatarImageChanged = { selectedDefaultAvatar = it },
                     defaultAvatarOptions = defaultAvatarOptions,
+                    forceDefaultAvatar = forceDefaultAvatar,
+                    onForceDefaultAvatarChanged = { forceDefaultAvatar = it },
                 )
 
                 if (gravatarUrl.isNotEmpty()) {
