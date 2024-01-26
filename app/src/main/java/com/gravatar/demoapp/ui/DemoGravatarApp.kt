@@ -2,16 +2,9 @@ package com.gravatar.demoapp.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Divider
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -97,54 +90,6 @@ fun GravatarGeneratedUrl(gravatarUrl: String) {
 
 @Composable
 fun GravatarImage(gravatarUrl: String) = AsyncImage(model = gravatarUrl, contentDescription = null)
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun DefaultAvatarImageDropdown(
-    enabled: Boolean,
-    onEnabledChanged: (Boolean) -> Unit,
-    selectedOption: DefaultAvatarImage,
-    onSelectedOptionChange: (DefaultAvatarImage) -> Unit,
-    defaultAvatarOptions: List<DefaultAvatarImage>,
-    modifier: Modifier = Modifier,
-) {
-    var expanded by remember { mutableStateOf(false) }
-    Row(modifier = modifier) {
-        Checkbox(
-            checked = enabled,
-            onCheckedChange = {
-                if (enabled) {
-                    expanded = false
-                }
-                onEnabledChanged(!enabled)
-            },
-        )
-        ExposedDropdownMenuBox(
-            expanded = expanded,
-            onExpandedChange = { expanded = !expanded },
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            TextField(
-                readOnly = true,
-                value = selectedOption.style,
-                onValueChange = { },
-                label = { Text(stringResource(R.string.default_avatar_image_label)) },
-                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .menuAnchor(),
-            )
-            ExposedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-                defaultAvatarOptions.forEach { selectionOption ->
-                    DropdownMenuItem(text = { Text(text = selectionOption.style) }, onClick = {
-                        onSelectedOptionChange.invoke(selectionOption)
-                        expanded = false
-                    })
-                }
-            }
-        }
-    }
-}
 
 @Composable
 fun GravatarEmailInput(email: String, onValueChange: (String) -> Unit, modifier: Modifier = Modifier) {
