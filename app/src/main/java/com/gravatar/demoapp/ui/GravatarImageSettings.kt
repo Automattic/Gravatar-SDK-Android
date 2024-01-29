@@ -63,7 +63,7 @@ fun GravatarImageSettings(
 fun GravatarImageSettingsPreview() {
     GravatarDemoAppTheme {
         GravatarImageSettings(
-            email = "gravatarDemo@gratavar.com",
+            email = "gravatar@automattic.com",
             size = null,
             onEmailChanged = {},
             onSizeChange = {},

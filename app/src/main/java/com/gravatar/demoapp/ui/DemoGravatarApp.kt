@@ -27,7 +27,7 @@ import com.gravatar.emailAddressToGravatarUrl
 
 @Composable
 fun DemoGravatarApp() {
-    var email by remember { mutableStateOf("gravatarMailHere@gravatar.com") }
+    var email by remember { mutableStateOf("gravatar@automattic.com") }
     var gravatarUrl by remember { mutableStateOf("") }
     var avatarSize by remember { mutableStateOf<Int?>(null) }
     var defaultAvatarImageEnabled by remember { mutableStateOf(false) }
