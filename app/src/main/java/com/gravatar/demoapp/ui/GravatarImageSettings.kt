@@ -17,53 +17,74 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.gravatar.DefaultAvatarImage
+import com.gravatar.ImageRating
 import com.gravatar.R
 import com.gravatar.demoapp.theme.GravatarDemoAppTheme
+import com.gravatar.demoapp.ui.model.SettingsState
 
 @Composable
 fun GravatarImageSettings(
-    email: String,
-    size: Int?,
+    settingsState: SettingsState,
     onEmailChanged: (String) -> Unit,
     onSizeChange: (Int?) -> Unit,
     onLoadGravatarClicked: () -> Unit,
-    defaultAvatarImageEnabled: Boolean,
     onDefaultAvatarImageEnabledChanged: (Boolean) -> Unit,
-    selectedDefaultAvatarImage: DefaultAvatarImage,
     onDefaultAvatarImageChanged: (DefaultAvatarImage) -> Unit,
-    defaultAvatarOptions: List<DefaultAvatarImage>,
-    forceDefaultAvatar: Boolean,
     onForceDefaultAvatarChanged: (Boolean) -> Unit,
+    onImageRatingChanged: (ImageRating) -> Unit,
+    onImageRatingEnabledChange: (Boolean) -> Unit,
 ) {
     Column(
         modifier = Modifier
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        GravatarEmailInput(email = email, onValueChange = onEmailChanged, Modifier.fillMaxWidth())
-        DefaultAvatarImageDropdown(
-            enabled = defaultAvatarImageEnabled,
-            selectedOption = selectedDefaultAvatarImage,
-            onEnabledChanged = onDefaultAvatarImageEnabledChanged,
-            onSelectedOptionChange = onDefaultAvatarImageChanged,
-            defaultAvatarOptions = defaultAvatarOptions,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp),
-        )
-        GravatarForceDefaultAvatarImage(
-            enabled = forceDefaultAvatar,
-            onEnabledChanged = onForceDefaultAvatarChanged,
-            modifier = Modifier
-                .fillMaxWidth(),
-        )
-        TextField(
-            value = size?.toString() ?: "",
-            onValueChange = { value -> onSizeChange(value.toIntOrNull()) },
-            label = { Text(stringResource(R.string.gravatar_size_input_label)) },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            modifier = Modifier.padding(vertical = 8.dp),
-        )
+        GravatarEmailInput(email = settingsState.email, onValueChange = onEmailChanged, Modifier.fillMaxWidth())
+        Row(modifier = Modifier.fillMaxWidth()) {
+            GravatarSettingDropdown(
+                enabled = settingsState.defaultAvatarImageEnabled,
+                selectedOption = settingsState.selectedDefaultAvatar,
+                onEnabledChanged = onDefaultAvatarImageEnabledChanged,
+                onSelectedOptionChange = onDefaultAvatarImageChanged,
+                options = settingsState.defaultAvatarOptions,
+                labelForOption = { it.style },
+                inputLabel = stringResource(R.string.default_avatar_image_label),
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(vertical = 8.dp),
+            )
+            GravatarSettingDropdown(
+                enabled = settingsState.imageRatingEnabled,
+                selectedOption = settingsState.imageRating,
+                onEnabledChanged = onImageRatingEnabledChange,
+                onSelectedOptionChange = onImageRatingChanged,
+                options = ImageRating.entries,
+                labelForOption = { it.rating },
+                inputLabel = stringResource(R.string.image_rating_label),
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(vertical = 8.dp),
+            )
+        }
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            GravatarForceDefaultAvatarImage(
+                enabled = settingsState.forceDefaultAvatar,
+                onEnabledChanged = onForceDefaultAvatarChanged,
+                modifier = Modifier.weight(1f),
+            )
+            TextField(
+                value = settingsState.size?.toString() ?: "",
+                onValueChange = { value -> onSizeChange(value.toIntOrNull()) },
+                label = { Text(stringResource(R.string.gravatar_size_input_label)) },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                modifier = Modifier
+                    .padding(vertical = 8.dp)
+                    .weight(1f),
+            )
+        }
         Button(onClick = onLoadGravatarClicked) { Text(text = "Load Gravatar") }
     }
 }
@@ -91,18 +112,24 @@ fun GravatarForceDefaultAvatarImage(
 fun GravatarImageSettingsPreview() {
     GravatarDemoAppTheme {
         GravatarImageSettings(
-            email = "gravatar@automattic.com",
-            size = null,
+            settingsState = SettingsState(
+                email = "gravatar@automattic.com",
+                size = null,
+                defaultAvatarImageEnabled = true,
+                selectedDefaultAvatar = DefaultAvatarImage.BLANK,
+                defaultAvatarOptions = DefaultAvatarImage.entries,
+                forceDefaultAvatar = false,
+                imageRatingEnabled = false,
+                imageRating = ImageRating.General,
+            ),
             onEmailChanged = {},
             onSizeChange = {},
             onLoadGravatarClicked = {},
-            defaultAvatarImageEnabled = true,
             onDefaultAvatarImageEnabledChanged = {},
-            selectedDefaultAvatarImage = DefaultAvatarImage.BLANK,
             onDefaultAvatarImageChanged = {},
-            defaultAvatarOptions = DefaultAvatarImage.entries,
-            forceDefaultAvatar = false,
             onForceDefaultAvatarChanged = {},
+            onImageRatingChanged = {},
+            onImageRatingEnabledChange = {},
         )
     }
 }

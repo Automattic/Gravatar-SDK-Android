@@ -15,18 +15,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import com.gravatar.DefaultAvatarImage
-import com.gravatar.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DefaultAvatarImageDropdown(
+fun <T> GravatarSettingDropdown(
     enabled: Boolean,
     onEnabledChanged: (Boolean) -> Unit,
-    selectedOption: DefaultAvatarImage,
-    onSelectedOptionChange: (DefaultAvatarImage) -> Unit,
-    defaultAvatarOptions: List<DefaultAvatarImage>,
+    selectedOption: T,
+    onSelectedOptionChange: (T) -> Unit,
+    options: List<T>,
+    labelForOption: (T) -> String,
+    inputLabel: String,
     modifier: Modifier = Modifier,
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -47,17 +46,17 @@ fun DefaultAvatarImageDropdown(
         ) {
             TextField(
                 readOnly = true,
-                value = selectedOption.style,
+                value = labelForOption(selectedOption),
                 onValueChange = { },
-                label = { Text(stringResource(R.string.default_avatar_image_label)) },
+                label = { Text(inputLabel) },
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .menuAnchor(),
             )
             ExposedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-                defaultAvatarOptions.forEach { selectionOption ->
-                    DropdownMenuItem(text = { Text(text = selectionOption.style) }, onClick = {
+                options.forEach { selectionOption ->
+                    DropdownMenuItem(text = { Text(text = labelForOption(selectionOption)) }, onClick = {
                         onSelectedOptionChange.invoke(selectionOption)
                         expanded = false
                     })
