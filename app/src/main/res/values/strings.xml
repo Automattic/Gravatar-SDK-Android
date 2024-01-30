@@ -4,4 +4,6 @@
     <string name="gravatar_generated_url_label">Gravatar URL</string>
     <string name="gravatar_size_input_label">Avatar Size</string>
     <string name="default_avatar_image_label">Default Avatar</string>
+    <string name="force_default_avatar_image_label">Force Default Avatar</string>
+    <string name="image_rating_label">Image Rating</string>
 </resources>

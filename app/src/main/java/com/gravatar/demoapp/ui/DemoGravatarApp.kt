@@ -21,18 +21,29 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.gravatar.DefaultAvatarImage
+import com.gravatar.ImageRating
 import com.gravatar.R
 import com.gravatar.demoapp.theme.GravatarDemoAppTheme
+import com.gravatar.demoapp.ui.model.SettingsState
 import com.gravatar.emailAddressToGravatarUrl
 
 @Composable
 fun DemoGravatarApp() {
-    var email by remember { mutableStateOf("gravatar@automattic.com") }
+    var settingsState by remember {
+        mutableStateOf(
+            SettingsState(
+                email = "gravatar@automattic.com",
+                size = null,
+                defaultAvatarImageEnabled = false,
+                selectedDefaultAvatar = DefaultAvatarImage.MONSTER,
+                defaultAvatarOptions = DefaultAvatarImage.entries,
+                forceDefaultAvatar = false,
+                imageRatingEnabled = false,
+                imageRating = ImageRating.General,
+            ),
+        )
+    }
     var gravatarUrl by remember { mutableStateOf("") }
-    var avatarSize by remember { mutableStateOf<Int?>(null) }
-    var defaultAvatarImageEnabled by remember { mutableStateOf(false) }
-    var selectedDefaultAvatar by remember { mutableStateOf(DefaultAvatarImage.MONSTER) }
-    val defaultAvatarOptions = DefaultAvatarImage.entries
 
     GravatarDemoAppTheme {
         Surface {
@@ -44,24 +55,29 @@ fun DemoGravatarApp() {
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 GravatarImageSettings(
-                    email = email,
-                    size = avatarSize,
-                    onEmailChanged = { email = it },
-                    onSizeChange = { avatarSize = it },
+                    settingsState = settingsState,
+                    onEmailChanged = { settingsState = settingsState.copy(email = it) },
+                    onSizeChange = { settingsState = settingsState.copy(size = it) },
                     onLoadGravatarClicked = {
                         gravatarUrl = emailAddressToGravatarUrl(
-                            email = email,
-                            size = avatarSize,
-                            defaultAvatarImage = if (defaultAvatarImageEnabled) selectedDefaultAvatar else null,
+                            email = settingsState.email,
+                            size = settingsState.size,
+                            defaultAvatarImage = if (settingsState.defaultAvatarImageEnabled) {
+                                settingsState.selectedDefaultAvatar
+                            } else {
+                                null
+                            },
+                            forceDefaultAvatarImage = if (settingsState.forceDefaultAvatar) true else null,
+                            rating = if (settingsState.imageRatingEnabled) settingsState.imageRating else null,
                         )
                     },
                     onDefaultAvatarImageEnabledChanged = {
-                        defaultAvatarImageEnabled = it
+                        settingsState = settingsState.copy(defaultAvatarImageEnabled = it)
                     },
-                    defaultAvatarImageEnabled = defaultAvatarImageEnabled,
-                    selectedDefaultAvatarImage = selectedDefaultAvatar,
-                    onDefaultAvatarImageChanged = { selectedDefaultAvatar = it },
-                    defaultAvatarOptions = defaultAvatarOptions,
+                    onDefaultAvatarImageChanged = { settingsState = settingsState.copy(selectedDefaultAvatar = it) },
+                    onForceDefaultAvatarChanged = { settingsState = settingsState.copy(forceDefaultAvatar = it) },
+                    onImageRatingChanged = { settingsState = settingsState.copy(imageRating = it) },
+                    onImageRatingEnabledChange = { settingsState = settingsState.copy(imageRatingEnabled = it) },
                 )
 
                 if (gravatarUrl.isNotEmpty()) {
