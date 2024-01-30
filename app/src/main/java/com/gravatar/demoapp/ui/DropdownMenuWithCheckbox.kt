@@ -18,7 +18,7 @@ import androidx.compose.ui.Modifier
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun <T> GravatarSettingDropdown(
+fun <T> DropdownMenuWithCheckbox(
     enabled: Boolean,
     onEnabledChanged: (Boolean) -> Unit,
     selectedOption: T,

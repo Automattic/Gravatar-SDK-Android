@@ -41,7 +41,7 @@ fun GravatarImageSettings(
     ) {
         GravatarEmailInput(email = settingsState.email, onValueChange = onEmailChanged, Modifier.fillMaxWidth())
         Row(modifier = Modifier.fillMaxWidth()) {
-            GravatarSettingDropdown(
+            DropdownMenuWithCheckbox(
                 enabled = settingsState.defaultAvatarImageEnabled,
                 selectedOption = settingsState.selectedDefaultAvatar,
                 onEnabledChanged = onDefaultAvatarImageEnabledChanged,
@@ -53,7 +53,7 @@ fun GravatarImageSettings(
                     .weight(1f)
                     .padding(vertical = 8.dp),
             )
-            GravatarSettingDropdown(
+            DropdownMenuWithCheckbox(
                 enabled = settingsState.imageRatingEnabled,
                 selectedOption = settingsState.imageRating,
                 onEnabledChanged = onImageRatingEnabledChange,
