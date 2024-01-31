@@ -32,6 +32,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
+import coil.request.CachePolicy
 import coil.request.ImageRequest
 import coil.size.Size
 import com.gravatar.DefaultAvatarImage
@@ -42,7 +43,6 @@ import com.gravatar.demoapp.ui.model.SettingsState
 import com.gravatar.emailAddressToGravatarUrl
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import java.util.UUID
 
 @Composable
 fun DemoGravatarApp() {
@@ -176,15 +176,19 @@ fun GravatarGeneratedUrl(gravatarUrl: String) {
 
 @Composable
 fun GravatarImage(gravatarUrl: String, onError: (String?, Throwable?) -> Unit) {
+    val forceRefresh = remember { mutableStateOf(0) }
     val painter = rememberAsyncImagePainter(
         model = ImageRequest.Builder(LocalContext.current)
             .data(gravatarUrl)
-            .diskCacheKey(UUID.randomUUID().toString()) // Force reload by preventing cache hit
+            .memoryCachePolicy(CachePolicy.WRITE_ONLY)
+            .diskCachePolicy(CachePolicy.DISABLED)
+            .setParameter("forceRefresh", forceRefresh)
             .size(Size.ORIGINAL)
             .build(),
         onState = { state ->
             if (state is AsyncImagePainter.State.Error) {
                 onError(state.result.throwable.message, state.result.throwable)
+                forceRefresh.value++
             }
         },
     )
