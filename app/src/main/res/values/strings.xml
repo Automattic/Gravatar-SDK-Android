@@ -6,4 +6,5 @@
     <string name="default_avatar_image_label">Default Avatar</string>
     <string name="force_default_avatar_image_label">Force Default Avatar</string>
     <string name="image_rating_label">Image Rating</string>
+    <string name="snackbar_unknown_error_message">Unknown error</string>
 </resources>
