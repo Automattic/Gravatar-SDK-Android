@@ -11,6 +11,11 @@ private fun ByteArray.toHex(): String {
     return joinToString("") { "%02x".format(it) }
 }
 
+private fun defaultImage(defaultAvatarImage: DefaultAvatarImage): String {
+    if (defaultAvatarImage is DefaultAvatarImage.CustomUrl) return defaultAvatarImage.defaultImageUrl
+    return defaultAvatarImage.style
+}
+
 private fun Uri.Builder.appendGravatarQueryParameters(
     size: Int? = null,
     defaultAvatarImage: DefaultAvatarImage? = null,
@@ -19,7 +24,7 @@ private fun Uri.Builder.appendGravatarQueryParameters(
 ): Uri.Builder {
     size?.let { require(it in AVATAR_SIZE_RANGE) { "Size parameter must be in range $AVATAR_SIZE_RANGE" } }
     return this.apply {
-        defaultAvatarImage?.let { appendQueryParameter("d", it.style) } // eg. default monster, "d=monsterid"
+        defaultAvatarImage?.let { appendQueryParameter("d", defaultImage(it)) } // eg. default monster, "d=monsterid"
         size?.let { appendQueryParameter("s", it.toString()) } // eg. size 42, "s=42"
         rating?.let { appendQueryParameter("r", it.rating) } // eg. rated pg, "r=pg"
         forceDefaultAvatarImage?.let { appendQueryParameter("f", "y") } // eg. force yes, "f=y"
