@@ -66,6 +66,22 @@ fun DemoGravatarApp() {
     }
 }
 
+fun defaultAvatarImages(): Array<DefaultAvatarImage> {
+    return arrayOf(
+        DefaultAvatarImage.MysteryPerson,
+        DefaultAvatarImage.Status404,
+        DefaultAvatarImage.Identicon,
+        DefaultAvatarImage.Monster,
+        DefaultAvatarImage.Wavatar,
+        DefaultAvatarImage.Retro,
+        DefaultAvatarImage.Blank,
+        DefaultAvatarImage.Robohash,
+        DefaultAvatarImage.CustomUrl(
+            "https://1.gravatar.com/avatar/4539566a0223b11d28fc47c864336fa27b8fe49b5f85180178c9e3813e910d6a",
+        ),
+    )
+}
+
 private fun onError(
     scope: CoroutineScope,
     snackbarHostState: SnackbarHostState,
@@ -96,8 +112,8 @@ private fun GravatarAppContent(
                 email = "gravatar@automattic.com",
                 size = null,
                 defaultAvatarImageEnabled = false,
-                selectedDefaultAvatar = DefaultAvatarImage.MONSTER,
-                defaultAvatarOptions = DefaultAvatarImage.entries,
+                selectedDefaultAvatar = DefaultAvatarImage.Monster,
+                defaultAvatarOptions = defaultAvatarImages().toList(),
                 forceDefaultAvatar = false,
                 imageRatingEnabled = false,
                 imageRating = ImageRating.General,

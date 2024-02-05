@@ -59,7 +59,7 @@ class GravatarUtilsTest {
         assertEquals(
             "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe970a1e66" +
                 "?d=monsterid",
-            emailAddressToGravatarUrl("example@example.com", defaultAvatarImage = DefaultAvatarImage.MONSTER),
+            emailAddressToGravatarUrl("example@example.com", defaultAvatarImage = DefaultAvatarImage.Monster),
         )
     }
 
@@ -70,7 +70,7 @@ class GravatarUtilsTest {
                 "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe" +
                     "970a1e66?d=identicon&s=42",
             ),
-            emailAddressToGravatarUri("example@example.com", 42, DefaultAvatarImage.IDENTICON),
+            emailAddressToGravatarUri("example@example.com", 42, DefaultAvatarImage.Identicon),
         )
     }
 
@@ -81,7 +81,7 @@ class GravatarUtilsTest {
                 "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe" +
                     "970a1e66?d=robohash&s=42&r=x&f=y",
             ),
-            emailAddressToGravatarUri("example@example.com", 42, DefaultAvatarImage.ROBOHASH, ImageRating.X, true),
+            emailAddressToGravatarUri("example@example.com", 42, DefaultAvatarImage.Robohash, ImageRating.X, true),
         )
     }
 
@@ -105,7 +105,7 @@ class GravatarUtilsTest {
                 "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe" +
                     "970a1e66",
                 42,
-                DefaultAvatarImage.IDENTICON,
+                DefaultAvatarImage.Identicon,
                 ImageRating.ParentalGuidance,
                 true,
             ),
@@ -143,7 +143,7 @@ class GravatarUtilsTest {
                 "https://gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe" +
                     "970a1e66?d=identicon&s=42",
                 42,
-                DefaultAvatarImage.IDENTICON,
+                DefaultAvatarImage.Identicon,
             ),
         )
     }
@@ -157,7 +157,7 @@ class GravatarUtilsTest {
                 "https://1.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe" +
                     "970a1e66?d=identicon&s=42",
                 42,
-                DefaultAvatarImage.IDENTICON,
+                DefaultAvatarImage.Identicon,
             ),
         )
     }
@@ -224,6 +224,20 @@ class GravatarUtilsTest {
         assertEquals(
             emailAddressToGravatarHash(" EXample@EXAMPLE.com  "),
             emailAddressToGravatarHash("example@example.com"),
+        )
+    }
+
+    @Test
+    fun `emailAddressToGravatarUrl supports custom url and encode them`() {
+        assertEquals(
+            "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe970a1e66" +
+                "?d=https%3A%2F%2Fexample.com%2F%3Fencoded%3Dtrue%26please%3Dyes",
+            emailAddressToGravatarUrl(
+                "example@example.com",
+                defaultAvatarImage = DefaultAvatarImage.CustomUrl(
+                    "https://example.com/?encoded=true&please=yes",
+                ),
+            ),
         )
     }
 }
