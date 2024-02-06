@@ -47,7 +47,7 @@ fun GravatarImageSettings(
                 onEnabledChanged = onDefaultAvatarImageEnabledChanged,
                 onSelectedOptionChange = onDefaultAvatarImageChanged,
                 options = settingsState.defaultAvatarOptions,
-                labelForOption = { it.style },
+                labelForOption = { it.queryParam() },
                 inputLabel = stringResource(R.string.default_avatar_image_label),
                 modifier = Modifier
                     .weight(1f)
@@ -117,7 +117,7 @@ fun GravatarImageSettingsPreview() {
                 size = null,
                 defaultAvatarImageEnabled = true,
                 selectedDefaultAvatar = DefaultAvatarImage.Blank,
-                defaultAvatarOptions = defaultAvatarImages().toList(),
+                defaultAvatarOptions = defaultAvatarImages(),
                 forceDefaultAvatar = false,
                 imageRatingEnabled = false,
                 imageRating = ImageRating.General,

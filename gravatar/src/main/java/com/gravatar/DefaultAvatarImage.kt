@@ -24,5 +24,9 @@ sealed class DefaultAvatarImage {
      * Rating and size parameters are ignored when the custom default is set.
      */
     data class CustomUrl(val defaultImageUrl: String) : DefaultAvatarImage()
-}
+
+    fun queryParam(): String = when (this) {
+        is Predefined -> style
+        is CustomUrl -> defaultImageUrl
+    }
 }
