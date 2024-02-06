@@ -66,8 +66,8 @@ fun DemoGravatarApp() {
     }
 }
 
-fun defaultAvatarImages(): Array<DefaultAvatarImage> {
-    return arrayOf(
+fun defaultAvatarImages(): List<DefaultAvatarImage> {
+    return listOf(
         DefaultAvatarImage.MysteryPerson,
         DefaultAvatarImage.Status404,
         DefaultAvatarImage.Identicon,
@@ -77,7 +77,7 @@ fun defaultAvatarImages(): Array<DefaultAvatarImage> {
         DefaultAvatarImage.Blank,
         DefaultAvatarImage.Robohash,
         DefaultAvatarImage.CustomUrl(
-            "https://1.gravatar.com/avatar/4539566a0223b11d28fc47c864336fa27b8fe49b5f85180178c9e3813e910d6a",
+            "https://t.ly/o2EXH",
         ),
     )
 }
@@ -113,7 +113,7 @@ private fun GravatarAppContent(
                 size = null,
                 defaultAvatarImageEnabled = false,
                 selectedDefaultAvatar = DefaultAvatarImage.Monster,
-                defaultAvatarOptions = defaultAvatarImages().toList(),
+                defaultAvatarOptions = defaultAvatarImages(),
                 forceDefaultAvatar = false,
                 imageRatingEnabled = false,
                 imageRating = ImageRating.General,
