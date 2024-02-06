@@ -1,25 +1,28 @@
 package com.gravatar
 
-sealed class DefaultAvatarImage(val style: String) {
-    data object MysteryPerson : DefaultAvatarImage("mp")
+sealed class DefaultAvatarImage {
+    abstract class Predefined(val style: String) : DefaultAvatarImage()
 
-    data object Status404 : DefaultAvatarImage("404")
+    data object MysteryPerson : Predefined("mp")
 
-    data object Identicon : DefaultAvatarImage("identicon")
+    data object Status404 : Predefined("404")
 
-    data object Monster : DefaultAvatarImage("monsterid")
+    data object Identicon : Predefined("identicon")
 
-    data object Wavatar : DefaultAvatarImage("wavatar")
+    data object Monster : Predefined("monsterid")
 
-    data object Retro : DefaultAvatarImage("retro")
+    data object Wavatar : Predefined("wavatar")
 
-    data object Blank : DefaultAvatarImage("blank")
+    data object Retro : Predefined("retro")
 
-    data object Robohash : DefaultAvatarImage("robohash")
+    data object Blank : Predefined("blank")
+
+    data object Robohash : Predefined("robohash")
 
     /**
      * @param defaultImageUrl the custom url to use as the default avatar image.
      * Rating and size parameters are ignored when the custom default is set.
      */
-    data class CustomUrl(val defaultImageUrl: String) : DefaultAvatarImage("custom_url")
+    data class CustomUrl(val defaultImageUrl: String) : DefaultAvatarImage()
+}
 }
