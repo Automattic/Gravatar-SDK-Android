@@ -66,8 +66,8 @@ fun DemoGravatarApp() {
     }
 }
 
-fun defaultAvatarImages(): List<DefaultAvatarImage> {
-    return listOf(
+val defaultAvatarImages by lazy {
+    listOf(
         DefaultAvatarImage.MysteryPerson,
         DefaultAvatarImage.Status404,
         DefaultAvatarImage.Identicon,
@@ -113,7 +113,7 @@ private fun GravatarAppContent(
                 size = null,
                 defaultAvatarImageEnabled = false,
                 selectedDefaultAvatar = DefaultAvatarImage.Monster,
-                defaultAvatarOptions = defaultAvatarImages(),
+                defaultAvatarOptions = defaultAvatarImages,
                 forceDefaultAvatar = false,
                 imageRatingEnabled = false,
                 imageRating = ImageRating.General,
