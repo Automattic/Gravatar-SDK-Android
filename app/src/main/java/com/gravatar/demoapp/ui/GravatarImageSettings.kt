@@ -117,7 +117,7 @@ fun GravatarImageSettingsPreview() {
                 size = null,
                 defaultAvatarImageEnabled = true,
                 selectedDefaultAvatar = DefaultAvatarImage.Blank,
-                defaultAvatarOptions = defaultAvatarImages(),
+                defaultAvatarOptions = defaultAvatarImages,
                 forceDefaultAvatar = false,
                 imageRatingEnabled = false,
                 imageRating = ImageRating.General,
