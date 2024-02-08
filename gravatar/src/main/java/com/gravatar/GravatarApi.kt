@@ -20,10 +20,20 @@ class GravatarApi(private val okHttpClient: OkHttpClient? = null) {
         const val LOG_TAG = "Gravatar"
     }
 
+    /**
+     * Error types for Gravatar image upload
+     */
     enum class ErrorType {
+        /** server returned an error */
         SERVER,
+
+        /** network request timed out */
         TIMEOUT,
+
+        /** network is not available */
         NETWORK,
+
+        /** An unknown error occurred */
         UNKNOWN,
     }
 

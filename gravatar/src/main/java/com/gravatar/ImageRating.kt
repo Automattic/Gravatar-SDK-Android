@@ -6,23 +6,15 @@ package com.gravatar
  * you would like to see higher ratings.
  */
 enum class ImageRating(val rating: String) {
-    /**
-     * Suitable for display on all websites with any audience type.
-     */
+    /** Suitable for display on all websites with any audience type. */
     General("g"),
 
-    /**
-     * May contain rude gestures, provocatively dressed individuals, the lesser swear words, or mild violence.
-     */
+    /** May contain rude gestures, provocatively dressed individuals, the lesser swear words, or mild violence. */
     ParentalGuidance("pg"),
 
-    /**
-     * May contain such things as harsh profanity, intense violence, nudity, or hard drug use.
-     */
+    /** May contain such things as harsh profanity, intense violence, nudity, or hard drug use. */
     Restricted("r"),
 
-    /**
-     * May contain hardcore sexual imagery or extremely disturbing violence.
-     */
+    /** May contain hardcore sexual imagery or extremely disturbing violence. */
     X("x"),
 }

@@ -2,11 +2,14 @@ package com.gravatar
 
 import android.net.Uri
 import com.gravatar.GravatarConstants.AVATAR_SIZE_RANGE
+import com.gravatar.GravatarConstants.GRAVATAR_IMAGE_BASE_HOST
 import com.gravatar.GravatarConstants.GRAVATAR_IMAGE_HOST
 import com.gravatar.GravatarConstants.GRAVATAR_IMAGE_PATH
-import com.gravatar.GravatarConstants.GRAVATAR_IMAGE_RAW_HOST
 import java.security.MessageDigest
 
+/**
+ * Convert a byte array to a hexadecimal string.
+ */
 private fun ByteArray.toHex(): String {
     return joinToString("") { "%02x".format(it) }
 }
@@ -26,14 +29,37 @@ private fun Uri.Builder.appendGravatarQueryParameters(
     }
 }
 
+/**
+ * Hash a string using SHA-256.
+ *
+ * @return SHA-256 hash as a hexadecimal string
+ */
 fun String.sha256Hash(): String {
     return MessageDigest.getInstance("SHA-256").digest(this.toByteArray()).toHex()
 }
 
+/**
+ * Generate a Gravatar hash the for a given email address.
+ *
+ * @param email Email address
+ *
+ * @return hash that can used to address Gravatar images or profiles
+ */
 fun emailAddressToGravatarHash(email: String): String {
     return email.trim().lowercase().sha256Hash()
 }
 
+/**
+ * Generate Gravatar URL for the given email address.
+ *
+ * @param email Email address
+ * @param size Size of the avatar, must be between 1 and 2048. Optional: default to 80
+ * @param defaultAvatarImage Default avatar image. Optional: default to Gravatar logo
+ * @param rating Image rating. Optional: default to General, suitable for display on all websites with any audience
+ * @param forceDefaultAvatarImage Force default avatar image. Optional: default to false
+ *
+ * @return Gravatar URL
+ */
 fun emailAddressToGravatarUrl(
     email: String,
     size: Int? = null,
@@ -44,6 +70,17 @@ fun emailAddressToGravatarUrl(
     return emailAddressToGravatarUri(email, size, defaultAvatarImage, rating, forceDefaultAvatarImage).toString()
 }
 
+/**
+ * Generate Gravatar Uri for the given email address.
+ *
+ * @param email Email address
+ * @param size Size of the avatar, must be between 1 and 2048. Optional: default to 80
+ * @param defaultAvatarImage Default avatar image. Optional: default to Gravatar logo
+ * @param rating Image rating. Optional: default to General, suitable for display on all websites with any audience
+ * @param forceDefaultAvatarImage Force default avatar image. Optional: default to false
+ *
+ * @return Gravatar Uri
+ */
 fun emailAddressToGravatarUri(
     email: String,
     size: Int? = null,
@@ -60,6 +97,17 @@ fun emailAddressToGravatarUri(
         .build()
 }
 
+/**
+ * Rewrite Gravatar URL to use different options. Keep only the path and hash.
+ *
+ * @param url Gravatar URL
+ * @param size Size of the avatar, must be between 1 and 2048. Optional: default to 80
+ * @param defaultAvatarImage Default avatar image. Optional: default to Gravatar logo
+ * @param rating Image rating. Optional: default to General, suitable for display on all websites with any audience
+ * @param forceDefaultAvatarImage Force default avatar image. Optional: default to false
+ *
+ * @return Gravatar URL with updated query parameters
+ */
 fun rewriteGravatarImageUrlQueryParams(
     url: String,
     size: Int? = null,
@@ -71,13 +119,15 @@ fun rewriteGravatarImageUrlQueryParams(
 }
 
 /**
- * Rewrite gravatar URL to use different options. Keep only the path and hash.
+ * Rewrite Gravatar URL to use different options. Keep only the path and hash.
  *
  * @param url Gravatar URL
  * @param size Size of the avatar, must be between 1 and 2048. Optional: default to 80
- * @param defaultAvatarImage Default avatar image. Optional: default to gravatar logo
+ * @param defaultAvatarImage Default avatar image. Optional: default to Gravatar logo
  * @param rating Image rating. Optional: default to General, suitable for display on all websites with any audience
  * @param forceDefaultAvatarImage Force default avatar image. Optional: default to false
+ *
+ * @return Gravatar Uri with updated query parameters
  */
 fun rewriteGravatarImageUriQueryParams(
     url: String,
@@ -87,7 +137,7 @@ fun rewriteGravatarImageUriQueryParams(
     forceDefaultAvatarImage: Boolean? = null,
 ): Uri {
     val uri = Uri.parse(url)
-    require(uri.host?.contains(GRAVATAR_IMAGE_RAW_HOST, true) ?: false) { "Not a gravatar URL: ${uri.host}" }
+    require(uri.host?.contains(GRAVATAR_IMAGE_BASE_HOST, true) ?: false) { "Not a Gravatar URL: ${uri.host}" }
     return Uri.Builder()
         .scheme(uri.scheme)
         .authority(uri.host)
