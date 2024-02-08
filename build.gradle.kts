@@ -8,4 +8,7 @@ plugins {
 
     // Detekt
     id("io.gitlab.arturbosch.detekt") version "1.23.4" apply false
+
+    // Dokka
+    id("org.jetbrains.dokka") version "1.9.10"
 }

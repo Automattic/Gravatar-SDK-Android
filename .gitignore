@@ -25,3 +25,6 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# Generated documentation
+docs/dokka
