@@ -1,7 +1,7 @@
 package com.gravatar
 
 /**
- * The default avatar image to use when the user does not have a gravatar image.
+ * The default avatar image to use when the user does not have a Gravatar image.
  */
 sealed class DefaultAvatarImage {
     /**
@@ -15,7 +15,8 @@ sealed class DefaultAvatarImage {
     data object MysteryPerson : Predefined("mp")
 
     /**
-     * 404: Fallback to a 404 error image
+     * 404: Fallback to a 404 error instead of returning a default image. This allows to detect if the user doesn't
+     * have a Gravatar image
      */
     data object Status404 : Predefined("404")
 
@@ -66,6 +67,11 @@ sealed class DefaultAvatarImage {
      */
     data class CustomUrl(val defaultImageUrl: String) : DefaultAvatarImage()
 
+    /**
+     * Get the query parameter for the default avatar image depending on the type of default avatar image.
+     *
+     * @return the query parameter
+     */
     fun queryParam(): String = when (this) {
         is Predefined -> style
         is CustomUrl -> defaultImageUrl

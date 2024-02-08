@@ -18,6 +18,12 @@ class GravatarSdkContainer private constructor() {
     val dispatcherDefault = Dispatchers.Default
     val dispatcherIO = Dispatchers.IO
 
+    /**
+     * Get Gravatar API service
+     *
+     * @param okHttpClient The OkHttp client to use
+     * @return The Gravatar API service
+     */
     fun getGravatarApiService(okHttpClient: OkHttpClient? = null): GravatarApiService {
         return getRetrofitBuilder().apply {
             okHttpClient?.let { client(it) }
