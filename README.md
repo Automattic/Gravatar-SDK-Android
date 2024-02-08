@@ -23,7 +23,7 @@ the [jlleitschuh/ktlint-gradle](https://github.com/jlleitschuh/ktlint-gradle) wr
 Check the style of the whole project or just the desired module (library or demo app) with the
 following commands:
 
-```
+```sh
 ./gradlew ktlintCheck
 ./gradlew :gravatar:ktlintCheck
 ./gradlew :app:ktlintCheck
@@ -31,7 +31,7 @@ following commands:
 
 You can also try to let Ktlint fix the code style issues. Just use:
 
-```
+```sh
 ./gradlew ktlintFormat
 ./gradlew :gravatar:ktlintFormat
 ./gradlew :app:ktlintFormat
@@ -42,7 +42,7 @@ You can also try to let Ktlint fix the code style issues. Just use:
 We use [Detekt](https://github.com/detekt/detekt) to perform static code analysis. You can run
 Detekt via a gradle command:
 
-```
+```sh
 ./gradlew detekt
 ./gradlew :gravatar:detekt
 ./gradlew :app:detekt
@@ -71,3 +71,10 @@ dependencies {
 }
 ```
 
+## Generating the API documentation
+
+We're using [kdoc](https://kotlinlang.org/docs/kotlin-doc.html) to document the library's code. [Dokka](https://kotlinlang.org/docs/dokka-introduction.html) has been setup to generate html documentation from kdoc. To generate the HTML docs in `docs/dokka/`, run the following command:
+
+```sh
+./gradlew dokkaHtml
+```
