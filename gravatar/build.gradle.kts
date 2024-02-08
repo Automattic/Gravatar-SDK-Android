@@ -56,6 +56,7 @@ android {
 
     tasks.dokkaHtml.configure {
         outputDirectory.set(file("../docs/dokka"))
+        notCompatibleWithConfigurationCache("https://github.com/Kotlin/dokka/issues/2231")
     }
 }
 
