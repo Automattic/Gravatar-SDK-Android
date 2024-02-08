@@ -29,6 +29,14 @@ class GravatarApi(private val okHttpClient: OkHttpClient? = null) {
 
     val coroutineScope = CoroutineScope(GravatarSdkDI.dispatcherDefault)
 
+    /**
+     * Uploads a Gravatar image for the given email address.
+     *
+     * @param file The image file to upload
+     * @param email The email address to associate the image with
+     * @param accessToken The bearer token for the user's WordPress/Gravatar account
+     * @param gravatarUploadListener The listener to notify of the upload result
+     */
     fun uploadGravatar(
         file: File,
         email: String,
@@ -78,9 +86,20 @@ class GravatarApi(private val okHttpClient: OkHttpClient? = null) {
         )
     }
 
+    /**
+     * Listener for Gravatar image upload
+     */
     interface GravatarUploadListener {
+        /**
+         * Called when the Gravatar image upload is successful
+         */
         fun onSuccess()
 
+        /**
+         * Called when the Gravatar image upload fails
+         *
+         * @param errorType The type of error that occurred
+         */
         fun onError(errorType: ErrorType)
     }
 }
