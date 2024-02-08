@@ -8,6 +8,9 @@ plugins {
     // Detekt
     id("io.gitlab.arturbosch.detekt")
     id("com.automattic.android.publish-to-s3")
+
+    // Dokka
+    id("org.jetbrains.dokka")
 }
 
 android {
@@ -50,6 +53,10 @@ android {
             isIncludeAndroidResources = true
         }
     }
+
+    tasks.dokkaHtml.configure {
+        outputDirectory.set(file("../docs/dokka"))
+    }
 }
 
 dependencies {
@@ -65,6 +72,8 @@ dependencies {
 
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+
+    dokkaPlugin("org.jetbrains.dokka:android-documentation-plugin:1.9.10")
 }
 
 project.afterEvaluate {
