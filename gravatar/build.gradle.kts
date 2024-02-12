@@ -10,7 +10,7 @@ plugins {
     id("com.automattic.android.publish-to-s3")
 
     // Dokka
-    id("org.jetbrains.dokka")
+    id("org.jetbrains.dokka") version "1.9.10"
 }
 
 android {
