@@ -5,7 +5,7 @@ package com.gravatar
  * for a certain audience. By default, only ‘General’ rated images are displayed unless you indicate that
  * you would like to see higher ratings.
  */
-enum class ImageRating(val rating: String) {
+public enum class ImageRating(public val rating: String) {
     /** Suitable for display on all websites with any audience type. */
     General("g"),
 

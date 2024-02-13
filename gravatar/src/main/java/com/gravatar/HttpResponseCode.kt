@@ -1,6 +1,6 @@
 package com.gravatar
 
-object HttpResponseCode {
+internal object HttpResponseCode {
     /** HTTP client timeout code */
     const val HTTP_CLIENT_TIMEOUT = 408
 

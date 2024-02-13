@@ -1,6 +1,6 @@
 package com.gravatar
 
-object GravatarConstants {
+internal object GravatarConstants {
     /** Gravatar image host */
     const val GRAVATAR_IMAGE_HOST = "www.gravatar.com"
 

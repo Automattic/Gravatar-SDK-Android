@@ -9,8 +9,8 @@ import org.junit.runner.Description
 import org.junit.runners.model.Statement
 
 class GravatarSdkTest : TestRule {
-    var gravatarSdkContainerMock = mockk<GravatarSdkContainer>()
-    var gravatarApiServiceMock = mockk<GravatarApiService>()
+    internal var gravatarSdkContainerMock = mockk<GravatarSdkContainer>()
+    internal var gravatarApiServiceMock = mockk<GravatarApiService>()
 
     override fun apply(base: Statement, description: Description): Statement {
         return object : Statement() {

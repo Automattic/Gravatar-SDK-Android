@@ -32,7 +32,7 @@ private fun Uri.Builder.appendGravatarQueryParameters(
  *
  * @return SHA-256 hash as a hexadecimal string
  */
-fun String.sha256Hash(): String {
+public fun String.sha256Hash(): String {
     return MessageDigest.getInstance("SHA-256").digest(this.toByteArray()).toHex()
 }
 
@@ -43,7 +43,7 @@ fun String.sha256Hash(): String {
  *
  * @return hash that can used to address Gravatar images or profiles
  */
-fun emailAddressToGravatarHash(email: String): String {
+public fun emailAddressToGravatarHash(email: String): String {
     return email.trim().lowercase().sha256Hash()
 }
 
@@ -58,7 +58,7 @@ fun emailAddressToGravatarHash(email: String): String {
  *
  * @return Gravatar URL
  */
-fun emailAddressToGravatarUrl(
+public fun emailAddressToGravatarUrl(
     email: String,
     size: Int? = null,
     defaultAvatarImage: DefaultAvatarImage? = null,
@@ -79,7 +79,7 @@ fun emailAddressToGravatarUrl(
  *
  * @return Gravatar Uri
  */
-fun emailAddressToGravatarUri(
+public fun emailAddressToGravatarUri(
     email: String,
     size: Int? = null,
     defaultAvatarImage: DefaultAvatarImage? = null,
@@ -106,7 +106,7 @@ fun emailAddressToGravatarUri(
  *
  * @return Gravatar URL with updated query parameters
  */
-fun rewriteGravatarImageUrlQueryParams(
+public fun rewriteGravatarImageUrlQueryParams(
     url: String,
     size: Int? = null,
     defaultAvatarImage: DefaultAvatarImage? = null,
@@ -127,7 +127,7 @@ fun rewriteGravatarImageUrlQueryParams(
  *
  * @return Gravatar Uri with updated query parameters
  */
-fun rewriteGravatarImageUriQueryParams(
+public fun rewriteGravatarImageUriQueryParams(
     url: String,
     size: Int? = null,
     defaultAvatarImage: DefaultAvatarImage? = null,

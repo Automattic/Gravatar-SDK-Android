@@ -15,7 +15,7 @@ import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import com.gravatar.di.container.GravatarSdkContainer.Companion.instance as GravatarSdkDI
 
-class GravatarApi(private val okHttpClient: OkHttpClient? = null) {
+public class GravatarApi(private val okHttpClient: OkHttpClient? = null) {
     private companion object {
         const val LOG_TAG = "Gravatar"
     }
@@ -23,7 +23,7 @@ class GravatarApi(private val okHttpClient: OkHttpClient? = null) {
     /**
      * Error types for Gravatar image upload
      */
-    enum class ErrorType {
+    public enum class ErrorType {
         /** server returned an error */
         SERVER,
 
@@ -37,7 +37,7 @@ class GravatarApi(private val okHttpClient: OkHttpClient? = null) {
         UNKNOWN,
     }
 
-    val coroutineScope = CoroutineScope(GravatarSdkDI.dispatcherDefault)
+    private val coroutineScope = CoroutineScope(GravatarSdkDI.dispatcherDefault)
 
     /**
      * Uploads a Gravatar image for the given email address.
@@ -47,7 +47,7 @@ class GravatarApi(private val okHttpClient: OkHttpClient? = null) {
      * @param accessToken The bearer token for the user's WordPress/Gravatar account
      * @param gravatarUploadListener The listener to notify of the upload result
      */
-    fun uploadGravatar(
+    public fun uploadGravatar(
         file: File,
         email: String,
         accessToken: String,
@@ -99,17 +99,17 @@ class GravatarApi(private val okHttpClient: OkHttpClient? = null) {
     /**
      * Listener for Gravatar image upload
      */
-    interface GravatarUploadListener {
+    public interface GravatarUploadListener {
         /**
          * Called when the Gravatar image upload is successful
          */
-        fun onSuccess()
+        public fun onSuccess()
 
         /**
          * Called when the Gravatar image upload fails
          *
          * @param errorType The type of error that occurred
          */
-        fun onError(errorType: ErrorType)
+        public fun onError(errorType: ErrorType)
     }
 }
