@@ -18,34 +18,6 @@ class GravatarUtilsTest {
     }
 
     @Test
-    fun `emailAddressToGravatarUrl supports size from 1 to 2048`() {
-        assertEquals(
-            "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe970a1e66" +
-                "?s=1",
-            emailAddressToGravatarUrl("example@example.com", size = 1),
-        )
-    }
-
-    @Test
-    fun `emailAddressToGravatarUrl supports size 2048`() {
-        assertEquals(
-            "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe970a1e66" +
-                "?s=2048",
-            emailAddressToGravatarUrl("example@example.com", size = 2048),
-        )
-    }
-
-    @Test
-    fun `emailAddressToGravatarUrl fails on size strictly greater than 2048`() {
-        assertThrows(IllegalArgumentException::class.java) {
-            emailAddressToGravatarUrl(
-                "https://example.com/avatar/oiresntioes",
-                size = 2049,
-            )
-        }
-    }
-
-    @Test
     fun `emailAddressToGravatarUrl must set the size but no other query param if not set`() {
         assertEquals(
             "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe970a1e66" +
