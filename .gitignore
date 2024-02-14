@@ -6,19 +6,6 @@
 *.iws
 .idea/
 
-# IntelliJ/Android Studio exceptions
-!/.idea/codeStyles/
-!/.idea/fileTemplates/
-!/.idea/inspectionProfiles/
-!/.idea/scopes/
-!/.idea/codeStyleSettings.xml
-!/.idea/encodings.xml
-!/.idea/copyright/
-# Enforce plugins
-!/.idea/externalDependencies.xml
-# Checkstyle configuration
-!/.idea/checkstyle-idea.xml
-
 .DS_Store
 /build
 /captures
