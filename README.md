@@ -48,6 +48,21 @@ Detekt via a gradle command:
 ./gradlew :app:detekt
 ```
 
+## Explicit API mode
+
+[Explicit API mode](https://kotlinlang.org/docs/whatsnew14.html#explicit-api-mode-for-library-authors) is enabled in strict mode for the
+library. This means that the compiler performs additional checks that help make the library's API clearer and more consistent.
+
+Those errors will force us to take care of the visibility modifiers in order to limit the public classes/methods of the API to the minimum
+required.
+
+By default, **Android Studio** will show a warning, `Redundant visibility modifier`.
+
+<img width="400" alt="Redundant visibility modifier" src="docs/images/redundant_visibility_modifier_warning.png">
+
+You can remove the warning by changing the setting for this project
+in: `Settings` -> `Editor` -> `Inspections` -> `Kotlin` -> `Redundant Constructors` -> `Redundant visibility modifier`.
+
 ## Publishing
 
 The SDK is published to the Automattic's S3 instance via [`publish-to-s3`](https://github.com/Automattic/publish-to-s3-gradle-plugin) Gradle plugin.
