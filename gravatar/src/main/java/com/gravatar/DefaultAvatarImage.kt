@@ -3,52 +3,52 @@ package com.gravatar
 /**
  * The default avatar image to use when the user does not have a Gravatar image.
  */
-sealed class DefaultAvatarImage {
+public sealed class DefaultAvatarImage {
     /**
      * @suppress
      */
-    abstract class Predefined(val style: String) : DefaultAvatarImage()
+    public abstract class Predefined(public val style: String) : DefaultAvatarImage()
 
     /**
      * Mystery Person: simple, cartoon-style silhouetted outline of a person (does not vary by email)
      */
-    data object MysteryPerson : Predefined("mp")
+    public data object MysteryPerson : Predefined("mp")
 
     /**
      * 404: Fallback to a 404 error instead of returning a default image. This allows to detect if the user doesn't
      * have a Gravatar image
      */
-    data object Status404 : Predefined("404")
+    public data object Status404 : Predefined("404")
 
     /**
      * Identicon: a geometric pattern based on an email hash
      */
-    data object Identicon : Predefined("identicon")
+    public data object Identicon : Predefined("identicon")
 
     /**
      * Monster: a generated "monster" with different colors, faces, etc
      */
-    data object Monster : Predefined("monsterid")
+    public data object Monster : Predefined("monsterid")
 
     /**
      * Wavatar: generated faces with differing features and backgrounds
      */
-    data object Wavatar : Predefined("wavatar")
+    public data object Wavatar : Predefined("wavatar")
 
     /**
      * Retro: awesome generated, 8-bit arcade-style pixelated faces
      */
-    data object Retro : Predefined("retro")
+    public data object Retro : Predefined("retro")
 
     /**
      * Blank: a transparent PNG image
      */
-    data object Blank : Predefined("blank")
+    public data object Blank : Predefined("blank")
 
     /**
      * Robohash: a generated robot with different colors, faces, etc
      */
-    data object Robohash : Predefined("robohash")
+    public data object Robohash : Predefined("robohash")
 
     /**
      * If you prefer to use your own default image (perhaps your logo, a funny face, whatever), then you can
@@ -65,14 +65,14 @@ sealed class DefaultAvatarImage {
      *
      * @param defaultImageUrl the custom url to use as the default avatar image.
      */
-    data class CustomUrl(val defaultImageUrl: String) : DefaultAvatarImage()
+    public data class CustomUrl(val defaultImageUrl: String) : DefaultAvatarImage()
 
     /**
      * Get the query parameter for the default avatar image depending on the type of default avatar image.
      *
      * @return the query parameter
      */
-    fun queryParam(): String = when (this) {
+    public fun queryParam(): String = when (this) {
         is Predefined -> style
         is CustomUrl -> defaultImageUrl
     }

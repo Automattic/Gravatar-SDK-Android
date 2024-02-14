@@ -6,7 +6,7 @@ import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 
-class GravatarSdkContainer private constructor() {
+internal class GravatarSdkContainer private constructor() {
     companion object {
         val instance: GravatarSdkContainer by lazy {
             GravatarSdkContainer()
