@@ -1,15 +1,10 @@
 name: Deploy Dokka docs with GitHub Pages
 
 on:
-  # Runs on pushes targeting the default branch
   push:
     branches:
       - trunk
       - release/*
-  # Runs on pull requests targeting the default branch - just for testing for now
-  pull_request:
-    branches:
-      - trunk
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
