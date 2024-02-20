@@ -1,9 +1,9 @@
 package com.gravatar
 
 import android.net.Uri
-import com.gravatar.GravatarConstants.GRAVATAR_IMAGE_BASE_HOST
-import com.gravatar.GravatarConstants.GRAVATAR_IMAGE_HOST
+import com.gravatar.GravatarConstants.GRAVATAR_BASE_HOST
 import com.gravatar.GravatarConstants.GRAVATAR_IMAGE_PATH
+import com.gravatar.GravatarConstants.GRAVATAR_WWW_BASE_HOST
 import java.security.MessageDigest
 
 /**
@@ -88,7 +88,7 @@ public fun emailAddressToGravatarUri(
 ): Uri {
     return Uri.Builder()
         .scheme("https")
-        .authority(GRAVATAR_IMAGE_HOST)
+        .authority(GRAVATAR_WWW_BASE_HOST)
         .appendPath(GRAVATAR_IMAGE_PATH)
         .appendPath(emailAddressToGravatarHash(email))
         .appendGravatarQueryParameters(size, defaultAvatarImage, rating, forceDefaultAvatarImage)
@@ -135,7 +135,7 @@ public fun rewriteGravatarImageUriQueryParams(
     forceDefaultAvatarImage: Boolean? = null,
 ): Uri {
     val uri = Uri.parse(url)
-    require(uri.host?.contains(GRAVATAR_IMAGE_BASE_HOST, true) ?: false) { "Not a Gravatar URL: ${uri.host}" }
+    require(uri.host?.contains(GRAVATAR_BASE_HOST, true) ?: false) { "Not a Gravatar URL: ${uri.host}" }
     return Uri.Builder()
         .scheme(uri.scheme)
         .authority(uri.host)
