@@ -2,6 +2,7 @@
     <string name="app_name">Gravatar Demo App</string>
     <string name="gravatar_email_input_label">Gravatar E-Mail</string>
     <string name="gravatar_generated_url_label">Gravatar URL</string>
+    <string name="gravatar_generated_hash_label">Gravatar Hash</string>
     <string name="gravatar_size_input_label">Avatar Size</string>
     <string name="default_avatar_image_label">Default Avatar</string>
     <string name="force_default_avatar_image_label">Force Default Avatar</string>

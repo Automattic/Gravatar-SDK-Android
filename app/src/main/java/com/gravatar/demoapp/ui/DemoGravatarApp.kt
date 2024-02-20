@@ -1,11 +1,15 @@
 package com.gravatar.demoapp.ui
 
 import android.util.Log
+import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -13,6 +17,8 @@ import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -36,11 +42,15 @@ import coil.request.CachePolicy
 import coil.request.ImageRequest
 import coil.size.Size
 import com.gravatar.DefaultAvatarImage
+import com.gravatar.GravatarApi
+import com.gravatar.GravatarApi.GetProfileListener
 import com.gravatar.ImageRating
 import com.gravatar.R
 import com.gravatar.demoapp.theme.GravatarDemoAppTheme
 import com.gravatar.demoapp.ui.model.SettingsState
 import com.gravatar.emailAddressToGravatarUrl
+import com.gravatar.models.UserProfiles
+import com.gravatar.sha256Hash
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -49,16 +59,14 @@ fun DemoGravatarApp() {
     GravatarDemoAppTheme {
         val scope = rememberCoroutineScope()
         val snackbarHostState = remember { SnackbarHostState() }
-        var gravatarUrl by remember { mutableStateOf("", neverEqualPolicy()) }
 
         Scaffold(
             snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         ) { innerPadding ->
             val defaultErrorMessage = stringResource(R.string.snackbar_unknown_error_message)
-            GravatarAppContent(
-                gravatarUrl,
+
+            GravatarTabs(
                 modifier = Modifier.padding(innerPadding),
-                onGravatarUrlChanged = { gravatarUrl = it },
             ) { errorMessage, exception ->
                 onError(scope, snackbarHostState, errorMessage, exception, defaultErrorMessage)
             }
@@ -98,14 +106,91 @@ private fun onError(
     }
 }
 
+@Composable
+private fun GravatarTabs(modifier: Modifier = Modifier, onError: (String?, Throwable?) -> Unit) {
+    var tabIndex by remember { mutableStateOf(0) }
+
+    val tabs = listOf("Avatar", "Profile")
+
+    Column(modifier = Modifier.fillMaxSize()) {
+        TabRow(selectedTabIndex = tabIndex) {
+            tabs.forEachIndexed { index, title ->
+                Tab(
+                    text = { Text(title) },
+                    selected = tabIndex == index,
+                    onClick = { tabIndex = index },
+                )
+            }
+        }
+        when (tabIndex) {
+            0 -> AvatarTab(modifier, onError)
+            1 -> ProfileTab(modifier, onError)
+        }
+    }
+}
+
+@Composable
+private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwable?) -> Unit) {
+    var email by remember { mutableStateOf("gravatar@automattic.com", neverEqualPolicy()) }
+    var hash by remember { mutableStateOf("", neverEqualPolicy()) }
+    var profiles by remember { mutableStateOf(UserProfiles(), neverEqualPolicy()) }
+    var loading by remember { mutableStateOf(false) }
+    var error by remember { mutableStateOf("") }
+    val gravatarApi = GravatarApi()
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+    Surface(modifier) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background)
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            GravatarEmailInput(email = email, onValueChange = { email = it }, Modifier.fillMaxWidth())
+            Button(onClick = {
+                keyboardController?.hide()
+                hash = email.sha256Hash()
+                loading = true
+                error = ""
+                gravatarApi.getProfile(
+                    hash,
+                    object : GetProfileListener {
+                        override fun onSuccess(userProfiles: UserProfiles) {
+                            profiles = userProfiles
+                            loading = false
+                        }
+
+                        override fun onError(errorType: GravatarApi.ErrorType) {
+                            onError(errorType.name, null)
+                            error = errorType.name
+                            loading = false
+                        }
+                    },
+                )
+            }) { Text(text = "Get Profile") }
+            if (hash.isNotEmpty()) {
+                GravatarDivider()
+                LabelledText(R.string.gravatar_generated_hash_label, text = hash)
+                GravatarDivider()
+                if (loading) {
+                    CircularProgressIndicator()
+                }
+            }
+            if (!loading && error.isEmpty() && profiles.entry.size > 0) {
+                val displayName = profiles.entry.first().displayName.orEmpty()
+                val profileUrl = profiles.entry.first().profileUrl.orEmpty()
+                Text(text = "Display Name: $displayName")
+                Text(text = "Url: $profileUrl")
+            }
+        }
+    }
+}
+
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun GravatarAppContent(
-    gravatarUrl: String,
-    modifier: Modifier = Modifier,
-    onGravatarUrlChanged: (String) -> Unit,
-    onError: (String?, Throwable?) -> Unit,
-) {
+private fun AvatarTab(modifier: Modifier = Modifier, onError: (String?, Throwable?) -> Unit) {
+    var gravatarUrl by remember { mutableStateOf("", neverEqualPolicy()) }
     var settingsState by remember {
         mutableStateOf(
             SettingsState(
@@ -138,7 +223,7 @@ private fun GravatarAppContent(
                     @Suppress("TooGenericExceptionCaught")
                     try {
                         keyboardController?.hide()
-                        onGravatarUrlChanged(
+                        gravatarUrl =
                             emailAddressToGravatarUrl(
                                 email = settingsState.email,
                                 size = settingsState.size,
@@ -149,8 +234,7 @@ private fun GravatarAppContent(
                                 },
                                 forceDefaultAvatarImage = if (settingsState.forceDefaultAvatar) true else null,
                                 rating = if (settingsState.imageRatingEnabled) settingsState.imageRating else null,
-                            ),
-                        )
+                            )
                     } catch (e: Exception) {
                         onError(null, e.fillInStackTrace())
                     }
@@ -167,7 +251,7 @@ private fun GravatarAppContent(
             if (gravatarUrl.isNotEmpty()) {
                 GravatarDivider()
 
-                GravatarGeneratedUrl(gravatarUrl = gravatarUrl)
+                LabelledText(R.string.gravatar_generated_url_label, gravatarUrl)
 
                 GravatarDivider()
 
@@ -182,12 +266,15 @@ fun GravatarDivider() =
     Divider(thickness = 1.dp, color = MaterialTheme.colorScheme.primary, modifier = Modifier.padding(vertical = 8.dp))
 
 @Composable
-fun GravatarGeneratedUrl(gravatarUrl: String) {
+fun LabelledText(
+    @StringRes label: Int,
+    text: String,
+) {
     Text(
-        text = stringResource(R.string.gravatar_generated_url_label),
+        text = stringResource(label),
         fontWeight = FontWeight.Bold,
     )
-    Text(text = gravatarUrl)
+    Text(text = text)
 }
 
 @Composable
