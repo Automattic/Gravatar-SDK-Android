@@ -1,6 +1,7 @@
 package com.gravatar
 
 import com.gravatar.logger.Logger
+import com.gravatar.models.UserProfiles
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
@@ -15,7 +16,7 @@ import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import com.gravatar.di.container.GravatarSdkContainer.Companion.instance as GravatarSdkDI
 
-public class GravatarApi(private val okHttpClient: OkHttpClient? = null) {
+public class GravatarApi(private var okHttpClient: OkHttpClient? = null) {
     private companion object {
         const val LOG_TAG = "Gravatar"
     }
@@ -96,6 +97,51 @@ public class GravatarApi(private val okHttpClient: OkHttpClient? = null) {
         )
     }
 
+    public fun getProfile(hash: String, getProfileListener: GetProfileListener) {
+        val service = GravatarSdkDI.getGravatarBaseService(okHttpClient)
+        service.getProfile(hash).enqueue(
+            object : Callback<UserProfiles> {
+                override fun onResponse(call: Call<UserProfiles>, response: Response<UserProfiles>) {
+                    coroutineScope.launch {
+                        if (response.isSuccessful) {
+                            val data = response.body()
+                            if (data != null) {
+                                getProfileListener.onSuccess(data)
+                            } else {
+                                getProfileListener.onError(ErrorType.UNKNOWN)
+                            }
+                        } else {
+                            // Log the response body for debugging purposes if the response is not successful
+                            Logger.w(
+                                LOG_TAG,
+                                "Network call unsuccessful trying to get Gravatar profile: $response.body",
+                            )
+                            val error: ErrorType =
+                                when (response.code()) {
+                                    HttpResponseCode.HTTP_CLIENT_TIMEOUT -> ErrorType.TIMEOUT
+                                    in HttpResponseCode.SERVER_ERRORS -> ErrorType.SERVER
+                                    else -> ErrorType.UNKNOWN
+                                }
+                            getProfileListener.onError(error)
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<UserProfiles>, t: Throwable) {
+                    val error: ErrorType =
+                        when (t) {
+                            is SocketTimeoutException -> ErrorType.TIMEOUT
+                            is UnknownHostException -> ErrorType.NETWORK
+                            else -> ErrorType.UNKNOWN
+                        }
+                    coroutineScope.launch {
+                        getProfileListener.onError(error)
+                    }
+                }
+            },
+        )
+    }
+
     /**
      * Listener for Gravatar image upload
      */
@@ -104,6 +150,23 @@ public class GravatarApi(private val okHttpClient: OkHttpClient? = null) {
          * Called when the Gravatar image upload is successful
          */
         public fun onSuccess()
+
+        /**
+         * Called when the Gravatar image upload fails
+         *
+         * @param errorType The type of error that occurred
+         */
+        public fun onError(errorType: ErrorType)
+    }
+
+    /**
+     * Listener for Gravatar image upload
+     */
+    public interface GetProfileListener {
+        /**
+         * Called when the Gravatar image upload is successful
+         */
+        public fun onSuccess(userProfiles: UserProfiles)
 
         /**
          * Called when the Gravatar image upload fails
