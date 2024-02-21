@@ -173,6 +173,7 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
                     )
                 },
             ) { Text(text = stringResource(R.string.button_get_profile)) }
+            // Show the hash and loading indicator
             if (hash.isNotEmpty()) {
                 GravatarDivider()
                 LabelledText(R.string.gravatar_generated_hash_label, text = hash)
@@ -181,6 +182,7 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
                     CircularProgressIndicator()
                 }
             }
+            // Show the profile card if we got a result and there is no error and it's not loading
             if (!loading && error.isEmpty() && profiles.entry.size > 0) {
                 Surface(
                     modifier = Modifier.fillMaxWidth(),
@@ -188,6 +190,10 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
                     color = MaterialTheme.colorScheme.surfaceContainer,
                 ) {
                     ProfileCard(profiles.entry.first())
+                }
+            } else {
+                if (error.isNotEmpty()) {
+                    Text(text = error)
                 }
             }
         }
