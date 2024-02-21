@@ -8,4 +8,10 @@
     <string name="force_default_avatar_image_label">Force Default Avatar</string>
     <string name="image_rating_label">Image Rating</string>
     <string name="snackbar_unknown_error_message">Unknown error</string>
+    <string name="tab_label_profile">Profile</string>
+    <string name="tab_label_avatar">Avatar</string>
+    <string name="button_get_profile">Get Profile</string>
+    <string name="text_display_name">Display Name: %1$s</string>
+    <string name="text_url">Url: %1$s</string>
+    <string name="button_load_gravatar">Load Gravatar</string>
 </resources>

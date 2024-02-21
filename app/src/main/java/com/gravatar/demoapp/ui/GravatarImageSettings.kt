@@ -85,7 +85,7 @@ fun GravatarImageSettings(
                     .weight(1f),
             )
         }
-        Button(onClick = onLoadGravatarClicked) { Text(text = "Load Gravatar") }
+        Button(onClick = onLoadGravatarClicked) { Text(text = stringResource(R.string.button_load_gravatar)) }
     }
 }
 
