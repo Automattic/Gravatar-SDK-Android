@@ -110,7 +110,7 @@ private fun onError(
 private fun GravatarTabs(modifier: Modifier = Modifier, onError: (String?, Throwable?) -> Unit) {
     var tabIndex by remember { mutableStateOf(0) }
 
-    val tabs = listOf("Avatar", "Profile")
+    val tabs = listOf(stringResource(R.string.tab_label_avatar), stringResource(R.string.tab_label_profile))
 
     Column(modifier = Modifier.fillMaxSize()) {
         TabRow(selectedTabIndex = tabIndex) {
@@ -168,7 +168,7 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
                         }
                     },
                 )
-            }) { Text(text = "Get Profile") }
+            }) { Text(text = stringResource(R.string.button_get_profile)) }
             if (hash.isNotEmpty()) {
                 GravatarDivider()
                 LabelledText(R.string.gravatar_generated_hash_label, text = hash)
@@ -180,8 +180,8 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
             if (!loading && error.isEmpty() && profiles.entry.size > 0) {
                 val displayName = profiles.entry.first().displayName.orEmpty()
                 val profileUrl = profiles.entry.first().profileUrl.orEmpty()
-                Text(text = "Display Name: $displayName")
-                Text(text = "Url: $profileUrl")
+                Text(text = stringResource(R.string.text_display_name, displayName))
+                Text(text = stringResource(R.string.text_url, profileUrl))
             }
         }
     }
