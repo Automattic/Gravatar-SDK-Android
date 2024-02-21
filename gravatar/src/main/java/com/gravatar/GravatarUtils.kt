@@ -143,3 +143,51 @@ public fun rewriteGravatarImageUriQueryParams(
         .appendGravatarQueryParameters(size, defaultAvatarImage, rating, forceDefaultAvatarImage)
         .build()
 }
+
+/**
+ * Get a Gravatar Url from a valid Gravatar hash.
+ *
+ * @param url Gravatar URL
+ * @param size Size of the avatar, must be between 1 and 2048. Optional: default to 80
+ * @param defaultAvatarImage Default avatar image. Optional: default to Gravatar logo
+ * @param rating Image rating. Optional: default to General, suitable for display on all websites with any audience
+ * @param forceDefaultAvatarImage Force default avatar image. Optional: default to false
+ *
+ * @return Gravatar Uri with updated query parameters
+ */
+public fun gravatarUrl(
+    hash: String,
+    size: Int? = null,
+    defaultAvatarImage: DefaultAvatarImage? = null,
+    rating: ImageRating? = null,
+    forceDefaultAvatarImage: Boolean? = null,
+): String {
+    return gravatarUri(hash, size, defaultAvatarImage, rating, forceDefaultAvatarImage).toString()
+}
+
+/**
+ * Get a Gravatar Uri from a valid Gravatar hash.
+ *
+ * @param url Gravatar URL
+ * @param size Size of the avatar, must be between 1 and 2048. Optional: default to 80
+ * @param defaultAvatarImage Default avatar image. Optional: default to Gravatar logo
+ * @param rating Image rating. Optional: default to General, suitable for display on all websites with any audience
+ * @param forceDefaultAvatarImage Force default avatar image. Optional: default to false
+ *
+ * @return Gravatar Uri with updated query parameters
+ */
+public fun gravatarUri(
+    hash: String,
+    size: Int? = null,
+    defaultAvatarImage: DefaultAvatarImage? = null,
+    rating: ImageRating? = null,
+    forceDefaultAvatarImage: Boolean? = null,
+): Uri {
+    return Uri.Builder()
+        .scheme("https")
+        .authority(GRAVATAR_WWW_BASE_HOST)
+        .appendPath(GRAVATAR_IMAGE_PATH)
+        .appendPath(hash)
+        .appendGravatarQueryParameters(size, defaultAvatarImage, rating, forceDefaultAvatarImage)
+        .build()
+}

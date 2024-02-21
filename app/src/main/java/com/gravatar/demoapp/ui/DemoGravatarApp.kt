@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
@@ -46,6 +47,7 @@ import com.gravatar.GravatarApi.GetProfileListener
 import com.gravatar.ImageRating
 import com.gravatar.R
 import com.gravatar.demoapp.theme.GravatarDemoAppTheme
+import com.gravatar.demoapp.ui.components.ProfileCard
 import com.gravatar.demoapp.ui.model.SettingsState
 import com.gravatar.emailAddressToGravatarUrl
 import com.gravatar.models.UserProfiles
@@ -180,10 +182,13 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
                 }
             }
             if (!loading && error.isEmpty() && profiles.entry.size > 0) {
-                val displayName = profiles.entry.first().displayName.orEmpty()
-                val profileUrl = profiles.entry.first().profileUrl.orEmpty()
-                Text(text = stringResource(R.string.text_display_name, displayName))
-                Text(text = stringResource(R.string.text_url, profileUrl))
+                Surface(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(8.dp),
+                    color = MaterialTheme.colorScheme.surfaceContainer,
+                ) {
+                    ProfileCard(profiles.entry.first())
+                }
             }
         }
     }
