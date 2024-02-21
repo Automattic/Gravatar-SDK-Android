@@ -3,6 +3,7 @@ package com.gravatar
 internal object HttpResponseCode {
     /** HTTP client timeout code */
     const val HTTP_CLIENT_TIMEOUT = 408
+    const val HTTP_NOT_FOUND = 404
 
     private const val HTTP_INTERNAL_ERROR = 500
     private const val NETWORK_CONNECT_TIMEOUT_ERROR = 599

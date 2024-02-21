@@ -34,11 +34,21 @@ public class GravatarApi(private var okHttpClient: OkHttpClient? = null) {
         /** network is not available */
         NETWORK,
 
+        /** User or hash not found */
+        NOT_FOUND,
+
         /** An unknown error occurred */
         UNKNOWN,
     }
 
     private val coroutineScope = CoroutineScope(GravatarSdkDI.dispatcherDefault)
+
+    private fun httpErrorToErrorType(code: Int): ErrorType = when (code) {
+        HttpResponseCode.HTTP_CLIENT_TIMEOUT -> ErrorType.TIMEOUT
+        HttpResponseCode.HTTP_NOT_FOUND -> ErrorType.NOT_FOUND
+        in HttpResponseCode.SERVER_ERRORS -> ErrorType.SERVER
+        else -> ErrorType.UNKNOWN
+    }
 
     /**
      * Uploads a Gravatar image for the given email address.
@@ -71,13 +81,7 @@ public class GravatarApi(private var okHttpClient: OkHttpClient? = null) {
                                 LOG_TAG,
                                 "Network call unsuccessful trying to upload Gravatar: $response.body",
                             )
-                            val error: ErrorType =
-                                when (response.code()) {
-                                    HttpResponseCode.HTTP_CLIENT_TIMEOUT -> ErrorType.TIMEOUT
-                                    in HttpResponseCode.SERVER_ERRORS -> ErrorType.SERVER
-                                    else -> ErrorType.UNKNOWN
-                                }
-                            gravatarUploadListener.onError(error)
+                            gravatarUploadListener.onError(httpErrorToErrorType(response.code()))
                         }
                     }
                 }
@@ -116,13 +120,7 @@ public class GravatarApi(private var okHttpClient: OkHttpClient? = null) {
                                 LOG_TAG,
                                 "Network call unsuccessful trying to get Gravatar profile: $response.body",
                             )
-                            val error: ErrorType =
-                                when (response.code()) {
-                                    HttpResponseCode.HTTP_CLIENT_TIMEOUT -> ErrorType.TIMEOUT
-                                    in HttpResponseCode.SERVER_ERRORS -> ErrorType.SERVER
-                                    else -> ErrorType.UNKNOWN
-                                }
-                            getProfileListener.onError(error)
+                            getProfileListener.onError(httpErrorToErrorType(response.code()))
                         }
                     }
                 }
