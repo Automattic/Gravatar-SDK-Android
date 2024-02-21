@@ -1,5 +1,7 @@
 package com.gravatar.demoapp.ui.components
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -8,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,7 +31,8 @@ import com.gravatar.models.UserProfile
 @Composable
 fun ProfileCard(profile: UserProfile, avatarImageSize: Dp = 128.dp) {
     Column(
-        modifier = Modifier.clip(RoundedCornerShape(8.dp))
+        modifier = Modifier
+            .clip(RoundedCornerShape(8.dp))
             .fillMaxWidth()
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -36,7 +40,9 @@ fun ProfileCard(profile: UserProfile, avatarImageSize: Dp = 128.dp) {
         AsyncImage(
             gravatarUrl(profile.hash ?: "", size = with(LocalDensity.current) { avatarImageSize.toPx().toInt() }),
             contentDescription = "User profile image",
-            modifier = Modifier.clip(CircleShape).size(avatarImageSize),
+            modifier = Modifier
+                .clip(CircleShape)
+                .size(avatarImageSize),
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -68,11 +74,29 @@ fun ProfileCard(profile: UserProfile, avatarImageSize: Dp = 128.dp) {
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        Text(
-            text = profile.emails.firstOrNull()?.value ?: "",
-            style = MaterialTheme.typography.bodyMedium,
-            textAlign = TextAlign.Center,
-        )
+        val emailLauncher = rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.StartActivityForResult(),
+        ) { }
+        val email = profile.emails.firstOrNull()?.value
+
+        email?.let {
+            Button(
+                onClick = {
+                    emailLauncher.launch(
+                        android.content.Intent.createChooser(
+                            android.content.Intent(android.content.Intent.ACTION_SEND).apply {
+                                type = "text/plain"
+                                putExtra(android.content.Intent.EXTRA_EMAIL, arrayOf(email))
+                            },
+                            "[Email from Gravatar] ",
+                        ),
+                    )
+                },
+                modifier = Modifier.padding(8.dp),
+            ) {
+                Text(text = email)
+            }
+        }
     }
 }
 
