@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
@@ -29,7 +29,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -187,7 +186,6 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun AvatarTab(modifier: Modifier = Modifier, onError: (String?, Throwable?) -> Unit) {
     var gravatarUrl by remember { mutableStateOf("", neverEqualPolicy()) }
@@ -262,8 +260,11 @@ private fun AvatarTab(modifier: Modifier = Modifier, onError: (String?, Throwabl
 }
 
 @Composable
-fun GravatarDivider() =
-    Divider(thickness = 1.dp, color = MaterialTheme.colorScheme.primary, modifier = Modifier.padding(vertical = 8.dp))
+fun GravatarDivider() = HorizontalDivider(
+    thickness = 1.dp,
+    color = MaterialTheme.colorScheme.primary,
+    modifier = Modifier.padding(vertical = 8.dp),
+)
 
 @Composable
 fun LabelledText(
