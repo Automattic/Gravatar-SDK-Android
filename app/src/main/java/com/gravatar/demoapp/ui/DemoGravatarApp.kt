@@ -147,27 +147,30 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             GravatarEmailInput(email = email, onValueChange = { email = it }, Modifier.fillMaxWidth())
-            Button(onClick = {
-                keyboardController?.hide()
-                hash = email.sha256Hash()
-                loading = true
-                error = ""
-                gravatarApi.getProfile(
-                    hash,
-                    object : GetProfileListener {
-                        override fun onSuccess(userProfiles: UserProfiles) {
-                            profiles = userProfiles
-                            loading = false
-                        }
+            Button(
+                modifier = Modifier.padding(top = 8.dp),
+                onClick = {
+                    keyboardController?.hide()
+                    hash = email.sha256Hash()
+                    loading = true
+                    error = ""
+                    gravatarApi.getProfile(
+                        hash,
+                        object : GetProfileListener {
+                            override fun onSuccess(userProfiles: UserProfiles) {
+                                profiles = userProfiles
+                                loading = false
+                            }
 
-                        override fun onError(errorType: GravatarApi.ErrorType) {
-                            onError(errorType.name, null)
-                            error = errorType.name
-                            loading = false
-                        }
-                    },
-                )
-            }) { Text(text = stringResource(R.string.button_get_profile)) }
+                            override fun onError(errorType: GravatarApi.ErrorType) {
+                                onError(errorType.name, null)
+                                error = errorType.name
+                                loading = false
+                            }
+                        },
+                    )
+                },
+            ) { Text(text = stringResource(R.string.button_get_profile)) }
             if (hash.isNotEmpty()) {
                 GravatarDivider()
                 LabelledText(R.string.gravatar_generated_hash_label, text = hash)
