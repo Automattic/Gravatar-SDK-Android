@@ -43,7 +43,6 @@ import coil.request.ImageRequest
 import coil.size.Size
 import com.gravatar.DefaultAvatarImage
 import com.gravatar.GravatarApi
-import com.gravatar.GravatarApi.GetProfileListener
 import com.gravatar.ImageRating
 import com.gravatar.R
 import com.gravatar.demoapp.theme.GravatarDemoAppTheme
@@ -158,9 +157,9 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
                     error = ""
                     gravatarApi.getProfile(
                         hash,
-                        object : GetProfileListener {
-                            override fun onSuccess(userProfiles: UserProfiles) {
-                                profiles = userProfiles
+                        object : GravatarApi.GravatarListener<UserProfiles> {
+                            override fun onSuccess(response: UserProfiles) {
+                                profiles = response
                                 loading = false
                             }
 
