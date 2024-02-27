@@ -59,6 +59,7 @@ fun DemoGravatarApp() {
     GravatarDemoAppTheme {
         val scope = rememberCoroutineScope()
         val snackbarHostState = remember { SnackbarHostState() }
+        var gravatarUrl by remember { mutableStateOf("", neverEqualPolicy()) }
 
         Scaffold(
             snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
@@ -67,6 +68,8 @@ fun DemoGravatarApp() {
 
             GravatarTabs(
                 modifier = Modifier.padding(innerPadding),
+                gravatarUrl,
+                { gravatarUrl = it },
             ) { errorMessage, exception ->
                 onError(scope, snackbarHostState, errorMessage, exception, defaultErrorMessage)
             }
@@ -107,7 +110,12 @@ private fun onError(
 }
 
 @Composable
-private fun GravatarTabs(modifier: Modifier = Modifier, onError: (String?, Throwable?) -> Unit) {
+private fun GravatarTabs(
+    modifier: Modifier = Modifier,
+    gravatarUrl: String,
+    onGravatarUrlChanged: (String) -> Unit,
+    onError: (String?, Throwable?) -> Unit,
+) {
     var tabIndex by remember { mutableStateOf(0) }
 
     val tabs = listOf(stringResource(R.string.tab_label_avatar), stringResource(R.string.tab_label_profile))
@@ -123,7 +131,7 @@ private fun GravatarTabs(modifier: Modifier = Modifier, onError: (String?, Throw
             }
         }
         when (tabIndex) {
-            0 -> AvatarTab(modifier, onError)
+            0 -> AvatarTab(modifier, gravatarUrl, onGravatarUrlChanged, onError)
             1 -> ProfileTab(modifier, onError)
         }
     }
@@ -200,8 +208,12 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
 }
 
 @Composable
-private fun AvatarTab(modifier: Modifier = Modifier, onError: (String?, Throwable?) -> Unit) {
-    var gravatarUrl by remember { mutableStateOf("", neverEqualPolicy()) }
+private fun AvatarTab(
+    modifier: Modifier = Modifier,
+    gravatarUrl: String,
+    onGravatarUrlChanged: (String) -> Unit,
+    onError: (String?, Throwable?) -> Unit,
+) {
     var settingsState by remember {
         mutableStateOf(
             SettingsState(
@@ -216,7 +228,6 @@ private fun AvatarTab(modifier: Modifier = Modifier, onError: (String?, Throwabl
             ),
         )
     }
-
     val keyboardController = LocalSoftwareKeyboardController.current
     Surface(modifier) {
         Column(
@@ -234,7 +245,7 @@ private fun AvatarTab(modifier: Modifier = Modifier, onError: (String?, Throwabl
                     @Suppress("TooGenericExceptionCaught")
                     try {
                         keyboardController?.hide()
-                        gravatarUrl =
+                        onGravatarUrlChanged(
                             emailAddressToGravatarUrl(
                                 email = settingsState.email,
                                 size = settingsState.size,
@@ -245,7 +256,8 @@ private fun AvatarTab(modifier: Modifier = Modifier, onError: (String?, Throwabl
                                 },
                                 forceDefaultAvatarImage = if (settingsState.forceDefaultAvatar) true else null,
                                 rating = if (settingsState.imageRatingEnabled) settingsState.imageRating else null,
-                            )
+                            ),
+                        )
                     } catch (e: Exception) {
                         onError(null, e.fillInStackTrace())
                     }
