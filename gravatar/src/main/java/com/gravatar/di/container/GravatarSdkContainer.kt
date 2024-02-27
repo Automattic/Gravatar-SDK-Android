@@ -22,7 +22,7 @@ internal class GravatarSdkContainer private constructor() {
 
     val dispatcherDefault = Dispatchers.Default
     val dispatcherIO = Dispatchers.IO
-    val gson = GsonBuilder().setLenient().create()
+    private val gson = GsonBuilder().setLenient().create()
 
     /**
      * Get Gravatar API service
