@@ -32,7 +32,7 @@ class GravatarApiTest {
 
     @Test
     fun `given a file, email and accessToken when uploading avatar then Gravatar service is invoked`() = runTest {
-        val uploadGravatarListener = spyk<GravatarApi.GravatarUploadListener>()
+        val uploadGravatarListener = spyk<GravatarApi.GravatarListener<Unit>>()
         val callResponse = mockk<Call<ResponseBody>>()
         every { containerRule.gravatarApiServiceMock.uploadImage(any(), any(), any()) } returns callResponse
         every { callResponse.enqueue(any()) } answers { call ->
@@ -65,7 +65,7 @@ class GravatarApiTest {
             )
         }
         verify(exactly = 1) {
-            uploadGravatarListener.onSuccess()
+            uploadGravatarListener.onSuccess(Unit)
         }
     }
 
@@ -116,7 +116,7 @@ class GravatarApiTest {
         httpResponseCode: Int,
         expectedErrorType: GravatarApi.ErrorType,
     ) = runTest {
-        val uploadGravatarListener = spyk<GravatarApi.GravatarUploadListener>()
+        val uploadGravatarListener = spyk<GravatarApi.GravatarListener<Unit>>()
         val callResponse = mockk<Call<ResponseBody>>()
         every { containerRule.gravatarApiServiceMock.uploadImage(any(), any(), any()) } returns callResponse
         every { callResponse.enqueue(any()) } answers { call ->
@@ -141,7 +141,7 @@ class GravatarApiTest {
         exception: Throwable,
         expectedErrorType: GravatarApi.ErrorType,
     ) = runTest {
-        val uploadGravatarListener = spyk<GravatarApi.GravatarUploadListener>()
+        val uploadGravatarListener = spyk<GravatarApi.GravatarListener<Unit>>()
         val callResponse = mockk<Call<ResponseBody>>()
         every { containerRule.gravatarApiServiceMock.uploadImage(any(), any(), any()) } returns callResponse
         every { callResponse.enqueue(any()) } answers { call ->
