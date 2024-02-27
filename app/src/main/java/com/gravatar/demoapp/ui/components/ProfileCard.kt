@@ -1,5 +1,7 @@
 package com.gravatar.demoapp.ui.components
 
+import android.content.Intent
+import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
@@ -23,6 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.util.fastFirstOrNull
 import coil.compose.AsyncImage
 import com.gravatar.gravatarUrl
 import com.gravatar.models.Email
@@ -47,13 +50,14 @@ fun ProfileCard(profile: UserProfile, avatarImageSize: Dp = 128.dp) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Text(
-            text = profile.displayName ?: profile.preferredUsername ?: "",
-            style = MaterialTheme.typography.headlineMedium,
-            textAlign = TextAlign.Center,
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
+        (profile.displayName ?: profile.preferredUsername)?.let {
+            Text(
+                text = it,
+                style = MaterialTheme.typography.headlineMedium,
+                textAlign = TextAlign.Center,
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+        }
 
         profile.preferredUsername?.let {
             Text(
@@ -62,39 +66,38 @@ fun ProfileCard(profile: UserProfile, avatarImageSize: Dp = 128.dp) {
                 color = Color.Gray,
                 textAlign = TextAlign.Center,
             )
+            Spacer(modifier = Modifier.height(8.dp))
         }
 
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Text(
-            text = profile.aboutMe ?: "",
-            style = MaterialTheme.typography.bodyMedium,
-            textAlign = TextAlign.Center,
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
+        profile.aboutMe?.let {
+            Text(
+                text = it,
+                style = MaterialTheme.typography.bodyMedium,
+                textAlign = TextAlign.Center,
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+        }
 
         val emailLauncher = rememberLauncherForActivityResult(
             contract = ActivityResultContracts.StartActivityForResult(),
         ) { }
-        val email = profile.emails.firstOrNull()?.value
 
-        email?.let {
+        // Find primary email
+        val primaryEmail = profile.emails.fastFirstOrNull { it.primary ?: false }?.value
+
+        primaryEmail?.let {
             Button(
                 onClick = {
                     emailLauncher.launch(
-                        android.content.Intent.createChooser(
-                            android.content.Intent(android.content.Intent.ACTION_SEND).apply {
-                                type = "text/plain"
-                                putExtra(android.content.Intent.EXTRA_EMAIL, arrayOf(email))
-                            },
-                            "[Email from Gravatar] ",
-                        ),
+                        Intent(Intent.ACTION_SENDTO).apply {
+                            data = Uri.parse("mailto:") // Only email apps handle this.
+                            putExtra(Intent.EXTRA_EMAIL, arrayOf(it))
+                        },
                     )
                 },
                 modifier = Modifier.padding(8.dp),
             ) {
-                Text(text = email)
+                Text(text = it)
             }
         }
     }
@@ -108,7 +111,7 @@ fun PreviewUserProfileCard() {
             displayName = "John Doe",
             preferredUsername = "johndoe",
             aboutMe = "I'm a farmer who loves to code",
-            emails = arrayListOf(Email(primary = "john@doe.com")),
+            emails = arrayListOf(Email(primary = true, value = "john@doe.com")),
         ),
     )
 }
