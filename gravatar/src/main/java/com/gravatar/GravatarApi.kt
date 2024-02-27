@@ -16,7 +16,7 @@ import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import com.gravatar.di.container.GravatarSdkContainer.Companion.instance as GravatarSdkDI
 
-public class GravatarApi(private var okHttpClient: OkHttpClient? = null) {
+public class GravatarApi(private val okHttpClient: OkHttpClient? = null) {
     private companion object {
         const val LOG_TAG = "Gravatar"
     }
@@ -50,6 +50,18 @@ public class GravatarApi(private var okHttpClient: OkHttpClient? = null) {
         else -> ErrorType.UNKNOWN
     }
 
+    private fun handleError(t: Throwable, listener: GravatarListener<*>) {
+        val error: ErrorType =
+            when (t) {
+                is SocketTimeoutException -> ErrorType.TIMEOUT
+                is UnknownHostException -> ErrorType.NETWORK
+                else -> ErrorType.UNKNOWN
+            }
+        coroutineScope.launch {
+            listener.onError(error)
+        }
+    }
+
     /**
      * Uploads a Gravatar image for the given email address.
      *
@@ -62,7 +74,7 @@ public class GravatarApi(private var okHttpClient: OkHttpClient? = null) {
         file: File,
         email: String,
         accessToken: String,
-        gravatarUploadListener: GravatarUploadListener,
+        gravatarUploadListener: GravatarListener<Unit>,
     ) {
         val service = GravatarSdkDI.getGravatarApiService(okHttpClient)
         val identity = MultipartBody.Part.createFormData("account", email)
@@ -74,7 +86,7 @@ public class GravatarApi(private var okHttpClient: OkHttpClient? = null) {
                 override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                     coroutineScope.launch {
                         if (response.isSuccessful) {
-                            gravatarUploadListener.onSuccess()
+                            gravatarUploadListener.onSuccess(Unit)
                         } else {
                             // Log the response body for debugging purposes if the response is not successful
                             Logger.w(
@@ -87,21 +99,13 @@ public class GravatarApi(private var okHttpClient: OkHttpClient? = null) {
                 }
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    val error: ErrorType =
-                        when (t) {
-                            is SocketTimeoutException -> ErrorType.TIMEOUT
-                            is UnknownHostException -> ErrorType.NETWORK
-                            else -> ErrorType.UNKNOWN
-                        }
-                    coroutineScope.launch {
-                        gravatarUploadListener.onError(error)
-                    }
+                    handleError(t, gravatarUploadListener)
                 }
             },
         )
     }
 
-    public fun getProfile(hash: String, getProfileListener: GetProfileListener) {
+    public fun getProfile(hash: String, getProfileListener: GravatarListener<UserProfiles>) {
         val service = GravatarSdkDI.getGravatarBaseService(okHttpClient)
         service.getProfile(hash).enqueue(
             object : Callback<UserProfiles> {
@@ -126,48 +130,23 @@ public class GravatarApi(private var okHttpClient: OkHttpClient? = null) {
                 }
 
                 override fun onFailure(call: Call<UserProfiles>, t: Throwable) {
-                    val error: ErrorType =
-                        when (t) {
-                            is SocketTimeoutException -> ErrorType.TIMEOUT
-                            is UnknownHostException -> ErrorType.NETWORK
-                            else -> ErrorType.UNKNOWN
-                        }
-                    coroutineScope.launch {
-                        getProfileListener.onError(error)
-                    }
+                    handleError(t, getProfileListener)
                 }
             },
         )
     }
 
     /**
-     * Listener for Gravatar image upload
+     * Generic Listener for Gravatar API call
      */
-    public interface GravatarUploadListener {
+    public interface GravatarListener<T> {
         /**
-         * Called when the Gravatar image upload is successful
+         * Called when the Gravatar API call is successful
          */
-        public fun onSuccess()
+        public fun onSuccess(response: T)
 
         /**
-         * Called when the Gravatar image upload fails
-         *
-         * @param errorType The type of error that occurred
-         */
-        public fun onError(errorType: ErrorType)
-    }
-
-    /**
-     * Listener for Gravatar image upload
-     */
-    public interface GetProfileListener {
-        /**
-         * Called when the Gravatar image upload is successful
-         */
-        public fun onSuccess(userProfiles: UserProfiles)
-
-        /**
-         * Called when the Gravatar image upload fails
+         * Called when the Gravatar API call fails
          *
          * @param errorType The type of error that occurred
          */
