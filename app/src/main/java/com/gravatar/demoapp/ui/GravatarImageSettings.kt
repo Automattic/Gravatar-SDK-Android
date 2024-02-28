@@ -20,6 +20,7 @@ import com.gravatar.DefaultAvatarImage
 import com.gravatar.ImageRating
 import com.gravatar.R
 import com.gravatar.demoapp.theme.GravatarDemoAppTheme
+import com.gravatar.demoapp.ui.components.GravatarEmailInput
 import com.gravatar.demoapp.ui.model.SettingsState
 
 @Composable
