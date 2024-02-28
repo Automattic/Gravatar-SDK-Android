@@ -32,8 +32,6 @@ All code contributions pass through pull requests. If you haven't created a pull
 
 The core team monitors and reviews all pull requests. Depending on the changes, we will either approve them or close them with an explanation. We might also work with you to improve a pull request before approval.
 
-We do our best to respond quickly to all pull requests. If you don't get a response from us after a week, feel free to reach out to us.
-
 Note: If you are part of the org and have the permissions on the repo, don't forget to assign yourself to the PR, and add the appropriate GitHub label and Milestone for the PR
 
 ### PR merge policy
