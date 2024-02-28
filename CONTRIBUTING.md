@@ -6,6 +6,10 @@ The following is a set of guidelines for the many ways you can join our collecti
 
 Before anything else, please take a moment to read our [Code of Conduct](CODE-OF-CONDUCT.md). We expect all participants, from full-timers to occasional tinkerers, to uphold it.
 
+## Security
+
+If you happen to find a security vulnerability, we would appreciate you letting us know at https://hackerone.com/automattic and allowing us to respond before disclosing the issue publicly.
+
 ## Reporting Bugs, Asking Questions, and Suggesting Features
 
 Have a suggestion or feedback? Please go to [Issues](https://github.com/Automattic/Gravatar-SDK-Android/issues) and [open a new issue](https://github.com/Automattic/Gravatar-SDK-Android/issues/new). Prefix the title with a category like _"Bug:"_, _"Question:"_, or _"Feature Request:"_. Screenshots help us resolve issues and answer questions faster, so thanks for including some if you can.
