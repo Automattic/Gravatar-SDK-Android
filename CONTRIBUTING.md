@@ -16,7 +16,7 @@ Have a suggestion or feedback? Please go to [Issues](https://github.com/Automatt
 
 Before you ask a question, it is best to search for existing [Issues](https://github.com/Automattic/Gravatar-SDK-Android/issues) that might help you. In case you find a suitable issue you can ask your question by adding a comment there.
 
-Similarly before reporting a bug check if there is not already a bug report existing for your case.
+Similarly, before reporting a bug, check if there is not already a bug report existing for your case.
 
 ## Submitting Code Changes
 
