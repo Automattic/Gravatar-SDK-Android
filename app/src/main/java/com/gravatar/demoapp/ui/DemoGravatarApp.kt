@@ -31,6 +31,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
@@ -191,13 +192,12 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
             }
             // Show the profile card if we got a result and there is no error and it's not loading
             if (!loading && error.isEmpty() && profiles.entry.size > 0) {
-                Surface(
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(8.dp),
-                    color = MaterialTheme.colorScheme.surfaceContainer,
-                ) {
-                    ProfileCard(profiles.entry.first())
-                }
+                ProfileCard(
+                    profiles.entry.first(),
+                    Modifier.clip(
+                        RoundedCornerShape(8.dp),
+                    ).background(MaterialTheme.colorScheme.surfaceContainer).fillMaxWidth().padding(16.dp),
+                )
             } else {
                 if (error.isNotEmpty()) {
                     Text(text = error)
