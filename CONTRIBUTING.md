@@ -14,7 +14,7 @@ If you happen to find a security vulnerability, we would appreciate you letting 
 
 Have a suggestion or feedback? Please go to [Issues](https://github.com/Automattic/Gravatar-SDK-Android/issues) and [open a new issue](https://github.com/Automattic/Gravatar-SDK-Android/issues/new). Prefix the title with a category like _"Bug:"_, _"Question:"_, or _"Feature Request:"_. Screenshots help us resolve issues and answer questions faster, so thanks for including some if you can.
 
-Before you ask a question, it is best to search for existing [Issues](https://github.com/Automattic/Gravatar-SDK-Android/issues) that might help you. In case you find a suitable issue you can ask your question by adding a comment there.
+Before you ask a question, it is best to search for existing [Issues](https://github.com/Automattic/Gravatar-SDK-Android/issues) that might help you. In case you find a suitable issue, you can ask your question by adding a comment there.
 
 Similarly, before reporting a bug, check if there is not already a bug report existing for your case.
 
