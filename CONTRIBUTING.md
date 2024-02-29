@@ -22,7 +22,7 @@ Similarly, before reporting a bug, check if there is not already a bug report ex
 
 If you're just getting started and want to familiarize yourself with the app’s code, we suggest looking at [these issues](https://github.com/Automattic/Gravatar-SDK-Android/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) with the **good first issue** label. But if you’d like to tackle something different, you're more than welcome to visit the [Issues](https://github.com/Automattic/Gravatar-SDK-Android/issues) page and pick an item that interests you.
 
-We always try to avoid duplicating efforts, so if you decide to work on an issue, leave a comment to state your intent. If you choose to focus on a new feature or the change you’re proposing is significant, we recommend waiting for a response before proceeding. The issue may no longer align with project goals.
+We always try to avoid duplicating efforts.  If you decide to work on an issue, leave a comment to state your intent. If you choose to focus on a new feature, or the change you’re proposing is significant, we recommend waiting for a response before proceeding. The issue may no longer align with project goals.
 
 If the change is trivial, feel free to send a pull request without notifying us.
 
