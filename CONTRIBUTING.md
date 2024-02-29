@@ -32,7 +32,7 @@ All code contributions pass through pull requests. If you haven't created a pull
 
 The core team monitors and reviews all pull requests. Depending on the changes, we will either approve them or close them with an explanation. We might also work with you to improve a pull request before approval.
 
-Note: If you are part of the org and have the permissions on the repo, don't forget to assign yourself to the PR, and add the appropriate GitHub label and Milestone for the PR
+Note: If you are part of the org, and have the necessary permissions for the repo, please add yourself to the PR as an `assignee`, and add the appropriate GitHub label(s) and Milestone.
 
 ### PR merge policy
 
