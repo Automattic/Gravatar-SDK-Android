@@ -32,7 +32,7 @@ import com.gravatar.ui.GravatarImagePickerWrapper
 import com.gravatar.ui.GravatarImagePickerWrapperListener
 
 @Composable
-fun AvatarUpdateTab(onError: (String?, Throwable?) -> Unit, modifier: Modifier = Modifier) {
+fun AvatarUpdateTab(showSnackBar: (String?, Throwable?) -> Unit, modifier: Modifier = Modifier) {
     var email by remember { mutableStateOf("gravatar@automattic.com") }
     var accessToken by remember { mutableStateOf("") }
     var accessTokenVisible by rememberSaveable { mutableStateOf(false) }
@@ -68,12 +68,12 @@ fun AvatarUpdateTab(onError: (String?, Throwable?) -> Unit, modifier: Modifier =
 
                 override fun onSuccess(response: Unit) {
                     isUploading = false
-                    onError(context.getString(R.string.avatar_update_upload_success_toast), null)
+                    showSnackBar(context.getString(R.string.avatar_update_upload_success_toast), null)
                 }
 
                 override fun onError(errorType: GravatarApi.ErrorType) {
                     isUploading = false
-                    onError(context.getString(R.string.avatar_update_upload_failed_toast, errorType), null)
+                    showSnackBar(context.getString(R.string.avatar_update_upload_failed_toast, errorType), null)
                 }
             },
             modifier = Modifier.padding(top = 16.dp),
@@ -107,4 +107,4 @@ private fun UpdateAvatarLoadingComposablePreview() = UpdateAvatarComposable(true
 
 @Preview
 @Composable
-private fun AvatarUpdateTabPreview() = AvatarUpdateTab(onError = { _, _ -> })
+private fun AvatarUpdateTabPreview() = AvatarUpdateTab(showSnackBar = { _, _ -> })

@@ -70,8 +70,8 @@ fun DemoGravatarApp() {
                 modifier = Modifier.padding(innerPadding),
                 gravatarUrl,
                 { gravatarUrl = it },
-            ) { errorMessage, exception ->
-                onError(scope, snackbarHostState, errorMessage, exception, defaultErrorMessage)
+            ) { message, exception ->
+                showSnackBar(scope, snackbarHostState, message, exception, defaultErrorMessage)
             }
         }
     }
@@ -93,17 +93,17 @@ val defaultAvatarImages by lazy {
     )
 }
 
-private fun onError(
+private fun showSnackBar(
     scope: CoroutineScope,
     snackbarHostState: SnackbarHostState,
-    errorMessage: String?,
+    message: String?,
     throwable: Throwable?,
-    defaultErrorMessage: String,
+    defaultMessage: String,
 ) {
-    Log.e("DemoGravatarApp", "${errorMessage.orEmpty()}\n${throwable?.stackTraceToString().orEmpty()}")
+    Log.e("DemoGravatarApp", "${message.orEmpty()}\n${throwable?.stackTraceToString().orEmpty()}")
     scope.launch {
         snackbarHostState.showSnackbar(
-            message = errorMessage ?: throwable?.message ?: defaultErrorMessage,
+            message = message ?: throwable?.message ?: defaultMessage,
             duration = SnackbarDuration.Short,
         )
     }
@@ -114,7 +114,7 @@ private fun GravatarTabs(
     modifier: Modifier = Modifier,
     gravatarUrl: String,
     onGravatarUrlChanged: (String) -> Unit,
-    onError: (String?, Throwable?) -> Unit,
+    showSnackBar: (String?, Throwable?) -> Unit,
 ) {
     var tabIndex by remember { mutableStateOf(0) }
 
@@ -135,9 +135,9 @@ private fun GravatarTabs(
             }
         }
         when (tabIndex) {
-            0 -> AvatarTab(modifier, gravatarUrl, onGravatarUrlChanged, onError)
-            1 -> ProfileTab(modifier, onError)
-            2 -> AvatarUpdateTab(onError, modifier)
+            0 -> AvatarTab(modifier, gravatarUrl, onGravatarUrlChanged, showSnackBar)
+            1 -> ProfileTab(modifier, showSnackBar)
+            2 -> AvatarUpdateTab(showSnackBar, modifier)
         }
     }
 }
