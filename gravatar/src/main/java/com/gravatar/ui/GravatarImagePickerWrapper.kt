@@ -29,7 +29,7 @@ public fun GravatarImagePickerWrapper(
     accessToken: String,
     listener: GravatarImagePickerWrapperListener,
     modifier: Modifier = Modifier,
-    imageEditionOptions: ImageEditionOptions = ImageEditionOptions(),
+    imageEditionOptions: ImageEditionStyling = ImageEditionStyling(),
 ) {
     var selectedImageUri by remember { mutableStateOf<Uri?>(null, neverEqualPolicy()) }
     val imagePickerLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
@@ -62,7 +62,7 @@ private fun launchAvatarCrop(
     image: Uri,
     uCropLauncher: ActivityResultLauncher<Intent>,
     context: Context,
-    imageEditionOptions: ImageEditionOptions,
+    imageEditionOptions: ImageEditionStyling,
 ) {
     val options = UCrop.Options().apply {
         with(imageEditionOptions) {
@@ -87,7 +87,7 @@ public interface GravatarImagePickerWrapperListener : GravatarApi.GravatarListen
     public fun onAvatarUploadStarted()
 }
 
-public data class ImageEditionOptions(
+public data class ImageEditionStyling(
     val statusBarColor: Int? = null,
     val toolbarColor: Int? = null,
     val toolbarWidgetColor: Int? = null,
