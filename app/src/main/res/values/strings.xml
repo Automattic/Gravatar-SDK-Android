@@ -10,8 +10,13 @@
     <string name="snackbar_unknown_error_message">Unknown error</string>
     <string name="tab_label_profile">Profile</string>
     <string name="tab_label_avatar">Avatar</string>
+    <string name="tab_label_avatar_update">Avatar Update</string>
     <string name="button_get_profile">Get Profile</string>
     <string name="text_display_name">Display Name: %1$s</string>
     <string name="text_url">Url: %1$s</string>
     <string name="button_load_gravatar">Load Gravatar</string>
+    <string name="access_token_label">Access Token</string>
+    <string name="update_avatar_button_label">Update Avatar</string>
+    <string name="avatar_update_upload_success_toast">Upload success</string>
+    <string name="avatar_update_upload_failed_toast">Upload error: %1$s</string>
 </resources>

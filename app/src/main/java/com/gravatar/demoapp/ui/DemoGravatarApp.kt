@@ -21,7 +21,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -47,6 +46,7 @@ import com.gravatar.GravatarApi
 import com.gravatar.ImageRating
 import com.gravatar.R
 import com.gravatar.demoapp.theme.GravatarDemoAppTheme
+import com.gravatar.demoapp.ui.components.GravatarEmailInput
 import com.gravatar.demoapp.ui.components.ProfileCard
 import com.gravatar.demoapp.ui.model.SettingsState
 import com.gravatar.emailAddressToGravatarUrl
@@ -66,13 +66,12 @@ fun DemoGravatarApp() {
             snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         ) { innerPadding ->
             val defaultErrorMessage = stringResource(R.string.snackbar_unknown_error_message)
-
             GravatarTabs(
                 modifier = Modifier.padding(innerPadding),
                 gravatarUrl,
                 { gravatarUrl = it },
-            ) { errorMessage, exception ->
-                onError(scope, snackbarHostState, errorMessage, exception, defaultErrorMessage)
+            ) { message, exception ->
+                showSnackBar(scope, snackbarHostState, message, exception, defaultErrorMessage)
             }
         }
     }
@@ -94,17 +93,17 @@ val defaultAvatarImages by lazy {
     )
 }
 
-private fun onError(
+private fun showSnackBar(
     scope: CoroutineScope,
     snackbarHostState: SnackbarHostState,
-    errorMessage: String?,
+    message: String?,
     throwable: Throwable?,
-    defaultErrorMessage: String,
+    defaultMessage: String,
 ) {
-    Log.e("DemoGravatarApp", "${errorMessage.orEmpty()}\n${throwable?.stackTraceToString().orEmpty()}")
+    Log.e("DemoGravatarApp", "${message.orEmpty()}\n${throwable?.stackTraceToString().orEmpty()}")
     scope.launch {
         snackbarHostState.showSnackbar(
-            message = errorMessage ?: throwable?.message ?: defaultErrorMessage,
+            message = message ?: throwable?.message ?: defaultMessage,
             duration = SnackbarDuration.Short,
         )
     }
@@ -115,11 +114,15 @@ private fun GravatarTabs(
     modifier: Modifier = Modifier,
     gravatarUrl: String,
     onGravatarUrlChanged: (String) -> Unit,
-    onError: (String?, Throwable?) -> Unit,
+    showSnackBar: (String?, Throwable?) -> Unit,
 ) {
     var tabIndex by remember { mutableStateOf(0) }
 
-    val tabs = listOf(stringResource(R.string.tab_label_avatar), stringResource(R.string.tab_label_profile))
+    val tabs = listOf(
+        stringResource(R.string.tab_label_avatar),
+        stringResource(R.string.tab_label_profile),
+        stringResource(R.string.tab_label_avatar_update),
+    )
 
     Column(modifier = Modifier.fillMaxSize()) {
         TabRow(selectedTabIndex = tabIndex) {
@@ -132,8 +135,9 @@ private fun GravatarTabs(
             }
         }
         when (tabIndex) {
-            0 -> AvatarTab(modifier, gravatarUrl, onGravatarUrlChanged, onError)
-            1 -> ProfileTab(modifier, onError)
+            0 -> AvatarTab(modifier, gravatarUrl, onGravatarUrlChanged, showSnackBar)
+            1 -> ProfileTab(modifier, showSnackBar)
+            2 -> AvatarUpdateTab(showSnackBar, modifier)
         }
     }
 }
@@ -194,9 +198,13 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
             if (!loading && error.isEmpty() && profiles.entry.size > 0) {
                 ProfileCard(
                     profiles.entry.first(),
-                    Modifier.clip(
-                        RoundedCornerShape(8.dp),
-                    ).background(MaterialTheme.colorScheme.surfaceContainer).fillMaxWidth().padding(16.dp),
+                    Modifier
+                        .clip(
+                            RoundedCornerShape(8.dp),
+                        )
+                        .background(MaterialTheme.colorScheme.surfaceContainer)
+                        .fillMaxWidth()
+                        .padding(16.dp),
                 )
             } else {
                 if (error.isNotEmpty()) {
@@ -325,16 +333,5 @@ fun GravatarImage(gravatarUrl: String, onError: (String?, Throwable?) -> Unit) {
     Image(
         painter = painter,
         contentDescription = "",
-    )
-}
-
-@Composable
-fun GravatarEmailInput(email: String, onValueChange: (String) -> Unit, modifier: Modifier = Modifier) {
-    TextField(
-        value = email,
-        onValueChange = onValueChange,
-        label = { Text(stringResource(R.string.gravatar_email_input_label)) },
-        maxLines = 1,
-        modifier = modifier,
     )
 }
