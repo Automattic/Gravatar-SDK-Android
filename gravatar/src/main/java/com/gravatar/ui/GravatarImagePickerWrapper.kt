@@ -5,7 +5,6 @@ import android.content.Intent
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.material3.Surface
@@ -33,7 +32,7 @@ public fun GravatarImagePickerWrapper(
     imageEditionOptions: ImageEditionOptions = ImageEditionOptions(),
 ) {
     var selectedImageUri by remember { mutableStateOf<Uri?>(null, neverEqualPolicy()) }
-    val imagePickerLauncher = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) {
+    val imagePickerLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
         selectedImageUri = it
     }
     val uCropLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
@@ -47,9 +46,7 @@ public fun GravatarImagePickerWrapper(
 
     Surface(
         modifier = modifier.clickable {
-            imagePickerLauncher.launch(
-                PickVisualMediaRequest(mediaType = ActivityResultContracts.PickVisualMedia.ImageOnly),
-            )
+            imagePickerLauncher.launch(IMAGE_MIME_TYPE)
         },
     ) {
         content()
@@ -94,3 +91,5 @@ public data class ImageEditionOptions(
     val toolbarColor: Int? = null,
     val toolbarWidgetColor: Int? = null,
 )
+
+private const val IMAGE_MIME_TYPE = "image/*"
