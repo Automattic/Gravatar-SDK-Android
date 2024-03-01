@@ -71,8 +71,9 @@ private fun launchAvatarCrop(
             toolbarWidgetColor?.let { setToolbarWidgetColor(it) }
         }
         setShowCropGrid(false)
-        setAllowedGestures(UCropActivity.SCALE, UCropActivity.NONE, UCropActivity.NONE)
-        setHideBottomControls(true)
+        setAllowedGestures(UCropActivity.SCALE, UCropActivity.ROTATE, UCropActivity.NONE)
+        setCompressionQuality(UCROP_COMPRESSION_QUALITY)
+        setCircleDimmedLayer(true)
     }
     uCropLauncher.launch(
         UCrop.of(image, Uri.fromFile(File(context.cacheDir, "cropped_for_gravatar.jpg")))
@@ -93,3 +94,4 @@ public data class ImageEditionOptions(
 )
 
 private const val IMAGE_MIME_TYPE = "image/*"
+private const val UCROP_COMPRESSION_QUALITY = 100
