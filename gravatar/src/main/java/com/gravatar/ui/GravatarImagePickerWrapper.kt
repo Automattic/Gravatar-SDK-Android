@@ -22,6 +22,17 @@ import com.yalantis.ucrop.UCrop
 import com.yalantis.ucrop.UCropActivity
 import java.io.File
 
+/**
+ * UI component that wraps the received [@Composable], allowing the user to pick an image from the
+ * gallery and upload it to Gravatar.
+ *
+ * @param content The content to be wrapped by the [GravatarImagePickerWrapper].
+ * @param email The email associated with the Gravatar account.
+ * @param accessToken The access token to authenticate the Gravatar account.
+ * @param listener The listener to be informed about the avatar upload status.
+ * @param modifier Composable modifier that allows customize the [GravatarImagePickerWrapper].
+ * @param imageEditionOptions The options to customize the image edition UI.
+ */
 @Composable
 public fun GravatarImagePickerWrapper(
     content: @Composable () -> Unit,
@@ -83,7 +94,13 @@ private fun launchAvatarCrop(
     )
 }
 
+/**
+ * Listener for [GravatarImagePickerWrapper] that provides a way be informed about the avatar upload status.
+ */
 public interface GravatarImagePickerWrapperListener : GravatarApi.GravatarListener<Unit> {
+    /**
+     * Called when the avatar upload is started.
+     */
     public fun onAvatarUploadStarted()
 }
 
