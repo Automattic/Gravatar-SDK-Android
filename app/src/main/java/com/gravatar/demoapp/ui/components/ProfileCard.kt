@@ -25,9 +25,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastFirstOrNull
 import coil.compose.AsyncImage
+import com.gravatar.api.models.Email
+import com.gravatar.api.models.UserProfile
 import com.gravatar.gravatarUrl
-import com.gravatar.models.Email
-import com.gravatar.models.UserProfile
 
 @Composable
 fun ProfileCard(profile: UserProfile, modifier: Modifier = Modifier, avatarImageSize: Dp = 128.dp) {
@@ -78,7 +78,7 @@ fun ProfileCard(profile: UserProfile, modifier: Modifier = Modifier, avatarImage
         ) { }
 
         // Find primary email
-        val primaryEmail = profile.emails.fastFirstOrNull { it.primary ?: false }?.value
+        val primaryEmail = profile.emails?.fastFirstOrNull { it.primary ?: false }?.value
 
         primaryEmail?.let {
             Button(
@@ -103,6 +103,7 @@ fun ProfileCard(profile: UserProfile, modifier: Modifier = Modifier, avatarImage
 fun PreviewUserProfileCard() {
     ProfileCard(
         UserProfile(
+            hash = "1234567890",
             displayName = "John Doe",
             preferredUsername = "johndoe",
             aboutMe = "I'm a farmer who loves to code",

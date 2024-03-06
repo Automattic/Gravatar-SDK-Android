@@ -45,12 +45,12 @@ import com.gravatar.DefaultAvatarImage
 import com.gravatar.GravatarApi
 import com.gravatar.ImageRating
 import com.gravatar.R
+import com.gravatar.api.models.UserProfiles
 import com.gravatar.demoapp.theme.GravatarDemoAppTheme
 import com.gravatar.demoapp.ui.components.GravatarEmailInput
 import com.gravatar.demoapp.ui.components.ProfileCard
 import com.gravatar.demoapp.ui.model.SettingsState
 import com.gravatar.emailAddressToGravatarUrl
-import com.gravatar.models.UserProfiles
 import com.gravatar.sha256Hash
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -146,7 +146,7 @@ private fun GravatarTabs(
 private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwable?) -> Unit) {
     var email by remember { mutableStateOf("gravatar@automattic.com", neverEqualPolicy()) }
     var hash by remember { mutableStateOf("", neverEqualPolicy()) }
-    var profiles by remember { mutableStateOf(UserProfiles(), neverEqualPolicy()) }
+    var profiles by remember { mutableStateOf(UserProfiles(emptyList()), neverEqualPolicy()) }
     var loading by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf("") }
     val gravatarApi = GravatarApi()
@@ -195,7 +195,7 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
                 }
             }
             // Show the profile card if we got a result and there is no error and it's not loading
-            if (!loading && error.isEmpty() && profiles.entry.size > 0) {
+            if (!loading && error.isEmpty() && profiles.entry.isNotEmpty()) {
                 ProfileCard(
                     profiles.entry.first(),
                     Modifier
