@@ -64,6 +64,33 @@ By default, **Android Studio** will show a warning, `Redundant visibility modifi
 You can remove the warning by changing the setting for this project
 in: `Settings` -> `Editor` -> `Inspections` -> `Kotlin` -> `Redundant Constructors` -> `Redundant visibility modifier`.
 
+## Generating API code from OpenApi definitions
+
+We use [OpenAPI Generator](https://openapi-generator.tech/) to generate the API code from the OpenAPI definitions.
+
+The SDK project has integrated the OpenAPI Generator Gradle plugin to generate the API code from the OpenAPI definitions. The plugin is
+configured in the `build.gradle.kts` file.
+
+The OpenAPI definitions are located in the `openapi` directory. In the same directory, you can find the `templates` directory, which contains
+the custom templates used by the OpenAPI Generator to generate the code that the Gravatar library needs. You can obtain the default templates by running the following command:
+
+```sh
+openapi-generator author template -g kotlin --library jvm-retrofit2
+```
+
+The [OpenAPI Generator documentation](https://openapi-generator.tech/docs/templating) provides more information about the templates.
+
+The generator's output folder is the `build` directory. However, as we don't need all the generated files, the Gradle task has been modified to move only the desired code to the `gravatar` module. In addition, the
+last step of the task is to format the generated code with [Ktlint](README.md#coding-style).
+
+<span style="color:red">**Important:**</span> Do not manually modify the `com.gravatar.api` folder. The OpenAPI Generator will overwrite it.
+
+To regerate the code you can use the following gradlew task:
+
+```sh
+./gradlew :gravatar:openApiGenerate
+```
+
 ## Publishing
 
 The SDK is published to the Automattic's S3 instance via [`publish-to-s3`](https://github.com/Automattic/publish-to-s3-gradle-plugin) Gradle plugin.
