@@ -42,4 +42,4 @@ Note: If you are part of the org, and have the necessary permissions for the rep
 
 ### Development Practices
 
-Have look at the [Coding Style Guide](README.md#coding-style) to learn how to format your code so it passes the convention and quality checks like the rest of the project.
+Have look at the [Coding Style](README.md#coding-style) guide to learn how to format your code so it passes the convention and quality checks like the rest of the project.
