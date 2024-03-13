@@ -4,3 +4,5 @@
 - [ ] Add fancy animation when a gravatar scan is valid
 - [ ] Add a button to save the profile to Contacts
 - [ ] Tap on a list item should open a full screen profile card
+- [ ] Save the date when saving the hash locally and order the list by date
+

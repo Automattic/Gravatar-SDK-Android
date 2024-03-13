@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -31,6 +32,7 @@ import com.gravatar.models.Email
 import com.gravatar.models.UserProfile
 import com.gravatar.utils.getDisplayName
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 public fun ProfileListItem(
     profile: UserProfile?,
@@ -39,7 +41,7 @@ public fun ProfileListItem(
     content: @Composable ColumnScope.() -> Unit = {},
 ) {
     Row(
-        modifier = modifier,
+        modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         if (profile != null) {
@@ -61,7 +63,11 @@ public fun ProfileListItem(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Column(Modifier.padding(start = 8.dp)) {
+            Column(
+                Modifier
+                    .padding(start = 8.dp)
+                    .weight(weight = 1f).fillMaxWidth(),
+            ) {
                 if (profile != null) {
                     profile.getDisplayName()?.let {
                         Text(
@@ -81,6 +87,7 @@ public fun ProfileListItem(
                     }
                 }
             }
+            Column(content = content)
         } else {
             Box(
                 modifier = Modifier
@@ -89,7 +96,6 @@ public fun ProfileListItem(
                     .background(shimmerBrush()),
             )
         }
-        Column(content = content)
     }
 }
 
@@ -100,7 +106,7 @@ private fun ProfileListItemPreview() {
         UserProfile(
             displayName = "John Doe",
             preferredUsername = "johndoe",
-            aboutMe = "I'm a farmer who loves to code",
+            aboutMe = "I'm a farmer",
             emails = arrayListOf(Email(primary = true, value = "john@doe.com")),
         ),
     )

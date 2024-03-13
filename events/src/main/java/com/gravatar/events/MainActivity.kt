@@ -1,7 +1,6 @@
 package com.gravatar.events
 
 import android.Manifest
-import android.content.res.Resources.Theme
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -9,7 +8,6 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -34,7 +32,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -156,15 +153,17 @@ private fun ContactsBottomSheet(
                 Modifier.padding(8.dp)
                     .clip(shape = RoundedCornerShape(20.dp))
                     .background(color = MaterialTheme.colorScheme.surfaceContainerHighest)
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
             ) {
-                ProfileListHeader(profile = userProfile, Modifier.padding(top = 16.dp, bottom = 8.dp, start = 16.dp, end = 16.dp))
+                ProfileListHeader(
+                    profile = userProfile,
+                    Modifier.padding(top = 16.dp, bottom = 8.dp, start = 16.dp, end = 16.dp),
+                )
                 TextButton(
                     onClick = onLogoutClicked,
-                    modifier = Modifier.padding(bottom = 8.dp, end = 16.dp).align(Alignment.End)
+                    modifier = Modifier.padding(bottom = 8.dp, end = 16.dp).align(Alignment.End),
                 ) { Text(text = stringResource(R.string.logout)) }
             }
-
         } ?: EmailCheckingView(
             hash = hash,
             onEmailValidated = {
@@ -177,8 +176,6 @@ private fun ContactsBottomSheet(
         ProfilesList(
             profiles = contacts,
         )
-
-
     }
 }
 
@@ -213,7 +210,6 @@ fun ProfilesList(profiles: List<String>) {
         items(profiles.size) { index ->
             var profile by remember { mutableStateOf<UserProfile?>(null) }
             ProfileListItem(modifier = Modifier.padding(8.dp), profile = profile, avatarImageSize = 56.dp) {
-                Spacer(modifier = Modifier.fillMaxWidth())
                 Button(onClick = {
                     profile?.let {
                         saveContact(context, it)
