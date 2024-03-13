@@ -24,6 +24,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -37,6 +38,7 @@ import com.gravatar.events.ui.components.EmailCheckingView
 import com.gravatar.events.ui.theme.GravatarTheme
 import com.gravatar.models.UserProfile
 import com.gravatar.models.UserProfiles
+import com.gravatar.ui.components.ProfileListHeader
 import com.gravatar.ui.components.ProfileListItem
 import nl.dionsegijn.konfetti.compose.KonfettiView
 import nl.dionsegijn.konfetti.compose.OnParticleSystemUpdateListener
@@ -133,7 +135,7 @@ private fun ContactsBottomSheet(
                     }
                 },
             )
-            ProfileListItem(profile = userProfile)
+            ProfileListHeader(profile = userProfile, modifier = Modifier.align(Alignment.CenterHorizontally))
         } ?: EmailCheckingView(
             hash = hash,
             onEmailValidated = {
