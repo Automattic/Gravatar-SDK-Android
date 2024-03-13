@@ -1,5 +1,6 @@
 package com.gravatar.events.ui.components
 
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -17,12 +18,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.neverEqualPolicy
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.gravatar.GravatarApi
 import com.gravatar.models.UserProfiles
-import com.gravatar.ui.components.ProfileCard
+import com.gravatar.ui.components.ProfileListItem
 
 @Composable
 public fun EmailCheckingView(hash: String, onEmailValidated: (Boolean) -> Unit, modifier: Modifier = Modifier) {
@@ -72,12 +73,16 @@ public fun EmailCheckingView(hash: String, onEmailValidated: (Boolean) -> Unit, 
                 if (loading) {
                     CircularProgressIndicator()
                 } else {
-                    Text("Thank you for validating your email address! Here is your profile:")
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Toast.makeText(
+                        LocalContext.current,
+                        "Thank you for validating your email address!",
+                        Toast.LENGTH_LONG,
+                    ).show()
                     if (profiles.entry.isNotEmpty()) {
-                        ProfileCard(
+                        ProfileListItem(
                             profile = profiles.entry[0],
-                            modifier = modifier.align(Alignment.CenterHorizontally),
+                            modifier = Modifier.padding(8.dp),
+                            avatarImageSize = 56.dp,
                         )
                     }
                 }

@@ -25,7 +25,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -35,10 +34,10 @@ import com.gravatar.events.gravatar.parseGravatarHash
 import com.gravatar.events.scanner.CameraPreview
 import com.gravatar.events.scanner.Permission
 import com.gravatar.events.scanner.Reticle
+import com.gravatar.events.ui.components.EmailCheckingView
 import com.gravatar.events.ui.theme.GravatarTheme
 import com.gravatar.models.UserProfile
 import com.gravatar.models.UserProfiles
-import com.gravatar.ui.components.ProfileCard
 import com.gravatar.ui.components.ProfileListItem
 
 class MainActivity : ComponentActivity() {
@@ -66,7 +65,10 @@ class MainActivity : ComponentActivity() {
 
     private fun saveContact(profileHash: String) {
         val sharedPreferences = getSharedPreferences("events", MODE_PRIVATE)
-        val contacts = sharedPreferences.getStringSet("contacts", mutableSetOf<String>())?.toMutableSet() ?: mutableSetOf()
+        val contacts = sharedPreferences.getStringSet(
+            "contacts",
+            mutableSetOf<String>(),
+        )?.toMutableSet() ?: mutableSetOf()
         contacts.add(profileHash)
         sharedPreferences.edit().putStringSet("contacts", contacts).apply()
     }
@@ -83,51 +85,51 @@ fun EventsApp(contacts: List<String>) {
                     initialValue = SheetValue.PartiallyExpanded,
                 ),
             )
+            var hash by remember { mutableStateOf("") }
 
             BottomSheetScaffold(
                 sheetContent = {
                     Column(modifier = Modifier.fillMaxWidth()) {
-                        ProfileCard(
-                            UserProfile(
-                                "61b4e17387f9a143d28f5083988b2999",
-                                displayName = "John Doe",
-                                aboutMe = "I'm John Doe",
-                            ),
-                            modifier = Modifier
-                                .align(Alignment.CenterHorizontally),
-                            avatarImageSize = 64.dp,
+                        EmailCheckingView(
+                            hash = hash,
+                            onEmailValidated = {},
                         )
                     }
                     ProfilesList(
-                        profiles = contacts
+                        profiles = contacts,
                     )
                 },
                 sheetPeekHeight = 500.dp,
                 scaffoldState = bottomSheetScaffoldState,
                 content = {
-                    Scanner(Modifier.padding(bottom = 500.dp))
+                    Scanner(Modifier.padding(bottom = 500.dp), onCodeScanned = {
+                        // TODO: Save the hash somewhere
+                        hash = it
+                    })
                 },
             )
         }
     }
-
 }
 
 @Composable
-fun Scanner(modifier: Modifier = Modifier) {
+fun Scanner(modifier: Modifier = Modifier, onCodeScanned: (String) -> Unit) {
     Box(
-        modifier = modifier
+        modifier = modifier,
     ) {
         Permission(
             permission = Manifest.permission.CAMERA,
             permissionNotAvailableContent = {
                 Text("O noes! No Camera!")
-            }
+            },
         ) {
             val context = LocalContext.current
             CameraPreview { code ->
                 val hash = parseGravatarHash(code)
-                hash?.let { Toast.makeText(context, it, Toast.LENGTH_SHORT).show() }
+                hash?.let {
+                    Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+                    onCodeScanned(hash)
+                }
             }
             Box(Modifier.padding(54.dp)) {
                 Reticle()
@@ -142,16 +144,19 @@ fun ProfilesList(profiles: List<String>) {
         items(profiles.size) { index ->
             var profile by remember { mutableStateOf(UserProfile()) }
             ProfileListItem(modifier = Modifier.padding(8.dp), profile = profile, avatarImageSize = 56.dp)
-            GravatarApi().getProfile(profiles[index], object : GravatarApi.GravatarListener<UserProfiles> {
-                override fun onSuccess(response: UserProfiles) {
-                    profile = response.entry.first()
-                }
+            GravatarApi().getProfile(
+                profiles[index],
+                object : GravatarApi.GravatarListener<UserProfiles> {
+                    override fun onSuccess(response: UserProfiles) {
+                        profile = response.entry.first()
+                    }
 
-                override fun onError(errorType: GravatarApi.ErrorType) {
-                    // Do nothing yet
-                    Log.e("EventsApp", "Error getting profile: $errorType")
-                }
-            })
+                    override fun onError(errorType: GravatarApi.ErrorType) {
+                        // Do nothing yet
+                        Log.e("EventsApp", "Error getting profile: $errorType")
+                    }
+                },
+            )
         }
     }
 }
