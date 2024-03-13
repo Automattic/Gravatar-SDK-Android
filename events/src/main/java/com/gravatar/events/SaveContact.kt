@@ -29,7 +29,9 @@ public fun saveContact(context: Context, profile: UserProfile) {
             ContactsContract.Intents.Insert.PHONE_TYPE,
             ContactsContract.CommonDataKinds.Phone.TYPE_WORK,
         )
+
+        // Add "About Me" as notes
+        putExtra(ContactsContract.Intents.Insert.NOTES, profile.aboutMe)
     }
     context.startActivity(intentInsertEdit)
-    // activityLauncher.launch(intentInsertEdit)
 }
