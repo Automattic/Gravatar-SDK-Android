@@ -80,11 +80,11 @@ fun ScannerPreview(
                 val cameraExecutor: ExecutorService = Executors.newSingleThreadExecutor()
 
                 imageAnalysis.setAnalyzer(cameraExecutor, QRCodeAnalyzer { qrCodes ->
-                    // Debounce scanning
-                    val currentTime = System.currentTimeMillis()
-                    if (currentTime - lastScanTime >= debounceTimeMillis) {
-                        lastScanTime = System.currentTimeMillis()
-                        qrCodes.firstOrNull()?.let { code ->
+                    qrCodes.firstOrNull()?.let { code ->
+                        // Debounce scanning
+                        val currentTime = System.currentTimeMillis()
+                        if (currentTime - lastScanTime >= debounceTimeMillis) {
+                            lastScanTime = System.currentTimeMillis()
                             code.rawValue?.let { codeFoundListener(it) }
                         }
                     }
