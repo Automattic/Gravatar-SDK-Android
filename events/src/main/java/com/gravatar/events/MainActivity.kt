@@ -4,10 +4,13 @@ import android.Manifest
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -36,6 +39,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.graphics.toColorInt
 import com.gravatar.GravatarApi
 import com.gravatar.events.gravatar.parseGravatarHash
 import com.gravatar.events.scanner.Permission
@@ -55,21 +59,26 @@ import nl.dionsegijn.konfetti.core.PartySystem
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        enableEdgeToEdge()
+
         setContent {
             EventsApp(LocalDataStore(this))
         }
+
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EventsApp(localDataStore: LocalDataStore) {
-    GravatarTheme {
+    GravatarTheme() {
         // A surface container using the 'background' color from the theme
         Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
             val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
                 bottomSheetState = rememberStandardBottomSheetState(
                     initialValue = SheetValue.PartiallyExpanded,
+                    skipHiddenState = true
                 ),
             )
             var parties by remember { mutableStateOf(listOf<Party>()) }
@@ -96,7 +105,7 @@ fun EventsApp(localDataStore: LocalDataStore) {
                 sheetPeekHeight = 500.dp,
                 scaffoldState = bottomSheetScaffoldState,
                 content = {
-                    Scanner(Modifier.padding(bottom = 500.dp), onCodeScanned = {
+                    Scanner(Modifier.fillMaxSize().padding(bottom = 500.dp, top = 24.dp), onCodeScanned = {
                         parties = hashToPartyList(hash)
                         if (validatedHash == null) {
                             hash = it
@@ -150,7 +159,8 @@ private fun ContactsBottomSheet(
                 },
             )
             Column(
-                Modifier.padding(8.dp)
+                Modifier
+                    .padding(8.dp)
                     .clip(shape = RoundedCornerShape(20.dp))
                     .background(color = MaterialTheme.colorScheme.surfaceContainerHighest)
                     .fillMaxWidth(),
@@ -172,8 +182,10 @@ private fun ContactsBottomSheet(
                 }
             },
         )
-
+        Spacer(modifier = Modifier.size(16.dp))
+        Text(text = "Scanned profiles", style = MaterialTheme.typography.titleLarge, modifier = Modifier.padding(horizontal = 8.dp))
         ProfilesList(
+            modifier = Modifier.padding(8.dp),
             profiles = contacts,
         )
     }
@@ -204,13 +216,13 @@ fun Scanner(modifier: Modifier = Modifier, onCodeScanned: (String) -> Unit) {
 }
 
 @Composable
-fun ProfilesList(profiles: List<String>) {
+fun ProfilesList(modifier: Modifier, profiles: List<String>) {
     val context = LocalContext.current
-    LazyColumn {
+    LazyColumn(modifier) {
         items(profiles.size) { index ->
             var profile by remember { mutableStateOf<UserProfile?>(null) }
             ProfileListItem(modifier = Modifier.padding(8.dp), profile = profile, avatarImageSize = 56.dp) {
-                Button(onClick = {
+                TextButton(onClick = {
                     profile?.let {
                         saveContact(context, it)
                     }

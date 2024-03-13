@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 public fun EmailCheckingView(hash: String, onEmailValidated: (Boolean) -> Unit, modifier: Modifier = Modifier) {
     Surface(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxWidth(),
         color = MaterialTheme.colorScheme.background,
     ) {
         // TODO: check for invalid hash (not supported by gravatar)
