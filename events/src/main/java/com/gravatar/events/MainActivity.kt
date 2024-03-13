@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.BottomSheetScaffold
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SheetValue
@@ -24,14 +25,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.gravatar.GravatarApi
 import com.gravatar.events.gravatar.parseGravatarHash
-import com.gravatar.events.scanner.ScannerPreview
 import com.gravatar.events.scanner.Permission
 import com.gravatar.events.scanner.Reticle
+import com.gravatar.events.scanner.ScannerPreview
 import com.gravatar.events.ui.components.EmailCheckingView
 import com.gravatar.events.ui.theme.GravatarTheme
 import com.gravatar.models.UserProfile
@@ -47,39 +50,14 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            var contacts by remember { mutableStateOf(getContacts()) }
-            EventsApp(contacts)
+            EventsApp(LocalDataStore(this))
         }
-    }
-
-    private fun getContacts(): List<String> {
-        val sharedPreferences = getSharedPreferences("events", MODE_PRIVATE)
-//        var contacts = sharedPreferences.getStringSet("contacts", mutableSetOf<String>())
-        var contacts = listOf<String>(
-            "741fc2861114a819b0ff85018ec8efd84e7c78483df32daf8fc5cf654869da3d",
-            "741fc2861114a819b0ff85018ec8efd84e7c78483df32daf8fc5cf654869da3d",
-            "741fc2861114a819b0ff85018ec8efd84e7c78483df32daf8fc5cf654869da3d",
-            "741fc2861114a819b0ff85018ec8efd84e7c78483df32daf8fc5cf654869da3d",
-            "741fc2861114a819b0ff85018ec8efd84e7c78483df32daf8fc5cf654869da3d",
-            "741fc2861114a819b0ff85018ec8efd84e7c78483df32daf8fc5cf654869da3d",
-        )
-        return contacts?.toList() ?: emptyList()
-    }
-
-    private fun saveContact(profileHash: String) {
-        val sharedPreferences = getSharedPreferences("events", MODE_PRIVATE)
-        val contacts = sharedPreferences.getStringSet(
-            "contacts",
-            mutableSetOf<String>(),
-        )?.toMutableSet() ?: mutableSetOf()
-        contacts.add(profileHash)
-        sharedPreferences.edit().putStringSet("contacts", contacts).apply()
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EventsApp(contacts: List<String>) {
+fun EventsApp(localDataStore: LocalDataStore) {
     GravatarTheme {
         // A surface container using the 'background' color from the theme
         Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
@@ -88,27 +66,26 @@ fun EventsApp(contacts: List<String>) {
                     initialValue = SheetValue.PartiallyExpanded,
                 ),
             )
-            var hash by remember { mutableStateOf("") }
             var party by remember { mutableStateOf(listOf<Party>()) }
+            var hash by remember { mutableStateOf(localDataStore.getCurrentUser() ?: "") }
+            var contacts by remember { mutableStateOf(localDataStore.getContacts()) }
+            var validatedHash by remember { mutableStateOf(localDataStore.getCurrentUser()) }
+            var userProfile by remember { mutableStateOf<UserProfile?>(null) }
 
             BottomSheetScaffold(
                 sheetContent = {
-                    Column(modifier = Modifier.fillMaxWidth()) {
-                        EmailCheckingView(
-                            hash = hash,
-                            onEmailValidated = {},
-                        )
-                    }
-                    ProfilesList(
-                        profiles = contacts,
-                    )
+                    ContactsBottomSheet(validatedHash, userProfile, hash, contacts, onUserProfileLoaded = {
+                        userProfile = it
+                    }, onValidatedHash = {
+                        validatedHash = it
+                        localDataStore.saveCurrentUser(it)
+                    })
                 },
                 sheetPeekHeight = 500.dp,
                 scaffoldState = bottomSheetScaffoldState,
                 content = {
                     Scanner(Modifier.padding(bottom = 500.dp), onCodeScanned = {
                         // TODO: Save the hash somewhere
-                        hash = it
                         party = listOf(Party(
                             speed = 0f,
                             maxSpeed = 30f,
@@ -118,6 +95,12 @@ fun EventsApp(contacts: List<String>) {
                             position = Position.Relative(0.5, 0.3),
                             emitter = Emitter(duration = 100, TimeUnit.MILLISECONDS).max(100)
                         ))
+                        if (validatedHash == null) {
+                            hash = it
+                        } else {
+                            localDataStore.saveContact(it)
+                            contacts = localDataStore.getContacts()
+                        }
                     })
                     KonfettiView(
                         modifier = Modifier.fillMaxSize(),
@@ -126,6 +109,49 @@ fun EventsApp(contacts: List<String>) {
                 },
             )
         }
+    }
+}
+
+@Composable
+private fun ContactsBottomSheet(
+    validatedHash: String?,
+    userProfile: UserProfile?,
+    hash: String,
+    contacts: List<String>,
+    onUserProfileLoaded: (UserProfile) -> Unit,
+    onValidatedHash: (String) -> Unit,
+) {
+    Column(modifier = Modifier.fillMaxWidth()) {
+        validatedHash?.let {
+            GravatarApi().getProfile(
+                it,
+                object : GravatarApi.GravatarListener<UserProfiles> {
+                    override fun onSuccess(response: UserProfiles) {
+                        onUserProfileLoaded(response.entry.first())
+                    }
+
+                    override fun onError(errorType: GravatarApi.ErrorType) {
+                        // Do nothing yet
+                        Log.e("EventsApp", "Error getting profile: $errorType")
+                    }
+                },
+            )
+            userProfile?.let { profile ->
+                ProfileListItem(profile = profile)
+            } ?: CircularProgressIndicator(Modifier.align(Alignment.CenterHorizontally))
+
+        } ?: EmailCheckingView(
+            hash = hash,
+            onEmailValidated = {
+                if (it) {
+                    onValidatedHash.invoke(hash)
+                }
+            },
+        )
+
+        ProfilesList(
+            profiles = contacts,
+        )
     }
 }
 
@@ -179,5 +205,5 @@ fun ProfilesList(profiles: List<String>) {
 @Preview(showBackground = true)
 @Composable
 fun AppPreview() {
-    EventsApp(emptyList())
+    EventsApp(LocalDataStore(LocalContext.current))
 }
