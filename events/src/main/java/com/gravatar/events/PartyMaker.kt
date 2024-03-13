@@ -24,7 +24,8 @@ fun hashToParty(hash: String, angle: Int, spread: Int, position: Position): Part
         angle = angle,
         spread = spread,
         position = position,
-        colors = listOf(hashToColor(hash), hashToColor(hash, 1)),
+        // TODO: make a better color generation function
+        // colors = listOf(hashToColor(hash), hashToColor(hash, 1)),
         emitter = Emitter(duration = 150, TimeUnit.MILLISECONDS).max(150),
     )
 }
