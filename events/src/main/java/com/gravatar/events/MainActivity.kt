@@ -55,6 +55,8 @@ import nl.dionsegijn.konfetti.compose.KonfettiView
 import nl.dionsegijn.konfetti.compose.OnParticleSystemUpdateListener
 import nl.dionsegijn.konfetti.core.Party
 import nl.dionsegijn.konfetti.core.PartySystem
+import java.text.SimpleDateFormat
+import java.util.Date
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -105,12 +107,15 @@ fun EventsApp(localDataStore: LocalDataStore) {
                 sheetPeekHeight = 500.dp,
                 scaffoldState = bottomSheetScaffoldState,
                 content = {
-                    Scanner(Modifier.fillMaxSize().padding(bottom = 500.dp, top = 24.dp), onCodeScanned = {
+                    Scanner(
+                        Modifier
+                            .fillMaxSize()
+                            .padding(bottom = 500.dp, top = 24.dp), onCodeScanned = {
                         parties = hashToPartyList(hash)
                         if (validatedHash == null) {
                             hash = it
                         } else {
-                            localDataStore.saveContact(it)
+                            localDataStore.saveContact(it, Date())
                             contacts = localDataStore.getContacts()
                         }
                     })
@@ -138,7 +143,7 @@ private fun ContactsBottomSheet(
     validatedHash: String?,
     userProfile: UserProfile?,
     hash: String,
-    contacts: List<String>,
+    contacts: List<Pair<String, Long>>,
     onUserProfileLoaded: (UserProfile) -> Unit,
     onValidatedHash: (String) -> Unit,
     onLogoutClicked: () -> Unit,
@@ -171,7 +176,9 @@ private fun ContactsBottomSheet(
                 )
                 TextButton(
                     onClick = onLogoutClicked,
-                    modifier = Modifier.padding(bottom = 8.dp, end = 16.dp).align(Alignment.End),
+                    modifier = Modifier
+                        .padding(bottom = 8.dp, end = 16.dp)
+                        .align(Alignment.End),
                 ) { Text(text = stringResource(R.string.logout)) }
             }
         } ?: EmailCheckingView(
@@ -216,12 +223,17 @@ fun Scanner(modifier: Modifier = Modifier, onCodeScanned: (String) -> Unit) {
 }
 
 @Composable
-fun ProfilesList(modifier: Modifier, profiles: List<String>) {
+fun ProfilesList(modifier: Modifier, profiles: List<Pair<String, Long>>) {
     val context = LocalContext.current
     LazyColumn(modifier) {
         items(profiles.size) { index ->
             var profile by remember { mutableStateOf<UserProfile?>(null) }
             ProfileListItem(modifier = Modifier.padding(8.dp), profile = profile, avatarImageSize = 56.dp) {
+                Text(
+                    text = SimpleDateFormat.getDateTimeInstance().format(Date(profiles[index].second)),
+                    style = MaterialTheme.typography.labelSmall,
+                    modifier = Modifier.align(Alignment.End)
+                )
                 TextButton(onClick = {
                     profile?.let {
                         saveContact(context, it)
@@ -230,8 +242,9 @@ fun ProfilesList(modifier: Modifier, profiles: List<String>) {
                     Text("Save")
                 }
             }
+
             GravatarApi().getProfile(
-                profiles[index],
+                profiles[index].first,
                 object : GravatarApi.GravatarListener<UserProfiles> {
                     override fun onSuccess(response: UserProfiles) {
                         profile = response.entry.first()
