@@ -3,10 +3,12 @@ package com.gravatar.ui.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -17,6 +19,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -29,16 +32,16 @@ import com.gravatar.models.UserProfile
 
 @Composable
 public fun ProfileListHeader(profile: UserProfile?, modifier: Modifier = Modifier, avatarImageSize: Dp = 96.dp) {
-    Column(
+    Row(
         modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         if (profile != null) {
             SubcomposeAsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(
                         gravatarUrl(
-                            profile?.hash ?: "",
+                            profile.hash ?: "",
                             size = with(LocalDensity.current) { avatarImageSize.toPx().toInt() },
                             defaultAvatarImage = DefaultAvatarImage.Monster,
                         ),
@@ -50,13 +53,13 @@ public fun ProfileListHeader(profile: UserProfile?, modifier: Modifier = Modifie
                     .size(avatarImageSize),
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.size(16.dp))
 
-            if (profile != null) {
+            Column(Modifier.align(Alignment.CenterVertically)) {
                 (profile.displayName ?: profile.preferredUsername)?.let {
                     Text(
                         text = it,
-                        style = MaterialTheme.typography.titleMedium,
+                        style = MaterialTheme.typography.titleLarge,
                         textAlign = TextAlign.Left,
                     )
                 }
@@ -66,6 +69,7 @@ public fun ProfileListHeader(profile: UserProfile?, modifier: Modifier = Modifie
                         text = it,
                         style = MaterialTheme.typography.bodyMedium,
                         maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
                         textAlign = TextAlign.Left,
                     )
                 }
