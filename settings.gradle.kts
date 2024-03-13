@@ -17,6 +17,8 @@ pluginManagement {
     }
     plugins {
         id ("com.automattic.android.publish-to-s3") version ("0.10.0")
+        id("com.android.application") version "8.1.0"
+        id("org.jetbrains.kotlin.android") version "1.9.0"
     }
 }
 dependencyResolutionManagement {
@@ -31,3 +33,4 @@ dependencyResolutionManagement {
 rootProject.name = "gravatar"
 include(":gravatar")
 include(":app")
+include(":events")
