@@ -37,6 +37,11 @@ import com.gravatar.events.ui.theme.GravatarTheme
 import com.gravatar.models.UserProfile
 import com.gravatar.models.UserProfiles
 import com.gravatar.ui.components.ProfileListItem
+import nl.dionsegijn.konfetti.compose.KonfettiView
+import nl.dionsegijn.konfetti.core.Party
+import nl.dionsegijn.konfetti.core.Position
+import nl.dionsegijn.konfetti.core.emitter.Emitter
+import java.util.concurrent.TimeUnit
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -84,6 +89,7 @@ fun EventsApp(contacts: List<String>) {
                 ),
             )
             var hash by remember { mutableStateOf("") }
+            var party by remember { mutableStateOf(listOf<Party>()) }
 
             BottomSheetScaffold(
                 sheetContent = {
@@ -103,7 +109,20 @@ fun EventsApp(contacts: List<String>) {
                     Scanner(Modifier.padding(bottom = 500.dp), onCodeScanned = {
                         // TODO: Save the hash somewhere
                         hash = it
+                        party = listOf(Party(
+                            speed = 0f,
+                            maxSpeed = 30f,
+                            damping = 0.9f,
+                            spread = 360,
+                            colors = listOf(0xfce18a, 0xff726d, 0xf4306d, 0xb48def),
+                            position = Position.Relative(0.5, 0.3),
+                            emitter = Emitter(duration = 100, TimeUnit.MILLISECONDS).max(100)
+                        ))
                     })
+                    KonfettiView(
+                        modifier = Modifier.fillMaxSize(),
+                        parties = party,
+                    )
                 },
             )
         }
