@@ -29,19 +29,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.gravatar.GravatarApi
 import com.gravatar.events.gravatar.parseGravatarHash
-import com.gravatar.events.scanner.ScannerPreview
 import com.gravatar.events.scanner.Permission
 import com.gravatar.events.scanner.Reticle
+import com.gravatar.events.scanner.ScannerPreview
 import com.gravatar.events.ui.components.EmailCheckingView
 import com.gravatar.events.ui.theme.GravatarTheme
 import com.gravatar.models.UserProfile
 import com.gravatar.models.UserProfiles
 import com.gravatar.ui.components.ProfileListItem
 import nl.dionsegijn.konfetti.compose.KonfettiView
+import nl.dionsegijn.konfetti.compose.OnParticleSystemUpdateListener
 import nl.dionsegijn.konfetti.core.Party
-import nl.dionsegijn.konfetti.core.Position
-import nl.dionsegijn.konfetti.core.emitter.Emitter
-import java.util.concurrent.TimeUnit
+import nl.dionsegijn.konfetti.core.PartySystem
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -89,8 +88,7 @@ fun EventsApp(contacts: List<String>) {
                 ),
             )
             var hash by remember { mutableStateOf("") }
-            var party by remember { mutableStateOf(listOf<Party>()) }
-
+            var parties by remember { mutableStateOf(listOf<Party>()) }
             BottomSheetScaffold(
                 sheetContent = {
                     Column(modifier = Modifier.fillMaxWidth()) {
@@ -109,22 +107,23 @@ fun EventsApp(contacts: List<String>) {
                     Scanner(Modifier.padding(bottom = 500.dp), onCodeScanned = {
                         // TODO: Save the hash somewhere
                         hash = it
-                        party = listOf(Party(
-                            speed = 0f,
-                            maxSpeed = 30f,
-                            damping = 0.9f,
-                            spread = 360,
-                            colors = listOf(0xfce18a, 0xff726d, 0xf4306d, 0xb48def),
-                            position = Position.Relative(0.5, 0.3),
-                            emitter = Emitter(duration = 100, TimeUnit.MILLISECONDS).max(100)
-                        ))
+                        parties = hashToPartyList(hash)
                     })
-                    KonfettiView(
-                        modifier = Modifier.fillMaxSize(),
-                        parties = party,
-                    )
                 },
             )
+            if (parties.isNotEmpty()) {
+                KonfettiView(
+                    modifier = Modifier.fillMaxSize(),
+                    parties = parties,
+                    object : OnParticleSystemUpdateListener {
+                        override fun onParticleSystemEnded(system: PartySystem, activeSystems: Int) {
+                            if (activeSystems == 0) {
+                                parties = emptyList()
+                            }
+                        }
+                    },
+                )
+            }
         }
     }
 }
