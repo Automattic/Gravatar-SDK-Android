@@ -29,7 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.gravatar.GravatarApi
 import com.gravatar.events.gravatar.parseGravatarHash
-import com.gravatar.events.scanner.CameraPreview
+import com.gravatar.events.scanner.ScannerPreview
 import com.gravatar.events.scanner.Permission
 import com.gravatar.events.scanner.Reticle
 import com.gravatar.events.ui.components.EmailCheckingView
@@ -121,7 +121,7 @@ fun Scanner(modifier: Modifier = Modifier, onCodeScanned: (String) -> Unit) {
                 Text("O noes! No Camera!")
             },
         ) {
-            CameraPreview { code ->
+            ScannerPreview { code ->
                 val hash = parseGravatarHash(code)
                 hash?.let {
                     onCodeScanned(hash)
