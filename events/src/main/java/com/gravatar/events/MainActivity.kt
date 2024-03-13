@@ -3,7 +3,6 @@ package com.gravatar.events
 import android.Manifest
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
@@ -26,7 +25,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.gravatar.GravatarApi
@@ -123,11 +121,9 @@ fun Scanner(modifier: Modifier = Modifier, onCodeScanned: (String) -> Unit) {
                 Text("O noes! No Camera!")
             },
         ) {
-            val context = LocalContext.current
             CameraPreview { code ->
                 val hash = parseGravatarHash(code)
                 hash?.let {
-                    Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
                     onCodeScanned(hash)
                 }
             }

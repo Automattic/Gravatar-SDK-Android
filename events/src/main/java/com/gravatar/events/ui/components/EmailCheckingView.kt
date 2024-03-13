@@ -27,64 +27,74 @@ import com.gravatar.ui.components.ProfileListItem
 
 @Composable
 public fun EmailCheckingView(hash: String, onEmailValidated: (Boolean) -> Unit, modifier: Modifier = Modifier) {
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = MaterialTheme.colorScheme.background,
+    ) {
+        // TODO: check for invalid hash (not supported by gravatar)
+        if (hash.isEmpty()) {
+            Text("Please scan your own badge first", modifier = Modifier.padding(16.dp))
+        } else {
+            EmailChecking(hash, onEmailValidated, modifier)
+        }
+    }
+}
+
+@Composable
+private fun EmailChecking(hash: String, onEmailValidated: (Boolean) -> Unit, modifier: Modifier = Modifier) {
     val gravatarApi = GravatarApi()
     var emailValidated by remember { mutableStateOf(false) }
     var profiles by remember { mutableStateOf(UserProfiles(), neverEqualPolicy()) }
     var loading by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf("") }
 
-    Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background,
-    ) {
-        AnimatedVisibility(visible = !emailValidated) {
-            Column(modifier = Modifier.padding(16.dp)) {
-                Text("Enter the email address that matches your badge")
-                Spacer(modifier = Modifier.height(8.dp))
-                EmailCheck(
-                    hash,
-                    modifier = Modifier.fillMaxWidth(),
-                    onEmailValidated = {
-                        emailValidated = it
-                        onEmailValidated(it)
-                        // Get profile
-                        loading = true
-                        gravatarApi.getProfile(
-                            hash,
-                            object : GravatarApi.GravatarListener<UserProfiles> {
-                                override fun onSuccess(response: UserProfiles) {
-                                    profiles = response
-                                    loading = false
-                                }
+    AnimatedVisibility(visible = !emailValidated) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text("Enter the email address that matches your badge")
+            Spacer(modifier = Modifier.height(8.dp))
+            EmailCheck(
+                hash,
+                modifier = Modifier.fillMaxWidth(),
+                onEmailValidated = {
+                    emailValidated = it
+                    onEmailValidated(it)
+                    // Get profile
+                    loading = true
+                    gravatarApi.getProfile(
+                        hash,
+                        object : GravatarApi.GravatarListener<UserProfiles> {
+                            override fun onSuccess(response: UserProfiles) {
+                                profiles = response
+                                loading = false
+                            }
 
-                                override fun onError(errorType: GravatarApi.ErrorType) {
-                                    // TODO: error management
-                                    error = errorType.name
-                                    loading = false
-                                }
-                            },
-                        )
-                    },
-                )
-            }
+                            override fun onError(errorType: GravatarApi.ErrorType) {
+                                // TODO: error management
+                                error = errorType.name
+                                loading = false
+                            }
+                        },
+                    )
+                },
+            )
         }
-        AnimatedVisibility(visible = emailValidated) {
-            Column(modifier = Modifier.padding(16.dp)) {
-                if (loading) {
-                    CircularProgressIndicator()
-                } else {
-                    Toast.makeText(
-                        LocalContext.current,
-                        "Thank you for validating your email address!",
-                        Toast.LENGTH_LONG,
-                    ).show()
-                    if (profiles.entry.isNotEmpty()) {
-                        ProfileListItem(
-                            profile = profiles.entry[0],
-                            modifier = Modifier.padding(8.dp),
-                            avatarImageSize = 56.dp,
-                        )
-                    }
+    }
+    AnimatedVisibility(visible = emailValidated) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            if (loading) {
+                CircularProgressIndicator()
+            } else {
+                Toast.makeText(
+                    LocalContext.current,
+                    "Thank you for validating your email address!",
+                    Toast.LENGTH_LONG,
+                ).show()
+                if (profiles.entry.isNotEmpty()) {
+                    ProfileListItem(
+                        profile = profiles.entry[0],
+                        modifier = Modifier.padding(8.dp),
+                        avatarImageSize = 56.dp,
+                    )
                 }
             }
         }
