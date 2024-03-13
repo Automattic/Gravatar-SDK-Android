@@ -68,7 +68,7 @@ public fun ProfileListItem(profile: UserProfile?, modifier: Modifier = Modifier,
                         Text(
                             text = it,
                             style = MaterialTheme.typography.titleMedium,
-                            textAlign = TextAlign.Center,
+                            textAlign = TextAlign.Left,
                         )
                     }
 
@@ -77,7 +77,7 @@ public fun ProfileListItem(profile: UserProfile?, modifier: Modifier = Modifier,
                             text = it,
                             style = MaterialTheme.typography.bodyMedium,
                             maxLines = 2,
-                            textAlign = TextAlign.Center,
+                            textAlign = TextAlign.Left,
                         )
                     }
                 }
