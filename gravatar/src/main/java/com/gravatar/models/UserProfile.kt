@@ -14,6 +14,7 @@ public data class UserProfile(
     @SerializedName("aboutMe") val aboutMe: String? = null,
     @SerializedName("pronouns") val pronouns: String? = null,
     @SerializedName("emails") val emails: ArrayList<Email> = arrayListOf(),
+    @SerializedName("phoneNumbers") val phoneNumbers: ArrayList<PhoneNumber> = arrayListOf(),
     @SerializedName("name") val name: Name? = Name(),
     @SerializedName("accounts") val accounts: ArrayList<Account> = arrayListOf(),
     @SerializedName("currency") val currency: ArrayList<Currency> = arrayListOf(),

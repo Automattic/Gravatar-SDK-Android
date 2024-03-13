@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.BottomSheetScaffold
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -180,10 +181,17 @@ fun Scanner(modifier: Modifier = Modifier, onCodeScanned: (String) -> Unit) {
 
 @Composable
 fun ProfilesList(profiles: List<String>) {
+    val context = LocalContext.current
     LazyColumn {
         items(profiles.size) { index ->
             var profile by remember { mutableStateOf(UserProfile()) }
-            ProfileListItem(modifier = Modifier.padding(8.dp), profile = profile, avatarImageSize = 56.dp)
+            ProfileListItem(modifier = Modifier.padding(8.dp), profile = profile, avatarImageSize = 56.dp) {
+                // Spacer(modifier = Modifier.height(16.dp))
+
+                Button(onClick = { saveContact(context, profile) }) {
+                    Text("Save contact")
+                }
+            }
             GravatarApi().getProfile(
                 profiles[index],
                 object : GravatarApi.GravatarListener<UserProfiles> {

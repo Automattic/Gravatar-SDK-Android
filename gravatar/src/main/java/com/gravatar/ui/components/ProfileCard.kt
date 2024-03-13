@@ -23,11 +23,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.util.fastFirstOrNull
 import coil.compose.AsyncImage
 import com.gravatar.gravatarUrl
 import com.gravatar.models.Email
 import com.gravatar.models.UserProfile
+import com.gravatar.utils.getDisplayName
+import com.gravatar.utils.getPrimaryEmail
 
 @Composable
 public fun ProfileCard(profile: UserProfile, modifier: Modifier = Modifier, avatarImageSize: Dp = 128.dp) {
@@ -45,7 +46,7 @@ public fun ProfileCard(profile: UserProfile, modifier: Modifier = Modifier, avat
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        (profile.displayName ?: profile.preferredUsername)?.let {
+        profile.getDisplayName()?.let {
             Text(
                 text = it,
                 style = MaterialTheme.typography.headlineMedium,
@@ -78,7 +79,7 @@ public fun ProfileCard(profile: UserProfile, modifier: Modifier = Modifier, avat
         ) { }
 
         // Find primary email
-        val primaryEmail = profile.emails.fastFirstOrNull { it.primary ?: false }?.value
+        val primaryEmail = profile.getPrimaryEmail()
 
         primaryEmail?.let {
             Button(

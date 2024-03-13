@@ -1,6 +1,7 @@
 package com.gravatar.ui.components
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -23,9 +24,15 @@ import com.gravatar.DefaultAvatarImage
 import com.gravatar.gravatarUrl
 import com.gravatar.models.Email
 import com.gravatar.models.UserProfile
+import com.gravatar.utils.getDisplayName
 
 @Composable
-public fun ProfileListItem(profile: UserProfile, modifier: Modifier = Modifier, avatarImageSize: Dp = 128.dp) {
+public fun ProfileListItem(
+    profile: UserProfile,
+    modifier: Modifier = Modifier,
+    avatarImageSize: Dp = 128.dp,
+    content: @Composable ColumnScope.() -> Unit = {},
+) {
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
@@ -45,7 +52,7 @@ public fun ProfileListItem(profile: UserProfile, modifier: Modifier = Modifier, 
         Spacer(modifier = Modifier.height(16.dp))
 
         Column(Modifier.padding(start = 8.dp)) {
-            (profile.displayName ?: profile.preferredUsername)?.let {
+            profile.getDisplayName()?.let {
                 Text(
                     text = it,
                     style = MaterialTheme.typography.titleMedium,
@@ -62,6 +69,7 @@ public fun ProfileListItem(profile: UserProfile, modifier: Modifier = Modifier, 
                 )
             }
         }
+        Column(content = content)
     }
 }
 
