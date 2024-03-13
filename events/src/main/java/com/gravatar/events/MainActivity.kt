@@ -28,6 +28,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.gravatar.GravatarApi
@@ -79,6 +80,12 @@ fun EventsApp(localDataStore: LocalDataStore) {
                     }, onValidatedHash = {
                         validatedHash = it
                         localDataStore.saveCurrentUser(it)
+                    }, onLogoutClicked = {
+                        localDataStore.logout()
+                        hash = ""
+                        validatedHash = null
+                        userProfile = null
+                        contacts = emptyList()
                     })
                 },
                 sheetPeekHeight = 500.dp,
@@ -120,6 +127,7 @@ private fun ContactsBottomSheet(
     contacts: List<String>,
     onUserProfileLoaded: (UserProfile) -> Unit,
     onValidatedHash: (String) -> Unit,
+    onLogoutClicked: () -> Unit,
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
         validatedHash?.let {
@@ -149,6 +157,15 @@ private fun ContactsBottomSheet(
         ProfilesList(
             profiles = contacts,
         )
+
+        if (validatedHash != null) {
+            Button(
+                onClick = onLogoutClicked,
+                modifier = Modifier
+                    .padding(8.dp)
+                    .align(alignment = Alignment.CenterHorizontally)
+            ) { Text(text = stringResource(R.string.logout)) }
+        }
     }
 }
 

@@ -29,4 +29,9 @@ class LocalDataStore(private val context: Context) {
         val sharedPreferences = context.getSharedPreferences("events", ComponentActivity.MODE_PRIVATE)
         return sharedPreferences.getString("currentUser", null)
     }
+
+    fun logout() {
+        val sharedPreferences = context.getSharedPreferences("events", ComponentActivity.MODE_PRIVATE)
+        sharedPreferences.edit().clear().apply()
+    }
 }
