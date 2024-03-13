@@ -1,4 +1,4 @@
-package com.gravatar.demoapp.ui.components
+package com.gravatar.ui.components
 
 import android.content.Intent
 import android.net.Uri

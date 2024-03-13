@@ -47,11 +47,11 @@ import com.gravatar.ImageRating
 import com.gravatar.R
 import com.gravatar.demoapp.theme.GravatarDemoAppTheme
 import com.gravatar.demoapp.ui.components.GravatarEmailInput
-import com.gravatar.demoapp.ui.components.ProfileCard
 import com.gravatar.demoapp.ui.model.SettingsState
 import com.gravatar.emailAddressToGravatarUrl
 import com.gravatar.models.UserProfiles
 import com.gravatar.sha256Hash
+import com.gravatar.ui.components.ProfileCard
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
