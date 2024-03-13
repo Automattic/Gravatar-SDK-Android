@@ -18,6 +18,5 @@ public data class UserProfile(
     @SerializedName("accounts") val accounts: ArrayList<Account> = arrayListOf(),
     @SerializedName("currency") val currency: ArrayList<Currency> = arrayListOf(),
     @SerializedName("urls") val urls: ArrayList<Urls> = arrayListOf(),
-    @SerializedName("profileBackground") val profileBackground: ProfileBackground? = ProfileBackground(),
     @SerializedName("share_flags") val shareFlags: ShareFlags? = ShareFlags(),
 )
