@@ -57,6 +57,7 @@ public fun ProfileListItem(profile: UserProfile, modifier: Modifier = Modifier, 
                 Text(
                     text = it,
                     style = MaterialTheme.typography.bodyMedium,
+                    maxLines = 2,
                     textAlign = TextAlign.Center,
                 )
             }
