@@ -7,6 +7,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -200,11 +201,12 @@ fun ProfilesList(profiles: List<String>) {
         items(profiles.size) { index ->
             var profile by remember { mutableStateOf<UserProfile?>(null) }
             ProfileListItem(modifier = Modifier.padding(8.dp), profile = profile, avatarImageSize = 56.dp) {
+                Spacer(modifier = Modifier.fillMaxWidth())
                 Button(onClick = {
                     profile?.let {
                         saveContact(context, it)
                     }
-                }) {
+                }, modifier = Modifier.align(Alignment.End)) {
                     Text("Save")
                 }
             }
