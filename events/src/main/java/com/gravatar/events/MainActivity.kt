@@ -42,8 +42,8 @@ fun EventsApp() {
         Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
             val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
                 bottomSheetState = rememberStandardBottomSheetState(
-                    initialValue = SheetValue.PartiallyExpanded
-                )
+                    initialValue = SheetValue.PartiallyExpanded,
+                ),
             )
 
             BottomSheetScaffold(
@@ -72,7 +72,7 @@ fun EventsApp() {
                             UserProfile(hash = "h", displayName = "Sophia", aboutMe = "Artist and Youtuber"),
                             UserProfile(hash = "i", displayName = "Charles", aboutMe = "Artist and Youtuber"),
                             UserProfile(hash = "g", displayName = "Eneko", aboutMe = "Artist and Youtuber"),
-                        )
+                        ),
                     )
                 },
                 sheetPeekHeight = 500.dp,

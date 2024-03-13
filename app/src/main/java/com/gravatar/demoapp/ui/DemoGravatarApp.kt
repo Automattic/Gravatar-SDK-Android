@@ -195,7 +195,7 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
                 }
             }
             // Show the profile card if we got a result and there is no error and it's not loading
-            if (!loading && error.isEmpty() && profiles.entry.size > 0) {
+            if (!loading && error.isEmpty() && profiles.entry.isNotEmpty()) {
                 ProfileCard(
                     profiles.entry.first(),
                     Modifier
