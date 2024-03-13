@@ -6,8 +6,8 @@ import androidx.activity.ComponentActivity
 class LocalDataStore(private val context: Context) {
     fun getContacts(): List<String> {
         val sharedPreferences = context.getSharedPreferences("events", ComponentActivity.MODE_PRIVATE)
-        var contacts = sharedPreferences.getStringSet("contacts", mutableSetOf<String>())
-        return contacts?.toList() ?: emptyList()
+        return sharedPreferences.getStringSet("contacts", mutableSetOf<String>())?.filter { it != getCurrentUser() }?.toList()
+            ?: emptyList()
     }
 
     fun saveContact(profileHash: String) {

@@ -1,9 +1,12 @@
 package com.gravatar.ui.components
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -14,12 +17,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
+import coil.request.ImageRequest
 import com.gravatar.DefaultAvatarImage
 import com.gravatar.gravatarUrl
 import com.gravatar.models.Email
@@ -28,7 +33,7 @@ import com.gravatar.utils.getDisplayName
 
 @Composable
 public fun ProfileListItem(
-    profile: UserProfile,
+    profile: UserProfile?,
     modifier: Modifier = Modifier,
     avatarImageSize: Dp = 128.dp,
     content: @Composable ColumnScope.() -> Unit = {},
@@ -37,37 +42,52 @@ public fun ProfileListItem(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        AsyncImage(
-            gravatarUrl(
-                profile.hash ?: "",
-                size = with(LocalDensity.current) { avatarImageSize.toPx().toInt() },
-                defaultAvatarImage = DefaultAvatarImage.Monster,
-            ),
-            contentDescription = "User profile image",
-            modifier = Modifier
-                .clip(CircleShape)
-                .size(avatarImageSize),
-        )
+        if (profile != null) {
+            SubcomposeAsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(
+                        gravatarUrl(
+                            profile?.hash ?: "",
+                            size = with(LocalDensity.current) { avatarImageSize.toPx().toInt() },
+                            defaultAvatarImage = DefaultAvatarImage.Monster,
+                        ),
+                    )
+                    .build(),
+                contentDescription = "User profile image",
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .size(avatarImageSize),
+            )
 
-        Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-        Column(Modifier.padding(start = 8.dp)) {
-            profile.getDisplayName()?.let {
-                Text(
-                    text = it,
-                    style = MaterialTheme.typography.titleMedium,
-                    textAlign = TextAlign.Center,
-                )
+            Column(Modifier.padding(start = 8.dp)) {
+                if (profile != null) {
+                    profile.getDisplayName()?.let {
+                        Text(
+                            text = it,
+                            style = MaterialTheme.typography.titleMedium,
+                            textAlign = TextAlign.Left,
+                        )
+                    }
+
+                    profile.aboutMe?.let {
+                        Text(
+                            text = it,
+                            style = MaterialTheme.typography.bodyMedium,
+                            maxLines = 2,
+                            textAlign = TextAlign.Left,
+                        )
+                    }
+                }
             }
-
-            profile.aboutMe?.let {
-                Text(
-                    text = it,
-                    style = MaterialTheme.typography.bodyMedium,
-                    maxLines = 2,
-                    textAlign = TextAlign.Center,
-                )
-            }
+        } else {
+            Box(
+                modifier = Modifier
+                    .height(avatarImageSize)
+                    .fillMaxWidth()
+                    .background(shimmerBrush()),
+            )
         }
         Column(content = content)
     }

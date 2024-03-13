@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SheetValue
@@ -26,7 +25,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -85,7 +83,6 @@ fun EventsApp(localDataStore: LocalDataStore) {
                 scaffoldState = bottomSheetScaffoldState,
                 content = {
                     Scanner(Modifier.padding(bottom = 500.dp), onCodeScanned = {
-                        hash = it
                         parties = hashToPartyList(hash)
                         if (validatedHash == null) {
                             hash = it
@@ -137,9 +134,7 @@ private fun ContactsBottomSheet(
                     }
                 },
             )
-            userProfile?.let { profile ->
-                ProfileListItem(profile = profile)
-            } ?: CircularProgressIndicator(Modifier.align(Alignment.CenterHorizontally))
+            ProfileListItem(profile = userProfile)
         } ?: EmailCheckingView(
             hash = hash,
             onEmailValidated = {
@@ -184,12 +179,14 @@ fun ProfilesList(profiles: List<String>) {
     val context = LocalContext.current
     LazyColumn {
         items(profiles.size) { index ->
-            var profile by remember { mutableStateOf(UserProfile()) }
+            var profile by remember { mutableStateOf<UserProfile?>(null) }
             ProfileListItem(modifier = Modifier.padding(8.dp), profile = profile, avatarImageSize = 56.dp) {
-                // Spacer(modifier = Modifier.height(16.dp))
-
-                Button(onClick = { saveContact(context, profile) }) {
-                    Text("Save contact")
+                Button(onClick = {
+                    profile?.let {
+                        saveContact(context, it)
+                    }
+                }) {
+                    Text("Save")
                 }
             }
             GravatarApi().getProfile(
