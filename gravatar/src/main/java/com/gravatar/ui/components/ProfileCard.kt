@@ -30,7 +30,7 @@ import com.gravatar.models.Email
 import com.gravatar.models.UserProfile
 
 @Composable
-fun ProfileCard(profile: UserProfile, modifier: Modifier = Modifier, avatarImageSize: Dp = 128.dp) {
+public fun ProfileCard(profile: UserProfile, modifier: Modifier = Modifier, avatarImageSize: Dp = 128.dp) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -100,7 +100,7 @@ fun ProfileCard(profile: UserProfile, modifier: Modifier = Modifier, avatarImage
 
 @Preview
 @Composable
-fun PreviewUserProfileCard() {
+private fun PreviewUserProfileCard() {
     ProfileCard(
         UserProfile(
             displayName = "John Doe",
