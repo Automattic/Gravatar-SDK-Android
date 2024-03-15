@@ -2,14 +2,14 @@ package com.gravatar.events
 
 import android.content.Context
 import androidx.activity.ComponentActivity
-import java.text.DateFormat
-import java.text.SimpleDateFormat
 import java.util.Date
 
 class LocalDataStore(private val context: Context) {
+
+    @Suppress("UNCHECKED_CAST")
     fun getContacts(): List<Pair<String, Long>> {
         val sharedPreferences = context.getSharedPreferences("contacts", ComponentActivity.MODE_PRIVATE)
-        return (sharedPreferences.all?.toList() as List<Pair<String, Long>>?)?.sortedBy { it.second }?.filter { it.first != getCurrentUser() }
+        return (sharedPreferences.all?.toList() as List<Pair<String, Long>>?)?.sortedByDescending { it.second }?.filter { it.first != getCurrentUser() }
             ?: emptyList()
     }
 

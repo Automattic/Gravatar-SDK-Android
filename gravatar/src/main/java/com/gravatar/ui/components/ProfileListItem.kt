@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -32,7 +31,6 @@ import com.gravatar.models.Email
 import com.gravatar.models.UserProfile
 import com.gravatar.utils.getDisplayName
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 public fun ProfileListItem(
     profile: UserProfile?,
@@ -68,23 +66,21 @@ public fun ProfileListItem(
                     .padding(start = 8.dp)
                     .weight(weight = 1f).fillMaxWidth(),
             ) {
-                if (profile != null) {
-                    profile.getDisplayName()?.let {
-                        Text(
-                            text = it,
-                            style = MaterialTheme.typography.titleMedium,
-                            textAlign = TextAlign.Left,
-                        )
-                    }
+                profile.getDisplayName()?.let {
+                    Text(
+                        text = it,
+                        style = MaterialTheme.typography.titleMedium,
+                        textAlign = TextAlign.Left,
+                    )
+                }
 
-                    profile.aboutMe?.let {
-                        Text(
-                            text = it,
-                            style = MaterialTheme.typography.bodyMedium,
-                            maxLines = 2,
-                            textAlign = TextAlign.Left,
-                        )
-                    }
+                profile.aboutMe?.let {
+                    Text(
+                        text = it,
+                        style = MaterialTheme.typography.bodyMedium,
+                        maxLines = 2,
+                        textAlign = TextAlign.Left,
+                    )
                 }
             }
             Column(content = content)
