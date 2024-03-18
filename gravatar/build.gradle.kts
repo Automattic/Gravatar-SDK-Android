@@ -7,6 +7,8 @@ plugins {
 
     // Detekt
     id("io.gitlab.arturbosch.detekt")
+
+    // Publish artifact to S3
     id("com.automattic.android.publish-to-s3")
 
     // Dokka

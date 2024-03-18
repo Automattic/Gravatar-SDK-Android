@@ -1,6 +1,9 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+
+    // Detekt
+    id("io.gitlab.arturbosch.detekt")
 }
 
 android {
@@ -26,6 +29,13 @@ android {
     }
     kotlinOptions {
         jvmTarget = "1.8"
+    }
+    detekt {
+        config.setFrom("${project.rootDir}/config/detekt/detekt.yml")
+        source.setFrom("src")
+        autoCorrect = false
+        buildUponDefaultConfig = true
+        parallel = false
     }
     buildFeatures {
         compose = true

@@ -46,6 +46,7 @@ Detekt via a gradle command:
 ```sh
 ./gradlew detekt
 ./gradlew :gravatar:detekt
+./gradlew :gravatar-ui:detekt
 ./gradlew :app:detekt
 ```
 
