@@ -27,6 +27,7 @@ following commands:
 ```sh
 ./gradlew ktlintCheck
 ./gradlew :gravatar:ktlintCheck
+./gradlew :gravatar-ui:ktlintCheck
 ./gradlew :app:ktlintCheck
 ```
 
@@ -35,6 +36,7 @@ You can also try to let Ktlint fix the code style issues. Just use:
 ```sh
 ./gradlew ktlintFormat
 ./gradlew :gravatar:ktlintFormat
+./gradlew :gravatar-ui:ktlintFormat
 ./gradlew :app:ktlintFormat
 ```
 
