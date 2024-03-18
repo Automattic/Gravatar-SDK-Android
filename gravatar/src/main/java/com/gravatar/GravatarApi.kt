@@ -1,7 +1,7 @@
 package com.gravatar
 
+import com.gravatar.api.models.UserProfiles
 import com.gravatar.logger.Logger
-import com.gravatar.models.UserProfiles
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
