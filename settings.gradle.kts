@@ -31,3 +31,4 @@ dependencyResolutionManagement {
 rootProject.name = "gravatar"
 include(":gravatar")
 include(":app")
+include(":gravatar-ui")
