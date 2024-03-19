@@ -17,6 +17,7 @@ pluginManagement {
     }
     plugins {
         id ("com.automattic.android.publish-to-s3") version ("0.10.0")
+        id ("org.jetbrains.dokka") version ("1.9.20")
     }
 }
 dependencyResolutionManagement {
@@ -31,3 +32,4 @@ dependencyResolutionManagement {
 rootProject.name = "gravatar"
 include(":gravatar")
 include(":app")
+include(":gravatar-ui")

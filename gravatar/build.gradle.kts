@@ -1,3 +1,5 @@
+import org.jetbrains.dokka.gradle.DokkaTaskPartial
+
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
@@ -7,10 +9,12 @@ plugins {
 
     // Detekt
     id("io.gitlab.arturbosch.detekt")
+
+    // Publish artifact to S3
     id("com.automattic.android.publish-to-s3")
 
     // Dokka
-    id("org.jetbrains.dokka") version "1.9.10"
+    id("org.jetbrains.dokka")
 
     // OpenApi Generator
     id("org.openapi.generator") version "7.4.0"
@@ -42,12 +46,6 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.8"
-    }
     detekt {
         config.setFrom("${project.rootDir}/config/detekt/detekt.yml")
         source.setFrom("src")
@@ -62,9 +60,12 @@ android {
         }
     }
 
-    tasks.dokkaHtml.configure {
-        outputDirectory.set(file("../docs/dokka"))
-        notCompatibleWithConfigurationCache("https://github.com/Kotlin/dokka/issues/2231")
+    tasks.withType<DokkaTaskPartial>().configureEach {
+        dokkaSourceSets {
+            configureEach {
+                includes.from("GravatarCore.md")
+            }
+        }
     }
 
     // Explicit API mode
@@ -78,15 +79,6 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
-    implementation("com.github.yalantis:ucrop:2.2.8")
-
-    // Jetpack Compose
-    implementation(platform("androidx.compose:compose-bom:2024.02.00"))
-    implementation("androidx.activity:activity-compose:1.8.2")
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.material3:material3")
-    debugImplementation("androidx.compose.ui:ui-tooling:1.6.2")
 
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.robolectric:robolectric:4.11.1")
