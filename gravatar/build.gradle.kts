@@ -1,3 +1,5 @@
+import org.jetbrains.dokka.gradle.DokkaTaskPartial
+
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
@@ -12,7 +14,7 @@ plugins {
     id("com.automattic.android.publish-to-s3")
 
     // Dokka
-    id("org.jetbrains.dokka") version "1.9.10"
+    id("org.jetbrains.dokka")
 
     // OpenApi Generator
     id("org.openapi.generator") version "7.4.0"
@@ -58,9 +60,12 @@ android {
         }
     }
 
-    tasks.dokkaHtml.configure {
-        outputDirectory.set(file("../docs/dokka"))
-        notCompatibleWithConfigurationCache("https://github.com/Kotlin/dokka/issues/2231")
+    tasks.withType<DokkaTaskPartial>().configureEach {
+        dokkaSourceSets {
+            configureEach {
+                includes.from("GravatarCore.md")
+            }
+        }
     }
 
     // Explicit API mode

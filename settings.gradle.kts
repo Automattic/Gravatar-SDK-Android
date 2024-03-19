@@ -17,6 +17,7 @@ pluginManagement {
     }
     plugins {
         id ("com.automattic.android.publish-to-s3") version ("0.10.0")
+        id ("org.jetbrains.dokka") version ("1.9.20")
     }
 }
 dependencyResolutionManagement {

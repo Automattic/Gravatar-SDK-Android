@@ -1,3 +1,5 @@
+import org.jetbrains.dokka.gradle.DokkaTaskPartial
+
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
@@ -7,6 +9,9 @@ plugins {
 
     // Detekt
     id("io.gitlab.arturbosch.detekt")
+
+    // Dokka
+    id("org.jetbrains.dokka")
 }
 
 android {
@@ -45,6 +50,14 @@ android {
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.8"
+    }
+
+    tasks.withType<DokkaTaskPartial>().configureEach {
+        dokkaSourceSets {
+            configureEach {
+                includes.from("GravatarUi.md")
+            }
+        }
     }
 }
 
