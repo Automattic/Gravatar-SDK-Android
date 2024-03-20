@@ -10,9 +10,8 @@ import java.util.Locale
  * Gravatar avatar URL.
  */
 public class AvatarUrl {
-    private var canonicalUrl: Uri
+    public val canonicalUrl: Uri
     public val hash: Hash
-    public var avatarQueryOptions: AvatarQueryOptions? = null
 
     public companion object {
         internal fun hashFromUrl(url: Uri): Hash {
@@ -72,8 +71,9 @@ public class AvatarUrl {
      *
      * @param uri Gravatar URL
      */
-    public constructor(uri: Uri) : this(hashFromUrl(uri)) {
-        canonicalUrl = dropQueryParams(uri)
+    public constructor(uri: Uri) {
+        this.hash = hashFromUrl(uri)
+        this.canonicalUrl = dropQueryParams(uri)
         require(isAvatarUrl())
     }
 
