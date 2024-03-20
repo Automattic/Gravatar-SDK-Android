@@ -12,6 +12,9 @@ import retrofit2.Callback
 import retrofit2.Response
 import com.gravatar.di.container.GravatarSdkContainer.Companion.instance as GravatarSdkDI
 
+/**
+ * Service for managing Gravatar profiles.
+ */
 public class ProfileService(private val okHttpClient: OkHttpClient? = null) {
     private companion object {
         const val LOG_TAG = "Gravatar"
@@ -19,25 +22,9 @@ public class ProfileService(private val okHttpClient: OkHttpClient? = null) {
 
     private val coroutineScope = CoroutineScope(GravatarSdkDI.dispatcherDefault)
 
-    /**
-     * Fetches a Gravatar profile for the given email address.
-     *
-     * @param email The email address to fetch the profile for
-     * @param getProfileListener The listener to notify of the fetch result
-     */
-    public fun fetch(email: Email, getProfileListener: GravatarListener<UserProfiles>) {
-        fetch(email.hash(), getProfileListener = getProfileListener)
-    }
-
-    /**
-     * Fetches a Gravatar profile for the given hash.
-     *
-     * @param hash The hash to fetch the profile for
-     * @param getProfileListener The listener to notify of the fetch result
-     */
-    public fun fetch(hash: Hash, getProfileListener: GravatarListener<UserProfiles>) {
+    private fun fetch(hashOrUsername: String, getProfileListener: GravatarListener<UserProfiles>) {
         val service = GravatarSdkDI.getGravatarBaseService(okHttpClient)
-        service.getProfile(hash.toString()).enqueue(
+        service.getProfile(hashOrUsername).enqueue(
             object : Callback<UserProfiles> {
                 override fun onResponse(call: Call<UserProfiles>, response: Response<UserProfiles>) {
                     coroutineScope.launch {
@@ -64,5 +51,35 @@ public class ProfileService(private val okHttpClient: OkHttpClient? = null) {
                 }
             },
         )
+    }
+
+    /**
+     * Fetches a Gravatar profile for the given email address.
+     *
+     * @param email The email address to fetch the profile for
+     * @param getProfileListener The listener to notify of the fetch result
+     */
+    public fun fetch(email: Email, getProfileListener: GravatarListener<UserProfiles>) {
+        fetch(email.hash(), getProfileListener = getProfileListener)
+    }
+
+    /**
+     * Fetches a Gravatar profile for the given hash.
+     *
+     * @param hash The hash to fetch the profile for
+     * @param getProfileListener The listener to notify of the fetch result
+     */
+    public fun fetch(hash: Hash, getProfileListener: GravatarListener<UserProfiles>) {
+        fetch(hash.toString(), getProfileListener = getProfileListener)
+    }
+
+    /**
+     * Fetches a Gravatar profile for the given username.
+     *
+     * @param username The username to fetch the profile for
+     * @param getProfileListener The listener to notify of the fetch result
+     */
+    public fun fetchByUsername(username: String, getProfileListener: GravatarListener<UserProfiles>) {
+        fetch(username, getProfileListener = getProfileListener)
     }
 }

@@ -3,6 +3,7 @@ package com.gravatar
 import com.gravatar.services.AvatarService
 import com.gravatar.services.ErrorType
 import com.gravatar.services.GravatarListener
+import com.gravatar.types.Email
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.spyk
@@ -48,7 +49,7 @@ class AvatarServiceTest {
             )
         }
 
-        avatarService.upload(File("avatarFile"), "email", "accessToken", uploadGravatarListener)
+        avatarService.upload(File("avatarFile"), Email("email"), "accessToken", uploadGravatarListener)
 
         verify(exactly = 1) {
             containerRule.gravatarApiServiceMock.uploadImage(
@@ -133,7 +134,7 @@ class AvatarServiceTest {
             )
         }
 
-        avatarService.upload(File("avatarFile"), "email", "accessToken", uploadGravatarListener)
+        avatarService.upload(File("avatarFile"), Email("email"), "accessToken", uploadGravatarListener)
 
         verify(exactly = 1) {
             uploadGravatarListener.onError(expectedErrorType)
@@ -155,7 +156,7 @@ class AvatarServiceTest {
             )
         }
 
-        avatarService.upload(File("avatarFile"), "email", "accessToken", uploadGravatarListener)
+        avatarService.upload(File("avatarFile"), Email("email"), "accessToken", uploadGravatarListener)
 
         verify(exactly = 1) {
             uploadGravatarListener.onError(expectedErrorType)

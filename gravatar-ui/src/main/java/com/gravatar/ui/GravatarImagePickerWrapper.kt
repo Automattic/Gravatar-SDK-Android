@@ -19,6 +19,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.core.net.toFile
 import com.gravatar.services.AvatarService
 import com.gravatar.services.GravatarListener
+import com.gravatar.types.Email
 import com.yalantis.ucrop.UCrop
 import com.yalantis.ucrop.UCropActivity
 import java.io.File
@@ -51,7 +52,7 @@ public fun GravatarImagePickerWrapper(
         it.data?.let { intentData ->
             UCrop.getOutput(intentData)?.let { croppedImageUri ->
                 listener.onAvatarUploadStarted()
-                AvatarService().upload(croppedImageUri.toFile(), email, accessToken, listener)
+                AvatarService().upload(croppedImageUri.toFile(), Email(email), accessToken, listener)
             }
         }
     }
