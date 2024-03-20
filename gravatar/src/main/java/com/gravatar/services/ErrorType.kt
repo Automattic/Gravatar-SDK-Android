@@ -1,5 +1,14 @@
 package com.gravatar.services
 
+import com.gravatar.HttpResponseCode
+
+internal fun errorTypeFromHttpCode(code: Int): ErrorType = when (code) {
+    HttpResponseCode.HTTP_CLIENT_TIMEOUT -> ErrorType.TIMEOUT
+    HttpResponseCode.HTTP_NOT_FOUND -> ErrorType.NOT_FOUND
+    in HttpResponseCode.SERVER_ERRORS -> ErrorType.SERVER
+    else -> ErrorType.UNKNOWN
+}
+
 /**
  * Error types for Gravatar image upload
  */

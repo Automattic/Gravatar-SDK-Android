@@ -41,7 +41,7 @@ public class ProfileService(private val okHttpClient: OkHttpClient? = null) {
                                 LOG_TAG,
                                 "Network call unsuccessful trying to get Gravatar profile: $response.body",
                             )
-                            getProfileListener.onError(httpErrorToErrorType(response.code()))
+                            getProfileListener.onError(errorTypeFromHttpCode(response.code()))
                         }
                     }
                 }
