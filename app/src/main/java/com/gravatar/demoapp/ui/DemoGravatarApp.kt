@@ -41,8 +41,9 @@ import coil.compose.rememberAsyncImagePainter
 import coil.request.CachePolicy
 import coil.request.ImageRequest
 import coil.size.Size
-import com.gravatar.DefaultAvatarImage
-import com.gravatar.GravatarApi
+import com.gravatar.AvatarQueryOptions
+import com.gravatar.AvatarUrl
+import com.gravatar.DefaultAvatarOption
 import com.gravatar.ImageRating
 import com.gravatar.R
 import com.gravatar.api.models.UserProfiles
@@ -50,8 +51,10 @@ import com.gravatar.demoapp.theme.GravatarDemoAppTheme
 import com.gravatar.demoapp.ui.components.GravatarEmailInput
 import com.gravatar.demoapp.ui.components.ProfileCard
 import com.gravatar.demoapp.ui.model.SettingsState
-import com.gravatar.emailAddressToGravatarUrl
-import com.gravatar.sha256Hash
+import com.gravatar.services.ErrorType
+import com.gravatar.services.GravatarListener
+import com.gravatar.services.ProfileService
+import com.gravatar.types.Email
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -77,17 +80,17 @@ fun DemoGravatarApp() {
     }
 }
 
-val defaultAvatarImages by lazy {
+val defaultAvatarOptions by lazy {
     listOf(
-        DefaultAvatarImage.MysteryPerson,
-        DefaultAvatarImage.Status404,
-        DefaultAvatarImage.Identicon,
-        DefaultAvatarImage.Monster,
-        DefaultAvatarImage.Wavatar,
-        DefaultAvatarImage.Retro,
-        DefaultAvatarImage.Blank,
-        DefaultAvatarImage.Robohash,
-        DefaultAvatarImage.CustomUrl(
+        DefaultAvatarOption.MysteryPerson,
+        DefaultAvatarOption.Status404,
+        DefaultAvatarOption.Identicon,
+        DefaultAvatarOption.MonsterId,
+        DefaultAvatarOption.Wavatar,
+        DefaultAvatarOption.Retro,
+        DefaultAvatarOption.TransparentPNG,
+        DefaultAvatarOption.RoboHash,
+        DefaultAvatarOption.CustomUrl(
             "https://t.ly/o2EXH",
         ),
     )
@@ -149,7 +152,7 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
     var profiles by remember { mutableStateOf(UserProfiles(emptyList()), neverEqualPolicy()) }
     var loading by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf("") }
-    val gravatarApi = GravatarApi()
+    val profileService = ProfileService()
     val keyboardController = LocalSoftwareKeyboardController.current
 
     Surface(modifier) {
@@ -165,18 +168,17 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
                 modifier = Modifier.padding(top = 8.dp),
                 onClick = {
                     keyboardController?.hide()
-                    hash = email.sha256Hash()
                     loading = true
                     error = ""
-                    gravatarApi.getProfile(
-                        hash,
-                        object : GravatarApi.GravatarListener<UserProfiles> {
+                    profileService.fetch(
+                        Email(email),
+                        object : GravatarListener<UserProfiles> {
                             override fun onSuccess(response: UserProfiles) {
                                 profiles = response
                                 loading = false
                             }
 
-                            override fun onError(errorType: GravatarApi.ErrorType) {
+                            override fun onError(errorType: ErrorType) {
                                 onError(errorType.name, null)
                                 error = errorType.name
                                 loading = false
@@ -228,8 +230,8 @@ private fun AvatarTab(
                 email = "gravatar@automattic.com",
                 size = null,
                 defaultAvatarImageEnabled = false,
-                selectedDefaultAvatar = DefaultAvatarImage.Monster,
-                defaultAvatarOptions = defaultAvatarImages,
+                selectedDefaultAvatar = DefaultAvatarOption.MonsterId,
+                defaultAvatarOptions = defaultAvatarOptions,
                 forceDefaultAvatar = false,
                 imageRatingEnabled = false,
                 imageRating = ImageRating.General,
@@ -254,17 +256,20 @@ private fun AvatarTab(
                     try {
                         keyboardController?.hide()
                         onGravatarUrlChanged(
-                            emailAddressToGravatarUrl(
-                                email = settingsState.email,
-                                size = settingsState.size,
-                                defaultAvatarImage = if (settingsState.defaultAvatarImageEnabled) {
-                                    settingsState.selectedDefaultAvatar
-                                } else {
-                                    null
-                                },
-                                forceDefaultAvatarImage = if (settingsState.forceDefaultAvatar) true else null,
-                                rating = if (settingsState.imageRatingEnabled) settingsState.imageRating else null,
-                            ),
+                            AvatarUrl(
+                                Email(settingsState.email),
+                            ).uri(
+                                AvatarQueryOptions(
+                                    preferredSize = settingsState.size,
+                                    defaultAvatarOption = if (settingsState.defaultAvatarImageEnabled) {
+                                        settingsState.selectedDefaultAvatar
+                                    } else {
+                                        null
+                                    },
+                                    forceDefaultAvatar = if (settingsState.forceDefaultAvatar) true else null,
+                                    rating = if (settingsState.imageRatingEnabled) settingsState.imageRating else null,
+                                ),
+                            ).toString(),
                         )
                     } catch (e: Exception) {
                         onError(null, e.fillInStackTrace())

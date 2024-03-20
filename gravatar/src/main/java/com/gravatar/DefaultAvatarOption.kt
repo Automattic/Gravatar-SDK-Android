@@ -3,11 +3,11 @@ package com.gravatar
 /**
  * The default avatar image to use when the user does not have a Gravatar image.
  */
-public sealed class DefaultAvatarImage {
+public sealed class DefaultAvatarOption {
     /**
      * @suppress
      */
-    public abstract class Predefined(public val style: String) : DefaultAvatarImage()
+    public abstract class Predefined(public val style: String) : DefaultAvatarOption()
 
     /**
      * Mystery Person: simple, cartoon-style silhouetted outline of a person (does not vary by email)
@@ -28,7 +28,7 @@ public sealed class DefaultAvatarImage {
     /**
      * Monster: a generated "monster" with different colors, faces, etc
      */
-    public data object Monster : Predefined("monsterid")
+    public data object MonsterId : Predefined("monsterid")
 
     /**
      * Wavatar: generated faces with differing features and backgrounds
@@ -43,12 +43,12 @@ public sealed class DefaultAvatarImage {
     /**
      * Blank: a transparent PNG image
      */
-    public data object Blank : Predefined("blank")
+    public data object TransparentPNG : Predefined("blank")
 
     /**
      * Robohash: a generated robot with different colors, faces, etc
      */
-    public data object Robohash : Predefined("robohash")
+    public data object RoboHash : Predefined("robohash")
 
     /**
      * If you prefer to use your own default image (perhaps your logo, a funny face, whatever), then you can
@@ -65,7 +65,7 @@ public sealed class DefaultAvatarImage {
      *
      * @param defaultImageUrl the custom url to use as the default avatar image.
      */
-    public data class CustomUrl(val defaultImageUrl: String) : DefaultAvatarImage()
+    public data class CustomUrl(val defaultImageUrl: String) : DefaultAvatarOption()
 
     /**
      * Get the query parameter for the default avatar image depending on the type of default avatar image.
