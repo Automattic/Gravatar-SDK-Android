@@ -50,7 +50,7 @@ public class AvatarService(private val okHttpClient: OkHttpClient? = null) {
                                 LOG_TAG,
                                 "Network call unsuccessful trying to upload Gravatar: $response.body",
                             )
-                            gravatarUploadListener.onError(httpErrorToErrorType(response.code()))
+                            gravatarUploadListener.onError(errorTypeFromHttpCode(response.code()))
                         }
                     }
                 }
