@@ -1,6 +1,7 @@
 package com.gravatar.services
 
 import com.gravatar.logger.Logger
+import com.gravatar.types.Email
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
@@ -13,6 +14,9 @@ import retrofit2.Response
 import java.io.File
 import com.gravatar.di.container.GravatarSdkContainer.Companion.instance as GravatarSdkDI
 
+/**
+ * Service for managing Gravatar avatars.
+ */
 public class AvatarService(private val okHttpClient: OkHttpClient? = null) {
     private companion object {
         const val LOG_TAG = "Gravatar"
@@ -28,9 +32,9 @@ public class AvatarService(private val okHttpClient: OkHttpClient? = null) {
      * @param accessToken The bearer token for the user's WordPress/Gravatar account
      * @param gravatarUploadListener The listener to notify of the upload result
      */
-    public fun upload(file: File, email: String, accessToken: String, gravatarUploadListener: GravatarListener<Unit>) {
+    public fun upload(file: File, email: Email, accessToken: String, gravatarUploadListener: GravatarListener<Unit>) {
         val service = GravatarSdkDI.getGravatarApiService(okHttpClient)
-        val identity = MultipartBody.Part.createFormData("account", email)
+        val identity = MultipartBody.Part.createFormData("account", email.toString())
         val filePart =
             MultipartBody.Part.createFormData("filedata", file.name, file.asRequestBody())
 
