@@ -17,7 +17,7 @@ import com.gravatar.di.container.GravatarSdkContainer.Companion.instance as Grav
  */
 public class ProfileService(private val okHttpClient: OkHttpClient? = null) {
     private companion object {
-        const val LOG_TAG = "Gravatar"
+        const val LOG_TAG = "ProfileService"
     }
 
     private val coroutineScope = CoroutineScope(GravatarSdkDI.dispatcherDefault)
