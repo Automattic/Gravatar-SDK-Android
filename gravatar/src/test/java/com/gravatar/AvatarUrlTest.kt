@@ -8,6 +8,7 @@ import com.gravatar.DefaultAvatarOption.RoboHash
 import com.gravatar.ImageRating.ParentalGuidance
 import com.gravatar.ImageRating.X
 import com.gravatar.types.Email
+import com.gravatar.types.sha256Hash
 import junit.framework.TestCase.assertEquals
 import org.junit.Assert.assertThrows
 import org.junit.Test
