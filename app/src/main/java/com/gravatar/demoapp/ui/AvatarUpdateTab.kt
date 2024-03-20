@@ -24,10 +24,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.gravatar.GravatarApi
 import com.gravatar.R
 import com.gravatar.demoapp.ui.components.GravatarEmailInput
 import com.gravatar.demoapp.ui.components.GravatarPasswordInput
+import com.gravatar.services.ErrorType
 import com.gravatar.ui.GravatarImagePickerWrapper
 import com.gravatar.ui.GravatarImagePickerWrapperListener
 
@@ -71,7 +71,7 @@ fun AvatarUpdateTab(showSnackBar: (String?, Throwable?) -> Unit, modifier: Modif
                     showSnackBar(context.getString(R.string.avatar_update_upload_success_toast), null)
                 }
 
-                override fun onError(errorType: GravatarApi.ErrorType) {
+                override fun onError(errorType: ErrorType) {
                     isUploading = false
                     showSnackBar(context.getString(R.string.avatar_update_upload_failed_toast, errorType), null)
                 }

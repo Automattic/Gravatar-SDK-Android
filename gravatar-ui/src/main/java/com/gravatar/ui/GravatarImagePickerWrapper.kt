@@ -17,7 +17,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.net.toFile
-import com.gravatar.GravatarApi
+import com.gravatar.services.AvatarService
+import com.gravatar.services.GravatarListener
 import com.yalantis.ucrop.UCrop
 import com.yalantis.ucrop.UCropActivity
 import java.io.File
@@ -50,7 +51,7 @@ public fun GravatarImagePickerWrapper(
         it.data?.let { intentData ->
             UCrop.getOutput(intentData)?.let { croppedImageUri ->
                 listener.onAvatarUploadStarted()
-                GravatarApi().uploadGravatar(croppedImageUri.toFile(), email, accessToken, listener)
+                AvatarService().upload(croppedImageUri.toFile(), email, accessToken, listener)
             }
         }
     }
@@ -97,7 +98,7 @@ private fun launchAvatarCrop(
 /**
  * Listener for [GravatarImagePickerWrapper] that provides a way be informed about the avatar upload status.
  */
-public interface GravatarImagePickerWrapperListener : GravatarApi.GravatarListener<Unit> {
+public interface GravatarImagePickerWrapperListener : GravatarListener<Unit> {
     /**
      * Called when the avatar upload is started.
      */

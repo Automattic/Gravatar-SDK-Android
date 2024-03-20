@@ -16,7 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.gravatar.DefaultAvatarImage
+import com.gravatar.DefaultAvatarOption
 import com.gravatar.ImageRating
 import com.gravatar.R
 import com.gravatar.demoapp.theme.GravatarDemoAppTheme
@@ -30,7 +30,7 @@ fun GravatarImageSettings(
     onSizeChange: (Int?) -> Unit,
     onLoadGravatarClicked: () -> Unit,
     onDefaultAvatarImageEnabledChanged: (Boolean) -> Unit,
-    onDefaultAvatarImageChanged: (DefaultAvatarImage) -> Unit,
+    onDefaultAvatarImageChanged: (DefaultAvatarOption) -> Unit,
     onForceDefaultAvatarChanged: (Boolean) -> Unit,
     onImageRatingChanged: (ImageRating) -> Unit,
     onImageRatingEnabledChange: (Boolean) -> Unit,
@@ -117,8 +117,8 @@ fun GravatarImageSettingsPreview() {
                 email = "gravatar@automattic.com",
                 size = null,
                 defaultAvatarImageEnabled = true,
-                selectedDefaultAvatar = DefaultAvatarImage.Blank,
-                defaultAvatarOptions = defaultAvatarImages,
+                selectedDefaultAvatar = DefaultAvatarOption.TransparentPNG,
+                defaultAvatarOptions = defaultAvatarOptions,
                 forceDefaultAvatar = false,
                 imageRatingEnabled = false,
                 imageRating = ImageRating.General,
