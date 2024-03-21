@@ -38,13 +38,14 @@ fun ProfileCard(profile: UserProfile, modifier: Modifier = Modifier, avatarImage
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         AsyncImage(
-            AvatarUrl(Hash(profile.hash)).uri(
+            AvatarUrl(
+                Hash(profile.hash),
                 AvatarQueryOptions(
                     preferredSize = with(LocalDensity.current) {
                         avatarImageSize.toPx().toInt()
                     },
                 ),
-            ).toString(),
+            ).uri().toString(),
             contentDescription = "User profile image",
             modifier = Modifier
                 .clip(CircleShape)
