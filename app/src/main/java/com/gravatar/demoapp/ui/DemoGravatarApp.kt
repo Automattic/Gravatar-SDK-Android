@@ -54,7 +54,6 @@ import com.gravatar.demoapp.ui.model.SettingsState
 import com.gravatar.services.ErrorType
 import com.gravatar.services.GravatarListener
 import com.gravatar.services.ProfileService
-import com.gravatar.types.Email
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -170,8 +169,8 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
                     keyboardController?.hide()
                     loading = true
                     error = ""
-                    profileService.fetch(
-                        Email(email),
+                    profileService.fetchWithEmail(
+                        email,
                         object : GravatarListener<UserProfiles> {
                             override fun onSuccess(response: UserProfiles) {
                                 profiles = response
@@ -256,9 +255,7 @@ private fun AvatarTab(
                     try {
                         keyboardController?.hide()
                         onGravatarUrlChanged(
-                            AvatarUrl(
-                                Email(settingsState.email),
-                            ).uri(
+                            AvatarUrl.fromEmail(settingsState.email).uri(
                                 AvatarQueryOptions(
                                     preferredSize = settingsState.size,
                                     defaultAvatarOption = if (settingsState.defaultAvatarImageEnabled) {

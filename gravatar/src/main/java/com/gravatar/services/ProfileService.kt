@@ -2,8 +2,7 @@ package com.gravatar.services
 
 import com.gravatar.api.models.UserProfiles
 import com.gravatar.logger.Logger
-import com.gravatar.types.Email
-import com.gravatar.types.Hash
+import com.gravatar.trimAndGravatarHash
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
@@ -59,8 +58,8 @@ public class ProfileService(private val okHttpClient: OkHttpClient? = null) {
      * @param email The email address to fetch the profile for
      * @param getProfileListener The listener to notify of the fetch result
      */
-    public fun fetch(email: Email, getProfileListener: GravatarListener<UserProfiles>) {
-        fetch(email.hash(), getProfileListener = getProfileListener)
+    public fun fetchWithEmail(email: String, getProfileListener: GravatarListener<UserProfiles>) {
+        fetch(email.trimAndGravatarHash(), getProfileListener = getProfileListener)
     }
 
     /**
@@ -69,8 +68,8 @@ public class ProfileService(private val okHttpClient: OkHttpClient? = null) {
      * @param hash The hash to fetch the profile for
      * @param getProfileListener The listener to notify of the fetch result
      */
-    public fun fetch(hash: Hash, getProfileListener: GravatarListener<UserProfiles>) {
-        fetch(hash.toString(), getProfileListener = getProfileListener)
+    public fun fetchWithHash(hash: String, getProfileListener: GravatarListener<UserProfiles>) {
+        fetch(hash, getProfileListener = getProfileListener)
     }
 
     /**
@@ -79,7 +78,7 @@ public class ProfileService(private val okHttpClient: OkHttpClient? = null) {
      * @param username The username to fetch the profile for
      * @param getProfileListener The listener to notify of the fetch result
      */
-    public fun fetchByUsername(username: String, getProfileListener: GravatarListener<UserProfiles>) {
+    public fun fetchWithUsername(username: String, getProfileListener: GravatarListener<UserProfiles>) {
         fetch(username, getProfileListener = getProfileListener)
     }
 }

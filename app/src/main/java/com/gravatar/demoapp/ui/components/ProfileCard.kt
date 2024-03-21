@@ -29,7 +29,6 @@ import com.gravatar.AvatarQueryOptions
 import com.gravatar.AvatarUrl
 import com.gravatar.api.models.Email
 import com.gravatar.api.models.UserProfile
-import com.gravatar.types.Hash
 
 @Composable
 fun ProfileCard(profile: UserProfile, modifier: Modifier = Modifier, avatarImageSize: Dp = 128.dp) {
@@ -38,7 +37,7 @@ fun ProfileCard(profile: UserProfile, modifier: Modifier = Modifier, avatarImage
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         AsyncImage(
-            AvatarUrl(Hash(profile.hash)).uri(
+            AvatarUrl(profile.hash).uri(
                 AvatarQueryOptions(
                     preferredSize = with(LocalDensity.current) {
                         avatarImageSize.toPx().toInt()

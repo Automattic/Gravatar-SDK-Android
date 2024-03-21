@@ -7,8 +7,8 @@ import com.gravatar.DefaultAvatarOption.MonsterId
 import com.gravatar.DefaultAvatarOption.RoboHash
 import com.gravatar.ImageRating.ParentalGuidance
 import com.gravatar.ImageRating.X
-import com.gravatar.types.Email
-import com.gravatar.types.sha256Hash
+import com.gravatar.types.gravatarHash
+import com.gravatar.types.trimAndGravatarHash
 import junit.framework.TestCase.assertEquals
 import org.junit.Assert.assertThrows
 import org.junit.Test
@@ -21,7 +21,7 @@ class AvatarUrlTest {
     fun `emailAddressToGravatarUrl must not add any query param if not set`() {
         assertEquals(
             "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe970a1e66",
-            AvatarUrl(Email("example@example.com")).uri().toString(),
+            AvatarUrl.fromEmail("example@example.com").uri().toString(),
         )
     }
 
@@ -30,7 +30,7 @@ class AvatarUrlTest {
         assertEquals(
             "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe970a1e66" +
                 "?s=1000",
-            AvatarUrl(Email("example@example.com")).uri(AvatarQueryOptions(preferredSize = 1000)).toString(),
+            AvatarUrl.fromEmail("example@example.com").uri(AvatarQueryOptions(preferredSize = 1000)).toString(),
         )
     }
 
@@ -39,7 +39,9 @@ class AvatarUrlTest {
         assertEquals(
             "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe970a1e66" +
                 "?d=monsterid",
-            AvatarUrl(Email("example@example.com")).uri(AvatarQueryOptions(defaultAvatarOption = MonsterId)).toString(),
+            AvatarUrl.fromEmail(
+                "example@example.com",
+            ).uri(AvatarQueryOptions(defaultAvatarOption = MonsterId)).toString(),
         )
     }
 
@@ -50,7 +52,7 @@ class AvatarUrlTest {
                 "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe" +
                     "970a1e66?d=identicon&s=42",
             ),
-            AvatarUrl(Email("example@example.com")).uri(AvatarQueryOptions(42, Identicon)),
+            AvatarUrl.fromEmail("example@example.com").uri(AvatarQueryOptions(42, Identicon)),
         )
     }
 
@@ -61,7 +63,7 @@ class AvatarUrlTest {
                 "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe" +
                     "970a1e66?d=robohash&s=42&r=x&f=y",
             ),
-            AvatarUrl(Email("example@example.com")).uri(AvatarQueryOptions(42, RoboHash, X, true)),
+            AvatarUrl.fromEmail("example@example.com").uri(AvatarQueryOptions(42, RoboHash, X, true)),
         )
     }
 
@@ -168,7 +170,7 @@ class AvatarUrlTest {
     fun `hashing an input string with sha256 returns a valid hex string`() {
         assertEquals(
             "7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069",
-            "Hello World!".sha256Hash(),
+            "Hello World!".gravatarHash(),
         )
     }
 
@@ -176,47 +178,47 @@ class AvatarUrlTest {
     fun `hashing a valid email address returns the expected hex string`() {
         assertEquals(
             "31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe970a1e66",
-            Email("example@example.com").hash().toString(),
+            "example@example.com".trimAndGravatarHash(),
         )
     }
 
     @Test
     fun `hashing an email address trim left most empty spaces`() {
         assertEquals(
-            Email("   example@example.com").hash().toString(),
-            Email("example@example.com").hash().toString(),
+            "   example@example.com".trimAndGravatarHash(),
+            "example@example.com".trimAndGravatarHash(),
         )
     }
 
     @Test
     fun `hashing an email address trim right most empty spaces`() {
         assertEquals(
-            Email("example@example.com  ").hash().toString(),
-            Email("example@example.com").hash().toString(),
+            "example@example.com  ".trimAndGravatarHash(),
+            "example@example.com".trimAndGravatarHash(),
         )
     }
 
     @Test
     fun `hashing an email address trim left and right most empty spaces`() {
         assertEquals(
-            Email("    example@example.com   ").hash().toString(),
-            Email("example@example.com").hash().toString(),
+            "    example@example.com   ".trimAndGravatarHash(),
+            "example@example.com".trimAndGravatarHash(),
         )
     }
 
     @Test
     fun `hashing an email address lowercase inputs`() {
         assertEquals(
-            Email("example@EXAMPLE.com").hash().toString(),
-            Email("example@example.com").hash().toString(),
+            "example@EXAMPLE.com".trimAndGravatarHash(),
+            "example@example.com".trimAndGravatarHash(),
         )
     }
 
     @Test
     fun `hashing an email address lowercase inputs and trim left and right most empty spaces`() {
         assertEquals(
-            Email(" EXample@EXAMPLE.com  ").hash().toString(),
-            Email("example@example.com").hash().toString(),
+            " EXample@EXAMPLE.com  ".trimAndGravatarHash(),
+            "example@example.com".trimAndGravatarHash(),
         )
     }
 
@@ -225,7 +227,7 @@ class AvatarUrlTest {
         assertEquals(
             "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe970a1e66" +
                 "?d=https%3A%2F%2Fexample.com%2F%3Fencoded%3Dtrue%26please%3Dyes",
-            AvatarUrl(Email("example@example.com")).uri(
+            AvatarUrl.fromEmail("example@example.com").uri(
                 AvatarQueryOptions(
                     defaultAvatarOption = CustomUrl("https://example.com/?encoded=true&please=yes"),
                 ),
