@@ -3,6 +3,7 @@ import org.jetbrains.dokka.gradle.DokkaTaskPartial
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("com.automattic.android.publish-to-s3")
 
     // Ktlint
     id("org.jlleitschuh.gradle.ktlint")
@@ -81,4 +82,18 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
     debugImplementation("androidx.compose.ui:ui-tooling:1.6.2")
+}
+
+project.afterEvaluate {
+    publishing {
+        publications {
+            create<MavenPublication>("maven") {
+                from(components["release"])
+
+                groupId = "com.gravatar"
+                artifactId = "gravatar-ui"
+                // version is set by `publish-to-s3` plugin
+            }
+        }
+    }
 }
