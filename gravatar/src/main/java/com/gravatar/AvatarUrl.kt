@@ -12,6 +12,7 @@ import java.util.Locale
 public class AvatarUrl {
     public val canonicalUrl: Uri
     public val hash: Hash
+    public var avatarQueryOptions: AvatarQueryOptions? = null
 
     public companion object {
         internal fun hashFromUrl(url: Uri): Hash {
@@ -49,8 +50,9 @@ public class AvatarUrl {
      *
      * @param hash Gravatar hash
      */
-    public constructor(hash: Hash) {
+    public constructor(hash: Hash, avatarQueryOptions: AvatarQueryOptions? = null) {
         this.hash = hash
+        this.avatarQueryOptions = avatarQueryOptions
         this.canonicalUrl = Uri.Builder()
             .scheme("https")
             .authority(GRAVATAR_WWW_BASE_HOST)
@@ -64,16 +66,22 @@ public class AvatarUrl {
      *
      * @param email Email address
      */
-    public constructor(email: Email) : this(email.hash())
+    public constructor(
+        email: Email,
+        avatarQueryOptions: AvatarQueryOptions? = null,
+    ) : this(email.hash(), avatarQueryOptions)
 
     /**
      * Create an avatar URL from an existing Gravatar URL.
      *
      * @param uri Gravatar URL
      */
-    public constructor(uri: Uri) {
+    public constructor(uri: Uri, avatarQueryOptions: AvatarQueryOptions? = null) {
         this.hash = hashFromUrl(uri)
+        // Force the removal of query parameters as we can't be sure they are valid and won't interfere with
+        // the new query parameters
         this.canonicalUrl = dropQueryParams(uri)
+        this.avatarQueryOptions = avatarQueryOptions
         require(isAvatarUrl())
     }
 
@@ -88,14 +96,7 @@ public class AvatarUrl {
         } ?: false
     }
 
-    /**
-     * Get the Gravatar URL with the correct query parameters set, depending the passed options.
-     *
-     * @param options Avatar query options
-     *
-     * @return Gravatar avatar URL
-     */
-    public fun uri(options: AvatarQueryOptions? = null): Uri {
-        return canonicalUrl.buildUpon().appendGravatarQueryParameters(options).build()
+    public fun uri(): Uri {
+        return canonicalUrl.buildUpon().appendGravatarQueryParameters(avatarQueryOptions).build()
     }
 }

@@ -258,7 +258,6 @@ private fun AvatarTab(
                         onGravatarUrlChanged(
                             AvatarUrl(
                                 Email(settingsState.email),
-                            ).uri(
                                 AvatarQueryOptions(
                                     preferredSize = settingsState.size,
                                     defaultAvatarOption = if (settingsState.defaultAvatarImageEnabled) {
@@ -269,7 +268,7 @@ private fun AvatarTab(
                                     forceDefaultAvatar = if (settingsState.forceDefaultAvatar) true else null,
                                     rating = if (settingsState.imageRatingEnabled) settingsState.imageRating else null,
                                 ),
-                            ).toString(),
+                            ).uri().toString(),
                         )
                     } catch (e: Exception) {
                         onError(null, e.fillInStackTrace())
