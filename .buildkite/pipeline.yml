@@ -42,6 +42,8 @@ steps:
       ./gradlew \
       :gravatar:prepareToPublishToS3 $(prepare_to_publish_to_s3_params) \
       :gravatar:publish \
+      :gravatar-ui:prepareToPublishToS3 $(prepare_to_publish_to_s3_params) \
+      :gravatar-ui:publish \
       --no-configuration-cache
     plugins: [$CI_TOOLKIT]
     notify:
