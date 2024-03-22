@@ -92,14 +92,11 @@ public class AvatarUrl {
         } ?: false
     }
 
-    /**
-     * Get the Avatar URL including query parameters.
-     *
-     * @return URL
-     */
-    public fun url(): URL = URL(
-        canonicalUrl.protocol,
-        canonicalUrl.host,
-        canonicalUrl.path.plus(queryParameters(avatarQueryOptions)),
-    )
+    public fun url(): URL {
+        return URL(
+            canonicalUrl.protocol,
+            canonicalUrl.host,
+            canonicalUrl.path.plus(queryParameters(avatarQueryOptions)),
+        )
+    }
 }
