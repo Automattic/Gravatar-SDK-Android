@@ -268,7 +268,7 @@ private fun AvatarTab(
                                     forceDefaultAvatar = if (settingsState.forceDefaultAvatar) true else null,
                                     rating = if (settingsState.imageRatingEnabled) settingsState.imageRating else null,
                                 ),
-                            ).uri().toString(),
+                            ).url().toString(),
                         )
                     } catch (e: Exception) {
                         onError(null, e.fillInStackTrace())
