@@ -29,7 +29,7 @@ public class AvatarUrl {
     }
 
     private fun queryParameters(avatarQueryOptions: AvatarQueryOptions?): String {
-        var queryList = mutableListOf<String>()
+        val queryList = mutableListOf<String>()
         avatarQueryOptions?.defaultAvatarOption?.let {
             queryList.add("d=${URLEncoder.encode(it.queryParam(), "UTF-8")}")
         } // eg. default monster, "d=monsterid"
