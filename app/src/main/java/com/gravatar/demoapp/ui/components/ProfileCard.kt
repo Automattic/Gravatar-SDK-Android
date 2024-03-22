@@ -45,7 +45,7 @@ fun ProfileCard(profile: UserProfile, modifier: Modifier = Modifier, avatarImage
                         avatarImageSize.toPx().toInt()
                     },
                 ),
-            ).uri().toString(),
+            ).url().toString(),
             contentDescription = "User profile image",
             modifier = Modifier
                 .clip(CircleShape)
