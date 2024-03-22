@@ -1,6 +1,5 @@
 package com.gravatar
 
-import android.net.Uri
 import com.gravatar.DefaultAvatarOption.CustomUrl
 import com.gravatar.DefaultAvatarOption.Identicon
 import com.gravatar.DefaultAvatarOption.MonsterId
@@ -14,6 +13,7 @@ import org.junit.Assert.assertThrows
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import java.net.URL
 
 @RunWith(RobolectricTestRunner::class)
 class AvatarUrlTest {
@@ -21,7 +21,7 @@ class AvatarUrlTest {
     fun `emailAddressToGravatarUrl must not add any query param if not set`() {
         assertEquals(
             "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe970a1e66",
-            AvatarUrl(Email("example@example.com")).uri().toString(),
+            AvatarUrl(Email("example@example.com")).url().toString(),
         )
     }
 
@@ -30,7 +30,7 @@ class AvatarUrlTest {
         assertEquals(
             "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe970a1e66" +
                 "?s=1000",
-            AvatarUrl(Email("example@example.com"), AvatarQueryOptions(preferredSize = 1000)).uri().toString(),
+            AvatarUrl(Email("example@example.com"), AvatarQueryOptions(preferredSize = 1000)).url().toString(),
         )
     }
 
@@ -42,29 +42,29 @@ class AvatarUrlTest {
             AvatarUrl(
                 Email("example@example.com"),
                 AvatarQueryOptions(defaultAvatarOption = MonsterId),
-            ).uri().toString(),
+            ).url().toString(),
         )
     }
 
     @Test
     fun `emailAddressToGravatarUri must add size and default avatar query params`() {
         assertEquals(
-            Uri.parse(
+            URL(
                 "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe" +
                     "970a1e66?d=identicon&s=42",
             ),
-            AvatarUrl(Email("example@example.com"), AvatarQueryOptions(42, Identicon)).uri(),
+            AvatarUrl(Email("example@example.com"), AvatarQueryOptions(42, Identicon)).url(),
         )
     }
 
     @Test
     fun `emailAddressToGravatarUrl must add all supported parameters`() {
         assertEquals(
-            Uri.parse(
+            URL(
                 "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe" +
                     "970a1e66?d=robohash&s=42&r=x&f=y",
             ),
-            AvatarUrl(Email("example@example.com"), AvatarQueryOptions(42, RoboHash, X, true)).uri(),
+            AvatarUrl(Email("example@example.com"), AvatarQueryOptions(42, RoboHash, X, true)).url(),
         )
     }
 
@@ -73,11 +73,11 @@ class AvatarUrlTest {
         assertEquals(
             "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe970a1e66",
             AvatarUrl(
-                Uri.parse(
+                URL(
                     "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe" +
                         "970a1e66?d=identicon&s=42",
                 ),
-            ).uri().toString(),
+            ).url().toString(),
         )
     }
 
@@ -87,7 +87,7 @@ class AvatarUrlTest {
             "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe970a1e66" +
                 "?d=identicon&s=42&r=pg&f=y",
             AvatarUrl(
-                Uri.parse(
+                URL(
                     "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe" +
                         "970a1e66",
                 ),
@@ -97,7 +97,7 @@ class AvatarUrlTest {
                     ParentalGuidance,
                     true,
                 ),
-            ).uri().toString(),
+            ).url().toString(),
         )
     }
 
@@ -106,11 +106,11 @@ class AvatarUrlTest {
         assertEquals(
             "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe970a1e66",
             AvatarUrl(
-                Uri.parse(
+                URL(
                     "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe" +
                         "970a1e66?d=identicon&s=42",
                 ),
-            ).uri().toString(),
+            ).url().toString(),
         )
     }
 
@@ -119,11 +119,11 @@ class AvatarUrlTest {
         assertEquals(
             "http://gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe970a1e66",
             AvatarUrl(
-                Uri.parse(
+                URL(
                     "http://gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe" +
                         "970a1e66?d=identicon",
                 ),
-            ).uri().toString(),
+            ).url().toString(),
         )
     }
 
@@ -133,12 +133,12 @@ class AvatarUrlTest {
             "https://gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe970a1e66" +
                 "?d=identicon&s=42",
             AvatarUrl(
-                Uri.parse(
+                URL(
                     "https://gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe" +
                         "970a1e66?d=identicon&s=42",
                 ),
                 AvatarQueryOptions(42, Identicon),
-            ).uri().toString(),
+            ).url().toString(),
         )
     }
 
@@ -148,12 +148,12 @@ class AvatarUrlTest {
             "https://1.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe970a1e66" +
                 "?d=identicon&s=42",
             AvatarUrl(
-                Uri.parse(
+                URL(
                     "https://1.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe" +
                         "970a1e66?d=identicon&s=42",
                 ),
                 AvatarQueryOptions(42, Identicon),
-            ).uri().toString(),
+            ).url().toString(),
         )
     }
 
@@ -161,8 +161,19 @@ class AvatarUrlTest {
     fun `rewrite gravatar url fails on a non gravatar URL`() {
         assertThrows(IllegalArgumentException::class.java) {
             AvatarUrl(
-                Uri.parse(
+                URL(
                     "https://example.com/avatar/oiresntioes",
+                ),
+            )
+        }
+    }
+
+    @Test
+    fun `rewrite gravatar url fails on a non gravatar hash URL`() {
+        assertThrows(IllegalArgumentException::class.java) {
+            AvatarUrl(
+                URL(
+                    "https://gravatar.com/",
                 ),
             )
         }
@@ -234,7 +245,19 @@ class AvatarUrlTest {
                 AvatarQueryOptions(
                     defaultAvatarOption = CustomUrl("https://example.com/?encoded=true&please=yes"),
                 ),
-            ).uri().toString(),
+            ).url().toString(),
+        )
+    }
+
+    @Test
+    fun `Force default avatar false generate f=n`() {
+        assertEquals(
+            "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe970a1e66" +
+                "?f=n",
+            AvatarUrl(
+                Email("example@example.com"),
+                AvatarQueryOptions(forceDefaultAvatar = false),
+            ).url().toString(),
         )
     }
 }
