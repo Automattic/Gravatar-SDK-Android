@@ -1,5 +1,6 @@
 package com.gravatar.extensions
 
+import com.gravatar.AvatarQueryOptions
 import com.gravatar.AvatarUrl
 import com.gravatar.ProfileUrl
 import com.gravatar.api.models.UserProfile
@@ -15,8 +16,8 @@ public fun UserProfile.hash(): Hash {
 /**
  * Get the avatar URL for a user profile.
  */
-public fun UserProfile.avatarUrl(): AvatarUrl {
-    return AvatarUrl(this.hash())
+public fun UserProfile.avatarUrl(avatarQueryOptions: AvatarQueryOptions? = null): AvatarUrl {
+    return AvatarUrl(this.hash(), avatarQueryOptions)
 }
 
 /**
