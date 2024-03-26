@@ -18,18 +18,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastFirstOrNull
-import coil.compose.AsyncImage
-import com.gravatar.AvatarQueryOptions
-import com.gravatar.AvatarUrl
 import com.gravatar.api.models.Email
 import com.gravatar.api.models.UserProfile
 import com.gravatar.extensions.hash
+import com.gravatar.ui.components.atomic.Avatar
 
 @Composable
 fun ProfileCard(profile: UserProfile, modifier: Modifier = Modifier, avatarImageSize: Dp = 128.dp) {
@@ -37,19 +34,10 @@ fun ProfileCard(profile: UserProfile, modifier: Modifier = Modifier, avatarImage
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        AsyncImage(
-            AvatarUrl(
-                profile.hash(),
-                AvatarQueryOptions(
-                    preferredSize = with(LocalDensity.current) {
-                        avatarImageSize.toPx().toInt()
-                    },
-                ),
-            ).url().toString(),
-            contentDescription = "User profile image",
-            modifier = Modifier
-                .clip(CircleShape)
-                .size(avatarImageSize),
+        Avatar(
+            profile = profile,
+            size = avatarImageSize,
+            modifier = Modifier.clip(CircleShape),
         )
 
         Spacer(modifier = Modifier.height(16.dp))
