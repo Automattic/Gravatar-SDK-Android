@@ -8,8 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -25,7 +24,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastFirstOrNull
 import com.gravatar.api.models.Email
 import com.gravatar.api.models.UserProfile
-import com.gravatar.extensions.hash
 import com.gravatar.ui.components.atomic.Avatar
 
 @Composable
@@ -37,7 +35,7 @@ fun ProfileCard(profile: UserProfile, modifier: Modifier = Modifier, avatarImage
         Avatar(
             profile = profile,
             size = avatarImageSize,
-            modifier = Modifier.clip(CircleShape),
+            modifier = Modifier.clip(RoundedCornerShape(8.dp)),
         )
 
         Spacer(modifier = Modifier.height(16.dp))
