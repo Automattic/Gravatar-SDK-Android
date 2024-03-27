@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,7 +25,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastFirstOrNull
 import com.gravatar.api.models.Email
 import com.gravatar.api.models.UserProfile
+import com.gravatar.ui.components.atomic.AboutMe
 import com.gravatar.ui.components.atomic.Avatar
+import com.gravatar.ui.components.atomic.DisplayName
 
 @Composable
 fun ProfileCard(profile: UserProfile, modifier: Modifier = Modifier, avatarImageSize: Dp = 128.dp) {
@@ -40,33 +43,21 @@ fun ProfileCard(profile: UserProfile, modifier: Modifier = Modifier, avatarImage
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        (profile.displayName ?: profile.preferredUsername)?.let {
-            Text(
-                text = it,
-                style = MaterialTheme.typography.headlineMedium,
-                textAlign = TextAlign.Center,
-            )
-            Spacer(modifier = Modifier.height(8.dp))
+        ProvideTextStyle(MaterialTheme.typography.headlineMedium) {
+            DisplayName(profile)
         }
 
-        profile.preferredUsername?.let {
-            Text(
-                text = it,
-                style = MaterialTheme.typography.titleSmall,
-                color = Color.Gray,
-                textAlign = TextAlign.Center,
-            )
-            Spacer(modifier = Modifier.height(8.dp))
+        ProvideTextStyle(MaterialTheme.typography.bodyMedium.merge(color = Color.Gray)) {
+            Text(text = profile.preferredUsername ?: "")
         }
 
-        profile.aboutMe?.let {
-            Text(
-                text = it,
-                style = MaterialTheme.typography.bodyMedium,
-                textAlign = TextAlign.Center,
-            )
-            Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(8.dp))
+
+        ProvideTextStyle(MaterialTheme.typography.bodyMedium.merge(textAlign = TextAlign.Center)) {
+            AboutMe(profile)
         }
+
+        Spacer(modifier = Modifier.height(8.dp))
 
         val emailLauncher = rememberLauncherForActivityResult(
             contract = ActivityResultContracts.StartActivityForResult(),
