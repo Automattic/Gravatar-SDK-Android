@@ -87,6 +87,10 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Email"
+        accounts:
+          type: array
+          items:
+            $ref: "#/components/schemas/Account"
     Name:
       type: object
       required:
@@ -124,6 +128,28 @@ components:
         primary:
           type: boolean
         value:
+          type: string
+    Account:
+      type: object
+      required:
+        - url
+        - name
+      properties:
+        domain:
+          type: string
+        display:
+          type: string
+        url:
+          type: string
+        iconUrl:
+          type: string
+        username:
+          type: string
+        verified:
+          type: string
+        name:
+          type: string
+        shortname:
           type: string
     Error:
       type: object
