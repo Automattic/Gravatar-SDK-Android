@@ -5,10 +5,11 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
@@ -30,7 +31,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
@@ -49,12 +49,12 @@ import com.gravatar.R
 import com.gravatar.api.models.UserProfiles
 import com.gravatar.demoapp.theme.GravatarDemoAppTheme
 import com.gravatar.demoapp.ui.components.GravatarEmailInput
-import com.gravatar.demoapp.ui.components.ProfileCard
 import com.gravatar.demoapp.ui.model.SettingsState
 import com.gravatar.services.ErrorType
 import com.gravatar.services.GravatarListener
 import com.gravatar.services.ProfileService
 import com.gravatar.types.Email
+import com.gravatar.ui.components.ProfileCard
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -147,7 +147,7 @@ private fun GravatarTabs(
 
 @Composable
 private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwable?) -> Unit) {
-    var email by remember { mutableStateOf("gravatar@automattic.com", neverEqualPolicy()) }
+    var email by remember { mutableStateOf("maxime.biais@automattic.com", neverEqualPolicy()) }
     var hash by remember { mutableStateOf("", neverEqualPolicy()) }
     var profiles by remember { mutableStateOf(UserProfiles(emptyList()), neverEqualPolicy()) }
     var loading by remember { mutableStateOf(false) }
@@ -159,13 +159,17 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
-                .padding(16.dp),
+                .background(MaterialTheme.colorScheme.background),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            GravatarEmailInput(email = email, onValueChange = { email = it }, Modifier.fillMaxWidth())
+            GravatarEmailInput(
+                email = email,
+                onValueChange = { email = it },
+                Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+            )
             Button(
-                modifier = Modifier.padding(top = 8.dp),
                 onClick = {
                     keyboardController?.hide()
                     loading = true
@@ -196,17 +200,15 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
                     CircularProgressIndicator()
                 }
             }
+            Spacer(modifier = Modifier.height(16.dp))
             // Show the profile card if we got a result and there is no error and it's not loading
             if (!loading && error.isEmpty() && profiles.entry.isNotEmpty()) {
                 ProfileCard(
                     profiles.entry.first(),
                     Modifier
-                        .clip(
-                            RoundedCornerShape(8.dp),
-                        )
                         .background(MaterialTheme.colorScheme.surfaceContainer)
                         .fillMaxWidth()
-                        .padding(16.dp),
+                        .padding(24.dp, 24.dp, 24.dp, 24.dp),
                 )
             } else {
                 if (error.isNotEmpty()) {
@@ -227,7 +229,7 @@ private fun AvatarTab(
     var settingsState by remember {
         mutableStateOf(
             SettingsState(
-                email = "gravatar@automattic.com",
+                email = "maxime.biais@automattic.com",
                 size = null,
                 defaultAvatarImageEnabled = false,
                 selectedDefaultAvatar = DefaultAvatarOption.MonsterId,
