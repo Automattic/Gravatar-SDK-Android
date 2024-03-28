@@ -29,6 +29,7 @@ import com.google.gson.annotations.SerializedName
  * @param pronunciation
  * @param shareFlags
  * @param emails
+ * @param accounts
  */
 
 public data class UserProfile(
@@ -67,4 +68,6 @@ public data class UserProfile(
     val shareFlags: ShareFlags? = null,
     @SerializedName("emails")
     val emails: kotlin.collections.List<Email>? = null,
+    @SerializedName("accounts")
+    val accounts: kotlin.collections.List<Account>? = null,
 )

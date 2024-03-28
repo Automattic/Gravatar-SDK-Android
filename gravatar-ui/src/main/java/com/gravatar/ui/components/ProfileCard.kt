@@ -25,8 +25,7 @@ import com.gravatar.api.models.UserProfile
 import com.gravatar.ui.components.atomic.AboutMe
 import com.gravatar.ui.components.atomic.Avatar
 import com.gravatar.ui.components.atomic.DisplayName
-import com.gravatar.ui.components.atomic.SocialIcon
-import com.gravatar.ui.components.atomic.SocialIconList
+import com.gravatar.ui.components.atomic.SocialIconRow
 import com.gravatar.ui.components.atomic.UserInfo
 
 @Composable
@@ -56,7 +55,7 @@ fun ProfileCard(profile: UserProfile, modifier: Modifier = Modifier) {
             AboutMe(profile)
         }
         Spacer(modifier = Modifier.height(16.dp))
-        SocialIconList(SocialIcon.values())
+        SocialIconRow(profile, maxIcons = 4)
     }
 }
 
