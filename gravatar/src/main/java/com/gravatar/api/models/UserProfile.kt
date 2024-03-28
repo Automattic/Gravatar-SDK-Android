@@ -24,6 +24,9 @@ import com.google.gson.annotations.SerializedName
  * @param pronouns
  * @param aboutMe
  * @param currentLocation
+ * @param jobTitle
+ * @param company
+ * @param pronunciation
  * @param shareFlags
  * @param emails
  */
@@ -54,6 +57,12 @@ public data class UserProfile(
     val aboutMe: kotlin.String? = null,
     @SerializedName("currentLocation")
     val currentLocation: kotlin.String? = null,
+    @SerializedName("job_title")
+    val jobTitle: kotlin.String? = null,
+    @SerializedName("company")
+    val company: kotlin.String? = null,
+    @SerializedName("pronunciation")
+    val pronunciation: kotlin.String? = null,
     @SerializedName("share_flags")
     val shareFlags: ShareFlags? = null,
     @SerializedName("emails")
