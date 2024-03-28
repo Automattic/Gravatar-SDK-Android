@@ -26,10 +26,10 @@ public sealed class Icon(val name: String, val imageResource: Int) {
     companion object {
         public fun valueOf(name: String): Icon? {
             return when (name) {
-                "Gravatar" -> Gravatar
-                "Mastodon" -> Mastodon
-                "Tumblr" -> Tumblr
-                "WordPress" -> WordPress
+                Gravatar.name -> Gravatar
+                Mastodon.name -> Mastodon
+                Tumblr.name -> Tumblr
+                WordPress.name -> WordPress
                 else -> null
             }
         }
@@ -38,11 +38,18 @@ public sealed class Icon(val name: String, val imageResource: Int) {
 
 public class SocialMedia(val icon: Icon, val url: URL)
 
+fun sortMediaAccordingTo(media: List<SocialMedia>, sortBy: List<String>): List<SocialMedia> {
+    // Return the media list sorted by the sortBy list
+    return media.sortedBy { sortBy.indexOf(it.icon.name).takeIf { it != -1 } ?: Int.MAX_VALUE }
+}
+
 public fun mediaList(profile: UserProfile): List<SocialMedia> {
     val mediaList = mutableListOf<SocialMedia>()
+    // Force the Gravatar icon
     profile.profileUrl?.let {
         mediaList.add(SocialMedia(Icon.Gravatar, URL(it)))
     }
+    // List and filter the other accounts from the profile
     profile.accounts?.let {
         for (account in it) {
             Icon.valueOf(account.name)?.let { icon ->
@@ -50,15 +57,15 @@ public fun mediaList(profile: UserProfile): List<SocialMedia> {
             }
         }
     }
-    // TODO: sort the list
-    return mediaList
+    // TODO: update with the full list
+    return sortMediaAccordingTo(mediaList, listOf("Gravatar", "WordPress", "Mastodon", "Tumblr"))
 }
 
 @Composable
 fun SocialIcon(media: SocialMedia, modifier: Modifier = Modifier) {
     IconButton(
         onClick = {
-            // Open the media.url URL in a browser
+            // TODO: Open the media.url URL in a browser
         },
         modifier = modifier,
     ) {
