@@ -74,13 +74,19 @@ components:
         aboutMe:
           type: string
         currentLocation:
-          type: string        
+          type: string
+        job_title:
+          type: string
+        company:
+          type: string
+        pronunciation:
+          type: string
         share_flags:
           $ref: "#/components/schemas/ShareFlags"
         emails:
           type: array
           items:
-            $ref: "#/components/schemas/Email"        
+            $ref: "#/components/schemas/Email"
     Name:
       type: object
       required:
