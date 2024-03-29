@@ -86,6 +86,8 @@ fun PreviewUserProfileCard() {
             hash = "1234567890",
             displayName = "Dominique Doe",
             preferredUsername = "ddoe",
+            jobTitle = "Farmer",
+            company = "Farmers United",
             currentLocation = "Crac'h, France",
             pronouns = "They/Them",
             accounts = listOf(
