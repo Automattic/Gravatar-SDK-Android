@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
@@ -20,6 +21,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.gravatar.api.models.Account
 import com.gravatar.api.models.Email
 import com.gravatar.api.models.UserProfile
 import com.gravatar.ui.components.atomic.AboutMe
@@ -27,6 +29,7 @@ import com.gravatar.ui.components.atomic.Avatar
 import com.gravatar.ui.components.atomic.DisplayName
 import com.gravatar.ui.components.atomic.SocialIconRow
 import com.gravatar.ui.components.atomic.UserInfo
+import com.gravatar.ui.components.atomic.ViewProfileButton
 
 @Composable
 fun ProfileCard(profile: UserProfile, modifier: Modifier = Modifier) {
@@ -54,8 +57,14 @@ fun ProfileCard(profile: UserProfile, modifier: Modifier = Modifier) {
         ProvideTextStyle(MaterialTheme.typography.bodyMedium.merge(textAlign = TextAlign.Left)) {
             AboutMe(profile)
         }
-        Spacer(modifier = Modifier.height(16.dp))
-        SocialIconRow(profile, maxIcons = 4)
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            SocialIconRow(profile, maxIcons = 4)
+            ViewProfileButton(profile, Modifier.padding(0.dp))
+        }
     }
 }
 
@@ -67,8 +76,13 @@ fun PreviewUserProfileCard() {
             hash = "1234567890",
             displayName = "Dominique Doe",
             preferredUsername = "ddoe",
-            currentLocation = "Crac'h, ",
+            currentLocation = "Crac'h, France",
             pronouns = "They/Them",
+            accounts = listOf(
+                Account(name = "Mastodon", url = "https://mastodon.social/@ddoe"),
+                Account(name = "Tumblr", url = "https://ddoe.tumblr.com"),
+                Account(name = "WordPress", url = "https://ddoe.wordpress.com"),
+            ),
             aboutMe = "I'm a farmer, I love to code. I ride my bicycle to work. One apple a day keeps the " +
                 "doctor away. This about me description is quite long, this is good for testing.",
             emails = arrayListOf(Email(primary = true, value = "john@doe.com")),
