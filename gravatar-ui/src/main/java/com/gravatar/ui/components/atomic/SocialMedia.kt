@@ -1,55 +1,68 @@
 package com.gravatar.ui.components.atomic
 
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import coil.decode.SvgDecoder
+import coil.request.ImageRequest
 import com.gravatar.api.models.UserProfile
 import com.gravatar.ui.R
 import java.net.URL
 
-public sealed class Icon(val name: String, val imageResource: Int) {
-    data object Gravatar : Icon("Gravatar", R.drawable.gravatar_icon)
-
-    data object Mastodon : Icon("Mastodon", R.drawable.mastodon_icon)
-
-    data object Tumblr : Icon("Tumblr", R.drawable.tumblr_icon)
-
-    data object WordPress : Icon("WordPress", R.drawable.wordpress_icon)
+public enum class LocalIcon(val shortname: String, val imageResource: Int) {
+    Gravatar("gravatar", R.drawable.gravatar_icon),
+    Calendly("calendly", R.drawable.calendly_icon),
+    Fediverse("fediverse", R.drawable.fediverse_icon),
+    Foursquare("foursquare", R.drawable.foursquare_icon),
+    Github("github", R.drawable.github_icon),
+    Instagram("instagram", R.drawable.instagram_icon),
+    Mastodon("mastodon", R.drawable.mastodongeneric_icon),
+    StackOverflow("stackoverflow", R.drawable.stackoverflow_icon),
+    TikTok("tiktok", R.drawable.tiktok_icon),
+    TripIt("tripit", R.drawable.tripit_icon),
+    Tumblr("tumblr", R.drawable.tumblr_icon),
+    Twitch("twitch", R.drawable.twitch_icon),
+    Twitter("twitter", R.drawable.twitter_icon),
+    Vimeo("vimeo", R.drawable.vimeo_icon),
+    WordPress("wordpress", R.drawable.wordpress_icon),
+    ;
 
     companion object {
-        public fun valueOf(name: String): Icon? {
-            return when (name) {
-                Gravatar.name -> Gravatar
-                Mastodon.name -> Mastodon
-                Tumblr.name -> Tumblr
-                WordPress.name -> WordPress
-                else -> null
-            }
+        public val shortnames = entries.associateBy { it.shortname }
+
+        public fun valueOf(shortname: String?): LocalIcon? {
+            return shortnames[shortname]
         }
     }
 }
 
-public class SocialMedia(val icon: Icon, val url: URL)
+public class SocialMedia(val url: URL, val name: String, val iconUrl: URL? = null, val icon: LocalIcon? = null)
 
 public fun mediaList(profile: UserProfile): List<SocialMedia> {
     val mediaList = mutableListOf<SocialMedia>()
     // Force the Gravatar icon
     profile.profileUrl?.let {
-        mediaList.add(SocialMedia(Icon.Gravatar, URL(it)))
+        mediaList.add(SocialMedia(URL(it), LocalIcon.Gravatar.name, icon = LocalIcon.Gravatar))
     }
     // List and filter the other accounts from the profile, keep the same order coming from UserProfile.accounts list
     profile.accounts?.let {
         for (account in it) {
-            Icon.valueOf(account.name)?.let { icon ->
-                mediaList.add(SocialMedia(icon, URL(account.url)))
+            if (LocalIcon.valueOf(account.shortname) != null) {
+                // Add local icon if the shortname exists in our predefined list
+                mediaList.add(SocialMedia(URL(account.url), account.name, icon = LocalIcon.valueOf(account.shortname)))
+            } else {
+                // Add a "remote" icon (using the url coming from the endpoint response)
+                mediaList.add(SocialMedia(URL(account.url), account.name, iconUrl = URL(account.iconUrl)))
             }
         }
     }
@@ -65,10 +78,23 @@ fun SocialIcon(media: SocialMedia, modifier: Modifier = Modifier) {
         },
         modifier = modifier,
     ) {
-        Icon(
-            imageVector = ImageVector.vectorResource(media.icon.imageResource),
-            contentDescription = media.icon.name,
-        )
+        if (media.icon != null) {
+            Icon(
+                imageVector = ImageVector.vectorResource(media.icon.imageResource),
+                modifier = Modifier.fillMaxSize(),
+                contentDescription = media.name,
+            )
+        } else {
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(media.iconUrl.toString())
+                    .decoderFactory(SvgDecoder.Factory())
+                    .build(),
+                contentDescription = media.name,
+                modifier = Modifier.fillMaxSize(),
+                contentScale = androidx.compose.ui.layout.ContentScale.FillHeight,
+            )
+        }
     }
 }
 
@@ -80,8 +106,7 @@ fun SocialIconRow(socialMedia: List<SocialMedia>, modifier: Modifier = Modifier,
             if (count++ >= maxIcons) {
                 break
             }
-            SocialIcon(media = media, modifier = Modifier.size(24.dp))
-            Spacer(modifier = Modifier.size(8.dp))
+            SocialIcon(media = media, modifier = Modifier.size(32.dp))
         }
     }
 }
