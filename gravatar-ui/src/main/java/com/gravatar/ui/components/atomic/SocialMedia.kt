@@ -39,18 +39,13 @@ public sealed class Icon(val name: String, val imageResource: Int) {
 
 public class SocialMedia(val icon: Icon, val url: URL)
 
-fun sortMediaAccordingTo(media: List<SocialMedia>, sortBy: List<String>): List<SocialMedia> {
-    // Return the media list sorted by the sortBy list
-    return media.sortedBy { sortBy.indexOf(it.icon.name).takeIf { it != -1 } ?: Int.MAX_VALUE }
-}
-
 public fun mediaList(profile: UserProfile): List<SocialMedia> {
     val mediaList = mutableListOf<SocialMedia>()
     // Force the Gravatar icon
     profile.profileUrl?.let {
         mediaList.add(SocialMedia(Icon.Gravatar, URL(it)))
     }
-    // List and filter the other accounts from the profile
+    // List and filter the other accounts from the profile, keep the same order coming from UserProfile.accounts list
     profile.accounts?.let {
         for (account in it) {
             Icon.valueOf(account.name)?.let { icon ->
@@ -58,8 +53,7 @@ public fun mediaList(profile: UserProfile): List<SocialMedia> {
             }
         }
     }
-    // TODO: update with the full list
-    return sortMediaAccordingTo(mediaList, listOf("Gravatar", "WordPress", "Mastodon", "Tumblr"))
+    return mediaList
 }
 
 @Composable
