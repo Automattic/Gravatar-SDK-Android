@@ -14,7 +14,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -48,7 +47,14 @@ fun ProfileCard(profile: UserProfile, modifier: Modifier = Modifier) {
                 ProvideTextStyle(TextStyle(fontSize = 18.sp, fontWeight = FontWeight.Bold, lineHeight = 24.sp)) {
                     DisplayName(profile)
                 }
-                ProvideTextStyle(TextStyle(fontSize = 14.sp, textAlign = TextAlign.Left, color = Color.Gray)) {
+                ProvideTextStyle(
+                    TextStyle(
+                        fontSize = 14.sp,
+                        lineHeight = 20.sp,
+                        textAlign = TextAlign.Left,
+                        color = MaterialTheme.colorScheme.outline,
+                    ),
+                ) {
                     UserInfo(profile)
                 }
             }
@@ -63,7 +69,11 @@ fun ProfileCard(profile: UserProfile, modifier: Modifier = Modifier) {
             verticalAlignment = Alignment.CenterVertically,
         ) {
             SocialIconRow(profile, maxIcons = 4)
-            ViewProfileButton(profile, Modifier.padding(0.dp))
+            ProvideTextStyle(
+                MaterialTheme.typography.bodyMedium.merge(color = MaterialTheme.colorScheme.onBackground),
+            ) {
+                ViewProfileButton(profile, Modifier.padding(0.dp))
+            }
         }
     }
 }
