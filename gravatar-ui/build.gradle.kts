@@ -69,6 +69,7 @@ dependencies {
     implementation("com.google.android.material:material:1.11.0")
     implementation("com.github.yalantis:ucrop:2.2.8")
     implementation("io.coil-kt:coil-compose:2.5.0")
+    implementation("io.coil-kt:coil-svg:2.5.0")
     implementation(project(":gravatar"))
 
     testImplementation("junit:junit:4.13.2")
