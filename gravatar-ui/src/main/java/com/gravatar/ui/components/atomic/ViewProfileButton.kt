@@ -1,10 +1,13 @@
 package com.gravatar.ui.components.atomic
 
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -14,6 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.PlaceholderVerticalAlign
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.gravatar.api.models.UserProfile
 import com.gravatar.ui.R
@@ -42,6 +46,7 @@ public fun ViewProfileButton(profile: UserProfile, modifier: Modifier = Modifier
                 // In RTL mode the Arrow will be mirrored
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                    tint = LocalTextStyle.current.color,
                     contentDescription = "",
                 )
             },
@@ -52,7 +57,8 @@ public fun ViewProfileButton(profile: UserProfile, modifier: Modifier = Modifier
         onClick = {
             uriHandler.openUri(profile.profileUrl.toString())
         },
-        modifier = modifier,
+        modifier = modifier.padding(0.dp, 0.dp, 0.dp, 0.dp),
+        contentPadding = PaddingValues(start = 0.dp, end = 0.dp),
     ) {
         Text(text, inlineContent = inlineContent)
     }
