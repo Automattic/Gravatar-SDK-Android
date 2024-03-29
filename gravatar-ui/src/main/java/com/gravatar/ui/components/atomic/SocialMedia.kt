@@ -8,6 +8,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.gravatar.api.models.UserProfile
@@ -63,9 +64,10 @@ public fun mediaList(profile: UserProfile): List<SocialMedia> {
 
 @Composable
 fun SocialIcon(media: SocialMedia, modifier: Modifier = Modifier) {
+    val uriHandler = LocalUriHandler.current
     IconButton(
         onClick = {
-            // TODO: Open the media.url URL in a browser
+            uriHandler.openUri(media.url.toString())
         },
         modifier = modifier,
     ) {
