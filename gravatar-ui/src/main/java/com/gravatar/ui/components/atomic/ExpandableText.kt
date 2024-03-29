@@ -46,7 +46,7 @@ internal fun EpandableText(text: String, modifier: Modifier = Modifier, maxLines
                         .padding(16.dp)
                         .fillMaxWidth()
                         .wrapContentSize(),
-                    textAlign = TextAlign.Center,
+                    textAlign = TextAlign.Start,
                 )
             }
         }
