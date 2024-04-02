@@ -250,7 +250,7 @@ class AvatarUrlTest {
     }
 
     @Test
-    fun `Force default avatar false must generate f=n`() {
+    fun `force default avatar false must generate f=n`() {
         assertEquals(
             "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe970a1e66" +
                 "?f=n",
