@@ -35,5 +35,5 @@ public fun UserProfile.formattedUserInfo(): String {
     val line2 = arrayOf(this.pronunciation, this.pronouns, this.currentLocation).filter {
         !it.isNullOrBlank()
     }.joinToString(" · ")
-    return arrayOf(line1, line2).filter { !it.isNullOrBlank() }.joinToString("\n")
+    return arrayOf(line1, line2).filter { it.isNotBlank() }.joinToString("\n")
 }
