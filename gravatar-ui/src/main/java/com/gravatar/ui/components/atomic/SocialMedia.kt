@@ -38,7 +38,7 @@ public enum class LocalIcon(val shortname: String, val imageResource: Int) {
     ;
 
     companion object {
-        public val shortnames = entries.associateBy { it.shortname }
+        private val shortnames = entries.associateBy { it.shortname }
 
         public fun valueOf(shortname: String?): LocalIcon? {
             return shortnames[shortname]
@@ -55,15 +55,13 @@ public fun mediaList(profile: UserProfile): List<SocialMedia> {
         mediaList.add(SocialMedia(URL(it), LocalIcon.Gravatar.name, icon = LocalIcon.Gravatar))
     }
     // List and filter the other accounts from the profile, keep the same order coming from UserProfile.accounts list
-    profile.accounts?.let {
-        for (account in it) {
-            if (LocalIcon.valueOf(account.shortname) != null) {
-                // Add local icon if the shortname exists in our predefined list
-                mediaList.add(SocialMedia(URL(account.url), account.name, icon = LocalIcon.valueOf(account.shortname)))
-            } else {
-                // Add a "remote" icon (using the url coming from the endpoint response)
-                mediaList.add(SocialMedia(URL(account.url), account.name, iconUrl = URL(account.iconUrl)))
-            }
+    profile.accounts?.forEach { account ->
+        if (LocalIcon.valueOf(account.shortname) != null) {
+            // Add local icon if the shortname exists in our predefined list
+            mediaList.add(SocialMedia(URL(account.url), account.name, icon = LocalIcon.valueOf(account.shortname)))
+        } else {
+            // Add a "remote" icon (using the url coming from the endpoint response)
+            mediaList.add(SocialMedia(URL(account.url), account.name, iconUrl = URL(account.iconUrl)))
         }
     }
     return mediaList
@@ -100,12 +98,8 @@ fun SocialIcon(media: SocialMedia, modifier: Modifier = Modifier) {
 
 @Composable
 fun SocialIconRow(socialMedia: List<SocialMedia>, modifier: Modifier = Modifier, maxIcons: Int = 4) {
-    var count = 0
     Row(modifier = modifier) {
-        for (media in socialMedia) {
-            if (count++ >= maxIcons) {
-                break
-            }
+        socialMedia.take(maxIcons).forEach { media ->
             SocialIcon(media = media, modifier = Modifier.size(32.dp))
         }
     }

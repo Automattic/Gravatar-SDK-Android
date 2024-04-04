@@ -1,7 +1,6 @@
 package com.gravatar.ui.components.atomic
 
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material.icons.Icons
@@ -20,6 +19,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.gravatar.api.models.UserProfile
+import com.gravatar.extensions.profileUrl
 import com.gravatar.ui.R
 
 @Composable
@@ -55,9 +55,8 @@ public fun ViewProfileButton(profile: UserProfile, modifier: Modifier = Modifier
 
     TextButton(
         onClick = {
-            uriHandler.openUri(profile.profileUrl.toString())
+            uriHandler.openUri(profile.profileUrl().url.toString())
         },
-        modifier = modifier.padding(0.dp, 0.dp, 0.dp, 0.dp),
         contentPadding = PaddingValues(start = 0.dp, end = 0.dp),
     ) {
         Text(text, inlineContent = inlineContent)

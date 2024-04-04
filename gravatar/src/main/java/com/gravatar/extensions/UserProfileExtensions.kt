@@ -31,9 +31,9 @@ public fun UserProfile.profileUrl(): ProfileUrl {
  * Get formatted user info for a user profile.
  */
 public fun UserProfile.formattedUserInfo(): String {
-    val line1 = arrayOf(this.jobTitle, this.company).filter { !it.isNullOrBlank() }.joinToString(", ")
-    val line2 = arrayOf(this.pronunciation, this.pronouns, this.currentLocation).filter {
+    val line1 = listOf(this.jobTitle, this.company).filter { !it.isNullOrBlank() }.joinToString(", ")
+    val line2 = listOf(this.pronunciation, this.pronouns, this.currentLocation).filter {
         !it.isNullOrBlank()
     }.joinToString(" · ")
-    return arrayOf(line1, line2).filter { !it.isNullOrBlank() }.joinToString("\n")
+    return listOf(line1, line2).filter { it.isNotBlank() }.joinToString("\n")
 }

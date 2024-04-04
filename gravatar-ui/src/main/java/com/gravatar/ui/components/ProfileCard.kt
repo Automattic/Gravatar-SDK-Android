@@ -36,7 +36,7 @@ fun ProfileCard(profile: UserProfile, modifier: Modifier = Modifier) {
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.Top,
     ) {
-        Row(modifier = Modifier.padding(0.dp)) {
+        Row {
             Avatar(
                 profile = profile,
                 size = 72.dp,
@@ -79,7 +79,7 @@ fun ProfileCard(profile: UserProfile, modifier: Modifier = Modifier) {
 
 @Preview
 @Composable
-fun PreviewUserProfileCard() {
+fun ProfileCardPreview() {
     ProfileCard(
         UserProfile(
             hash = "1234567890",
@@ -96,7 +96,7 @@ fun PreviewUserProfileCard() {
             ),
             aboutMe = "I'm a farmer, I love to code. I ride my bicycle to work. One apple a day keeps the " +
                 "doctor away. This about me description is quite long, this is good for testing.",
-            emails = arrayListOf(Email(primary = true, value = "john@doe.com")),
+            emails = listOf(Email(primary = true, value = "john@doe.com")),
         ),
     )
 }
