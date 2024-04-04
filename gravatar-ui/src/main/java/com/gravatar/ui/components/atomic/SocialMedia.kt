@@ -23,6 +23,9 @@ import com.gravatar.ui.R
 import java.net.MalformedURLException
 import java.net.URL
 
+/**
+ * LocalIcon is a predefined list of social media icons that can be used in the SocialIcon composable.
+ */
 public enum class LocalIcon(val shortname: String, val imageResource: Int) {
     Gravatar("gravatar", R.drawable.gravatar_icon),
     Calendly("calendly", R.drawable.calendly_icon),
@@ -50,6 +53,9 @@ public enum class LocalIcon(val shortname: String, val imageResource: Int) {
     }
 }
 
+/**
+ * SocialMedia is a data class that represents a social media account that Gravatar users can add to their profiles.
+ */
 public class SocialMedia(val url: URL, val name: String, val iconUrl: URL? = null, val icon: LocalIcon? = null)
 
 public fun mediaList(profile: UserProfile): List<SocialMedia> {

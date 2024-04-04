@@ -40,3 +40,13 @@ style:
   WildcardImport:
     active: true
     excludeImports: []
+
+comments:
+  UndocumentedPublicClass:
+    active: true
+    excludes: [ '**/test/**', '**/androidTest/**', '**/demoapp/**' ]
+    searchInNestedClass: true
+    searchInInnerClass: true
+    searchInInnerObject: true
+    searchInInnerInterface: true
+    searchInProtectedClass: false

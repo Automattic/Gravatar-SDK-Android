@@ -106,6 +106,13 @@ public interface GravatarImagePickerWrapperListener : GravatarListener<Unit> {
     public fun onAvatarUploadStarted()
 }
 
+/**
+ * Options to customize the image edition screen.
+ *
+ * @param statusBarColor The color of the status bar.
+ * @param toolbarColor The color of the toolbar.
+ * @param toolbarWidgetColor The color of the toolbar widgets.
+ */
 public data class ImageEditionStyling(
     val statusBarColor: Int? = null,
     val toolbarColor: Int? = null,
