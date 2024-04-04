@@ -16,8 +16,11 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.decode.SvgDecoder
 import coil.request.ImageRequest
+import com.gravatar.api.models.Account
 import com.gravatar.api.models.UserProfile
+import com.gravatar.extensions.profileUrl
 import com.gravatar.ui.R
+import java.net.MalformedURLException
 import java.net.URL
 
 public enum class LocalIcon(val shortname: String, val imageResource: Int) {
@@ -52,17 +55,19 @@ public class SocialMedia(val url: URL, val name: String, val iconUrl: URL? = nul
 public fun mediaList(profile: UserProfile): List<SocialMedia> {
     val mediaList = mutableListOf<SocialMedia>()
     // Force the Gravatar icon
-    profile.profileUrl?.let {
-        mediaList.add(SocialMedia(URL(it), LocalIcon.Gravatar.name, icon = LocalIcon.Gravatar))
-    }
+    mediaList.add(SocialMedia(profile.profileUrl().url, LocalIcon.Gravatar.name, icon = LocalIcon.Gravatar))
     // List and filter the other accounts from the profile, keep the same order coming from UserProfile.accounts list
     profile.accounts?.forEach { account ->
-        if (LocalIcon.valueOf(account.shortname) != null) {
-            // Add local icon if the shortname exists in our predefined list
-            mediaList.add(SocialMedia(URL(account.url), account.name, icon = LocalIcon.valueOf(account.shortname)))
-        } else {
-            // Add a "remote" icon (using the url coming from the endpoint response)
-            mediaList.add(SocialMedia(URL(account.url), account.name, iconUrl = URL(account.iconUrl)))
+        try {
+            if (LocalIcon.valueOf(account.shortname) != null) {
+                // Add local icon if the shortname exists in our predefined list
+                mediaList.add(SocialMedia(URL(account.url), account.name, icon = LocalIcon.valueOf(account.shortname)))
+            } else {
+                // Add a "remote" icon (using the url coming from the endpoint response)
+                mediaList.add(SocialMedia(URL(account.url), account.name, iconUrl = URL(account.iconUrl)))
+            }
+        } catch (e: MalformedURLException) {
+            // Ignore invalid account or icon URLs that could be returned by the endpoint
         }
     }
     return mediaList
@@ -114,10 +119,15 @@ fun SocialIconRow(profile: UserProfile, modifier: Modifier = Modifier, maxIcons:
 @Preview(showBackground = true)
 @Composable
 fun SocialIconRowPreview() {
-    SocialIconRow(
-        socialMedia = LocalIcon.entries.map {
-            SocialMedia(URL("https://${it.shortname}.com"), it.shortname, icon = it)
-        },
-        maxIcons = 5,
+    val userProfile = UserProfile(
+        hash = "",
+        accounts = listOf(
+            Account(name = "Mastodon", url = "https://example.com", shortname = "mastodon"),
+            Account(name = "Tumblr", url = "https://example.com", shortname = "tumblr"),
+            Account(name = "TikTok", url = "example.com", shortname = "tiktok"), // invalid url, should be ignored
+            Account(name = "WordPress", url = "https://example.com", shortname = "wordpress"),
+            Account(name = "GitHub", url = "https://example.com", shortname = "github"),
+        ),
     )
+    SocialIconRow(userProfile, maxIcons = 5)
 }
