@@ -9,6 +9,10 @@ import java.util.Locale
 
 /**
  * Gravatar avatar URL.
+ *
+ * @property canonicalUrl Canonical URL of the avatar
+ * @property hash Gravatar hash
+ * @property avatarQueryOptions Avatar query options
  */
 public class AvatarUrl {
     public val canonicalUrl: URL

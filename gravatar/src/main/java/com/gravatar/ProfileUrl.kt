@@ -10,6 +10,9 @@ import java.net.URL
  * @property hash The hash of the email address.
  */
 public class ProfileUrl(public val hash: Hash) {
+    /**
+     * The URL of the profile.
+     */
     public val url: URL = URL("https", GravatarConstants.GRAVATAR_BASE_HOST, hash.toString())
 
     public constructor(email: Email) : this(email.hash())

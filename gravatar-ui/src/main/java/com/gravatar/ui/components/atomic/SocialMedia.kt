@@ -1,5 +1,6 @@
 package com.gravatar.ui.components.atomic
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
@@ -25,8 +26,14 @@ import java.net.URL
 
 /**
  * LocalIcon is a predefined list of social media icons that can be used in the SocialIcon composable.
+ *
+ * @property shortname The shortname of the social media platform.
+ * @property imageResource The drawable resource ID of the icon.
  */
-public enum class LocalIcon(val shortname: String, val imageResource: Int) {
+public enum class LocalIcon(
+    val shortname: String,
+    @DrawableRes val imageResource: Int,
+) {
     Gravatar("gravatar", R.drawable.gravatar_icon),
     Calendly("calendly", R.drawable.calendly_icon),
     Fediverse("fediverse", R.drawable.fediverse_icon),
@@ -58,6 +65,11 @@ public enum class LocalIcon(val shortname: String, val imageResource: Int) {
 
 /**
  * SocialMedia is a data class that represents a social media account that Gravatar users can add to their profiles.
+ *
+ * @property url The [URL] of the social media account.
+ * @property name The name of the social media platform.
+ * @property iconUrl The [URL] of the icon for the social media platform.
+ * @property icon The [LocalIcon] for the social media platform.
  */
 public class SocialMedia(val url: URL, val name: String, val iconUrl: URL? = null, val icon: LocalIcon? = null)
 

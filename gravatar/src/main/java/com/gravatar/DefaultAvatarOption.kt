@@ -6,6 +6,7 @@ package com.gravatar
 public sealed class DefaultAvatarOption {
     /**
      * @suppress
+     * @property style the style of the default avatar image
      */
     public abstract class Predefined(public val style: String) : DefaultAvatarOption()
 

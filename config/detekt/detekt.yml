@@ -57,3 +57,8 @@ comments:
       - 'Preview'
     excludes: [ '**/test/**', '**/androidTest/**', '**/demoapp/**' ]
     searchProtectedFunction: false
+  UndocumentedPublicProperty:
+    active: true
+    # TODO - Remove the explicit exclusion of Email.kt once we implement the new REST API
+    excludes: [ '**/test/**', '**/androidTest/**', '**/demoapp/**', '**/models/Email.kt' ]
+    searchProtectedProperty: false
