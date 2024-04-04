@@ -15,6 +15,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 
@@ -51,4 +52,10 @@ internal fun ExpandableText(text: String, modifier: Modifier = Modifier, maxLine
             }
         }
     }
+}
+
+@Preview
+@Composable
+private fun ExpandableTextPreview() {
+    ExpandableText("Text that \ncan be expanded \nby clicking on it.")
 }
