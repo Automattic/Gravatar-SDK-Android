@@ -11,6 +11,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.decode.SvgDecoder
@@ -108,4 +109,15 @@ fun SocialIconRow(socialMedia: List<SocialMedia>, modifier: Modifier = Modifier,
 @Composable
 fun SocialIconRow(profile: UserProfile, modifier: Modifier = Modifier, maxIcons: Int = 4) {
     SocialIconRow(mediaList(profile), modifier, maxIcons)
+}
+
+@Preview(showBackground = true)
+@Composable
+fun SocialIconRowPreview() {
+    SocialIconRow(
+        socialMedia = LocalIcon.entries.map {
+            SocialMedia(URL("https://${it.shortname}.com"), it.shortname, icon = it)
+        },
+        maxIcons = 5,
+    )
 }

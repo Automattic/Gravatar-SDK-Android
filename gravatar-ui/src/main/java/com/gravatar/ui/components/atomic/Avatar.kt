@@ -34,6 +34,6 @@ public fun Avatar(
 
 @Preview
 @Composable
-private fun PreviewAvatar() {
+private fun AvatarPreview() {
     Avatar(UserProfile("4539566a0223b11d28fc47c864336fa27b8fe49b5f85180178c9e3813e910d6a"), 256.dp)
 }
