@@ -63,6 +63,7 @@ public fun ViewProfileButton(profile: UserProfile, modifier: Modifier = Modifier
             uriHandler.openUri(profile.profileUrl().url.toString())
         },
         contentPadding = PaddingValues(start = 0.dp, end = 0.dp),
+        modifier = modifier,
     ) {
         Text(text, inlineContent = inlineContent)
     }
