@@ -1,20 +1,18 @@
 package com.gravatar.ui.components.atomic
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.gravatar.api.models.UserProfile
 
 @Composable
 public fun AboutMe(profile: UserProfile, modifier: Modifier = Modifier, maxLines: Int = 2) {
-    EpandableText(profile.aboutMe ?: "", modifier, maxLines)
+    ExpandableText(profile.aboutMe.orEmpty(), modifier, maxLines)
 }
 
 @Preview
 @Composable
-private fun AboutMe() {
+private fun AboutMePreview() {
     AboutMe(
         UserProfile(
             "",

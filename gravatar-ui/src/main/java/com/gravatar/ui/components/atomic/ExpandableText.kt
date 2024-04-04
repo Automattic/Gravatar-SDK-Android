@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 
 @Composable
-internal fun EpandableText(text: String, modifier: Modifier = Modifier, maxLines: Int = 2) {
+internal fun ExpandableText(text: String, modifier: Modifier = Modifier, maxLines: Int = 2) {
     var showDialog by remember { mutableStateOf(false) }
     var clickableText by remember { mutableStateOf(false) }
 
