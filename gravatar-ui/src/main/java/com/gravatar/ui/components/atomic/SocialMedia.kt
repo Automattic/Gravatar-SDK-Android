@@ -124,7 +124,8 @@ fun SocialIconRowPreview() {
         accounts = listOf(
             Account(name = "Mastodon", url = "https://example.com", shortname = "mastodon"),
             Account(name = "Tumblr", url = "https://example.com", shortname = "tumblr"),
-            Account(name = "TikTok", url = "example.com", shortname = "tiktok"), // invalid url, should be ignored
+            // Invalid url, should be ignored:
+            Account(name = "TikTok", url = "example.com", shortname = "tiktok"),
             Account(name = "WordPress", url = "https://example.com", shortname = "wordpress"),
             Account(name = "GitHub", url = "https://example.com", shortname = "github"),
         ),
