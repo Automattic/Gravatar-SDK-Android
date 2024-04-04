@@ -7,5 +7,5 @@ import com.gravatar.api.models.UserProfile
 
 @Composable
 public fun DisplayName(profile: UserProfile, modifier: Modifier = Modifier) {
-    Text(text = profile.displayName ?: "", modifier = modifier)
+    Text(text = profile.displayName.orEmpty(), modifier = modifier)
 }

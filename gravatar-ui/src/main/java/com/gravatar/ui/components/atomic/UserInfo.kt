@@ -10,12 +10,12 @@ import com.gravatar.extensions.formattedUserInfo
 public fun UserInfo(profile: UserProfile, modifier: Modifier = Modifier, maxLines: Int = 2) {
     // TODO this doesn't work with one Text field due. If the job_title and the company line is too long,
     // it will to break the layout
-    EpandableText(profile.formattedUserInfo(), modifier, maxLines)
+    ExpandableText(profile.formattedUserInfo(), modifier, maxLines)
 }
 
 @Preview
 @Composable
-private fun UserInfo() {
+private fun UserInfoPreview() {
     UserInfo(
         UserProfile(
             "",
