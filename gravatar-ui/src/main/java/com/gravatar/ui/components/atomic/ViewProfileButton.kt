@@ -27,6 +27,9 @@ import com.gravatar.api.models.UserProfile
 import com.gravatar.extensions.profileUrl
 import com.gravatar.ui.R
 
+/**
+ * ViewProfileButton is a composable that displays a button to view a user's profile.
+ */
 @Composable
 public fun ViewProfileButton(profile: UserProfile, modifier: Modifier = Modifier) {
     val uriHandler = LocalUriHandler.current

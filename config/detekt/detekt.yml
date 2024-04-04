@@ -50,3 +50,10 @@ comments:
     searchInInnerObject: true
     searchInInnerInterface: true
     searchInProtectedClass: false
+  UndocumentedPublicFunction:
+    active: true
+    # Ignore Jetpack Compose functions annotated with @Preview
+    ignoreAnnotated:
+      - 'Preview'
+    excludes: [ '**/test/**', '**/androidTest/**', '**/demoapp/**' ]
+    searchProtectedFunction: false

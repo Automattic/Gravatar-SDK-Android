@@ -47,6 +47,9 @@ public enum class LocalIcon(val shortname: String, val imageResource: Int) {
     companion object {
         private val shortnames = entries.associateBy { it.shortname }
 
+        /**
+         * Returns the LocalIcon enum value for the given shortname.
+         */
         public fun valueOf(shortname: String?): LocalIcon? {
             return shortnames[shortname]
         }
@@ -58,7 +61,7 @@ public enum class LocalIcon(val shortname: String, val imageResource: Int) {
  */
 public class SocialMedia(val url: URL, val name: String, val iconUrl: URL? = null, val icon: LocalIcon? = null)
 
-public fun mediaList(profile: UserProfile): List<SocialMedia> {
+private fun mediaList(profile: UserProfile): List<SocialMedia> {
     val mediaList = mutableListOf<SocialMedia>()
     // Force the Gravatar icon
     mediaList.add(SocialMedia(profile.profileUrl().url, LocalIcon.Gravatar.name, icon = LocalIcon.Gravatar))
@@ -79,6 +82,10 @@ public fun mediaList(profile: UserProfile): List<SocialMedia> {
     return mediaList
 }
 
+/**
+ * [SocialIcon] is a composable that displays a clickable icon for a social media account.
+ * The link will navigate to the Gravatar user's profile on the social media platform.
+ */
 @Composable
 fun SocialIcon(media: SocialMedia, modifier: Modifier = Modifier) {
     val uriHandler = LocalUriHandler.current
@@ -108,6 +115,9 @@ fun SocialIcon(media: SocialMedia, modifier: Modifier = Modifier) {
     }
 }
 
+/**
+ * [SocialIconRow] is a composable that displays a row of clickable [SocialIcon].
+ */
 @Composable
 fun SocialIconRow(socialMedia: List<SocialMedia>, modifier: Modifier = Modifier, maxIcons: Int = 4) {
     Row(modifier = modifier) {
@@ -117,6 +127,9 @@ fun SocialIconRow(socialMedia: List<SocialMedia>, modifier: Modifier = Modifier,
     }
 }
 
+/**
+ * [SocialIconRow] is a composable that displays a row of clickable [SocialIcon].
+ */
 @Composable
 fun SocialIconRow(profile: UserProfile, modifier: Modifier = Modifier, maxIcons: Int = 4) {
     SocialIconRow(mediaList(profile), modifier, maxIcons)

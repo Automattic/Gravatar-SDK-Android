@@ -14,6 +14,11 @@ public class ProfileUrl(public val hash: Hash) {
 
     public constructor(email: Email) : this(email.hash())
 
+    /**
+     * Get the [AvatarUrl] for the represented profile.
+     *
+     * @return the [AvatarUrl] of the avatar image
+     */
     public fun avatarUrl(): AvatarUrl {
         return AvatarUrl(hash)
     }

@@ -12,6 +12,9 @@ import com.gravatar.AvatarQueryOptions
 import com.gravatar.api.models.UserProfile
 import com.gravatar.extensions.avatarUrl
 
+/**
+ * [Avatar] is a composable that displays a user's avatar.
+ */
 @Composable
 public fun Avatar(
     profile: UserProfile,

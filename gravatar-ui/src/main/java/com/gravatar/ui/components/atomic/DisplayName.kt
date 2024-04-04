@@ -5,6 +5,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.gravatar.api.models.UserProfile
 
+/**
+ * [DisplayName] is a composable that displays the user's display name.
+ */
 @Composable
 public fun DisplayName(profile: UserProfile, modifier: Modifier = Modifier) {
     Text(text = profile.displayName.orEmpty(), modifier = modifier)

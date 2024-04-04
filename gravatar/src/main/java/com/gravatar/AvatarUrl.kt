@@ -92,6 +92,11 @@ public class AvatarUrl {
         } ?: false
     }
 
+    /**
+     * Get the [URL] for the avatar.
+     *
+     * @return [URL] for the avatar
+     */
     public fun url(): URL {
         return URL(
             canonicalUrl.protocol,
