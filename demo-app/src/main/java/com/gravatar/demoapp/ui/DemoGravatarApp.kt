@@ -55,6 +55,7 @@ import com.gravatar.services.ErrorType
 import com.gravatar.services.GravatarListener
 import com.gravatar.services.ProfileService
 import com.gravatar.types.Email
+import com.gravatar.ui.components.MiniProfileCard
 import com.gravatar.ui.components.ProfileCard
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -205,6 +206,14 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
             // Show the profile card if we got a result and there is no error and it's not loading
             if (!loading && error.isEmpty() && profiles.entry.isNotEmpty()) {
                 ProfileCard(
+                    profiles.entry.first(),
+                    Modifier
+                        .background(MaterialTheme.colorScheme.surfaceContainer)
+                        .fillMaxWidth()
+                        .padding(24.dp, 24.dp, 24.dp, 24.dp),
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                MiniProfileCard(
                     profiles.entry.first(),
                     Modifier
                         .background(MaterialTheme.colorScheme.surfaceContainer)
