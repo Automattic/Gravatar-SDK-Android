@@ -24,6 +24,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.gravatar.BuildConfig
 import com.gravatar.R
 import com.gravatar.demoapp.ui.components.GravatarEmailInput
 import com.gravatar.demoapp.ui.components.GravatarPasswordInput
@@ -33,7 +34,7 @@ import com.gravatar.ui.GravatarImagePickerWrapperListener
 
 @Composable
 fun AvatarUpdateTab(showSnackBar: (String?, Throwable?) -> Unit, modifier: Modifier = Modifier) {
-    var email by remember { mutableStateOf("gravatar@automattic.com") }
+    var email by remember { mutableStateOf(BuildConfig.DEMO_EMAIL) }
     var accessToken by remember { mutableStateOf("") }
     var accessTokenVisible by rememberSaveable { mutableStateOf(false) }
     var isUploading by remember { mutableStateOf(false) }
