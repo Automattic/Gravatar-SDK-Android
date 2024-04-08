@@ -1,3 +1,6 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -9,9 +12,19 @@ plugins {
     id("io.gitlab.arturbosch.detekt")
 }
 
+fun localProperties(): Properties {
+    val localProperties = Properties()
+    val localPropertiesFile = rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        localProperties.load(FileInputStream(localPropertiesFile))
+    }
+    return localProperties
+}
+
 android {
     namespace = "com.gravatar"
     compileSdk = 34
+    buildFeatures.buildConfig = true
 
     defaultConfig {
         applicationId = "com.gravatar.demoapp"
@@ -21,6 +34,14 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        localProperties().let { properties ->
+            buildConfigField(
+                "String",
+                "DEMO_EMAIL",
+                "\"${properties["demo-app.email"]?.toString() ?: "gravatar@automattic.com"}\"",
+            )
+        }
     }
 
     buildTypes {
