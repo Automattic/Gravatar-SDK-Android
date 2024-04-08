@@ -1,5 +1,6 @@
 package com.gravatar.ui.components.atomic
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
@@ -23,7 +24,16 @@ import com.gravatar.ui.R
 import java.net.MalformedURLException
 import java.net.URL
 
-public enum class LocalIcon(val shortname: String, val imageResource: Int) {
+/**
+ * LocalIcon is a predefined list of social media icons that can be used in the SocialIcon composable.
+ *
+ * @property shortname The shortname of the social media platform.
+ * @property imageResource The drawable resource ID of the icon.
+ */
+public enum class LocalIcon(
+    val shortname: String,
+    @DrawableRes val imageResource: Int,
+) {
     Gravatar("gravatar", R.drawable.gravatar_icon),
     Calendly("calendly", R.drawable.calendly_icon),
     Fediverse("fediverse", R.drawable.fediverse_icon),
@@ -44,15 +54,26 @@ public enum class LocalIcon(val shortname: String, val imageResource: Int) {
     companion object {
         private val shortnames = entries.associateBy { it.shortname }
 
+        /**
+         * Returns the LocalIcon enum value for the given shortname.
+         */
         public fun valueOf(shortname: String?): LocalIcon? {
             return shortnames[shortname]
         }
     }
 }
 
+/**
+ * SocialMedia is a data class that represents a social media account that Gravatar users can add to their profiles.
+ *
+ * @property url The [URL] of the social media account.
+ * @property name The name of the social media platform.
+ * @property iconUrl The [URL] of the icon for the social media platform.
+ * @property icon The [LocalIcon] for the social media platform.
+ */
 public class SocialMedia(val url: URL, val name: String, val iconUrl: URL? = null, val icon: LocalIcon? = null)
 
-public fun mediaList(profile: UserProfile): List<SocialMedia> {
+private fun mediaList(profile: UserProfile): List<SocialMedia> {
     val mediaList = mutableListOf<SocialMedia>()
     // Force the Gravatar icon
     mediaList.add(SocialMedia(profile.profileUrl().url, LocalIcon.Gravatar.name, icon = LocalIcon.Gravatar))
@@ -73,6 +94,10 @@ public fun mediaList(profile: UserProfile): List<SocialMedia> {
     return mediaList
 }
 
+/**
+ * [SocialIcon] is a composable that displays a clickable icon for a social media account.
+ * The link will navigate to the Gravatar user's profile on the social media platform.
+ */
 @Composable
 fun SocialIcon(media: SocialMedia, modifier: Modifier = Modifier) {
     val uriHandler = LocalUriHandler.current
@@ -102,6 +127,9 @@ fun SocialIcon(media: SocialMedia, modifier: Modifier = Modifier) {
     }
 }
 
+/**
+ * [SocialIconRow] is a composable that displays a row of clickable [SocialIcon].
+ */
 @Composable
 fun SocialIconRow(socialMedia: List<SocialMedia>, modifier: Modifier = Modifier, maxIcons: Int = 4) {
     Row(modifier = modifier) {
@@ -111,6 +139,9 @@ fun SocialIconRow(socialMedia: List<SocialMedia>, modifier: Modifier = Modifier,
     }
 }
 
+/**
+ * [SocialIconRow] is a composable that displays a row of clickable [SocialIcon].
+ */
 @Composable
 fun SocialIconRow(profile: UserProfile, modifier: Modifier = Modifier, maxIcons: Int = 4) {
     SocialIconRow(mediaList(profile), modifier, maxIcons)

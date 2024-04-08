@@ -9,6 +9,10 @@ import java.util.Locale
 
 /**
  * Gravatar avatar URL.
+ *
+ * @property canonicalUrl Canonical URL of the avatar
+ * @property hash Gravatar hash
+ * @property avatarQueryOptions Avatar query options
  */
 public class AvatarUrl {
     public val canonicalUrl: URL
@@ -92,6 +96,11 @@ public class AvatarUrl {
         } ?: false
     }
 
+    /**
+     * Get the [URL] for the avatar.
+     *
+     * @return [URL] for the avatar
+     */
     public fun url(): URL {
         return URL(
             canonicalUrl.protocol,

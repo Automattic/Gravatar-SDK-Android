@@ -40,3 +40,25 @@ style:
   WildcardImport:
     active: true
     excludeImports: []
+
+comments:
+  UndocumentedPublicClass:
+    active: true
+    excludes: [ '**/test/**', '**/androidTest/**', '**/demoapp/**' ]
+    searchInNestedClass: true
+    searchInInnerClass: true
+    searchInInnerObject: true
+    searchInInnerInterface: true
+    searchInProtectedClass: false
+  UndocumentedPublicFunction:
+    active: true
+    # Ignore Jetpack Compose functions annotated with @Preview
+    ignoreAnnotated:
+      - 'Preview'
+    excludes: [ '**/test/**', '**/androidTest/**', '**/demoapp/**' ]
+    searchProtectedFunction: false
+  UndocumentedPublicProperty:
+    active: true
+    # TODO - Remove the explicit exclusion of Email.kt once we implement the new REST API
+    excludes: [ '**/test/**', '**/androidTest/**', '**/demoapp/**', '**/models/Email.kt' ]
+    searchProtectedProperty: false

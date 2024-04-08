@@ -6,6 +6,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.gravatar.api.models.UserProfile
 import com.gravatar.extensions.formattedUserInfo
 
+/**
+ * [UserInfo] is a composable that displays a user's information in a formatted way.
+ * The user's information includes their company, job title, pronunciation, pronouns, and current
+ * location when available.
+ */
 @Composable
 public fun UserInfo(profile: UserProfile, modifier: Modifier = Modifier, maxLines: Int = 2) {
     // TODO this doesn't work with one Text field due. If the job_title and the company line is too long,

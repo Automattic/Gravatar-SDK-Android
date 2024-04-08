@@ -5,6 +5,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.gravatar.api.models.UserProfile
 
+/**
+ * [AboutMe] is a composable that displays a user's about me description.
+ */
 @Composable
 public fun AboutMe(profile: UserProfile, modifier: Modifier = Modifier, maxLines: Int = 2) {
     ExpandableText(profile.aboutMe.orEmpty(), modifier, maxLines)
