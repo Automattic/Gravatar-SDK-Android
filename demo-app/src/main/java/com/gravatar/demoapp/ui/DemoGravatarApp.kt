@@ -210,15 +210,16 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
                     Modifier
                         .background(MaterialTheme.colorScheme.surfaceContainer)
                         .fillMaxWidth()
-                        .padding(24.dp, 24.dp, 24.dp, 24.dp),
+                        .padding(24.dp),
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 MiniProfileCard(
                     profiles.entry.first(),
                     Modifier
                         .background(MaterialTheme.colorScheme.surfaceContainer)
+                        .align(Alignment.Start)
                         .fillMaxWidth()
-                        .padding(24.dp, 24.dp, 24.dp, 24.dp),
+                        .padding(24.dp),
                 )
             } else {
                 if (error.isNotEmpty()) {
