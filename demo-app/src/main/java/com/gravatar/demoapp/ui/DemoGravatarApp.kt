@@ -43,6 +43,7 @@ import coil.request.ImageRequest
 import coil.size.Size
 import com.gravatar.AvatarQueryOptions
 import com.gravatar.AvatarUrl
+import com.gravatar.BuildConfig
 import com.gravatar.DefaultAvatarOption
 import com.gravatar.ImageRating
 import com.gravatar.R
@@ -147,7 +148,7 @@ private fun GravatarTabs(
 
 @Composable
 private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwable?) -> Unit) {
-    var email by remember { mutableStateOf("maxime.biais@automattic.com", neverEqualPolicy()) }
+    var email by remember { mutableStateOf(BuildConfig.DEMO_EMAIL, neverEqualPolicy()) }
     var hash by remember { mutableStateOf("", neverEqualPolicy()) }
     var profiles by remember { mutableStateOf(UserProfiles(emptyList()), neverEqualPolicy()) }
     var loading by remember { mutableStateOf(false) }
@@ -229,7 +230,7 @@ private fun AvatarTab(
     var settingsState by remember {
         mutableStateOf(
             SettingsState(
-                email = "maxime.biais@automattic.com",
+                email = BuildConfig.DEMO_EMAIL,
                 size = null,
                 defaultAvatarImageEnabled = false,
                 selectedDefaultAvatar = DefaultAvatarOption.MonsterId,
