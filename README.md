@@ -5,6 +5,36 @@
 
 Gravatar Android library
 
+## Architecture
+
+This project contains the source code for the Gravatar SDK library and a demo app. The demo app aims to achieve two different goals. On the one hand, it demonstrates how to use the Gravatar SDK library. On the other hand it serves as a testbed for the library.
+
+### Gravatar SDK Architecture
+
+The SDK is still in its early stages, but we can identify two main modules:
+
+#### Gravatar (Core)
+
+The core functionality of the Gravatar SDK library. It provides a set of classes and methods to interact with the Gravatar API.
+
+- [**Gravatar API clients**](gravatar/src/main/java/com/gravatar/services): A set of classes and methods to interact with the Gravatar API. It's responsible for handling the network requests and parsing the responses.
+- **Gravatar Utils**: A set of utility classes and methods to handle the Gravatar URLs, the Gravatar profile, etc.
+
+#### Gravatar UI
+
+A set of UI components to display the Gravatar images, profiles or information in general. Those components are implemented in Jetpack Compose and can contain logic to interact with the Gravatar API client.
+
+- [**Gravatar UI components**](gravatar-ui/src/main/java/com/gravatar/ui): A set of UI components to display the Gravatar images, profiles or information in general. Those components are implemented in Jetpack Compose and can contain logic to interact with the Gravatar API client.
+
+### Dependency Injection
+
+We decided to go with a manual injection basically for two main reasons:
+
+- We avoid adding a new project dependency and possible conflicts while integrating the SDK.
+- The expected size and complexity of the SDK allow manual injection without too much trouble.
+
+If you need to inject classes, you can use the [GravatarSdkContainer](gravatar/src/main/java/com/gravatar/di/container/GravatarSdkContainer.kt) class as the entry point. This class is responsible for all the DI in the SDK.
+
 ## Tests
 
 Run unit tests on your machine via the following command:
