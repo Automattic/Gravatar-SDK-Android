@@ -6,8 +6,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.gravatar.api.models.UserProfile
 
 @Composable
-public fun Location(profile: UserProfile, modifier: Modifier = Modifier, maxLines: Int = 1) {
-    ExpandableText(profile.currentLocation.orEmpty(), modifier, maxLines)
+public fun Location(
+    profile: UserProfile,
+    modifier: Modifier = Modifier,
+    maxLines: Int = 1,
+    dialogContent: @Composable (() -> Unit)? = null,
+) {
+    ExpandableText(profile.currentLocation.orEmpty(), modifier, maxLines, dialogContent)
 }
 
 @Preview

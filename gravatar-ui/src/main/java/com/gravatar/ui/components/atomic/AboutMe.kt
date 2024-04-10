@@ -9,8 +9,13 @@ import com.gravatar.api.models.UserProfile
  * [AboutMe] is a composable that displays a user's about me description.
  */
 @Composable
-public fun AboutMe(profile: UserProfile, modifier: Modifier = Modifier, maxLines: Int = 2) {
-    ExpandableText(profile.aboutMe.orEmpty(), modifier, maxLines)
+public fun AboutMe(
+    profile: UserProfile,
+    modifier: Modifier = Modifier,
+    maxLines: Int = 2,
+    dialogContent: @Composable (() -> Unit)? = null,
+) {
+    ExpandableText(profile.aboutMe.orEmpty(), modifier, maxLines, dialogContent)
 }
 
 @Preview
