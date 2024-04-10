@@ -53,8 +53,6 @@ import com.gravatar.api.models.UserProfiles
 import com.gravatar.demoapp.theme.GravatarDemoAppTheme
 import com.gravatar.demoapp.ui.components.GravatarEmailInput
 import com.gravatar.demoapp.ui.model.SettingsState
-import com.gravatar.services.ErrorType
-import com.gravatar.services.GravatarListener
 import com.gravatar.services.ProfileService
 import com.gravatar.types.Email
 import com.gravatar.ui.components.LargeProfile
@@ -154,12 +152,12 @@ private fun GravatarTabs(
 @Composable
 private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwable?) -> Unit) {
     var email by remember { mutableStateOf(BuildConfig.DEMO_EMAIL, neverEqualPolicy()) }
-    var hash by remember { mutableStateOf("", neverEqualPolicy()) }
     var profiles by remember { mutableStateOf(UserProfiles(emptyList()), neverEqualPolicy()) }
     var loading by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf("") }
     val profileService = ProfileService()
     val keyboardController = LocalSoftwareKeyboardController.current
+    val scope = rememberCoroutineScope()
 
     Surface(modifier) {
         Column(
@@ -179,35 +177,26 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
             Button(
                 onClick = {
                     keyboardController?.hide()
-                    loading = true
-                    error = ""
-                    profileService.fetch(
-                        Email(email),
-                        object : GravatarListener<UserProfiles> {
-                            override fun onSuccess(response: UserProfiles) {
-                                profiles = response
-                                loading = false
-                            }
-
-                            override fun onError(errorType: ErrorType) {
-                                onError(errorType.name, null)
-                                error = errorType.name
-                                loading = false
-                            }
-                        },
-                    )
+                    scope.launch {
+                        loading = true
+                        error = ""
+                        try {
+                            profiles = profileService.fetchSuspend(Email(email).hash().toString())
+                        } catch (exception: ProfileService.FetchException) {
+                            error = exception.errorType.name
+                            onError(exception.errorType.name, null)
+                        } finally {
+                            loading = false
+                        }
+                    }
                 },
             ) { Text(text = stringResource(R.string.button_get_profile)) }
-            // Show the hash and loading indicator
-            if (hash.isNotEmpty()) {
-                GravatarDivider()
-                LabelledText(R.string.gravatar_generated_hash_label, text = hash)
-                GravatarDivider()
-                if (loading) {
-                    CircularProgressIndicator()
-                }
-            }
+
             Spacer(modifier = Modifier.height(16.dp))
+            // Show the hash and loading indicator
+            if (loading && email.isNotEmpty()) {
+                CircularProgressIndicator()
+            }
             // Show the profile card if we got a result and there is no error and it's not loading
             if (!loading && error.isEmpty() && profiles.entry.isNotEmpty()) {
                 ProfileCard(

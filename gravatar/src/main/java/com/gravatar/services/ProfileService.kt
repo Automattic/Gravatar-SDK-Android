@@ -10,6 +10,8 @@ import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 import com.gravatar.di.container.GravatarSdkContainer.Companion.instance as GravatarSdkDI
 
 /**
@@ -81,5 +83,35 @@ public class ProfileService(private val okHttpClient: OkHttpClient? = null) {
      */
     public fun fetchByUsername(username: String, getProfileListener: GravatarListener<UserProfiles>) {
         fetch(username, getProfileListener = getProfileListener)
+    }
+
+    /**
+     * Exception thrown when a fetch operation fails.
+     *
+     * @property errorType The type of error that occurred
+     */
+    public class FetchException(public val errorType: ErrorType) : Exception()
+
+    /**
+     * Fetches a Gravatar profile for the given hash or username.
+     *
+     * @param hashOrUsername The hash or username to fetch the profile for
+     * @return The fetched profile
+     */
+    public suspend fun fetchSuspend(hashOrUsername: String): UserProfiles {
+        return suspendCoroutine {
+            fetch(
+                hashOrUsername,
+                object : GravatarListener<UserProfiles> {
+                    override fun onSuccess(response: UserProfiles) {
+                        it.resumeWith(Result.success(response))
+                    }
+
+                    override fun onError(errorType: ErrorType) {
+                        it.resumeWithException(FetchException(errorType))
+                    }
+                },
+            )
+        }
     }
 }
