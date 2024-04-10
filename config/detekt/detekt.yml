@@ -62,3 +62,9 @@ comments:
     # TODO - Remove the explicit exclusion of Email.kt once we implement the new REST API
     excludes: [ '**/test/**', '**/androidTest/**', '**/demoapp/**', '**/models/Email.kt' ]
     searchProtectedProperty: false
+  OutdatedDocumentation:
+    active: true
+    excludes: [ '**/test/**', '**/androidTest/**', '**/demoapp/**', '**/models/**' ]
+    matchTypeParameters: true
+    matchDeclarationsOrder: true
+    allowParamOnConstructorProperties: false

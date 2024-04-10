@@ -3,7 +3,7 @@ package com.gravatar.types
 /**
  * Email address representation.
  *
- * @property address the email address
+ * @param address the email address
  */
 public class Email(private val address: String) {
     /**
