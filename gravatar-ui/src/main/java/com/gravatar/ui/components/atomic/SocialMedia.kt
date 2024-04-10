@@ -31,8 +31,8 @@ import java.net.URL
  * @property imageResource The drawable resource ID of the icon.
  */
 public enum class LocalIcon(
-    val shortname: String,
-    @DrawableRes val imageResource: Int,
+    public val shortname: String,
+    @DrawableRes public val imageResource: Int,
 ) {
     Gravatar("gravatar", R.drawable.gravatar_icon),
     Calendly("calendly", R.drawable.calendly_icon),
@@ -51,7 +51,7 @@ public enum class LocalIcon(
     WordPress("wordpress", R.drawable.wordpress_icon),
     ;
 
-    companion object {
+    public companion object {
         private val shortnames = entries.associateBy { it.shortname }
 
         /**
@@ -71,7 +71,12 @@ public enum class LocalIcon(
  * @property iconUrl The [URL] of the icon for the social media platform.
  * @property icon The [LocalIcon] for the social media platform.
  */
-public class SocialMedia(val url: URL, val name: String, val iconUrl: URL? = null, val icon: LocalIcon? = null)
+public class SocialMedia(
+    public val url: URL,
+    public val name: String,
+    public val iconUrl: URL? = null,
+    public val icon: LocalIcon? = null,
+)
 
 private fun mediaList(profile: UserProfile): List<SocialMedia> {
     val mediaList = mutableListOf<SocialMedia>()
@@ -99,7 +104,7 @@ private fun mediaList(profile: UserProfile): List<SocialMedia> {
  * The link will navigate to the Gravatar user's profile on the social media platform.
  */
 @Composable
-fun SocialIcon(media: SocialMedia, modifier: Modifier = Modifier) {
+public fun SocialIcon(media: SocialMedia, modifier: Modifier = Modifier) {
     val uriHandler = LocalUriHandler.current
     IconButton(
         onClick = {
@@ -131,7 +136,7 @@ fun SocialIcon(media: SocialMedia, modifier: Modifier = Modifier) {
  * [SocialIconRow] is a composable that displays a row of clickable [SocialIcon].
  */
 @Composable
-fun SocialIconRow(socialMedia: List<SocialMedia>, modifier: Modifier = Modifier, maxIcons: Int = 4) {
+public fun SocialIconRow(socialMedia: List<SocialMedia>, modifier: Modifier = Modifier, maxIcons: Int = 4) {
     Row(modifier = modifier) {
         socialMedia.take(maxIcons).forEach { media ->
             SocialIcon(media = media, modifier = Modifier.size(32.dp))
@@ -143,13 +148,13 @@ fun SocialIconRow(socialMedia: List<SocialMedia>, modifier: Modifier = Modifier,
  * [SocialIconRow] is a composable that displays a row of clickable [SocialIcon].
  */
 @Composable
-fun SocialIconRow(profile: UserProfile, modifier: Modifier = Modifier, maxIcons: Int = 4) {
+public fun SocialIconRow(profile: UserProfile, modifier: Modifier = Modifier, maxIcons: Int = 4) {
     SocialIconRow(mediaList(profile), modifier, maxIcons)
 }
 
 @Preview(showBackground = true)
 @Composable
-fun SocialIconRowPreview() {
+private fun SocialIconRowPreview() {
     val userProfile = UserProfile(
         hash = "",
         accounts = listOf(
