@@ -21,6 +21,13 @@ import com.gravatar.ui.components.atomic.DisplayName
 import com.gravatar.ui.components.atomic.Location
 import com.gravatar.ui.components.atomic.ViewProfileButton
 
+/**
+ * [MiniProfileCard] is a composable that displays a mini profile card.
+ * Given a [UserProfile], it displays a mini profile card using the other atomic components provided within the SDK.
+ *
+ * @param profile The user's profile information
+ * @param modifier Composable modifier
+ */
 @Composable
 fun MiniProfileCard(profile: UserProfile, modifier: Modifier = Modifier) {
     Row(modifier = modifier) {
