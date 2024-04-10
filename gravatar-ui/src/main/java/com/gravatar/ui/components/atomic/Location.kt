@@ -19,7 +19,7 @@ public fun Location(
     profile: UserProfile,
     modifier: Modifier = Modifier,
     maxLines: Int = 1,
-    dialogContent: @Composable (() -> Unit)? = null,
+    dialogContent: @Composable ((String) -> Unit)? = { DefaultDialogContent(text = it) },
 ) {
     ExpandableText(profile.currentLocation.orEmpty(), modifier, maxLines, dialogContent)
 }

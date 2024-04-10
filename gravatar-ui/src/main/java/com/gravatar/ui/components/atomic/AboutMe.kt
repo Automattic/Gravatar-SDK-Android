@@ -13,7 +13,7 @@ public fun AboutMe(
     profile: UserProfile,
     modifier: Modifier = Modifier,
     maxLines: Int = 2,
-    dialogContent: @Composable (() -> Unit)? = null,
+    dialogContent: @Composable ((String) -> Unit)? = { DefaultDialogContent(text = it) },
 ) {
     ExpandableText(profile.aboutMe.orEmpty(), modifier, maxLines, dialogContent)
 }

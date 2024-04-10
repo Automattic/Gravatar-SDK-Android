@@ -16,7 +16,7 @@ public fun UserInfo(
     profile: UserProfile,
     modifier: Modifier = Modifier,
     maxLines: Int = 2,
-    dialogContent: @Composable (() -> Unit)? = null,
+    dialogContent: @Composable ((String) -> Unit)? = { DefaultDialogContent(text = it) },
 ) {
     // TODO this doesn't work with one Text field due. If the job_title and the company line is too long,
     // it will to break the layout

@@ -28,7 +28,7 @@ internal fun ExpandableText(
     text: String,
     modifier: Modifier = Modifier,
     maxLines: Int = 2,
-    dialogContent: @Composable (() -> Unit)? = null,
+    dialogContent: @Composable ((String) -> Unit)? = { DefaultDialogContent(it) },
 ) {
     var showDialog by remember { mutableStateOf(false) }
     var clickableText by remember { mutableStateOf(false) }
@@ -46,17 +46,18 @@ internal fun ExpandableText(
     )
     if (showDialog) {
         Dialog(onDismissRequest = { showDialog = false }) {
-            if (dialogContent != null) {
-                dialogContent()
-            } else {
-                DefaultDialogContent(text)
-            }
+            dialogContent?.invoke(text)
         }
     }
 }
 
+/**
+ * Default dialog content for the [ExpandableText] composable.
+ *
+ * @param text The original text to be expanded in the dialog
+ */
 @Composable
-private fun DefaultDialogContent(text: String) {
+public fun DefaultDialogContent(text: String) {
     Card(
         modifier = Modifier.wrapContentSize(),
         shape = RoundedCornerShape(16.dp),
@@ -81,7 +82,7 @@ private fun ExpandableTextPreview() {
 @Preview
 @Composable
 private fun ExpandableTextPreviewWithDialogContent() {
-    ExpandableText("Text that \ncan be expanded \nby clicking on it.") {
+    ExpandableText("Text that \ncan be expanded \nby clicking on it.") { text ->
         Card(
             modifier = Modifier.wrapContentSize(),
             shape = RoundedCornerShape(16.dp),
@@ -91,7 +92,7 @@ private fun ExpandableTextPreviewWithDialogContent() {
                     painter = painterResource(R.drawable.gravatar_icon),
                     contentDescription = "",
                 )
-                Text("This demonstrates how to pass a custom dialog content to the ExpandableText.")
+                Text("$text\n\nThis demonstrates how to pass a custom dialog content to the ExpandableText.")
             }
         }
     }
