@@ -7,6 +7,9 @@ import com.gravatar.api.models.UserProfile
 
 /**
  * [DisplayName] is a composable that displays the user's display name.
+ *
+ * @param profile The user's profile information
+ * @param modifier Composable modifier
  */
 @Composable
 public fun DisplayName(profile: UserProfile, modifier: Modifier = Modifier) {

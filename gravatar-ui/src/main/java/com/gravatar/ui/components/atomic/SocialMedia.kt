@@ -102,6 +102,9 @@ private fun mediaList(profile: UserProfile): List<SocialMedia> {
 /**
  * [SocialIcon] is a composable that displays a clickable icon for a social media account.
  * The link will navigate to the Gravatar user's profile on the social media platform.
+ *
+ * @param media The social media account to display
+ * @param modifier Composable modifier
  */
 @Composable
 public fun SocialIcon(media: SocialMedia, modifier: Modifier = Modifier) {
@@ -134,6 +137,10 @@ public fun SocialIcon(media: SocialMedia, modifier: Modifier = Modifier) {
 
 /**
  * [SocialIconRow] is a composable that displays a row of clickable [SocialIcon].
+ *
+ * @param socialMedia The list of social media accounts to display
+ * @param modifier Composable modifier
+ * @param maxIcons The maximum number of icons to display
  */
 @Composable
 public fun SocialIconRow(socialMedia: List<SocialMedia>, modifier: Modifier = Modifier, maxIcons: Int = 4) {
@@ -146,6 +153,10 @@ public fun SocialIconRow(socialMedia: List<SocialMedia>, modifier: Modifier = Mo
 
 /**
  * [SocialIconRow] is a composable that displays a row of clickable [SocialIcon].
+ *
+ * @param profile The user's profile information
+ * @param modifier Composable modifier
+ * @param maxIcons The maximum number of icons to display
  */
 @Composable
 public fun SocialIconRow(profile: UserProfile, modifier: Modifier = Modifier, maxIcons: Int = 4) {

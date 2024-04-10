@@ -29,6 +29,9 @@ import com.gravatar.ui.R
 
 /**
  * ViewProfileButton is a composable that displays a button to view a user's profile.
+ *
+ * @param profile The user's profile information
+ * @param modifier Composable modifier
  */
 @Composable
 public fun ViewProfileButton(profile: UserProfile, modifier: Modifier = Modifier) {

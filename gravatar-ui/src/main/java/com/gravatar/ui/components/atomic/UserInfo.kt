@@ -10,6 +10,11 @@ import com.gravatar.extensions.formattedUserInfo
  * [UserInfo] is a composable that displays a user's information in a formatted way.
  * The user's information includes their company, job title, pronunciation, pronouns, and current
  * location when available.
+ *
+ * @param profile The user's profile information
+ * @param modifier Composable modifier
+ * @param maxLines The maximum number of lines to display before truncating the text
+ * @param dialogContent The content to display in a dialog when the truncated text is clicked
  */
 @Composable
 public fun UserInfo(
