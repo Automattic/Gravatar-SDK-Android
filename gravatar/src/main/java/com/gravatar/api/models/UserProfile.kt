@@ -18,7 +18,6 @@ import com.google.gson.annotations.SerializedName
  * @param preferredUsername
  * @param thumbnailUrl
  * @param lastProfileEdit
- * @param profileBackground
  * @param name
  * @param displayName
  * @param pronouns
@@ -46,8 +45,6 @@ public data class UserProfile(
     val thumbnailUrl: kotlin.String? = null,
     @SerializedName("last_profile_edit")
     val lastProfileEdit: kotlin.String? = null,
-    @SerializedName("profileBackground")
-    val profileBackground: ProfileBackground? = null,
     @SerializedName("name")
     val name: Name? = null,
     @SerializedName("displayName")

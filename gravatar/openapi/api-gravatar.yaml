@@ -63,8 +63,6 @@ components:
           format: url
         last_profile_edit:
           type: string
-        profileBackground:
-          $ref: "#/components/schemas/ProfileBackground"
         name:
           $ref: "#/components/schemas/Name"
         displayName:
@@ -111,17 +109,6 @@ components:
       properties:
         search_engines:
           type: boolean
-    ProfileBackground:
-      type: object
-      required:
-        - color
-        - url
-      properties:
-        color:
-          type: string
-        url:
-          type: string
-          format: url
     Email:
       type: object
       properties:
