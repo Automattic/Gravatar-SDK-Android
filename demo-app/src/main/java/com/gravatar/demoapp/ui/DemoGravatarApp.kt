@@ -58,6 +58,7 @@ import com.gravatar.services.GravatarListener
 import com.gravatar.services.ProfileService
 import com.gravatar.types.Email
 import com.gravatar.ui.components.LargeProfile
+import com.gravatar.ui.components.LargeProfileSummary
 import com.gravatar.ui.components.MiniProfileCard
 import com.gravatar.ui.components.ProfileCard
 import kotlinx.coroutines.CoroutineScope
@@ -232,6 +233,15 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
                         .background(MaterialTheme.colorScheme.surfaceContainer)
                         .fillMaxWidth()
                         .padding(24.dp),
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                LargeProfileSummary(
+                    profiles.entry.first(),
+                    Modifier
+                        .padding(8.dp)
+                        .background(MaterialTheme.colorScheme.surfaceContainer)
+                        .padding(start = 24.dp, end = 24.dp, top = 24.dp, bottom = 8.dp)
+                        .fillMaxWidth(),
                 )
             } else {
                 if (error.isNotEmpty()) {
