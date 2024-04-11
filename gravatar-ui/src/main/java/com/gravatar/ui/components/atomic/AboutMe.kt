@@ -7,6 +7,11 @@ import com.gravatar.api.models.UserProfile
 
 /**
  * [AboutMe] is a composable that displays a user's about me description.
+ *
+ * @param profile The user's profile information
+ * @param modifier Composable modifier
+ * @param maxLines The maximum number of lines to display before truncating the text
+ * @param dialogContent The content to display in a dialog when the truncated text is clicked
  */
 @Composable
 public fun AboutMe(

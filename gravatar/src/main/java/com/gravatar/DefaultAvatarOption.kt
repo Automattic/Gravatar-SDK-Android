@@ -64,7 +64,7 @@ public sealed class DefaultAvatarOption {
      *   - MUST have a recognizable image extension (jpg, jpeg, gif, png, heic)
      *   - MUST NOT include a querystring (if it does, it will be ignored)
      *
-     * @param defaultImageUrl the custom url to use as the default avatar image.
+     * @property defaultImageUrl the custom url to use as the default avatar image.
      */
     public data class CustomUrl(val defaultImageUrl: String) : DefaultAvatarOption()
 

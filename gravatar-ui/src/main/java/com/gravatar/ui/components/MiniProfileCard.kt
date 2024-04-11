@@ -29,7 +29,7 @@ import com.gravatar.ui.components.atomic.ViewProfileButton
  * @param modifier Composable modifier
  */
 @Composable
-fun MiniProfileCard(profile: UserProfile, modifier: Modifier = Modifier) {
+public fun MiniProfileCard(profile: UserProfile, modifier: Modifier = Modifier) {
     Row(modifier = modifier) {
         Avatar(
             profile = profile,
@@ -62,7 +62,7 @@ fun MiniProfileCard(profile: UserProfile, modifier: Modifier = Modifier) {
 
 @Preview
 @Composable
-fun MiniProfileCardPreview() {
+private fun MiniProfileCardPreview() {
     MiniProfileCard(
         UserProfile(
             "1234",

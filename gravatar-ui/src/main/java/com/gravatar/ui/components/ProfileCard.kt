@@ -32,9 +32,12 @@ import com.gravatar.ui.components.atomic.ViewProfileButton
 /**
  * [ProfileCard] is a composable that displays a user's profile card.
  * Given a [UserProfile], it displays a [ProfileCard] using the other atomic components provided within the SDK.
+ *
+ * @param profile The user's profile information
+ * @param modifier Composable modifier
  */
 @Composable
-fun ProfileCard(profile: UserProfile, modifier: Modifier = Modifier) {
+public fun ProfileCard(profile: UserProfile, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.Start,
@@ -83,7 +86,7 @@ fun ProfileCard(profile: UserProfile, modifier: Modifier = Modifier) {
 
 @Preview
 @Composable
-fun ProfileCardPreview() {
+private fun ProfileCardPreview() {
     ProfileCard(
         UserProfile(
             hash = "1234567890",

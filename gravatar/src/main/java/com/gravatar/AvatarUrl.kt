@@ -10,9 +10,9 @@ import java.util.Locale
 /**
  * Gravatar avatar URL.
  *
- * @property canonicalUrl Canonical URL of the avatar
- * @property hash Gravatar hash
- * @property avatarQueryOptions Avatar query options
+ * [canonicalUrl] Canonical URL of the avatar
+ * [hash] Gravatar hash
+ * [avatarQueryOptions] Avatar query options
  */
 public class AvatarUrl {
     public val canonicalUrl: URL
@@ -53,6 +53,7 @@ public class AvatarUrl {
      * Create an avatar URL from a Gravatar hash.
      *
      * @param hash Gravatar hash
+     * @param avatarQueryOptions Avatar query options
      */
     public constructor(hash: Hash, avatarQueryOptions: AvatarQueryOptions? = null) {
         this.hash = hash
@@ -64,6 +65,7 @@ public class AvatarUrl {
      * Create an avatar URL from an email address.
      *
      * @param email Email address
+     * @param avatarQueryOptions Avatar query options
      */
     public constructor(
         email: Email,
