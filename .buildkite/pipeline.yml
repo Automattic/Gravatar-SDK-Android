@@ -49,3 +49,10 @@ steps:
     notify:
       - github_commit_status:
           context: "Publish :gravatar"
+
+  # Run it after building step so the generated files are not bundled with the release
+  - label: "OpenAPI generation"
+    command: |
+      echo "--- ⚒️ Generating OpenAPI code"
+      ./gradlew :gravatar:openApiGenerate
+
