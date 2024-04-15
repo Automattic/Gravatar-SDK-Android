@@ -21,7 +21,9 @@ public fun Location(
     maxLines: Int = 1,
     dialogContent: @Composable ((String) -> Unit)? = { DefaultDialogContent(text = it) },
 ) {
-    ExpandableText(profile.currentLocation.orEmpty(), modifier, maxLines, dialogContent)
+    if (!profile.currentLocation.isNullOrBlank()) {
+        ExpandableText(profile.currentLocation.orEmpty(), modifier, maxLines, dialogContent)
+    }
 }
 
 @Preview
