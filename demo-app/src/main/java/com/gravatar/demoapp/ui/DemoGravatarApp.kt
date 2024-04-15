@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
@@ -55,6 +57,7 @@ import com.gravatar.services.ErrorType
 import com.gravatar.services.GravatarListener
 import com.gravatar.services.ProfileService
 import com.gravatar.types.Email
+import com.gravatar.ui.components.LargeProfile
 import com.gravatar.ui.components.MiniProfileCard
 import com.gravatar.ui.components.ProfileCard
 import kotlinx.coroutines.CoroutineScope
@@ -161,7 +164,8 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background),
+                .background(MaterialTheme.colorScheme.background)
+                .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             GravatarEmailInput(
@@ -218,6 +222,14 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
                     Modifier
                         .background(MaterialTheme.colorScheme.surfaceContainer)
                         .align(Alignment.Start)
+                        .fillMaxWidth()
+                        .padding(24.dp),
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                LargeProfile(
+                    profiles.entry.first(),
+                    Modifier
+                        .background(MaterialTheme.colorScheme.surfaceContainer)
                         .fillMaxWidth()
                         .padding(24.dp),
                 )
