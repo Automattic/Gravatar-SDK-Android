@@ -40,13 +40,15 @@ public fun MiniProfileCard(profile: UserProfile, modifier: Modifier = Modifier) 
             ProvideTextStyle(TextStyle(fontSize = 18.sp, fontWeight = FontWeight.Bold, lineHeight = 24.sp)) {
                 DisplayName(profile)
             }
-            ProvideTextStyle(
-                TextStyle(
-                    fontSize = 14.sp,
-                    color = MaterialTheme.colorScheme.outline,
-                ),
-            ) {
-                Location(profile)
+            if (!profile.currentLocation.isNullOrBlank()) {
+                ProvideTextStyle(
+                    TextStyle(
+                        fontSize = 14.sp,
+                        color = MaterialTheme.colorScheme.outline,
+                    ),
+                ) {
+                    Location(profile)
+                }
             }
             ProvideTextStyle(
                 MaterialTheme.typography.bodyMedium.merge(color = MaterialTheme.colorScheme.onBackground),
