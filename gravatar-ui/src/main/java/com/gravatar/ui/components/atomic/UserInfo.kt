@@ -25,7 +25,7 @@ public fun UserInfo(
 ) {
     // TODO this doesn't work with one Text field due. If the job_title and the company line is too long,
     // it will to break the layout
-    ExpandableText(profile.formattedUserInfo(), modifier, maxLines, dialogContent)
+    ExpandableText(profile.formattedUserInfo(), modifier, maxLines = maxLines, dialogContent = dialogContent)
 }
 
 @Preview

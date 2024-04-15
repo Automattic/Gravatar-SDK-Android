@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -16,6 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,6 +29,7 @@ import com.gravatar.ui.R
 internal fun ExpandableText(
     text: String,
     modifier: Modifier = Modifier,
+    textStyle: TextStyle = LocalTextStyle.current,
     maxLines: Int = 2,
     dialogContent: @Composable ((String) -> Unit)? = { DefaultDialogContent(it) },
 ) {
@@ -43,6 +46,7 @@ internal fun ExpandableText(
             clickableText = textLayoutResult.hasVisualOverflow
         },
         overflow = TextOverflow.Ellipsis,
+        style = textStyle,
     )
     if (showDialog) {
         Dialog(onDismissRequest = { showDialog = false }) {

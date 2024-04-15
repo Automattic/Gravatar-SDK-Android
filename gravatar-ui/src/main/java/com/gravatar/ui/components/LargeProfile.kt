@@ -56,9 +56,7 @@ public fun LargeProfile(profile: UserProfile, modifier: Modifier = Modifier) {
         ) {
             UserInfo(profile)
         }
-        ProvideTextStyle(MaterialTheme.typography.bodyMedium) {
-            AboutMe(profile, modifier = Modifier.padding(top = 8.dp))
-        }
+        AboutMe(profile, modifier = Modifier.padding(top = 8.dp))
         Row(
             modifier = Modifier
                 .fillMaxWidth()

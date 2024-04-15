@@ -65,9 +65,7 @@ public fun ProfileCard(profile: UserProfile, modifier: Modifier = Modifier) {
             }
         }
         Spacer(modifier = Modifier.height(16.dp))
-        ProvideTextStyle(MaterialTheme.typography.bodyMedium) {
-            AboutMe(profile)
-        }
+        AboutMe(profile)
         Spacer(modifier = Modifier.height(4.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
