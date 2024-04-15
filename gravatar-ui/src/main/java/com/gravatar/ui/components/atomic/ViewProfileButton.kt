@@ -15,6 +15,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.PlaceholderVerticalAlign
@@ -32,21 +33,29 @@ import com.gravatar.ui.R
  *
  * @param profile The user's profile information
  * @param modifier Composable modifier
+ * @param inlineContent The content to display inline with the text, by default it is an arrow icon.
+ * It can be null if no content is needed.
  */
 @Composable
-public fun ViewProfileButton(profile: UserProfile, modifier: Modifier = Modifier) {
+public fun ViewProfileButton(
+    profile: UserProfile,
+    modifier: Modifier = Modifier,
+    inlineContent: @Composable ((String) -> Unit)? = { DefaultInlineContent() },
+) {
     val uriHandler = LocalUriHandler.current
-    val arrowString = "->"
+    val iconInlineId = "->"
     val text = buildAnnotatedString {
         append(stringResource(R.string.view_profile_button))
-        append(" ")
-        // Append a placeholder string "[myBox]" and attach an annotation "inlineContent" on it.
-        appendInlineContent(arrowString, "[arrow]")
+        if (inlineContent != null) {
+            append(" ")
+            // Append a placeholder string "[myBox]" and attach an annotation "inlineContent" on it.
+            appendInlineContent(iconInlineId, "[icon]")
+        }
     }
 
-    val inlineContent = mapOf(
+    val inlineContentMap = mapOf(
         Pair(
-            arrowString,
+            iconInlineId,
             InlineTextContent(
                 Placeholder(
                     width = 16.sp,
@@ -54,12 +63,7 @@ public fun ViewProfileButton(profile: UserProfile, modifier: Modifier = Modifier
                     placeholderVerticalAlign = PlaceholderVerticalAlign.TextCenter,
                 ),
             ) {
-                // In RTL mode the Arrow will be mirrored
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                    tint = LocalTextStyle.current.color,
-                    contentDescription = "",
-                )
+                inlineContent?.invoke(it)
             },
         ),
     )
@@ -71,8 +75,18 @@ public fun ViewProfileButton(profile: UserProfile, modifier: Modifier = Modifier
         contentPadding = PaddingValues(start = 0.dp, end = 0.dp),
         modifier = modifier,
     ) {
-        Text(text, inlineContent = inlineContent)
+        Text(text, inlineContent = inlineContentMap)
     }
+}
+
+@Composable
+private fun DefaultInlineContent() {
+    // In RTL mode the Arrow will be mirrored
+    Icon(
+        imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+        tint = LocalTextStyle.current.color,
+        contentDescription = "",
+    )
 }
 
 @Preview(showBackground = true)
@@ -85,5 +99,27 @@ private fun ViewProfileButtonPreview() {
         }
         // Preview in LTR mode
         ViewProfileButton(UserProfile("4539566a0223b11d28fc47c864336fa27b8fe49b5f85180178c9e3813e910d6a"))
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ViewProfileButtonWithCustomizedInlineContentPreview() {
+    ViewProfileButton(UserProfile("4539566a0223b11d28fc47c864336fa27b8fe49b5f85180178c9e3813e910d6a"), inlineContent = {
+        Icon(
+            painter = painterResource(R.drawable.gravatar_icon),
+            contentDescription = "",
+        )
+    })
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ViewProfileButtonWithoutInlineContentPreview() {
+    CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
+        ViewProfileButton(
+            UserProfile("4539566a0223b11d28fc47c864336fa27b8fe49b5f85180178c9e3813e910d6a"),
+            inlineContent = null,
+        )
     }
 }
