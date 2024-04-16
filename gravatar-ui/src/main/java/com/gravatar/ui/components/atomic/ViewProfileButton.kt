@@ -7,18 +7,20 @@ import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.PlaceholderVerticalAlign
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
@@ -33,6 +35,7 @@ import com.gravatar.ui.R
  *
  * @param profile The user's profile information
  * @param modifier Composable modifier
+ * @param textStyle The style to apply to the text
  * @param inlineContent The content to display inline with the text, by default it is an arrow icon.
  * It can be null if no content is needed.
  */
@@ -40,7 +43,8 @@ import com.gravatar.ui.R
 public fun ViewProfileButton(
     profile: UserProfile,
     modifier: Modifier = Modifier,
-    inlineContent: @Composable ((String) -> Unit)? = { DefaultInlineContent() },
+    textStyle: TextStyle = MaterialTheme.typography.titleSmall.copy(color = MaterialTheme.colorScheme.onBackground),
+    inlineContent: @Composable ((String) -> Unit)? = { DefaultInlineContent(textStyle.color) },
 ) {
     val uriHandler = LocalUriHandler.current
     val iconInlineId = "->"
@@ -75,16 +79,16 @@ public fun ViewProfileButton(
         contentPadding = PaddingValues(start = 0.dp, end = 0.dp),
         modifier = modifier,
     ) {
-        Text(text, inlineContent = inlineContentMap)
+        Text(text, inlineContent = inlineContentMap, style = textStyle)
     }
 }
 
 @Composable
-private fun DefaultInlineContent() {
+private fun DefaultInlineContent(tintColor: Color) {
     // In RTL mode the Arrow will be mirrored
     Icon(
         imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-        tint = LocalTextStyle.current.color,
+        tint = tintColor,
         contentDescription = "",
     )
 }

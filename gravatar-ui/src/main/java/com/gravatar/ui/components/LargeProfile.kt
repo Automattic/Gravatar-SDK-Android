@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -57,11 +56,7 @@ public fun LargeProfile(profile: UserProfile, modifier: Modifier = Modifier) {
             verticalAlignment = Alignment.CenterVertically,
         ) {
             SocialIconRow(profile, maxIcons = 4)
-            ProvideTextStyle(
-                MaterialTheme.typography.bodyMedium.merge(color = MaterialTheme.colorScheme.onBackground),
-            ) {
-                ViewProfileButton(profile, Modifier.padding(0.dp))
-            }
+            ViewProfileButton(profile, Modifier.padding(0.dp))
         }
     }
 }

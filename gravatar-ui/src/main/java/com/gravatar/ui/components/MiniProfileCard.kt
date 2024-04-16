@@ -50,14 +50,10 @@ public fun MiniProfileCard(profile: UserProfile, modifier: Modifier = Modifier) 
                     Location(profile)
                 }
             }
-            ProvideTextStyle(
-                MaterialTheme.typography.bodyMedium.merge(color = MaterialTheme.colorScheme.onBackground),
-            ) {
-                ViewProfileButton(
-                    profile,
-                    modifier = Modifier.height(32.dp),
-                )
-            }
+            ViewProfileButton(
+                profile,
+                modifier = Modifier.height(32.dp),
+            )
         }
     }
 }

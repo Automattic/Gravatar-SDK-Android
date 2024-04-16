@@ -52,11 +52,7 @@ public fun LargeProfileSummary(profile: UserProfile, modifier: Modifier = Modifi
                 textAlign = TextAlign.Center,
             ),
         )
-        ProvideTextStyle(
-            MaterialTheme.typography.bodyMedium.merge(color = MaterialTheme.colorScheme.onBackground),
-        ) {
-            ViewProfileButton(profile, Modifier.padding(0.dp), inlineContent = null)
-        }
+        ViewProfileButton(profile, Modifier.padding(0.dp), inlineContent = null)
     }
 }
 
