@@ -53,15 +53,7 @@ public fun ProfileCard(profile: UserProfile, modifier: Modifier = Modifier) {
                 ProvideTextStyle(TextStyle(fontSize = 18.sp, fontWeight = FontWeight.Bold, lineHeight = 24.sp)) {
                     DisplayName(profile)
                 }
-                ProvideTextStyle(
-                    TextStyle(
-                        fontSize = 14.sp,
-                        lineHeight = 20.sp,
-                        color = MaterialTheme.colorScheme.outline,
-                    ),
-                ) {
-                    UserInfo(profile)
-                }
+                UserInfo(profile)
             }
         }
         Spacer(modifier = Modifier.height(16.dp))

@@ -45,16 +45,13 @@ public fun LargeProfileSummary(profile: UserProfile, modifier: Modifier = Modifi
         ProvideTextStyle(TextStyle(fontSize = 24.sp, fontWeight = FontWeight.Bold, lineHeight = 24.sp)) {
             DisplayName(profile, modifier = Modifier.padding(top = 16.dp))
         }
-        ProvideTextStyle(
-            TextStyle(
-                fontSize = 14.sp,
-                lineHeight = 20.sp,
+        UserInfo(
+            profile,
+            textStyle = MaterialTheme.typography.bodyMedium.copy(
                 color = MaterialTheme.colorScheme.outline,
                 textAlign = TextAlign.Center,
             ),
-        ) {
-            UserInfo(profile)
-        }
+        )
         ProvideTextStyle(
             MaterialTheme.typography.bodyMedium.merge(color = MaterialTheme.colorScheme.onBackground),
         ) {

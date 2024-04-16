@@ -47,15 +47,7 @@ public fun LargeProfile(profile: UserProfile, modifier: Modifier = Modifier) {
         ProvideTextStyle(TextStyle(fontSize = 24.sp, fontWeight = FontWeight.Bold, lineHeight = 24.sp)) {
             DisplayName(profile, modifier = Modifier.padding(top = 16.dp))
         }
-        ProvideTextStyle(
-            TextStyle(
-                fontSize = 14.sp,
-                lineHeight = 20.sp,
-                color = MaterialTheme.colorScheme.outline,
-            ),
-        ) {
-            UserInfo(profile)
-        }
+        UserInfo(profile)
         AboutMe(profile, modifier = Modifier.padding(top = 8.dp))
         Row(
             modifier = Modifier
