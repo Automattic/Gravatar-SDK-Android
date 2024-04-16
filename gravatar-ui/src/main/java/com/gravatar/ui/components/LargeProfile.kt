@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.gravatar.api.models.Account
 import com.gravatar.api.models.Email
 import com.gravatar.api.models.UserProfile
+import com.gravatar.ui.GravatarTheme
 import com.gravatar.ui.components.atomic.AboutMe
 import com.gravatar.ui.components.atomic.Avatar
 import com.gravatar.ui.components.atomic.DisplayName
@@ -31,26 +32,28 @@ import com.gravatar.ui.components.atomic.ViewProfileButton
  */
 @Composable
 public fun LargeProfile(profile: UserProfile, modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier,
-    ) {
-        Avatar(
-            profile = profile,
-            size = 132.dp,
-            modifier = Modifier.clip(CircleShape),
-        )
-        DisplayName(profile, modifier = Modifier.padding(top = 16.dp))
-        UserInfo(profile)
-        AboutMe(profile, modifier = Modifier.padding(top = 8.dp))
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 4.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
+    GravatarTheme {
+        Column(
+            modifier = modifier,
         ) {
-            SocialIconRow(profile, maxIcons = 4)
-            ViewProfileButton(profile, Modifier.padding(0.dp))
+            Avatar(
+                profile = profile,
+                size = 132.dp,
+                modifier = Modifier.clip(CircleShape),
+            )
+            DisplayName(profile, modifier = Modifier.padding(top = 16.dp))
+            UserInfo(profile)
+            AboutMe(profile, modifier = Modifier.padding(top = 8.dp))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 4.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                SocialIconRow(profile, maxIcons = 4)
+                ViewProfileButton(profile, Modifier.padding(0.dp))
+            }
         }
     }
 }
