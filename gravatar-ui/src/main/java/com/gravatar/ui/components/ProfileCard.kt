@@ -8,16 +8,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.ProvideTextStyle
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.gravatar.api.models.Account
 import com.gravatar.api.models.Email
 import com.gravatar.api.models.UserProfile
@@ -49,9 +47,10 @@ public fun ProfileCard(profile: UserProfile, modifier: Modifier = Modifier) {
                 modifier = Modifier.clip(CircleShape),
             )
             Column(modifier = Modifier.padding(14.dp, 0.dp, 0.dp, 0.dp)) {
-                ProvideTextStyle(TextStyle(fontSize = 18.sp, fontWeight = FontWeight.Bold, lineHeight = 24.sp)) {
-                    DisplayName(profile)
-                }
+                DisplayName(
+                    profile,
+                    textStyle = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                )
                 UserInfo(profile)
             }
         }

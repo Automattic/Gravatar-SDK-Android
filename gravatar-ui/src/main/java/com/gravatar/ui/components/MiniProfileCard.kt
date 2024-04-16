@@ -37,9 +37,7 @@ public fun MiniProfileCard(profile: UserProfile, modifier: Modifier = Modifier) 
             modifier = Modifier.clip(CircleShape),
         )
         Column(modifier = Modifier.padding(start = 14.dp)) {
-            ProvideTextStyle(TextStyle(fontSize = 18.sp, fontWeight = FontWeight.Bold, lineHeight = 24.sp)) {
-                DisplayName(profile)
-            }
+            DisplayName(profile, textStyle = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold))
             if (!profile.currentLocation.isNullOrBlank()) {
                 ProvideTextStyle(
                     TextStyle(

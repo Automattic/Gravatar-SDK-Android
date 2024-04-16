@@ -5,17 +5,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.gravatar.api.models.Account
 import com.gravatar.api.models.Email
 import com.gravatar.api.models.UserProfile
@@ -42,9 +38,7 @@ public fun LargeProfileSummary(profile: UserProfile, modifier: Modifier = Modifi
             size = 132.dp,
             modifier = Modifier.clip(CircleShape),
         )
-        ProvideTextStyle(TextStyle(fontSize = 24.sp, fontWeight = FontWeight.Bold, lineHeight = 24.sp)) {
-            DisplayName(profile, modifier = Modifier.padding(top = 16.dp))
-        }
+        DisplayName(profile, modifier = Modifier.padding(top = 16.dp))
         UserInfo(
             profile,
             textStyle = MaterialTheme.typography.bodyMedium.copy(
