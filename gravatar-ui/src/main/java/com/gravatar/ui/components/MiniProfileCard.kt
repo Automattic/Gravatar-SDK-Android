@@ -6,15 +6,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.gravatar.api.models.UserProfile
 import com.gravatar.ui.components.atomic.Avatar
 import com.gravatar.ui.components.atomic.DisplayName
@@ -39,14 +36,7 @@ public fun MiniProfileCard(profile: UserProfile, modifier: Modifier = Modifier) 
         Column(modifier = Modifier.padding(start = 14.dp)) {
             DisplayName(profile, textStyle = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold))
             if (!profile.currentLocation.isNullOrBlank()) {
-                ProvideTextStyle(
-                    TextStyle(
-                        fontSize = 14.sp,
-                        color = MaterialTheme.colorScheme.outline,
-                    ),
-                ) {
-                    Location(profile)
-                }
+                Location(profile)
             }
             ViewProfileButton(
                 profile,
