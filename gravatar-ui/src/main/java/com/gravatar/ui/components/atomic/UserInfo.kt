@@ -1,7 +1,9 @@
 package com.gravatar.ui.components.atomic
 
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.gravatar.api.models.UserProfile
 import com.gravatar.extensions.formattedUserInfo
@@ -13,20 +15,26 @@ import com.gravatar.extensions.formattedUserInfo
  *
  * @param profile The user's profile information
  * @param modifier Composable modifier
- * @param maxLines The maximum number of lines to display before truncating the text
- * @param dialogContent The content to display in a dialog when the truncated text is clicked
+ * @param content Composable to display the formatted user information
  */
 @Composable
 public fun UserInfo(
     profile: UserProfile,
     modifier: Modifier = Modifier,
-    maxLines: Int = 2,
-    dialogContent: @Composable ((String) -> Unit)? = { DefaultDialogContent(text = it) },
+    content: @Composable ((String, Modifier) -> Unit) = { userInfo, contentModifier ->
+        UserInfoDefaultContent(userInfo, contentModifier)
+    },
 ) {
-    // TODO this doesn't work with one Text field due. If the job_title and the company line is too long,
-    // it will to break the layout
-    ExpandableText(profile.formattedUserInfo(), modifier, maxLines, dialogContent)
+    content(profile.formattedUserInfo(), modifier)
 }
+
+@Composable
+private fun UserInfoDefaultContent(userInfo: String, modifier: Modifier) = Text(
+    userInfo,
+    modifier = modifier,
+    maxLines = 2,
+    overflow = TextOverflow.Ellipsis,
+)
 
 @Preview
 @Composable
