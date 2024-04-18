@@ -1,9 +1,11 @@
 package com.gravatar.ui.components.atomic
 
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.gravatar.api.models.UserProfile
 
@@ -13,26 +15,29 @@ import com.gravatar.api.models.UserProfile
  *
  * @param profile The user's profile information
  * @param modifier Composable modifier
- * @param textStyle Style to apply to the text
- * @param maxLines Maximum number of lines to display
- * @param dialogContent Content to display in a dialog when the text is clicked
+ * @param textStyle The style to apply to the default text content
+ * @param content Composable to display the user location
  */
 @Composable
 public fun Location(
     profile: UserProfile,
     modifier: Modifier = Modifier,
     textStyle: TextStyle = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.outline),
-    maxLines: Int = 1,
-    dialogContent: @Composable ((String) -> Unit)? = { DefaultDialogContent(text = it) },
+    content: @Composable ((String, Modifier) -> Unit) = { location, contentModifier ->
+        LocationDefaultContent(location, textStyle, contentModifier)
+    },
 ) {
-    ExpandableText(
-        text = profile.currentLocation.orEmpty(),
-        modifier = modifier,
-        textStyle = textStyle,
-        maxLines = maxLines,
-        dialogContent = dialogContent,
-    )
+    content(profile.currentLocation.orEmpty(), modifier)
 }
+
+@Composable
+private fun LocationDefaultContent(location: String, textStyle: TextStyle, modifier: Modifier) = Text(
+    location,
+    modifier = modifier,
+    maxLines = 1,
+    overflow = TextOverflow.Ellipsis,
+    style = textStyle,
+)
 
 @Preview
 @Composable
