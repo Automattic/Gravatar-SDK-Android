@@ -1,7 +1,9 @@
 package com.gravatar.ui.components.atomic
 
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.gravatar.api.models.UserProfile
 
@@ -10,18 +12,26 @@ import com.gravatar.api.models.UserProfile
  *
  * @param profile The user's profile information
  * @param modifier Composable modifier
- * @param maxLines The maximum number of lines to display before truncating the text
- * @param dialogContent The content to display in a dialog when the truncated text is clicked
+ * @param content Composable to display the user's about me description
  */
 @Composable
 public fun AboutMe(
     profile: UserProfile,
     modifier: Modifier = Modifier,
-    maxLines: Int = 2,
-    dialogContent: @Composable ((String) -> Unit)? = { DefaultDialogContent(text = it) },
+    content: @Composable ((String, Modifier) -> Unit) = { userInfo, contentModifier ->
+        AboutMeDefaultContent(userInfo, contentModifier)
+    },
 ) {
-    ExpandableText(profile.aboutMe.orEmpty(), modifier, maxLines, dialogContent)
+    content(profile.aboutMe.orEmpty(), modifier)
 }
+
+@Composable
+private fun AboutMeDefaultContent(userInfo: String, modifier: Modifier) = Text(
+    userInfo,
+    modifier = modifier,
+    maxLines = 2,
+    overflow = TextOverflow.Ellipsis,
+)
 
 @Preview
 @Composable

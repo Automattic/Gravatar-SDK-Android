@@ -1,7 +1,9 @@
 package com.gravatar.ui.components.atomic
 
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.gravatar.api.models.UserProfile
 
@@ -11,18 +13,26 @@ import com.gravatar.api.models.UserProfile
  *
  * @param profile The user's profile information
  * @param modifier Composable modifier
- * @param maxLines Maximum number of lines to display
- * @param dialogContent Content to display in a dialog when the text is clicked
+ * @param content Composable to display the user location
  */
 @Composable
 public fun Location(
     profile: UserProfile,
     modifier: Modifier = Modifier,
-    maxLines: Int = 1,
-    dialogContent: @Composable ((String) -> Unit)? = { DefaultDialogContent(text = it) },
+    content: @Composable ((String, Modifier) -> Unit) = { location, contentModifier ->
+        LocationDefaultContent(location, contentModifier)
+    },
 ) {
-    ExpandableText(profile.currentLocation.orEmpty(), modifier, maxLines, dialogContent)
+    content(profile.currentLocation.orEmpty(), modifier)
 }
+
+@Composable
+private fun LocationDefaultContent(location: String, modifier: Modifier) = Text(
+    location,
+    modifier = modifier,
+    maxLines = 1,
+    overflow = TextOverflow.Ellipsis,
+)
 
 @Preview
 @Composable
