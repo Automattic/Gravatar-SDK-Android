@@ -9,16 +9,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.gravatar.api.models.Account
 import com.gravatar.api.models.Email
 import com.gravatar.api.models.UserProfile
@@ -50,24 +47,15 @@ public fun ProfileCard(profile: UserProfile, modifier: Modifier = Modifier) {
                 modifier = Modifier.clip(CircleShape),
             )
             Column(modifier = Modifier.padding(14.dp, 0.dp, 0.dp, 0.dp)) {
-                ProvideTextStyle(TextStyle(fontSize = 18.sp, fontWeight = FontWeight.Bold, lineHeight = 24.sp)) {
-                    DisplayName(profile)
-                }
-                ProvideTextStyle(
-                    TextStyle(
-                        fontSize = 14.sp,
-                        lineHeight = 20.sp,
-                        color = MaterialTheme.colorScheme.outline,
-                    ),
-                ) {
-                    UserInfo(profile)
-                }
+                DisplayName(
+                    profile,
+                    textStyle = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                )
+                UserInfo(profile)
             }
         }
         Spacer(modifier = Modifier.height(16.dp))
-        ProvideTextStyle(MaterialTheme.typography.bodyMedium) {
-            AboutMe(profile)
-        }
+        AboutMe(profile)
         Spacer(modifier = Modifier.height(4.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -75,11 +63,7 @@ public fun ProfileCard(profile: UserProfile, modifier: Modifier = Modifier) {
             verticalAlignment = Alignment.CenterVertically,
         ) {
             SocialIconRow(profile, maxIcons = 4)
-            ProvideTextStyle(
-                MaterialTheme.typography.bodyMedium.merge(color = MaterialTheme.colorScheme.onBackground),
-            ) {
-                ViewProfileButton(profile, Modifier.padding(0.dp))
-            }
+            ViewProfileButton(profile, Modifier.padding(0.dp))
         }
     }
 }

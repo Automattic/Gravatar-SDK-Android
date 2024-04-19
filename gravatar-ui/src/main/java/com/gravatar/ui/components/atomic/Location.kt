@@ -1,8 +1,10 @@
 package com.gravatar.ui.components.atomic
 
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.gravatar.api.models.UserProfile
@@ -13,25 +15,28 @@ import com.gravatar.api.models.UserProfile
  *
  * @param profile The user's profile information
  * @param modifier Composable modifier
+ * @param textStyle The style to apply to the default text content
  * @param content Composable to display the user location
  */
 @Composable
 public fun Location(
     profile: UserProfile,
     modifier: Modifier = Modifier,
+    textStyle: TextStyle = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.outline),
     content: @Composable ((String, Modifier) -> Unit) = { location, contentModifier ->
-        LocationDefaultContent(location, contentModifier)
+        LocationDefaultContent(location, textStyle, contentModifier)
     },
 ) {
     content(profile.currentLocation.orEmpty(), modifier)
 }
 
 @Composable
-private fun LocationDefaultContent(location: String, modifier: Modifier) = Text(
+private fun LocationDefaultContent(location: String, textStyle: TextStyle, modifier: Modifier) = Text(
     location,
     modifier = modifier,
     maxLines = 1,
     overflow = TextOverflow.Ellipsis,
+    style = textStyle,
 )
 
 @Preview
