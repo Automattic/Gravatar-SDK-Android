@@ -24,8 +24,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.gravatar.BuildConfig
-import com.gravatar.R
+import com.gravatar.demoapp.BuildConfig
+import com.gravatar.demoapp.R
 import com.gravatar.demoapp.ui.components.GravatarEmailInput
 import com.gravatar.demoapp.ui.components.GravatarPasswordInput
 import com.gravatar.services.ErrorType
