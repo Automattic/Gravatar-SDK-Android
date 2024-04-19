@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.gravatar.api.models.Account
 import com.gravatar.api.models.Email
 import com.gravatar.api.models.UserProfile
+import com.gravatar.ui.GravatarTheme
 import com.gravatar.ui.components.atomic.AboutMe
 import com.gravatar.ui.components.atomic.Avatar
 import com.gravatar.ui.components.atomic.DisplayName
@@ -35,35 +36,37 @@ import com.gravatar.ui.components.atomic.ViewProfileButton
  */
 @Composable
 public fun ProfileCard(profile: UserProfile, modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier,
-        horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.Top,
-    ) {
-        Row {
-            Avatar(
-                profile = profile,
-                size = 72.dp,
-                modifier = Modifier.clip(CircleShape),
-            )
-            Column(modifier = Modifier.padding(14.dp, 0.dp, 0.dp, 0.dp)) {
-                DisplayName(
-                    profile,
-                    textStyle = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                )
-                UserInfo(profile)
-            }
-        }
-        Spacer(modifier = Modifier.height(16.dp))
-        AboutMe(profile)
-        Spacer(modifier = Modifier.height(4.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
+    GravatarTheme {
+        Column(
+            modifier = modifier,
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.Top,
         ) {
-            SocialIconRow(profile, maxIcons = 4)
-            ViewProfileButton(profile, Modifier.padding(0.dp))
+            Row {
+                Avatar(
+                    profile = profile,
+                    size = 72.dp,
+                    modifier = Modifier.clip(CircleShape),
+                )
+                Column(modifier = Modifier.padding(14.dp, 0.dp, 0.dp, 0.dp)) {
+                    DisplayName(
+                        profile,
+                        textStyle = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                    )
+                    UserInfo(profile)
+                }
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+            AboutMe(profile)
+            Spacer(modifier = Modifier.height(4.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                SocialIconRow(profile, maxIcons = 4)
+                ViewProfileButton(profile, Modifier.padding(0.dp))
+            }
         }
     }
 }

@@ -13,6 +13,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.gravatar.api.models.UserProfile
+import com.gravatar.ui.GravatarTheme
 import com.gravatar.ui.components.atomic.Avatar
 import com.gravatar.ui.components.atomic.DisplayName
 import com.gravatar.ui.components.atomic.Location
@@ -27,21 +28,26 @@ import com.gravatar.ui.components.atomic.ViewProfileButton
  */
 @Composable
 public fun MiniProfileCard(profile: UserProfile, modifier: Modifier = Modifier) {
-    Row(modifier = modifier) {
-        Avatar(
-            profile = profile,
-            size = 72.dp,
-            modifier = Modifier.clip(CircleShape),
-        )
-        Column(modifier = Modifier.padding(start = 14.dp)) {
-            DisplayName(profile, textStyle = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold))
-            if (!profile.currentLocation.isNullOrBlank()) {
-                Location(profile)
-            }
-            ViewProfileButton(
-                profile,
-                modifier = Modifier.height(32.dp),
+    GravatarTheme {
+        Row(modifier = modifier) {
+            Avatar(
+                profile = profile,
+                size = 72.dp,
+                modifier = Modifier.clip(CircleShape),
             )
+            Column(modifier = Modifier.padding(start = 14.dp)) {
+                DisplayName(
+                    profile,
+                    textStyle = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                )
+                if (!profile.currentLocation.isNullOrBlank()) {
+                    Location(profile)
+                }
+                ViewProfileButton(
+                    profile,
+                    modifier = Modifier.height(32.dp),
+                )
+            }
         }
     }
 }

@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.gravatar.api.models.Account
 import com.gravatar.api.models.Email
 import com.gravatar.api.models.UserProfile
+import com.gravatar.ui.GravatarTheme
 import com.gravatar.ui.components.atomic.Avatar
 import com.gravatar.ui.components.atomic.DisplayName
 import com.gravatar.ui.components.atomic.UserInfo
@@ -29,24 +30,26 @@ import com.gravatar.ui.components.atomic.ViewProfileButton
  */
 @Composable
 public fun LargeProfileSummary(profile: UserProfile, modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Avatar(
-            profile = profile,
-            size = 132.dp,
-            modifier = Modifier.clip(CircleShape),
-        )
-        DisplayName(profile, modifier = Modifier.padding(top = 16.dp))
-        UserInfo(
-            profile,
-            textStyle = MaterialTheme.typography.bodyMedium.copy(
-                color = MaterialTheme.colorScheme.outline,
-                textAlign = TextAlign.Center,
-            ),
-        )
-        ViewProfileButton(profile, Modifier.padding(0.dp), inlineContent = null)
+    GravatarTheme {
+        Column(
+            modifier = modifier,
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Avatar(
+                profile = profile,
+                size = 132.dp,
+                modifier = Modifier.clip(CircleShape),
+            )
+            DisplayName(profile, modifier = Modifier.padding(top = 16.dp))
+            UserInfo(
+                profile,
+                textStyle = MaterialTheme.typography.bodyMedium.copy(
+                    color = MaterialTheme.colorScheme.outline,
+                    textAlign = TextAlign.Center,
+                ),
+            )
+            ViewProfileButton(profile, Modifier.padding(0.dp), inlineContent = null)
+        }
     }
 }
 
