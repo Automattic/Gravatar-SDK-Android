@@ -18,7 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.gravatar.DefaultAvatarOption
 import com.gravatar.ImageRating
-import com.gravatar.R
+import com.gravatar.demoapp.R
 import com.gravatar.demoapp.theme.GravatarDemoAppTheme
 import com.gravatar.demoapp.ui.components.GravatarEmailInput
 import com.gravatar.demoapp.ui.model.SettingsState

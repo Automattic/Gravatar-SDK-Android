@@ -45,11 +45,11 @@ import coil.request.ImageRequest
 import coil.size.Size
 import com.gravatar.AvatarQueryOptions
 import com.gravatar.AvatarUrl
-import com.gravatar.BuildConfig
 import com.gravatar.DefaultAvatarOption
 import com.gravatar.ImageRating
-import com.gravatar.R
 import com.gravatar.api.models.UserProfiles
+import com.gravatar.demoapp.BuildConfig
+import com.gravatar.demoapp.R
 import com.gravatar.demoapp.theme.GravatarDemoAppTheme
 import com.gravatar.demoapp.ui.components.GravatarEmailInput
 import com.gravatar.demoapp.ui.model.SettingsState

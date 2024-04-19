@@ -22,7 +22,7 @@ fun localProperties(): Properties {
 }
 
 android {
-    namespace = "com.gravatar"
+    namespace = "com.gravatar.demoapp"
     compileSdk = 34
     buildFeatures.buildConfig = true
 
