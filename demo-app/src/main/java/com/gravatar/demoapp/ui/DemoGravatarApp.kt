@@ -61,6 +61,7 @@ import com.gravatar.ui.components.LargeProfile
 import com.gravatar.ui.components.LargeProfileSummary
 import com.gravatar.ui.components.MiniProfileCard
 import com.gravatar.ui.components.ProfileCard
+import com.gravatar.ui.components.UserProfileLoadingState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -155,8 +156,7 @@ private fun GravatarTabs(
 private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwable?) -> Unit) {
     var email by remember { mutableStateOf(BuildConfig.DEMO_EMAIL, neverEqualPolicy()) }
     var hash by remember { mutableStateOf("", neverEqualPolicy()) }
-    var profiles by remember { mutableStateOf(UserProfiles(emptyList()), neverEqualPolicy()) }
-    var loading by remember { mutableStateOf(false) }
+    var profile: UserProfileLoadingState? by remember { mutableStateOf(null, neverEqualPolicy()) }
     var error by remember { mutableStateOf("") }
     val profileService = ProfileService()
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -179,20 +179,18 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
             Button(
                 onClick = {
                     keyboardController?.hide()
-                    loading = true
+                    profile = UserProfileLoadingState.Loading
                     error = ""
                     profileService.fetch(
                         Email(email),
                         object : GravatarListener<UserProfiles> {
                             override fun onSuccess(response: UserProfiles) {
-                                profiles = response
-                                loading = false
+                                profile = response.entry.firstOrNull()?.let { UserProfileLoadingState.Loaded(it) }
                             }
 
                             override fun onError(errorType: ErrorType) {
                                 onError(errorType.name, null)
                                 error = errorType.name
-                                loading = false
                             }
                         },
                     )
@@ -203,46 +201,56 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
                 GravatarDivider()
                 LabelledText(R.string.gravatar_generated_hash_label, text = hash)
                 GravatarDivider()
-                if (loading) {
+                if ((profile is UserProfileLoadingState.Loading)) {
                     CircularProgressIndicator()
                 }
             }
             Spacer(modifier = Modifier.height(16.dp))
             // Show the profile card if we got a result and there is no error and it's not loading
-            if (!loading && error.isEmpty() && profiles.entry.isNotEmpty()) {
-                ProfileCard(
-                    profiles.entry.first(),
-                    Modifier
-                        .background(MaterialTheme.colorScheme.surfaceContainer)
-                        .fillMaxWidth()
-                        .padding(24.dp),
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                MiniProfileCard(
-                    profiles.entry.first(),
-                    Modifier
-                        .background(MaterialTheme.colorScheme.surfaceContainer)
-                        .align(Alignment.Start)
-                        .fillMaxWidth()
-                        .padding(24.dp),
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                LargeProfile(
-                    profiles.entry.first(),
-                    Modifier
-                        .background(MaterialTheme.colorScheme.surfaceContainer)
-                        .fillMaxWidth()
-                        .padding(24.dp),
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                LargeProfileSummary(
-                    profiles.entry.first(),
-                    Modifier
-                        .padding(8.dp)
-                        .background(MaterialTheme.colorScheme.surfaceContainer)
-                        .padding(start = 24.dp, end = 24.dp, top = 24.dp, bottom = 8.dp)
-                        .fillMaxWidth(),
-                )
+            if ((profile is UserProfileLoadingState.Loaded) && error.isEmpty() && profile != null) {
+                (profile as? UserProfileLoadingState.Loaded)?.let {
+                    ProfileCard(
+                        it.userProfile,
+                        Modifier
+                            .background(MaterialTheme.colorScheme.surfaceContainer)
+                            .fillMaxWidth()
+                            .padding(24.dp),
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+            }
+            if (error.isEmpty()) {
+                profile?.let {
+                    MiniProfileCard(
+                        it,
+                        Modifier
+                            .background(MaterialTheme.colorScheme.surfaceContainer)
+                            .align(Alignment.Start)
+                            .fillMaxWidth()
+                            .padding(24.dp),
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+            }
+            if ((profile is UserProfileLoadingState.Loaded) && error.isEmpty() && profile != null) {
+                (profile as? UserProfileLoadingState.Loaded)?.let {
+                    LargeProfile(
+                        it.userProfile,
+                        Modifier
+                            .background(MaterialTheme.colorScheme.surfaceContainer)
+                            .fillMaxWidth()
+                            .padding(24.dp),
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    LargeProfileSummary(
+                        it.userProfile,
+                        Modifier
+                            .padding(8.dp)
+                            .background(MaterialTheme.colorScheme.surfaceContainer)
+                            .padding(start = 24.dp, end = 24.dp, top = 24.dp, bottom = 8.dp)
+                            .fillMaxWidth(),
+                    )
+                }
             } else {
                 if (error.isNotEmpty()) {
                     Text(text = error)
