@@ -37,6 +37,7 @@ jobs:
         run: ./gradlew dokkaHtmlMultiModule
       - name: Move generated docs to branch directory
         run: mkdir -p ./_site/${{ github.ref_name }} && mv ./docs/dokka/* ./_site/${{ github.ref_name }}/
+             ln -s ./_site/${{ github.ref_name }} ./_site/latest
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
 
