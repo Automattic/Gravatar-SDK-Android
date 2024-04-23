@@ -1,7 +1,9 @@
 package com.gravatar.ui.components.atomic
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material.icons.Icons
@@ -29,6 +31,9 @@ import androidx.compose.ui.unit.sp
 import com.gravatar.api.models.UserProfile
 import com.gravatar.extensions.profileUrl
 import com.gravatar.ui.R
+import com.gravatar.ui.TextSkeletonEffect
+import com.gravatar.ui.components.LoadingToLoadedStatePreview
+import com.gravatar.ui.components.UserProfileLoadingState
 
 /**
  * ViewProfileButton is a composable that displays a button to view a user's profile.
@@ -83,6 +88,39 @@ public fun ViewProfileButton(
     }
 }
 
+/**
+ * [ViewProfileButton] is a composable that displays a button to view a user's profile or it's loading state.
+ *
+ * @param state The user's profile loading state
+ * @param modifier Composable modifier
+ * @param textStyle The style to apply to the text
+ * @param inlineContent The content to display inline with the text, by default it is an arrow icon.
+ * It can be null if no content is needed.
+ */
+@Composable
+public fun ViewProfileButton(
+    state: UserProfileLoadingState,
+    modifier: Modifier = Modifier,
+    textStyle: TextStyle = MaterialTheme.typography.titleSmall.copy(color = MaterialTheme.colorScheme.onBackground),
+    inlineContent: @Composable ((String) -> Unit)? = { DefaultInlineContent(textStyle.color) },
+) {
+    when (state) {
+        is UserProfileLoadingState.Loading -> {
+            TextButton(
+                onClick = {},
+                contentPadding = PaddingValues(start = 0.dp, end = 0.dp),
+                modifier = modifier,
+            ) {
+                TextSkeletonEffect(textStyle = textStyle, modifier = Modifier.width(88.dp))
+            }
+        }
+
+        is UserProfileLoadingState.Loaded -> {
+            ViewProfileButton(state.userProfile, modifier, textStyle, inlineContent)
+        }
+    }
+}
+
 @Composable
 private fun DefaultInlineContent(tintColor: Color) {
     // In RTL mode the Arrow will be mirrored
@@ -126,4 +164,11 @@ private fun ViewProfileButtonWithoutInlineContentPreview() {
             inlineContent = null,
         )
     }
+}
+
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun ViewProfileButtonStatePreview() {
+    LoadingToLoadedStatePreview { ViewProfileButton(it) }
 }

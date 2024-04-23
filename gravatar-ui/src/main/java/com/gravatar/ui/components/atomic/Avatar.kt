@@ -1,5 +1,7 @@
 package com.gravatar.ui.components.atomic
 
+import android.content.res.Configuration
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -11,6 +13,9 @@ import coil.compose.AsyncImage
 import com.gravatar.AvatarQueryOptions
 import com.gravatar.api.models.UserProfile
 import com.gravatar.extensions.avatarUrl
+import com.gravatar.ui.components.LoadingToLoadedStatePreview
+import com.gravatar.ui.components.UserProfileLoadingState
+import com.gravatar.ui.skeletonEffect
 
 /**
  * [Avatar] is a composable that displays a user's avatar.
@@ -40,8 +45,50 @@ public fun Avatar(
     )
 }
 
+/**
+ * [Avatar] is a composable that displays a user's avatar.
+ *
+ * @param state
+ * @param size The size of the avatar
+ * @param modifier Composable modifier
+ * @param avatarQueryOptions Options to customize the avatar query
+ */
+@Composable
+public fun Avatar(
+    state: UserProfileLoadingState,
+    size: Dp,
+    modifier: Modifier = Modifier,
+    avatarQueryOptions: AvatarQueryOptions? = null,
+) {
+    when (state) {
+        is UserProfileLoadingState.Loading -> {
+            Box(
+                modifier = modifier
+                    .size(size)
+                    .skeletonEffect(),
+            )
+        }
+
+        is UserProfileLoadingState.Loaded -> {
+            Avatar(
+                profile = state.userProfile,
+                size = size,
+                modifier = modifier,
+                avatarQueryOptions = avatarQueryOptions,
+            )
+        }
+    }
+}
+
 @Preview
 @Composable
 private fun AvatarPreview() {
     Avatar(UserProfile("4539566a0223b11d28fc47c864336fa27b8fe49b5f85180178c9e3813e910d6a"), 256.dp)
+}
+
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun AvatarStatePreview() {
+    LoadingToLoadedStatePreview { Avatar(it, 256.dp) }
 }
