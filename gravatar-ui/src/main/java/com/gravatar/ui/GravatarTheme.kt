@@ -1,12 +1,19 @@
 package com.gravatar.ui
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Shapes
 import androidx.compose.material3.Typography
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.staticCompositionLocalOf
+
+private val DarkColorScheme = darkColorScheme()
+
+private val LightColorScheme = lightColorScheme()
 
 /**
  * [GravatarTheme] is a composable that wraps the content of the application with the Gravatar theme.
@@ -49,7 +56,13 @@ public interface GravatarTheme {
  * [LocalGravatarTheme] is a CompositionLocal that provides the current [GravatarTheme].
  */
 public val LocalGravatarTheme: ProvidableCompositionLocal<GravatarTheme> =
-    staticCompositionLocalOf { object : GravatarTheme {} }
+    staticCompositionLocalOf {
+        object : GravatarTheme {
+            override val colorScheme: ColorScheme
+                @Composable
+                get() = if (isSystemInDarkTheme()) DarkColorScheme else LightColorScheme
+        }
+    }
 
 /** The current [GravatarTheme]. */
 public val gravatarTheme: GravatarTheme
