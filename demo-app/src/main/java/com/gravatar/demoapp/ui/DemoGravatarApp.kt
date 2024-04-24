@@ -156,7 +156,7 @@ private fun GravatarTabs(
 private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwable?) -> Unit) {
     var email by remember { mutableStateOf(BuildConfig.DEMO_EMAIL, neverEqualPolicy()) }
     var hash by remember { mutableStateOf("", neverEqualPolicy()) }
-    var profile: UserProfileState? by remember { mutableStateOf(null, neverEqualPolicy()) }
+    var profileState: UserProfileState? by remember { mutableStateOf(null, neverEqualPolicy()) }
     var error by remember { mutableStateOf("") }
     val profileService = ProfileService()
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -179,13 +179,13 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
             Button(
                 onClick = {
                     keyboardController?.hide()
-                    profile = UserProfileState.Loading
+                    profileState = UserProfileState.Loading
                     error = ""
                     profileService.fetch(
                         Email(email),
                         object : GravatarListener<UserProfiles> {
                             override fun onSuccess(response: UserProfiles) {
-                                profile = response.entry.firstOrNull()?.let { UserProfileState.Loaded(it) }
+                                profileState = response.entry.firstOrNull()?.let { UserProfileState.Loaded(it) }
                             }
 
                             override fun onError(errorType: ErrorType) {
@@ -201,14 +201,14 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
                 GravatarDivider()
                 LabelledText(R.string.gravatar_generated_hash_label, text = hash)
                 GravatarDivider()
-                if ((profile is UserProfileState.Loading)) {
+                if ((profileState is UserProfileState.Loading)) {
                     CircularProgressIndicator()
                 }
             }
             Spacer(modifier = Modifier.height(16.dp))
             // Show the profile card if we got a result and there is no error and it's not loading
-            if ((profile is UserProfileState.Loaded) && error.isEmpty() && profile != null) {
-                (profile as? UserProfileState.Loaded)?.let {
+            if ((profileState is UserProfileState.Loaded) && error.isEmpty() && profileState != null) {
+                (profileState as? UserProfileState.Loaded)?.let {
                     ProfileCard(
                         it.userProfile,
                         Modifier
@@ -220,7 +220,7 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
                 }
             }
             if (error.isEmpty()) {
-                profile?.let {
+                profileState?.let {
                     MiniProfileCard(
                         it,
                         Modifier
@@ -232,8 +232,8 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
                     Spacer(modifier = Modifier.height(16.dp))
                 }
             }
-            if ((profile is UserProfileState.Loaded) && error.isEmpty() && profile != null) {
-                (profile as? UserProfileState.Loaded)?.let {
+            if ((profileState is UserProfileState.Loaded) && error.isEmpty() && profileState != null) {
+                (profileState as? UserProfileState.Loaded)?.let {
                     LargeProfile(
                         it.userProfile,
                         Modifier
