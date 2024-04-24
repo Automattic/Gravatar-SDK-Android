@@ -226,18 +226,18 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
                             .padding(24.dp),
                     )
                     Spacer(modifier = Modifier.height(16.dp))
-                }
-            }
-            if ((profileState is UserProfileState.Loaded) && error.isEmpty() && profileState != null) {
-                (profileState as? UserProfileState.Loaded)?.let {
                     LargeProfile(
-                        it.userProfile,
+                        it,
                         Modifier
                             .background(MaterialTheme.colorScheme.surfaceContainer)
                             .fillMaxWidth()
                             .padding(24.dp),
                     )
                     Spacer(modifier = Modifier.height(16.dp))
+                }
+            }
+            if ((profileState is UserProfileState.Loaded) && error.isEmpty() && profileState != null) {
+                (profileState as? UserProfileState.Loaded)?.let {
                     LargeProfileSummary(
                         it.userProfile,
                         Modifier

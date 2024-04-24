@@ -1,5 +1,6 @@
 package com.gravatar.ui.components
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -32,18 +33,30 @@ import com.gravatar.ui.components.atomic.ViewProfileButton
  */
 @Composable
 public fun LargeProfile(profile: UserProfile, modifier: Modifier = Modifier) {
+    LargeProfile(state = UserProfileState.Loaded(profile), modifier = modifier)
+}
+
+/**
+ * [LargeProfile] is a composable that displays a user's profile card.
+ * Given a [UserProfileState], it displays a [LargeProfile] or the skeleton if it's in a loading state.
+ *
+ * @param state The user's profile state
+ * @param modifier Composable modifier
+ */
+@Composable
+public fun LargeProfile(state: UserProfileState, modifier: Modifier = Modifier) {
     GravatarTheme {
         Column(
             modifier = modifier,
         ) {
             Avatar(
-                profile = profile,
+                state = state,
                 size = 132.dp,
                 modifier = Modifier.clip(CircleShape),
             )
-            DisplayName(profile, modifier = Modifier.padding(top = 16.dp))
-            UserInfo(profile)
-            AboutMe(profile, modifier = Modifier.padding(top = 8.dp))
+            DisplayName(state, modifier = Modifier.padding(top = 16.dp))
+            UserInfo(state)
+            AboutMe(state, modifier = Modifier.padding(top = 8.dp))
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -51,8 +64,8 @@ public fun LargeProfile(profile: UserProfile, modifier: Modifier = Modifier) {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                SocialIconRow(profile, maxIcons = 4)
-                ViewProfileButton(profile, Modifier.padding(0.dp))
+                SocialIconRow(state, maxIcons = 4)
+                ViewProfileButton(state, Modifier.padding(0.dp))
             }
         }
     }
@@ -80,4 +93,11 @@ private fun LargeProfilePreview() {
             emails = listOf(Email(primary = true, value = "john@doe.com")),
         ),
     )
+}
+
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+public fun DisplayNamePreview() {
+    LoadingToLoadedStatePreview { LargeProfile(it) }
 }
