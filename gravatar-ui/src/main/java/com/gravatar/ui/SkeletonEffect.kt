@@ -18,6 +18,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.integerResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.Dp
@@ -25,6 +26,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 internal fun Modifier.skeletonEffect(): Modifier {
+    val animationDuration = integerResource(id = R.integer.gravatar_skeleton_animation_duration)
     val infiniteTransition = rememberInfiniteTransition(label = "skeletonTransition")
     val backgroundColor = infiniteTransition.animateColor(
         // ⚠️ We should add the colors to the theme and use them here.
@@ -32,7 +34,7 @@ internal fun Modifier.skeletonEffect(): Modifier {
         if (isSystemInDarkTheme()) Color(0xFF979797) else Color(0xFFF2F2F2),
         animationSpec = infiniteRepeatable(
             animation = keyframes {
-                durationMillis = 800
+                durationMillis = animationDuration
             },
             repeatMode = RepeatMode.Reverse,
         ),
