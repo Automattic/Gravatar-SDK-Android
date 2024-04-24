@@ -310,6 +310,7 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
                 }
             }
             Spacer(modifier = Modifier.height(16.dp))
+            GravatarProfileSummary(email)
             ProfileComponents(profileState, theme, error)
         }
     }
