@@ -15,7 +15,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.integerResource
@@ -23,6 +22,10 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.gravatar.ui.theme.skeleton_dark_end_color
+import com.gravatar.ui.theme.skeleton_dark_start_color
+import com.gravatar.ui.theme.skeleton_light_end_color
+import com.gravatar.ui.theme.skeleton_light_start_color
 
 @Composable
 internal fun Modifier.skeletonEffect(): Modifier {
@@ -30,8 +33,8 @@ internal fun Modifier.skeletonEffect(): Modifier {
     val infiniteTransition = rememberInfiniteTransition(label = "skeletonTransition")
     val backgroundColor = infiniteTransition.animateColor(
         // ⚠️ We should add the colors to the theme and use them here.
-        if (isSystemInDarkTheme()) Color(0xFF6B6B6B) else Color(0xFFE5E7E9),
-        if (isSystemInDarkTheme()) Color(0xFF979797) else Color(0xFFF2F2F2),
+        if (isSystemInDarkTheme()) skeleton_dark_start_color else skeleton_light_start_color,
+        if (isSystemInDarkTheme()) skeleton_dark_end_color else skeleton_light_end_color,
         animationSpec = infiniteRepeatable(
             animation = keyframes {
                 durationMillis = animationDuration
