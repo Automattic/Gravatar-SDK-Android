@@ -39,7 +39,7 @@ import kotlinx.coroutines.delay
  */
 @Composable
 public fun MiniProfileCard(profile: UserProfile, modifier: Modifier = Modifier) {
-    MiniProfileCard(state = UserProfileLoadingState.Loaded(profile), modifier = modifier)
+    MiniProfileCard(state = UserProfileState.Loaded(profile), modifier = modifier)
 }
 
 /**
@@ -50,7 +50,7 @@ public fun MiniProfileCard(profile: UserProfile, modifier: Modifier = Modifier) 
  * @param modifier Composable modifier
  */
 @Composable
-public fun MiniProfileCard(state: UserProfileLoadingState, modifier: Modifier = Modifier) {
+public fun MiniProfileCard(state: UserProfileState, modifier: Modifier = Modifier) {
     GravatarTheme {
         Row(modifier = modifier) {
             Avatar(
@@ -64,13 +64,13 @@ public fun MiniProfileCard(state: UserProfileLoadingState, modifier: Modifier = 
                     textStyle = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                 )
                 when (state) {
-                    is UserProfileLoadingState.Loaded -> {
+                    is UserProfileState.Loaded -> {
                         if (!state.userProfile.currentLocation.isNullOrBlank()) {
                             Location(state)
                         }
                     }
 
-                    UserProfileLoadingState.Loading -> {
+                    UserProfileState.Loading -> {
                         Location(state, modifier.width(120.dp))
                     }
                 }
@@ -99,10 +99,10 @@ private fun MiniProfileCardPreview() {
 @Preview(uiMode = UI_MODE_NIGHT_YES)
 @Composable
 private fun MiniProfileCardLoadingPreview() {
-    var state: UserProfileLoadingState by remember { mutableStateOf(UserProfileLoadingState.Loading) }
+    var state: UserProfileState by remember { mutableStateOf(UserProfileState.Loading) }
     LaunchedEffect(key1 = state) {
         delay(5000)
-        state = UserProfileLoadingState.Loaded(
+        state = UserProfileState.Loaded(
             UserProfile(
                 "4539566a0223b11d28fc47c864336fa27b8fe49b5f85180178c9e3813e910d6a",
                 displayName = "John Doe",

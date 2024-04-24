@@ -12,32 +12,32 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.gravatar.api.models.UserProfile
 import com.gravatar.ui.GravatarTheme
-import com.gravatar.ui.components.UserProfileLoadingState.Loaded
-import com.gravatar.ui.components.UserProfileLoadingState.Loading
+import com.gravatar.ui.components.UserProfileState.Loaded
+import com.gravatar.ui.components.UserProfileState.Loading
 import kotlinx.coroutines.delay
 
 /**
- * [UserProfileLoadingState] represents the state of a user profile loading.
+ * [UserProfileState] represents the state of a user profile loading.
  * It can be in a [Loading] state or a [Loaded] state.
  */
-public sealed class UserProfileLoadingState {
+public sealed class UserProfileState {
     /**
      * [Loading] represents the state where the user profile is still loading.
      */
-    public data object Loading : UserProfileLoadingState()
+    public data object Loading : UserProfileState()
 
     /**
      * [Loaded] represents the state where the user profile has been loaded.
      *
      * @property userProfile The user's profile information
      */
-    public data class Loaded(val userProfile: UserProfile) : UserProfileLoadingState()
+    public data class Loaded(val userProfile: UserProfile) : UserProfileState()
 }
 
 @Preview
 @Composable
-public fun LoadingToLoadedStatePreview(composable: @Composable (state: UserProfileLoadingState) -> Unit = {}) {
-    var state: UserProfileLoadingState by remember { mutableStateOf(Loading) }
+public fun LoadingToLoadedStatePreview(composable: @Composable (state: UserProfileState) -> Unit = {}) {
+    var state: UserProfileState by remember { mutableStateOf(Loading) }
     LaunchedEffect(key1 = state) {
         delay(5000)
         state = Loaded(

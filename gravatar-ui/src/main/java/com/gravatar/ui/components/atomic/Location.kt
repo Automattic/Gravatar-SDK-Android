@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import com.gravatar.api.models.UserProfile
 import com.gravatar.ui.TextSkeletonEffect
 import com.gravatar.ui.components.LoadingToLoadedStatePreview
-import com.gravatar.ui.components.UserProfileLoadingState
+import com.gravatar.ui.components.UserProfileState
 
 /**
  * [Location] is a composable that displays a user's location in text format.
@@ -47,7 +47,7 @@ public fun Location(
  */
 @Composable
 public fun Location(
-    state: UserProfileLoadingState,
+    state: UserProfileState,
     modifier: Modifier = Modifier,
     textStyle: TextStyle = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.outline),
     content: @Composable ((String, Modifier) -> Unit) = { location, contentModifier ->
@@ -55,11 +55,11 @@ public fun Location(
     },
 ) {
     when (state) {
-        is UserProfileLoadingState.Loading -> {
+        is UserProfileState.Loading -> {
             TextSkeletonEffect(textStyle = textStyle, modifier = Modifier.width(120.dp))
         }
 
-        is UserProfileLoadingState.Loaded -> {
+        is UserProfileState.Loaded -> {
             Location(state.userProfile, modifier, textStyle, content)
         }
     }

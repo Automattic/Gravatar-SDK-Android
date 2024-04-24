@@ -14,7 +14,7 @@ import com.gravatar.AvatarQueryOptions
 import com.gravatar.api.models.UserProfile
 import com.gravatar.extensions.avatarUrl
 import com.gravatar.ui.components.LoadingToLoadedStatePreview
-import com.gravatar.ui.components.UserProfileLoadingState
+import com.gravatar.ui.components.UserProfileState
 import com.gravatar.ui.skeletonEffect
 
 /**
@@ -55,13 +55,13 @@ public fun Avatar(
  */
 @Composable
 public fun Avatar(
-    state: UserProfileLoadingState,
+    state: UserProfileState,
     size: Dp,
     modifier: Modifier = Modifier,
     avatarQueryOptions: AvatarQueryOptions? = null,
 ) {
     when (state) {
-        is UserProfileLoadingState.Loading -> {
+        is UserProfileState.Loading -> {
             Box(
                 modifier = modifier
                     .size(size)
@@ -69,7 +69,7 @@ public fun Avatar(
             )
         }
 
-        is UserProfileLoadingState.Loaded -> {
+        is UserProfileState.Loaded -> {
             Avatar(
                 profile = state.userProfile,
                 size = size,
