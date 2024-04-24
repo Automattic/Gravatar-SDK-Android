@@ -234,12 +234,8 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
                             .padding(24.dp),
                     )
                     Spacer(modifier = Modifier.height(16.dp))
-                }
-            }
-            if ((profileState is UserProfileState.Loaded) && error.isEmpty() && profileState != null) {
-                (profileState as? UserProfileState.Loaded)?.let {
                     LargeProfileSummary(
-                        it.userProfile,
+                        it,
                         Modifier
                             .padding(8.dp)
                             .background(MaterialTheme.colorScheme.surfaceContainer)
@@ -248,9 +244,7 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
                     )
                 }
             } else {
-                if (error.isNotEmpty()) {
-                    Text(text = error)
-                }
+                Text(text = error)
             }
         }
     }

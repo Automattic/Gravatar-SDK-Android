@@ -1,5 +1,6 @@
 package com.gravatar.ui.components
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -30,25 +31,37 @@ import com.gravatar.ui.components.atomic.ViewProfileButton
  */
 @Composable
 public fun LargeProfileSummary(profile: UserProfile, modifier: Modifier = Modifier) {
+    LargeProfileSummary(UserProfileState.Loaded(profile), modifier)
+}
+
+/**
+ * [LargeProfileSummary] is a composable that displays a user's profile in a resumed way.
+ * Given a [UserProfileState], it displays a [LargeProfileSummary] or the skeleton if it's in a loading state.
+ *
+ * @param state The user's profile state
+ * @param modifier Composable modifier
+ */
+@Composable
+public fun LargeProfileSummary(state: UserProfileState, modifier: Modifier = Modifier) {
     GravatarTheme {
         Column(
             modifier = modifier,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Avatar(
-                profile = profile,
+                state = state,
                 size = 132.dp,
                 modifier = Modifier.clip(CircleShape),
             )
-            DisplayName(profile, modifier = Modifier.padding(top = 16.dp))
+            DisplayName(state, modifier = Modifier.padding(top = 16.dp))
             UserInfo(
-                profile,
+                state,
                 textStyle = MaterialTheme.typography.bodyMedium.copy(
                     color = MaterialTheme.colorScheme.outline,
                     textAlign = TextAlign.Center,
                 ),
             )
-            ViewProfileButton(profile, Modifier.padding(0.dp), inlineContent = null)
+            ViewProfileButton(state, Modifier.padding(0.dp), inlineContent = null)
         }
     }
 }
@@ -77,4 +90,11 @@ private fun LargeProfileSummaryPreview() {
             ),
         )
     }
+}
+
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+public fun LargeProfileLoadingPreview() {
+    LoadingToLoadedStatePreview { LargeProfileSummary(it) }
 }
