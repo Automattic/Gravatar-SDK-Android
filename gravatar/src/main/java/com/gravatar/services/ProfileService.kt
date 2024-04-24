@@ -10,6 +10,8 @@ import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 import com.gravatar.di.container.GravatarSdkContainer.Companion.instance as GravatarSdkDI
 
 /**
@@ -22,7 +24,7 @@ public class ProfileService(private val okHttpClient: OkHttpClient? = null) {
 
     private val coroutineScope = CoroutineScope(GravatarSdkDI.dispatcherDefault)
 
-    private fun fetch(hashOrUsername: String, getProfileListener: GravatarListener<UserProfiles>) {
+    private fun fetchWithListener(hashOrUsername: String, getProfileListener: GravatarListener<UserProfiles>) {
         val service = GravatarSdkDI.getGravatarBaseService(okHttpClient)
         service.getProfile(hashOrUsername).enqueue(
             object : Callback<UserProfiles> {
@@ -59,8 +61,8 @@ public class ProfileService(private val okHttpClient: OkHttpClient? = null) {
      * @param email The email address to fetch the profile for
      * @param getProfileListener The listener to notify of the fetch result
      */
-    public fun fetch(email: Email, getProfileListener: GravatarListener<UserProfiles>) {
-        fetch(email.hash(), getProfileListener = getProfileListener)
+    public fun fetchWithListener(email: Email, getProfileListener: GravatarListener<UserProfiles>) {
+        fetchWithListener(email.hash(), getProfileListener = getProfileListener)
     }
 
     /**
@@ -69,8 +71,8 @@ public class ProfileService(private val okHttpClient: OkHttpClient? = null) {
      * @param hash The hash to fetch the profile for
      * @param getProfileListener The listener to notify of the fetch result
      */
-    public fun fetch(hash: Hash, getProfileListener: GravatarListener<UserProfiles>) {
-        fetch(hash.toString(), getProfileListener = getProfileListener)
+    public fun fetchWithListener(hash: Hash, getProfileListener: GravatarListener<UserProfiles>) {
+        fetchWithListener(hash.toString(), getProfileListener = getProfileListener)
     }
 
     /**
@@ -79,7 +81,49 @@ public class ProfileService(private val okHttpClient: OkHttpClient? = null) {
      * @param username The username to fetch the profile for
      * @param getProfileListener The listener to notify of the fetch result
      */
-    public fun fetchByUsername(username: String, getProfileListener: GravatarListener<UserProfiles>) {
-        fetch(username, getProfileListener = getProfileListener)
+    public fun fetchWithListenerByUsername(username: String, getProfileListener: GravatarListener<UserProfiles>) {
+        fetchWithListener(username, getProfileListener = getProfileListener)
+    }
+
+    /**
+     * Exception thrown when a fetch operation fails.
+     *
+     * @property errorType The type of error that occurred
+     */
+    public class FetchException(public val errorType: ErrorType) : Exception()
+
+    /**
+     * Fetches a Gravatar profile for the given hash or username.
+     *
+     * @param hashOrUsername The hash or username to fetch the profile for
+     * @return The fetched profile
+     */
+    public suspend fun fetch(hashOrUsername: String): UserProfiles {
+        return suspendCoroutine {
+            fetchWithListener(
+                hashOrUsername,
+                object : GravatarListener<UserProfiles> {
+                    override fun onSuccess(response: UserProfiles) {
+                        it.resumeWith(Result.success(response))
+                    }
+
+                    override fun onError(errorType: ErrorType) {
+                        it.resumeWithException(FetchException(errorType))
+                    }
+                },
+            )
+        }
+    }
+
+    public suspend fun fetch(email: Email): UserProfiles {
+        return fetch(email.hash())
+    }
+
+    public suspend fun fetch(hash: Hash): UserProfiles {
+        return fetch(hash.toString())
+    }
+
+    public suspend fun fetchByUsername(username: String): UserProfiles {
+        return fetch(username)
     }
 }

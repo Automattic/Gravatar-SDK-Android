@@ -47,14 +47,11 @@ import com.gravatar.AvatarQueryOptions
 import com.gravatar.AvatarUrl
 import com.gravatar.DefaultAvatarOption
 import com.gravatar.ImageRating
-import com.gravatar.api.models.UserProfiles
 import com.gravatar.demoapp.BuildConfig
 import com.gravatar.demoapp.R
 import com.gravatar.demoapp.theme.GravatarDemoAppTheme
 import com.gravatar.demoapp.ui.components.GravatarEmailInput
 import com.gravatar.demoapp.ui.model.SettingsState
-import com.gravatar.services.ErrorType
-import com.gravatar.services.GravatarListener
 import com.gravatar.services.ProfileService
 import com.gravatar.types.Email
 import com.gravatar.ui.components.LargeProfile
@@ -160,6 +157,7 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
     var error by remember { mutableStateOf("") }
     val profileService = ProfileService()
     val keyboardController = LocalSoftwareKeyboardController.current
+    val scope = rememberCoroutineScope()
 
     Surface(modifier) {
         Column(
@@ -179,21 +177,18 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
             Button(
                 onClick = {
                     keyboardController?.hide()
-                    profileState = UserProfileState.Loading
-                    error = ""
-                    profileService.fetch(
-                        Email(email),
-                        object : GravatarListener<UserProfiles> {
-                            override fun onSuccess(response: UserProfiles) {
-                                profileState = response.entry.firstOrNull()?.let { UserProfileState.Loaded(it) }
+                    scope.launch {
+                        try {
+                            error = ""
+                            profileState = UserProfileState.Loading
+                            profileState = profileService.fetch(Email(email)).entry.firstOrNull()?.let {
+                                UserProfileState.Loaded(it)
                             }
-
-                            override fun onError(errorType: ErrorType) {
-                                onError(errorType.name, null)
-                                error = errorType.name
-                            }
-                        },
-                    )
+                        } catch (exception: ProfileService.FetchException) {
+                            onError(exception.errorType.name, null)
+                            error = exception.errorType.name
+                        }
+                    }
                 },
             ) { Text(text = stringResource(R.string.button_get_profile)) }
             // Show the hash and loading indicator
