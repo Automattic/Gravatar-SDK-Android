@@ -191,6 +191,7 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
                     }
                 },
             ) { Text(text = stringResource(R.string.button_get_profile)) }
+            SimpleGravatarProfileIntegration(email)
             // Show the hash and loading indicator
             if (hash.isNotEmpty()) {
                 GravatarDivider()
