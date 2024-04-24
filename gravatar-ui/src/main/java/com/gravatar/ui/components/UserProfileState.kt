@@ -10,6 +10,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.gravatar.api.models.Account
+import com.gravatar.api.models.Email
 import com.gravatar.api.models.UserProfile
 import com.gravatar.ui.GravatarTheme
 import com.gravatar.ui.components.UserProfileState.Loaded
@@ -42,9 +44,24 @@ public fun LoadingToLoadedStatePreview(composable: @Composable (state: UserProfi
         delay(5000)
         state = Loaded(
             UserProfile(
-                "4539566a0223b11d28fc47c864336fa27b8fe49b5f85180178c9e3813e910d6a",
+                hash = "4539566a0223b11d28fc47c864336fa27b8fe49b5f85180178c9e3813e910d6a",
                 displayName = "John Doe",
+                preferredUsername = "ddoe",
+                jobTitle = "Farmer",
+                company = "Farmers United",
                 currentLocation = "Crac'h, France",
+                pronouns = "They/Them",
+                accounts = listOf(
+                    Account(name = "Mastodon", url = "https://example.com", shortname = "mastodon"),
+                    Account(name = "Tumblr", url = "https://example.com", shortname = "tumblr"),
+                    // Invalid url, should be ignored:
+                    Account(name = "TikTok", url = "example.com", shortname = "tiktok"),
+                    Account(name = "WordPress", url = "https://example.com", shortname = "wordpress"),
+                    Account(name = "GitHub", url = "https://example.com", shortname = "github"),
+                ),
+                aboutMe = "I'm a farmer, I love to code. I ride my bicycle to work. One apple a day keeps the " +
+                    "doctor away. This about me description is quite long, this is good for testing.",
+                emails = listOf(Email(primary = true, value = "john@doe.com")),
             ),
         )
     }

@@ -207,20 +207,16 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
             }
             Spacer(modifier = Modifier.height(16.dp))
             // Show the profile card if we got a result and there is no error and it's not loading
-            if ((profileState is UserProfileState.Loaded) && error.isEmpty() && profileState != null) {
-                (profileState as? UserProfileState.Loaded)?.let {
+            if (error.isEmpty()) {
+                profileState?.let {
                     ProfileCard(
-                        it.userProfile,
+                        it,
                         Modifier
                             .background(MaterialTheme.colorScheme.surfaceContainer)
                             .fillMaxWidth()
                             .padding(24.dp),
                     )
                     Spacer(modifier = Modifier.height(16.dp))
-                }
-            }
-            if (error.isEmpty()) {
-                profileState?.let {
                     MiniProfileCard(
                         it,
                         Modifier

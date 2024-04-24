@@ -46,7 +46,7 @@ public fun MiniProfileCard(profile: UserProfile, modifier: Modifier = Modifier) 
  * [MiniProfileCard] is a composable that displays a mini profile card.
  * Given a [UserProfile], it displays a mini profile card using the other atomic components provided within the SDK.
  *
- * @param state The user's profile loading state
+ * @param state The user's profile state
  * @param modifier Composable modifier
  */
 @Composable
