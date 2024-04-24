@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -47,14 +46,11 @@ import com.gravatar.AvatarQueryOptions
 import com.gravatar.AvatarUrl
 import com.gravatar.DefaultAvatarOption
 import com.gravatar.ImageRating
-import com.gravatar.api.models.UserProfiles
 import com.gravatar.demoapp.BuildConfig
 import com.gravatar.demoapp.R
 import com.gravatar.demoapp.theme.GravatarDemoAppTheme
 import com.gravatar.demoapp.ui.components.GravatarEmailInput
 import com.gravatar.demoapp.ui.model.SettingsState
-import com.gravatar.services.ErrorType
-import com.gravatar.services.GravatarListener
 import com.gravatar.services.ProfileService
 import com.gravatar.types.Email
 import com.gravatar.ui.components.LargeProfile
@@ -153,13 +149,52 @@ private fun GravatarTabs(
 }
 
 @Composable
+private fun ProfileCards(profileState: UserProfileState?, error: String) {
+    val defaultModifier = Modifier
+        .background(MaterialTheme.colorScheme.surfaceContainer)
+        .fillMaxWidth()
+        .padding(24.dp)
+    // Show the profile card if we got a result and there is no error and it's not loading
+    if ((profileState is UserProfileState.Loaded) && error.isEmpty() && profileState != null) {
+        (profileState as? UserProfileState.Loaded)?.let {
+            ProfileCard(it.userProfile, defaultModifier)
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+    }
+    if (error.isEmpty()) {
+        profileState?.let {
+            MiniProfileCard(it, defaultModifier)
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+    }
+    if ((profileState is UserProfileState.Loaded) && error.isEmpty() && profileState != null) {
+        (profileState as? UserProfileState.Loaded)?.let {
+            LargeProfile(it.userProfile, defaultModifier)
+            Spacer(modifier = Modifier.height(16.dp))
+            LargeProfileSummary(
+                it.userProfile,
+                Modifier
+                    .padding(8.dp)
+                    .background(MaterialTheme.colorScheme.surfaceContainer)
+                    .padding(start = 24.dp, end = 24.dp, top = 24.dp, bottom = 8.dp)
+                    .fillMaxWidth(),
+            )
+        }
+    } else {
+        if (error.isNotEmpty()) {
+            Text(text = error)
+        }
+    }
+}
+
+@Composable
 private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwable?) -> Unit) {
     var email by remember { mutableStateOf(BuildConfig.DEMO_EMAIL, neverEqualPolicy()) }
-    var hash by remember { mutableStateOf("", neverEqualPolicy()) }
     var profileState: UserProfileState? by remember { mutableStateOf(null, neverEqualPolicy()) }
     var error by remember { mutableStateOf("") }
     val profileService = ProfileService()
     val keyboardController = LocalSoftwareKeyboardController.current
+    val scope = rememberCoroutineScope()
 
     Surface(modifier) {
         Column(
@@ -179,83 +214,22 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
             Button(
                 onClick = {
                     keyboardController?.hide()
-                    profileState = UserProfileState.Loading
-                    error = ""
-                    profileService.fetch(
-                        Email(email),
-                        object : GravatarListener<UserProfiles> {
-                            override fun onSuccess(response: UserProfiles) {
-                                profileState = response.entry.firstOrNull()?.let { UserProfileState.Loaded(it) }
+                    scope.launch {
+                        try {
+                            error = ""
+                            profileState = UserProfileState.Loading
+                            profileState = profileService.fetch(Email(email)).entry.firstOrNull()?.let {
+                                UserProfileState.Loaded(it)
                             }
-
-                            override fun onError(errorType: ErrorType) {
-                                onError(errorType.name, null)
-                                error = errorType.name
-                            }
-                        },
-                    )
+                        } catch (exception: ProfileService.FetchException) {
+                            onError(exception.errorType.name, null)
+                            error = exception.errorType.name
+                        }
+                    }
                 },
             ) { Text(text = stringResource(R.string.button_get_profile)) }
-            // Show the hash and loading indicator
-            if (hash.isNotEmpty()) {
-                GravatarDivider()
-                LabelledText(R.string.gravatar_generated_hash_label, text = hash)
-                GravatarDivider()
-                if ((profileState is UserProfileState.Loading)) {
-                    CircularProgressIndicator()
-                }
-            }
             Spacer(modifier = Modifier.height(16.dp))
-            // Show the profile card if we got a result and there is no error and it's not loading
-            if ((profileState is UserProfileState.Loaded) && error.isEmpty() && profileState != null) {
-                (profileState as? UserProfileState.Loaded)?.let {
-                    ProfileCard(
-                        it.userProfile,
-                        Modifier
-                            .background(MaterialTheme.colorScheme.surfaceContainer)
-                            .fillMaxWidth()
-                            .padding(24.dp),
-                    )
-                    Spacer(modifier = Modifier.height(16.dp))
-                }
-            }
-            if (error.isEmpty()) {
-                profileState?.let {
-                    MiniProfileCard(
-                        it,
-                        Modifier
-                            .background(MaterialTheme.colorScheme.surfaceContainer)
-                            .align(Alignment.Start)
-                            .fillMaxWidth()
-                            .padding(24.dp),
-                    )
-                    Spacer(modifier = Modifier.height(16.dp))
-                }
-            }
-            if ((profileState is UserProfileState.Loaded) && error.isEmpty() && profileState != null) {
-                (profileState as? UserProfileState.Loaded)?.let {
-                    LargeProfile(
-                        it.userProfile,
-                        Modifier
-                            .background(MaterialTheme.colorScheme.surfaceContainer)
-                            .fillMaxWidth()
-                            .padding(24.dp),
-                    )
-                    Spacer(modifier = Modifier.height(16.dp))
-                    LargeProfileSummary(
-                        it.userProfile,
-                        Modifier
-                            .padding(8.dp)
-                            .background(MaterialTheme.colorScheme.surfaceContainer)
-                            .padding(start = 24.dp, end = 24.dp, top = 24.dp, bottom = 8.dp)
-                            .fillMaxWidth(),
-                    )
-                }
-            } else {
-                if (error.isNotEmpty()) {
-                    Text(text = error)
-                }
-            }
+            ProfileCards(profileState, error)
         }
     }
 }
