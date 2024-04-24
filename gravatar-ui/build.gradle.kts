@@ -21,6 +21,8 @@ android {
 
     defaultConfig {
         minSdk = 21
+        // targetSdkVersion has no effect for libraries. This is only used for the test APK
+        targetSdk = 34
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
