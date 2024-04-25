@@ -5,11 +5,13 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -204,26 +206,37 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
                     .fillMaxWidth()
                     .padding(16.dp),
             )
-            Button(
-                onClick = {
-                    keyboardController?.hide()
-                    scope.launch {
-                        error = ""
-                        profileState = UserProfileState.Loading
-                        when (val result = profileService.fetch(Email(email))) {
-                            is Result.Success -> {
-                                result.value.entry.firstOrNull()?.let {
-                                    profileState = UserProfileState.Loaded(it)
+            Row {
+                Button(
+                    onClick = {
+                        keyboardController?.hide()
+                        scope.launch {
+                            error = ""
+                            profileState = UserProfileState.Loading
+                            when (val result = profileService.fetch(Email(email))) {
+                                is Result.Success -> {
+                                    result.value.entry.firstOrNull()?.let {
+                                        profileState = UserProfileState.Loaded(it)
+                                    }
+                                }
+                                is Result.Failure -> {
+                                    onError(result.error.name, null)
+                                    error = result.error.name
                                 }
                             }
-                            is Result.Failure -> {
-                                onError(result.error.name, null)
-                                error = result.error.name
-                            }
                         }
-                    }
-                },
-            ) { Text(text = stringResource(R.string.button_get_profile)) }
+                    },
+                ) { Text(text = stringResource(R.string.button_get_profile)) }
+                Spacer(modifier = Modifier.width(8.dp))
+                Button(
+                    enabled = profileState !is UserProfileState.Loading,
+                    onClick = {
+                        profileState = UserProfileState.Loading
+                    },
+                ) {
+                    Text(text = stringResource(R.string.button_enable_loading_state))
+                }
+            }
             Spacer(modifier = Modifier.height(16.dp))
             ProfileCards(profileState, error)
         }
