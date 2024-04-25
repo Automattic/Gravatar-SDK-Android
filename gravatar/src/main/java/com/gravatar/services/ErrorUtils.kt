@@ -5,7 +5,7 @@ import kotlinx.coroutines.launch
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
-internal fun handleError(t: Throwable, listener: GravatarListener<*>, coroutineScope: CoroutineScope) {
+internal fun handleError(t: Throwable, listener: GravatarListener<*, ErrorType>, coroutineScope: CoroutineScope) {
     val error: ErrorType =
         when (t) {
             is SocketTimeoutException -> ErrorType.TIMEOUT

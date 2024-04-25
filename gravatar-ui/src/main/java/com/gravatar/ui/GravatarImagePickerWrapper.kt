@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.net.toFile
 import com.gravatar.services.AvatarService
+import com.gravatar.services.ErrorType
 import com.gravatar.services.GravatarListener
 import com.gravatar.types.Email
 import com.yalantis.ucrop.UCrop
@@ -99,7 +100,7 @@ private fun launchAvatarCrop(
 /**
  * Listener for [GravatarImagePickerWrapper] that provides a way be informed about the avatar upload status.
  */
-public interface GravatarImagePickerWrapperListener : GravatarListener<Unit> {
+public interface GravatarImagePickerWrapperListener : GravatarListener<Unit, ErrorType> {
     /**
      * Called when the avatar upload is started.
      */
