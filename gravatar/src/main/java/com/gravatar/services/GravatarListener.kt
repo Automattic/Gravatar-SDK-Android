@@ -3,7 +3,7 @@ package com.gravatar.services
 /**
  * Generic Listener for Gravatar API call
  */
-public interface GravatarListener<T> {
+public interface GravatarListener<T, E> {
     /**
      * Called when the Gravatar API call is successful
      */
@@ -14,5 +14,5 @@ public interface GravatarListener<T> {
      *
      * @param errorType The type of error that occurred
      */
-    public fun onError(errorType: ErrorType)
+    public fun onError(errorType: E)
 }

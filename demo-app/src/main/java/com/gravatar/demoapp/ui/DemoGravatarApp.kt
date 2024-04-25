@@ -52,6 +52,7 @@ import com.gravatar.demoapp.theme.GravatarDemoAppTheme
 import com.gravatar.demoapp.ui.components.GravatarEmailInput
 import com.gravatar.demoapp.ui.model.SettingsState
 import com.gravatar.services.ProfileService
+import com.gravatar.services.Result
 import com.gravatar.types.Email
 import com.gravatar.ui.components.LargeProfile
 import com.gravatar.ui.components.LargeProfileSummary
@@ -155,7 +156,7 @@ private fun ProfileCards(profileState: UserProfileState?, error: String) {
         .fillMaxWidth()
         .padding(24.dp)
     // Show the profile card if we got a result and there is no error and it's not loading
-    if ((profileState is UserProfileState.Loaded) && error.isEmpty() && profileState != null) {
+    if ((profileState is UserProfileState.Loaded) && error.isEmpty()) {
         (profileState as? UserProfileState.Loaded)?.let {
             ProfileCard(it.userProfile, defaultModifier)
             Spacer(modifier = Modifier.height(16.dp))
@@ -167,7 +168,7 @@ private fun ProfileCards(profileState: UserProfileState?, error: String) {
             Spacer(modifier = Modifier.height(16.dp))
         }
     }
-    if ((profileState is UserProfileState.Loaded) && error.isEmpty() && profileState != null) {
+    if ((profileState is UserProfileState.Loaded) && error.isEmpty()) {
         (profileState as? UserProfileState.Loaded)?.let {
             LargeProfile(it.userProfile, defaultModifier)
             Spacer(modifier = Modifier.height(16.dp))
@@ -215,15 +216,18 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
                 onClick = {
                     keyboardController?.hide()
                     scope.launch {
-                        try {
-                            error = ""
-                            profileState = UserProfileState.Loading
-                            profileState = profileService.fetch(Email(email)).entry.firstOrNull()?.let {
-                                UserProfileState.Loaded(it)
+                        error = ""
+                        profileState = UserProfileState.Loading
+                        when (val result = profileService.fetch(Email(email))) {
+                            is Result.Success -> {
+                                result.value.entry.firstOrNull()?.let {
+                                    profileState = UserProfileState.Loaded(it)
+                                }
                             }
-                        } catch (exception: ProfileService.FetchException) {
-                            onError(exception.errorType.name, null)
-                            error = exception.errorType.name
+                            is Result.Failure -> {
+                                onError(result.error.name, null)
+                                error = result.error.name
+                            }
                         }
                     }
                 },
