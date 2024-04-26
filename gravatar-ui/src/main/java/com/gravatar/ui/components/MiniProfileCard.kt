@@ -4,19 +4,12 @@ import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
@@ -28,7 +21,6 @@ import com.gravatar.ui.components.atomic.Avatar
 import com.gravatar.ui.components.atomic.DisplayName
 import com.gravatar.ui.components.atomic.Location
 import com.gravatar.ui.components.atomic.ViewProfileButton
-import kotlinx.coroutines.delay
 
 /**
  * [MiniProfileCard] is a composable that displays a mini profile card.
@@ -46,7 +38,7 @@ public fun MiniProfileCard(profile: UserProfile, modifier: Modifier = Modifier) 
  * [MiniProfileCard] is a composable that displays a mini profile card.
  * Given a [UserProfile], it displays a mini profile card using the other atomic components provided within the SDK.
  *
- * @param state The user's profile loading state
+ * @param state The user's profile state
  * @param modifier Composable modifier
  */
 @Composable
@@ -99,20 +91,5 @@ private fun MiniProfileCardPreview() {
 @Preview(uiMode = UI_MODE_NIGHT_YES)
 @Composable
 private fun MiniProfileCardLoadingPreview() {
-    var state: UserProfileState by remember { mutableStateOf(UserProfileState.Loading) }
-    LaunchedEffect(key1 = state) {
-        delay(5000)
-        state = UserProfileState.Loaded(
-            UserProfile(
-                "4539566a0223b11d28fc47c864336fa27b8fe49b5f85180178c9e3813e910d6a",
-                displayName = "John Doe",
-                currentLocation = "Crac'h, France",
-            ),
-        )
-    }
-    GravatarTheme {
-        Surface(Modifier.fillMaxWidth()) {
-            MiniProfileCard(state)
-        }
-    }
+    LoadingToLoadedStatePreview { MiniProfileCard(it) }
 }

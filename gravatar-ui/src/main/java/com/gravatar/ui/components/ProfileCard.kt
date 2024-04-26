@@ -1,5 +1,6 @@
 package com.gravatar.ui.components
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -36,6 +37,18 @@ import com.gravatar.ui.components.atomic.ViewProfileButton
  */
 @Composable
 public fun ProfileCard(profile: UserProfile, modifier: Modifier = Modifier) {
+    ProfileCard(state = UserProfileState.Loaded(profile), modifier = modifier)
+}
+
+/**
+ * [ProfileCard] is a composable that displays a user's profile card.
+ * Given a [UserProfileState], it displays a [ProfileCard] or the skeleton if it's in a loading state.
+ *
+ * @param state The user's profile state
+ * @param modifier Composable modifier
+ */
+@Composable
+public fun ProfileCard(state: UserProfileState, modifier: Modifier = Modifier) {
     GravatarTheme {
         Column(
             modifier = modifier,
@@ -44,28 +57,28 @@ public fun ProfileCard(profile: UserProfile, modifier: Modifier = Modifier) {
         ) {
             Row {
                 Avatar(
-                    profile = profile,
+                    state = state,
                     size = 72.dp,
                     modifier = Modifier.clip(CircleShape),
                 )
                 Column(modifier = Modifier.padding(14.dp, 0.dp, 0.dp, 0.dp)) {
                     DisplayName(
-                        profile,
+                        state,
                         textStyle = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                     )
-                    UserInfo(profile)
+                    UserInfo(state)
                 }
             }
             Spacer(modifier = Modifier.height(16.dp))
-            AboutMe(profile)
+            AboutMe(state)
             Spacer(modifier = Modifier.height(4.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                SocialIconRow(profile, maxIcons = 4)
-                ViewProfileButton(profile, Modifier.padding(0.dp))
+                SocialIconRow(state, maxIcons = 4)
+                ViewProfileButton(state, Modifier.padding(0.dp))
             }
         }
     }
@@ -93,4 +106,11 @@ private fun ProfileCardPreview() {
             emails = listOf(Email(primary = true, value = "john@doe.com")),
         ),
     )
+}
+
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun ProfileCardLoadingPreview() {
+    LoadingToLoadedStatePreview { ProfileCard(it) }
 }

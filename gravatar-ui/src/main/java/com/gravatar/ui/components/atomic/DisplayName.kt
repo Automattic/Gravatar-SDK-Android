@@ -26,13 +26,13 @@ public fun DisplayName(
     modifier: Modifier = Modifier,
     textStyle: TextStyle = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
 ) {
-    DisplayName(displayName = profile.displayName.orEmpty(), modifier = modifier, textStyle = textStyle)
+    Text(text = profile.displayName.orEmpty(), modifier = modifier, style = textStyle)
 }
 
 /**
  * [DisplayName] is a composable that displays the user's display name or a loading skeleton.
  *
- * @param state The user's profile loading state
+ * @param state The user's profile state
  * @param modifier Composable modifier
  * @param textStyle The style to apply to the text
  */
@@ -51,15 +51,6 @@ public fun DisplayName(
             DisplayName(state.userProfile, modifier, textStyle)
         }
     }
-}
-
-@Composable
-private fun DisplayName(
-    displayName: String,
-    modifier: Modifier = Modifier,
-    textStyle: TextStyle = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
-) {
-    Text(text = displayName, modifier = modifier, style = textStyle)
 }
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)

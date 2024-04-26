@@ -91,7 +91,7 @@ public fun ViewProfileButton(
 /**
  * [ViewProfileButton] is a composable that displays a button to view a user's profile or it's loading state.
  *
- * @param state The user's profile loading state
+ * @param state The user's profile state
  * @param modifier Composable modifier
  * @param textStyle The style to apply to the text
  * @param inlineContent The content to display inline with the text, by default it is an arrow icon.

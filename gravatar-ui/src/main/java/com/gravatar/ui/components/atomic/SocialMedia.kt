@@ -1,13 +1,18 @@
 package com.gravatar.ui.components.atomic
 
+import android.content.res.Configuration
 import androidx.annotation.DrawableRes
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
@@ -21,6 +26,9 @@ import com.gravatar.api.models.Account
 import com.gravatar.api.models.UserProfile
 import com.gravatar.extensions.profileUrl
 import com.gravatar.ui.R
+import com.gravatar.ui.components.LoadingToLoadedStatePreview
+import com.gravatar.ui.components.UserProfileState
+import com.gravatar.ui.skeletonEffect
 import java.net.MalformedURLException
 import java.net.URL
 
@@ -163,6 +171,36 @@ public fun SocialIconRow(profile: UserProfile, modifier: Modifier = Modifier, ma
     SocialIconRow(mediaList(profile), modifier, maxIcons)
 }
 
+/**
+ * [SocialIconRow] is a composable that displays a row of clickable [SocialIcon].
+ *
+ * @param state The user's profile state
+ * @param modifier Composable modifier
+ * @param maxIcons The maximum number of icons to display
+ */
+@Composable
+public fun SocialIconRow(state: UserProfileState, modifier: Modifier = Modifier, maxIcons: Int = 4) {
+    when (state) {
+        is UserProfileState.Loading -> {
+            Row(modifier = modifier) {
+                repeat(maxIcons) {
+                    Box(
+                        Modifier
+                            .padding(2.dp)
+                            .size(28.dp)
+                            .clip(CircleShape)
+                            .skeletonEffect(),
+                    )
+                }
+            }
+        }
+
+        is UserProfileState.Loaded -> {
+            SocialIconRow(state.userProfile, modifier, maxIcons)
+        }
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 private fun SocialIconRowPreview() {
@@ -178,4 +216,11 @@ private fun SocialIconRowPreview() {
         ),
     )
     SocialIconRow(userProfile, maxIcons = 5)
+}
+
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun LocationStatePreview() {
+    LoadingToLoadedStatePreview { SocialIconRow(it) }
 }

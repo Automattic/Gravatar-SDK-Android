@@ -156,24 +156,16 @@ private fun ProfileCards(profileState: UserProfileState?, error: String) {
         .fillMaxWidth()
         .padding(24.dp)
     // Show the profile card if we got a result and there is no error and it's not loading
-    if ((profileState is UserProfileState.Loaded) && error.isEmpty()) {
-        (profileState as? UserProfileState.Loaded)?.let {
-            ProfileCard(it.userProfile, defaultModifier)
-            Spacer(modifier = Modifier.height(16.dp))
-        }
-    }
     if (error.isEmpty()) {
         profileState?.let {
+            ProfileCard(it, defaultModifier)
+            Spacer(modifier = Modifier.height(16.dp))
             MiniProfileCard(it, defaultModifier)
             Spacer(modifier = Modifier.height(16.dp))
-        }
-    }
-    if ((profileState is UserProfileState.Loaded) && error.isEmpty()) {
-        (profileState as? UserProfileState.Loaded)?.let {
-            LargeProfile(it.userProfile, defaultModifier)
+            LargeProfile(it, defaultModifier)
             Spacer(modifier = Modifier.height(16.dp))
             LargeProfileSummary(
-                it.userProfile,
+                it,
                 Modifier
                     .padding(8.dp)
                     .background(MaterialTheme.colorScheme.surfaceContainer)
