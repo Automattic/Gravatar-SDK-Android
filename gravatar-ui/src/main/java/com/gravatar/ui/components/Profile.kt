@@ -29,26 +29,26 @@ import com.gravatar.ui.components.atomic.UserInfo
 import com.gravatar.ui.components.atomic.ViewProfileButton
 
 /**
- * [ProfileCard] is a composable that displays a user's profile card.
- * Given a [UserProfile], it displays a [ProfileCard] using the other atomic components provided within the SDK.
+ * [Profile] is a composable that displays a user's profile card.
+ * Given a [UserProfile], it displays a [Profile] using the other atomic components provided within the SDK.
  *
  * @param profile The user's profile information
  * @param modifier Composable modifier
  */
 @Composable
-public fun ProfileCard(profile: UserProfile, modifier: Modifier = Modifier) {
-    ProfileCard(state = UserProfileState.Loaded(profile), modifier = modifier)
+public fun Profile(profile: UserProfile, modifier: Modifier = Modifier) {
+    Profile(state = UserProfileState.Loaded(profile), modifier = modifier)
 }
 
 /**
- * [ProfileCard] is a composable that displays a user's profile card.
- * Given a [UserProfileState], it displays a [ProfileCard] or the skeleton if it's in a loading state.
+ * [Profile] is a composable that displays a user's profile card.
+ * Given a [UserProfileState], it displays a [Profile] or the skeleton if it's in a loading state.
  *
  * @param state The user's profile state
  * @param modifier Composable modifier
  */
 @Composable
-public fun ProfileCard(state: UserProfileState, modifier: Modifier = Modifier) {
+public fun Profile(state: UserProfileState, modifier: Modifier = Modifier) {
     GravatarTheme {
         Column(
             modifier = modifier,
@@ -86,8 +86,8 @@ public fun ProfileCard(state: UserProfileState, modifier: Modifier = Modifier) {
 
 @Preview
 @Composable
-private fun ProfileCardPreview() {
-    ProfileCard(
+private fun ProfilePreview() {
+    Profile(
         UserProfile(
             hash = "1234567890",
             displayName = "Dominique Doe",
@@ -111,6 +111,6 @@ private fun ProfileCardPreview() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-private fun ProfileCardLoadingPreview() {
-    LoadingToLoadedStatePreview { ProfileCard(it) }
+private fun ProfileLoadingPreview() {
+    LoadingToLoadedStatePreview { Profile(it) }
 }

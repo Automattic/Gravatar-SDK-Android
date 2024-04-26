@@ -56,7 +56,7 @@ import com.gravatar.services.Result
 import com.gravatar.types.Email
 import com.gravatar.ui.components.LargeProfile
 import com.gravatar.ui.components.LargeProfileSummary
-import com.gravatar.ui.components.ProfileCard
+import com.gravatar.ui.components.Profile
 import com.gravatar.ui.components.ProfileSummary
 import com.gravatar.ui.components.UserProfileState
 import kotlinx.coroutines.CoroutineScope
@@ -158,7 +158,7 @@ private fun ProfileCards(profileState: UserProfileState?, error: String) {
     // Show the profile card if we got a result and there is no error and it's not loading
     if (error.isEmpty()) {
         profileState?.let {
-            ProfileCard(it, defaultModifier)
+            Profile(it, defaultModifier)
             Spacer(modifier = Modifier.height(16.dp))
             ProfileSummary(it, defaultModifier)
             Spacer(modifier = Modifier.height(16.dp))
