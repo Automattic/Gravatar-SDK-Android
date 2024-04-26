@@ -36,7 +36,7 @@ class AvatarServiceTest {
 
     @Test
     fun `given a file, email and accessToken when uploading avatar then Gravatar service is invoked`() = runTest {
-        val uploadGravatarListener = spyk<GravatarListener<Unit>>()
+        val uploadGravatarListener = spyk<GravatarListener<Unit, ErrorType>>()
         val callResponse = mockk<Call<ResponseBody>>()
         every { containerRule.gravatarApiServiceMock.uploadImage(any(), any(), any()) } returns callResponse
         every { callResponse.enqueue(any()) } answers { call ->
@@ -120,7 +120,7 @@ class AvatarServiceTest {
         httpResponseCode: Int,
         expectedErrorType: ErrorType,
     ) = runTest {
-        val uploadGravatarListener = spyk<GravatarListener<Unit>>()
+        val uploadGravatarListener = spyk<GravatarListener<Unit, ErrorType>>()
         val callResponse = mockk<Call<ResponseBody>>()
         every { containerRule.gravatarApiServiceMock.uploadImage(any(), any(), any()) } returns callResponse
         every { callResponse.enqueue(any()) } answers { call ->
@@ -145,7 +145,7 @@ class AvatarServiceTest {
         exception: Throwable,
         expectedErrorType: ErrorType,
     ) = runTest {
-        val uploadGravatarListener = spyk<GravatarListener<Unit>>()
+        val uploadGravatarListener = spyk<GravatarListener<Unit, ErrorType>>()
         val callResponse = mockk<Call<ResponseBody>>()
         every { containerRule.gravatarApiServiceMock.uploadImage(any(), any(), any()) } returns callResponse
         every { callResponse.enqueue(any()) } answers { call ->
