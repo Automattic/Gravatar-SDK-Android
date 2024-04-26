@@ -32,7 +32,12 @@ public class AvatarService(private val okHttpClient: OkHttpClient? = null) {
      * @param accessToken The bearer token for the user's WordPress/Gravatar account
      * @param gravatarUploadListener The listener to notify of the upload result
      */
-    public fun upload(file: File, email: Email, accessToken: String, gravatarUploadListener: GravatarListener<Unit>) {
+    public fun upload(
+        file: File,
+        email: Email,
+        accessToken: String,
+        gravatarUploadListener: GravatarListener<Unit, ErrorType>,
+    ) {
         val service = GravatarSdkDI.getGravatarApiService(okHttpClient)
         val identity = MultipartBody.Part.createFormData("account", email.toString())
         val filePart =
