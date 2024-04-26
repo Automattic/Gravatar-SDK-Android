@@ -56,8 +56,8 @@ import com.gravatar.services.Result
 import com.gravatar.types.Email
 import com.gravatar.ui.components.LargeProfile
 import com.gravatar.ui.components.LargeProfileSummary
-import com.gravatar.ui.components.MiniProfileCard
 import com.gravatar.ui.components.ProfileCard
+import com.gravatar.ui.components.ProfileSummary
 import com.gravatar.ui.components.UserProfileState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -160,7 +160,7 @@ private fun ProfileCards(profileState: UserProfileState?, error: String) {
         profileState?.let {
             ProfileCard(it, defaultModifier)
             Spacer(modifier = Modifier.height(16.dp))
-            MiniProfileCard(it, defaultModifier)
+            ProfileSummary(it, defaultModifier)
             Spacer(modifier = Modifier.height(16.dp))
             LargeProfile(it, defaultModifier)
             Spacer(modifier = Modifier.height(16.dp))
@@ -216,6 +216,7 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
                                     profileState = UserProfileState.Loaded(it)
                                 }
                             }
+
                             is Result.Failure -> {
                                 onError(result.error.name, null)
                                 error = result.error.name
