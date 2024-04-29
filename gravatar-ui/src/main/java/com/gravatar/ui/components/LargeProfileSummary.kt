@@ -14,24 +14,25 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.gravatar.api.models.Account
-import com.gravatar.api.models.Email
-import com.gravatar.api.models.UserProfile
+import com.gravatar.api.models.Profile
+import com.gravatar.api.models.VerifiedAccount
+import com.gravatar.extensions.emptyProfile
 import com.gravatar.ui.GravatarTheme
 import com.gravatar.ui.components.atomic.Avatar
 import com.gravatar.ui.components.atomic.DisplayName
 import com.gravatar.ui.components.atomic.UserInfo
 import com.gravatar.ui.components.atomic.ViewProfileButton
+import java.net.URI
 
 /**
  * [LargeProfileSummary] is a composable that displays a user's profile in a resumed way.
- * Given a [UserProfile], it displays a [LargeProfileSummary] using the other atomic components provided within the SDK.
+ * Given a [Profile], it displays a [LargeProfileSummary] using the other atomic components provided within the SDK.
  *
  * @param profile The user's profile information
  * @param modifier Composable modifier
  */
 @Composable
-public fun LargeProfileSummary(profile: UserProfile, modifier: Modifier = Modifier) {
+public fun LargeProfileSummary(profile: Profile, modifier: Modifier = Modifier) {
     LargeProfileSummary(UserProfileState.Loaded(profile), modifier)
 }
 
@@ -74,22 +75,32 @@ public fun LargeProfileSummary(state: UserProfileState, modifier: Modifier = Mod
 private fun LargeProfileSummaryPreview() {
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
         LargeProfileSummary(
-            UserProfile(
+            emptyProfile(
                 hash = "1234567890",
                 displayName = "Dominique Doe",
-                preferredUsername = "ddoe",
                 jobTitle = "Farmer",
                 company = "Farmers United",
-                currentLocation = "Crac'h, France",
+                location = "Crac'h, France",
                 pronouns = "They/Them",
-                accounts = listOf(
-                    Account(name = "Mastodon", url = "https://mastodon.social/@ddoe"),
-                    Account(name = "Tumblr", url = "https://ddoe.tumblr.com"),
-                    Account(name = "WordPress", url = "https://ddoe.wordpress.com"),
+                verifiedAccounts = listOf(
+                    VerifiedAccount(
+                        serviceLabel = "Mastodon",
+                        url = URI("https://mastodon.social/@ddoe"),
+                        serviceIcon = URI("https://example.com/icon.svg"),
+                    ),
+                    VerifiedAccount(
+                        serviceLabel = "Tumblr",
+                        url = URI("https://ddoe.tumblr.com"),
+                        serviceIcon = URI("https://example.com/icon.svg"),
+                    ),
+                    VerifiedAccount(
+                        serviceLabel = "WordPress",
+                        url = URI("https://ddoe.wordpress.com"),
+                        serviceIcon = URI("https://example.com/icon.svg"),
+                    ),
                 ),
-                aboutMe = "I'm a farmer, I love to code. I ride my bicycle to work. One apple a day keeps the " +
+                description = "I'm a farmer, I love to code. I ride my bicycle to work. One apple a day keeps the " +
                     "doctor away. This about me description is quite long, this is good for testing.",
-                emails = listOf(Email(primary = true, value = "john@doe.com")),
             ),
         )
     }

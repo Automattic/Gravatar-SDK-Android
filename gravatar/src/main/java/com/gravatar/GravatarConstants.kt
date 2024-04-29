@@ -13,8 +13,11 @@ public object GravatarConstants {
     /** Gravatar image path */
     internal const val GRAVATAR_IMAGE_PATH = "avatar"
 
-    /** Gravatar API base URL */
-    internal const val GRAVATAR_API_BASE_URL = "https://api.gravatar.com/v1/"
+    /** Gravatar API base URL - V1 */
+    internal const val GRAVATAR_API_BASE_URL_V1 = "https://api.gravatar.com/v1/"
+
+    /** Gravatar API base URL - V3 */
+    internal const val GRAVATAR_API_BASE_URL_V3 = "https://api.gravatar.com/v3/"
 
     /** Gravatar base host */
     public const val GRAVATAR_BASE_URL: String = "https://gravatar.com"

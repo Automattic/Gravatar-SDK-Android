@@ -23,14 +23,16 @@ import coil.compose.AsyncImage
 import coil.decode.SvgDecoder
 import coil.request.ImageRequest
 import com.gravatar.GravatarConstants
-import com.gravatar.api.models.Account
-import com.gravatar.api.models.UserProfile
+import com.gravatar.api.models.Profile
+import com.gravatar.api.models.VerifiedAccount
+import com.gravatar.extensions.emptyProfile
 import com.gravatar.extensions.profileUrl
 import com.gravatar.ui.R
 import com.gravatar.ui.components.LoadingToLoadedStatePreview
 import com.gravatar.ui.components.UserProfileState
 import com.gravatar.ui.skeletonEffect
 import java.net.MalformedURLException
+import java.net.URI
 import java.net.URL
 
 /**
@@ -64,10 +66,10 @@ public enum class LocalIcon(
         private val shortnames = entries.associateBy { it.shortname }
 
         /**
-         * Returns the LocalIcon enum value for the given shortname.
+         * Returns the LocalIcon enum value for the given label.
          */
-        public fun valueOf(shortname: String?): LocalIcon? {
-            return shortnames[shortname]
+        public fun valueForLabel(shortname: String): LocalIcon? {
+            return shortnames[shortname.lowercase()]
         }
     }
 }
@@ -87,19 +89,31 @@ public class SocialMedia(
     public val icon: LocalIcon? = null,
 )
 
-private fun mediaList(profile: UserProfile): List<SocialMedia> {
+private fun mediaList(profile: Profile): List<SocialMedia> {
     val mediaList = mutableListOf<SocialMedia>()
     // Force the Gravatar icon
     mediaList.add(SocialMedia(profile.profileUrl().url, LocalIcon.Gravatar.name, icon = LocalIcon.Gravatar))
     // List and filter the other accounts from the profile, keep the same order coming from UserProfile.accounts list
-    profile.accounts?.forEach { account ->
+    profile.verifiedAccounts.forEach { account ->
         try {
-            if (LocalIcon.valueOf(account.shortname) != null) {
+            if (LocalIcon.valueForLabel(account.serviceLabel) != null) {
                 // Add local icon if the shortname exists in our predefined list
-                mediaList.add(SocialMedia(URL(account.url), account.name, icon = LocalIcon.valueOf(account.shortname)))
+                mediaList.add(
+                    SocialMedia(
+                        account.url.toURL(),
+                        account.serviceLabel,
+                        icon = LocalIcon.valueForLabel(account.serviceLabel),
+                    ),
+                )
             } else {
                 // Add a "remote" icon (using the url coming from the endpoint response)
-                mediaList.add(SocialMedia(URL(account.url), account.name, iconUrl = URL(account.iconUrl)))
+                mediaList.add(
+                    SocialMedia(
+                        account.url.toURL(),
+                        account.serviceLabel,
+                        iconUrl = URL(account.serviceIcon.toString()),
+                    ),
+                )
             }
         } catch (e: MalformedURLException) {
             // Ignore invalid account or icon URLs that could be returned by the endpoint
@@ -168,7 +182,7 @@ public fun SocialIconRow(socialMedia: List<SocialMedia>, modifier: Modifier = Mo
  * @param maxIcons The maximum number of icons to display
  */
 @Composable
-public fun SocialIconRow(profile: UserProfile, modifier: Modifier = Modifier, maxIcons: Int = 4) {
+public fun SocialIconRow(profile: Profile, modifier: Modifier = Modifier, maxIcons: Int = 4) {
     SocialIconRow(mediaList(profile), modifier, maxIcons)
 }
 
@@ -216,15 +230,34 @@ public fun SocialIconRow(state: UserProfileState, modifier: Modifier = Modifier,
 @Preview(showBackground = true)
 @Composable
 private fun SocialIconRowPreview() {
-    val userProfile = UserProfile(
+    val userProfile = emptyProfile(
         hash = "",
-        accounts = listOf(
-            Account(name = "Mastodon", url = "https://example.com", shortname = "mastodon"),
-            Account(name = "Tumblr", url = "https://example.com", shortname = "tumblr"),
-            // Invalid url, should be ignored:
-            Account(name = "TikTok", url = "example.com", shortname = "tiktok"),
-            Account(name = "WordPress", url = "https://example.com", shortname = "wordpress"),
-            Account(name = "GitHub", url = "https://example.com", shortname = "github"),
+        verifiedAccounts = listOf(
+            VerifiedAccount(
+                serviceLabel = "Mastodon",
+                url = URI("https://example.com"),
+                serviceIcon = URI("https://example.com/icon.svg"),
+            ),
+            VerifiedAccount(
+                serviceLabel = "Tumblr",
+                url = URI("https://example.com"),
+                serviceIcon = URI("https://example.com/icon.svg"),
+            ),
+            VerifiedAccount(
+                serviceLabel = "TikTok",
+                url = URI("https://example.com"),
+                serviceIcon = URI("https://example.com/icon.svg"),
+            ),
+            VerifiedAccount(
+                serviceLabel = "WordPress",
+                url = URI("https://example.com"),
+                serviceIcon = URI("https://example.com/icon.svg"),
+            ),
+            VerifiedAccount(
+                serviceLabel = "GitHub",
+                url = URI("https://example.com"),
+                serviceIcon = URI("https://example.com/icon.svg"),
+            ),
         ),
     )
     SocialIconRow(userProfile, maxIcons = 5)

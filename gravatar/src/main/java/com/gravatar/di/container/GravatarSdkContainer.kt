@@ -2,8 +2,8 @@ package com.gravatar.di.container
 
 import com.google.gson.GsonBuilder
 import com.gravatar.GravatarApiService
-import com.gravatar.GravatarConstants.GRAVATAR_API_BASE_URL
-import com.gravatar.GravatarConstants.GRAVATAR_BASE_URL
+import com.gravatar.GravatarConstants.GRAVATAR_API_BASE_URL_V1
+import com.gravatar.GravatarConstants.GRAVATAR_API_BASE_URL_V3
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
@@ -17,9 +17,9 @@ internal class GravatarSdkContainer private constructor() {
         }
     }
 
-    private fun getRetrofitApiBuilder() = Retrofit.Builder().baseUrl(GRAVATAR_API_BASE_URL)
+    private fun getRetrofitApiBuilder() = Retrofit.Builder().baseUrl(GRAVATAR_API_BASE_URL_V1)
 
-    private fun getRetrofitBaseBuilder() = Retrofit.Builder().baseUrl(GRAVATAR_BASE_URL)
+    private fun getRetrofitBaseBuilder() = Retrofit.Builder().baseUrl(GRAVATAR_API_BASE_URL_V3)
 
     val dispatcherMain: CoroutineDispatcher = Dispatchers.Main
     val dispatcherDefault = Dispatchers.Default

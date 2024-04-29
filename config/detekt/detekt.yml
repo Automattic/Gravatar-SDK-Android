@@ -40,6 +40,14 @@ style:
   WildcardImport:
     active: true
     excludeImports: []
+  MaxLineLength:
+    active: true
+    maxLineLength: 120
+    excludes: [ '**/api/**' ]
+    excludePackageStatements: true
+    excludeImportStatements: true
+    excludeCommentStatements: false
+    excludeRawStrings: true
 
 comments:
   UndocumentedPublicClass:

@@ -9,7 +9,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import com.gravatar.api.models.UserProfile
+import com.gravatar.api.models.Profile
 import com.gravatar.ui.R
 import com.gravatar.ui.TextSkeletonEffect
 import com.gravatar.ui.components.LoadingToLoadedStatePreview
@@ -24,11 +24,11 @@ import com.gravatar.ui.components.UserProfileState
  */
 @Composable
 public fun DisplayName(
-    profile: UserProfile,
+    profile: Profile,
     modifier: Modifier = Modifier,
     textStyle: TextStyle = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
 ) {
-    DisplayName(profile.displayName.orEmpty(), modifier, textStyle)
+    DisplayName(profile.displayName, modifier, textStyle)
 }
 
 @Composable

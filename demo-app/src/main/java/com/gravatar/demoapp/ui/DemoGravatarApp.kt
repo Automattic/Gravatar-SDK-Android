@@ -253,7 +253,7 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
                             profileState = UserProfileState.Loading
                             when (val result = profileService.fetch(Email(email))) {
                                 is Result.Success -> {
-                                    result.value.entry.firstOrNull()?.let {
+                                    result.value.let {
                                         profileState = UserProfileState.Loaded(it)
                                     }
                                 }

@@ -11,7 +11,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.gravatar.api.models.UserProfile
+import com.gravatar.api.models.Profile
+import com.gravatar.extensions.emptyProfile
 import com.gravatar.extensions.formattedUserInfo
 import com.gravatar.ui.R
 import com.gravatar.ui.TextSkeletonEffect
@@ -30,7 +31,7 @@ import com.gravatar.ui.components.UserProfileState
  */
 @Composable
 public fun UserInfo(
-    profile: UserProfile,
+    profile: Profile,
     modifier: Modifier = Modifier,
     textStyle: TextStyle = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.outline),
     content: @Composable ((String, Modifier) -> Unit) = { userInfo, contentModifier ->
@@ -85,9 +86,9 @@ private fun UserInfoDefaultContent(userInfo: String, textStyle: TextStyle, modif
 @Composable
 private fun UserInfoPreview() {
     UserInfo(
-        UserProfile(
+        emptyProfile(
             "",
-            currentLocation = "Crac'h, France",
+            location = "Crac'h, France",
             pronouns = "They/Them",
             pronunciation = "Tony with a P",
             jobTitle = "Pony Trainer",

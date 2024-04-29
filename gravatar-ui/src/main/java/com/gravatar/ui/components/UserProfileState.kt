@@ -10,13 +10,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.gravatar.api.models.Account
-import com.gravatar.api.models.Email
-import com.gravatar.api.models.UserProfile
+import com.gravatar.api.models.Profile
+import com.gravatar.api.models.VerifiedAccount
+import com.gravatar.extensions.emptyProfile
 import com.gravatar.ui.GravatarTheme
 import com.gravatar.ui.components.UserProfileState.Loaded
 import com.gravatar.ui.components.UserProfileState.Loading
 import kotlinx.coroutines.delay
+import java.net.URI
 
 /**
  * [UserProfileState] represents the state of a user profile loading.
@@ -33,7 +34,7 @@ public sealed class UserProfileState {
      *
      * @property userProfile The user's profile information
      */
-    public data class Loaded(val userProfile: UserProfile) : UserProfileState()
+    public data class Loaded(val userProfile: Profile) : UserProfileState()
 
     /**
      * [Empty] represents the state where the user profile is empty, so it can be claimed.
@@ -48,25 +49,43 @@ public fun LoadingToLoadedStatePreview(composable: @Composable (state: UserProfi
     LaunchedEffect(key1 = state) {
         delay(5000)
         state = Loaded(
-            UserProfile(
+            emptyProfile(
                 hash = "4539566a0223b11d28fc47c864336fa27b8fe49b5f85180178c9e3813e910d6a",
                 displayName = "John Doe",
-                preferredUsername = "ddoe",
                 jobTitle = "Farmer",
                 company = "Farmers United",
-                currentLocation = "Crac'h, France",
+                location = "Crac'h, France",
                 pronouns = "They/Them",
-                accounts = listOf(
-                    Account(name = "Mastodon", url = "https://example.com", shortname = "mastodon"),
-                    Account(name = "Tumblr", url = "https://example.com", shortname = "tumblr"),
+                verifiedAccounts = listOf(
+                    VerifiedAccount(
+                        serviceLabel = "Mastodon",
+                        url = URI("https://example.com"),
+                        serviceIcon = URI("https://example.com/icon.svg"),
+                    ),
+                    VerifiedAccount(
+                        serviceLabel = "Tumblr",
+                        url = URI("https://example.com"),
+                        serviceIcon = URI("https://example.com/icon.svg"),
+                    ),
                     // Invalid url, should be ignored:
-                    Account(name = "TikTok", url = "example.com", shortname = "tiktok"),
-                    Account(name = "WordPress", url = "https://example.com", shortname = "wordpress"),
-                    Account(name = "GitHub", url = "https://example.com", shortname = "github"),
+                    VerifiedAccount(
+                        serviceLabel = "TikTok",
+                        url = URI("https://example.com"),
+                        serviceIcon = URI("https://example.com/icon.svg"),
+                    ),
+                    VerifiedAccount(
+                        serviceLabel = "WordPress",
+                        url = URI("https://example.com"),
+                        serviceIcon = URI("https://example.com/icon.svg"),
+                    ),
+                    VerifiedAccount(
+                        serviceLabel = "GitHub",
+                        url = URI("https://example.com"),
+                        serviceIcon = URI("https://example.com/icon.svg"),
+                    ),
                 ),
-                aboutMe = "I'm a farmer, I love to code. I ride my bicycle to work. One apple a day keeps the " +
+                description = "I'm a farmer, I love to code. I ride my bicycle to work. One apple a day keeps the " +
                     "doctor away. This about me description is quite long, this is good for testing.",
-                emails = listOf(Email(primary = true, value = "john@doe.com")),
             ),
         )
     }

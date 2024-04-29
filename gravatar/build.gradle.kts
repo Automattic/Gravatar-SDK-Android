@@ -103,7 +103,7 @@ project.afterEvaluate {
 
 openApiGenerate {
     generatorName = "kotlin"
-    inputSpec = "${projectDir.path}/openapi/api-gravatar.yaml"
+    inputSpec = "${projectDir.path}/openapi/api-gravatar.json"
     outputDir = "${buildDir.path}/openapi"
 
     // Use the custom templates if they are present. If not, the generator will use the default ones

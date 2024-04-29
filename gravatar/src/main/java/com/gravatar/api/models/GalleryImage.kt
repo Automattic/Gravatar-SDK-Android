@@ -10,15 +10,13 @@ package com.gravatar.api.models
 import com.google.gson.annotations.SerializedName
 
 /**
+ * A gallery image a user has uploaded.
  *
- *
- * @param code
- * @param message
+ * @param url The URL to the image.
  */
 
-public data class Error(
-    @SerializedName("code")
-    val code: kotlin.Int,
-    @SerializedName("message")
-    val message: kotlin.String,
+public data class GalleryImage(
+    // The URL to the image.
+    @SerializedName("url")
+    val url: java.net.URI,
 )

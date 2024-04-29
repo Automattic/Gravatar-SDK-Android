@@ -11,7 +11,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.gravatar.api.models.UserProfile
+import com.gravatar.api.models.Profile
+import com.gravatar.extensions.emptyProfile
 import com.gravatar.ui.R
 import com.gravatar.ui.TextSkeletonEffect
 import com.gravatar.ui.components.LoadingToLoadedStatePreview
@@ -28,14 +29,14 @@ import com.gravatar.ui.components.UserProfileState
  */
 @Composable
 public fun Location(
-    profile: UserProfile,
+    profile: Profile,
     modifier: Modifier = Modifier,
     textStyle: TextStyle = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.outline),
     content: @Composable ((String, Modifier) -> Unit) = { location, contentModifier ->
         LocationDefaultContent(location, textStyle, contentModifier)
     },
 ) {
-    content(profile.currentLocation.orEmpty(), modifier)
+    content(profile.location, modifier)
 }
 
 /**
@@ -83,7 +84,7 @@ private fun LocationDefaultContent(location: String, textStyle: TextStyle, modif
 @Preview
 @Composable
 private fun LocationPreview() {
-    Location(UserProfile("", currentLocation = "Crac'h, France"))
+    Location(emptyProfile("", location = "Crac'h, France"))
 }
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)

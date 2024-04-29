@@ -29,7 +29,8 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.gravatar.GravatarConstants
-import com.gravatar.api.models.UserProfile
+import com.gravatar.api.models.Profile
+import com.gravatar.extensions.emptyProfile
 import com.gravatar.extensions.profileUrl
 import com.gravatar.ui.R
 import com.gravatar.ui.TextSkeletonEffect
@@ -47,7 +48,7 @@ import com.gravatar.ui.components.UserProfileState
  */
 @Composable
 public fun ViewProfileButton(
-    profile: UserProfile,
+    profile: Profile,
     modifier: Modifier = Modifier,
     textStyle: TextStyle = MaterialTheme.typography.titleSmall.copy(color = MaterialTheme.colorScheme.onBackground),
     inlineContent: @Composable ((String) -> Unit)? = { DefaultInlineContent(textStyle.color) },
@@ -164,22 +165,27 @@ private fun ViewProfileButtonPreview() {
     Column {
         // Preview in RTL mode
         CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
-            ViewProfileButton(UserProfile("4539566a0223b11d28fc47c864336fa27b8fe49b5f85180178c9e3813e910d6a"))
+            ViewProfileButton(emptyProfile("4539566a0223b11d28fc47c864336fa27b8fe49b5f85180178c9e3813e910d6a"))
         }
         // Preview in LTR mode
-        ViewProfileButton(UserProfile("4539566a0223b11d28fc47c864336fa27b8fe49b5f85180178c9e3813e910d6a"))
+        ViewProfileButton(emptyProfile("4539566a0223b11d28fc47c864336fa27b8fe49b5f85180178c9e3813e910d6a"))
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun ViewProfileButtonWithCustomizedInlineContentPreview() {
-    ViewProfileButton(UserProfile("4539566a0223b11d28fc47c864336fa27b8fe49b5f85180178c9e3813e910d6a"), inlineContent = {
-        Icon(
-            painter = painterResource(R.drawable.gravatar_icon),
-            contentDescription = "",
-        )
-    })
+    ViewProfileButton(
+        emptyProfile(
+            "4539566a0223b11d28fc47c864336fa27b8fe49b5f85180178c9e3813e910d6a",
+        ),
+        inlineContent = {
+            Icon(
+                painter = painterResource(R.drawable.gravatar_icon),
+                contentDescription = "",
+            )
+        },
+    )
 }
 
 @Preview(showBackground = true)
@@ -187,7 +193,7 @@ private fun ViewProfileButtonWithCustomizedInlineContentPreview() {
 private fun ViewProfileButtonWithoutInlineContentPreview() {
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
         ViewProfileButton(
-            UserProfile("4539566a0223b11d28fc47c864336fa27b8fe49b5f85180178c9e3813e910d6a"),
+            emptyProfile("4539566a0223b11d28fc47c864336fa27b8fe49b5f85180178c9e3813e910d6a"),
             inlineContent = null,
         )
     }
