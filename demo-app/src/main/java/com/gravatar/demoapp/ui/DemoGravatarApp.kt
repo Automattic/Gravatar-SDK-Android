@@ -1,18 +1,25 @@
 package com.gravatar.demoapp.ui
 
+import android.content.res.Configuration
 import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -23,7 +30,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.neverEqualPolicy
@@ -32,6 +41,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
@@ -54,11 +64,13 @@ import com.gravatar.demoapp.ui.model.SettingsState
 import com.gravatar.services.ProfileService
 import com.gravatar.services.Result
 import com.gravatar.types.Email
+import com.gravatar.ui.GravatarTheme
 import com.gravatar.ui.components.LargeProfile
 import com.gravatar.ui.components.LargeProfileSummary
 import com.gravatar.ui.components.Profile
 import com.gravatar.ui.components.ProfileSummary
 import com.gravatar.ui.components.UserProfileState
+import com.gravatar.ui.gravatarTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -149,37 +161,62 @@ private fun GravatarTabs(
     }
 }
 
+private enum class ThemeOptions {
+    LIGHT,
+    DARK,
+    SYSTEM,
+}
+
 @Composable
-private fun ProfileComponents(profileState: UserProfileState?, error: String) {
-    val defaultModifier = Modifier
-        .background(MaterialTheme.colorScheme.surfaceContainer)
-        .fillMaxWidth()
-        .padding(24.dp)
-    // Show the profile card if we got a result and there is no error and it's not loading
-    if (error.isEmpty()) {
-        profileState?.let {
-            Profile(it, defaultModifier)
-            Spacer(modifier = Modifier.height(16.dp))
-            ProfileSummary(it, defaultModifier)
-            Spacer(modifier = Modifier.height(16.dp))
-            LargeProfile(it, defaultModifier)
-            Spacer(modifier = Modifier.height(16.dp))
-            LargeProfileSummary(
-                it,
-                Modifier
-                    .padding(8.dp)
-                    .background(MaterialTheme.colorScheme.surfaceContainer)
-                    .padding(start = 24.dp, end = 24.dp, top = 24.dp, bottom = 8.dp)
-                    .fillMaxWidth(),
-            )
+private fun ProfileComponents(profileState: UserProfileState?, theme: ThemeOptions, error: String) {
+    val configuration = Configuration(LocalConfiguration.current).apply {
+        uiMode = when (theme) {
+            ThemeOptions.LIGHT -> Configuration.UI_MODE_NIGHT_NO
+            ThemeOptions.DARK -> Configuration.UI_MODE_NIGHT_YES
+            ThemeOptions.SYSTEM -> uiMode
         }
-    } else {
-        if (error.isNotEmpty()) {
-            Text(text = error)
+    }
+    CompositionLocalProvider(
+        LocalConfiguration provides configuration,
+    ) {
+        val defaultModifier = Modifier
+            .background(gravatarTheme.colorScheme.surfaceContainer)
+            .fillMaxWidth()
+            .padding(24.dp)
+
+        GravatarTheme {
+            Surface {
+                Column {
+                    // Show the profile card if we got a result and there is no error and it's not loading
+                    if (error.isEmpty()) {
+                        profileState?.let {
+                            Profile(it, defaultModifier)
+                            Spacer(modifier = Modifier.height(16.dp))
+                            ProfileSummary(it, defaultModifier)
+                            Spacer(modifier = Modifier.height(16.dp))
+                            LargeProfile(it, defaultModifier)
+                            Spacer(modifier = Modifier.height(16.dp))
+                            LargeProfileSummary(
+                                it,
+                                Modifier
+                                    .padding(8.dp)
+                                    .background(gravatarTheme.colorScheme.surfaceContainer)
+                                    .padding(start = 24.dp, end = 24.dp, top = 24.dp, bottom = 8.dp)
+                                    .fillMaxWidth(),
+                            )
+                        }
+                    } else {
+                        if (error.isNotEmpty()) {
+                            Text(text = error)
+                        }
+                    }
+                }
+            }
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwable?) -> Unit) {
     var email by remember { mutableStateOf(BuildConfig.DEMO_EMAIL, neverEqualPolicy()) }
@@ -188,6 +225,8 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
     val profileService = ProfileService()
     val keyboardController = LocalSoftwareKeyboardController.current
     val scope = rememberCoroutineScope()
+    var themesExpanded by remember { mutableStateOf(false) }
+    var theme by remember { mutableStateOf(ThemeOptions.SYSTEM) }
 
     Surface(modifier) {
         Column(
@@ -204,29 +243,65 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
                     .fillMaxWidth()
                     .padding(16.dp),
             )
-            Button(
-                onClick = {
-                    keyboardController?.hide()
-                    scope.launch {
-                        error = ""
-                        profileState = UserProfileState.Loading
-                        when (val result = profileService.fetch(Email(email))) {
-                            is Result.Success -> {
-                                result.value.entry.firstOrNull()?.let {
-                                    profileState = UserProfileState.Loaded(it)
+            Row(modifier = Modifier.padding(horizontal = 4.dp)) {
+                Button(
+                    onClick = {
+                        keyboardController?.hide()
+                        scope.launch {
+                            error = ""
+                            profileState = UserProfileState.Loading
+                            when (val result = profileService.fetch(Email(email))) {
+                                is Result.Success -> {
+                                    result.value.entry.firstOrNull()?.let {
+                                        profileState = UserProfileState.Loaded(it)
+                                    }
+                                }
+
+                                is Result.Failure -> {
+                                    onError(result.error.name, null)
+                                    error = result.error.name
                                 }
                             }
-
-                            is Result.Failure -> {
-                                onError(result.error.name, null)
-                                error = result.error.name
-                            }
+                        }
+                    },
+                ) { Text(text = stringResource(R.string.button_get_profile)) }
+                Spacer(modifier = Modifier.width(4.dp))
+                Button(
+                    enabled = profileState !is UserProfileState.Loading,
+                    onClick = {
+                        profileState = UserProfileState.Loading
+                    },
+                ) {
+                    Text(text = stringResource(R.string.button_enable_loading_state))
+                }
+                Spacer(modifier = Modifier.width(4.dp))
+                ExposedDropdownMenuBox(
+                    expanded = themesExpanded,
+                    onExpandedChange = { themesExpanded = !themesExpanded },
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    TextField(
+                        readOnly = true,
+                        value = theme.name,
+                        onValueChange = { },
+                        label = { Text(stringResource(R.string.theme_label)) },
+                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = themesExpanded) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .menuAnchor(),
+                    )
+                    ExposedDropdownMenu(expanded = themesExpanded, onDismissRequest = { themesExpanded = false }) {
+                        ThemeOptions.entries.forEach { selectionOption ->
+                            DropdownMenuItem(text = { Text(text = selectionOption.name) }, onClick = {
+                                theme = selectionOption
+                                themesExpanded = false
+                            })
                         }
                     }
-                },
-            ) { Text(text = stringResource(R.string.button_get_profile)) }
+                }
+            }
             Spacer(modifier = Modifier.height(16.dp))
-            ProfileComponents(profileState, error)
+            ProfileComponents(profileState, theme, error)
         }
     }
 }
