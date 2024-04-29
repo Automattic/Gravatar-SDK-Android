@@ -23,26 +23,26 @@ import com.gravatar.ui.components.atomic.Location
 import com.gravatar.ui.components.atomic.ViewProfileButton
 
 /**
- * [MiniProfileCard] is a composable that displays a mini profile card.
+ * [ProfileSummary] is a composable that displays a mini profile card.
  * Given a [UserProfile], it displays a mini profile card using the other atomic components provided within the SDK.
  *
  * @param profile The user's profile information
  * @param modifier Composable modifier
  */
 @Composable
-public fun MiniProfileCard(profile: UserProfile, modifier: Modifier = Modifier) {
-    MiniProfileCard(state = UserProfileState.Loaded(profile), modifier = modifier)
+public fun ProfileSummary(profile: UserProfile, modifier: Modifier = Modifier) {
+    ProfileSummary(state = UserProfileState.Loaded(profile), modifier = modifier)
 }
 
 /**
- * [MiniProfileCard] is a composable that displays a mini profile card.
+ * [ProfileSummary] is a composable that displays a mini profile card.
  * Given a [UserProfile], it displays a mini profile card using the other atomic components provided within the SDK.
  *
  * @param state The user's profile state
  * @param modifier Composable modifier
  */
 @Composable
-public fun MiniProfileCard(state: UserProfileState, modifier: Modifier = Modifier) {
+public fun ProfileSummary(state: UserProfileState, modifier: Modifier = Modifier) {
     GravatarTheme {
         Row(modifier = modifier) {
             Avatar(
@@ -77,8 +77,8 @@ public fun MiniProfileCard(state: UserProfileState, modifier: Modifier = Modifie
 
 @Preview
 @Composable
-private fun MiniProfileCardPreview() {
-    MiniProfileCard(
+private fun ProfileSummaryPreview() {
+    ProfileSummary(
         UserProfile(
             "4539566a0223b11d28fc47c864336fa27b8fe49b5f85180178c9e3813e910d6a",
             displayName = "John Doe",
@@ -90,6 +90,6 @@ private fun MiniProfileCardPreview() {
 @Preview(uiMode = UI_MODE_NIGHT_NO)
 @Preview(uiMode = UI_MODE_NIGHT_YES)
 @Composable
-private fun MiniProfileCardLoadingPreview() {
-    LoadingToLoadedStatePreview { MiniProfileCard(it) }
+private fun ProfileSummaryLoadingPreview() {
+    LoadingToLoadedStatePreview { ProfileSummary(it) }
 }

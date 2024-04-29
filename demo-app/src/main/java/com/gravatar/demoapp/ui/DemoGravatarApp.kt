@@ -67,8 +67,8 @@ import com.gravatar.types.Email
 import com.gravatar.ui.GravatarTheme
 import com.gravatar.ui.components.LargeProfile
 import com.gravatar.ui.components.LargeProfileSummary
-import com.gravatar.ui.components.MiniProfileCard
-import com.gravatar.ui.components.ProfileCard
+import com.gravatar.ui.components.Profile
+import com.gravatar.ui.components.ProfileSummary
 import com.gravatar.ui.components.UserProfileState
 import com.gravatar.ui.gravatarTheme
 import kotlinx.coroutines.CoroutineScope
@@ -168,7 +168,7 @@ private enum class ThemeOptions {
 }
 
 @Composable
-private fun ProfileCards(profileState: UserProfileState?, theme: ThemeOptions, error: String) {
+private fun ProfileComponents(profileState: UserProfileState?, theme: ThemeOptions, error: String) {
     val configuration = Configuration(LocalConfiguration.current).apply {
         uiMode = when (theme) {
             ThemeOptions.LIGHT -> Configuration.UI_MODE_NIGHT_NO
@@ -190,9 +190,9 @@ private fun ProfileCards(profileState: UserProfileState?, theme: ThemeOptions, e
                     // Show the profile card if we got a result and there is no error and it's not loading
                     if (error.isEmpty()) {
                         profileState?.let {
-                            ProfileCard(it, defaultModifier)
+                            Profile(it, defaultModifier)
                             Spacer(modifier = Modifier.height(16.dp))
-                            MiniProfileCard(it, defaultModifier)
+                            ProfileSummary(it, defaultModifier)
                             Spacer(modifier = Modifier.height(16.dp))
                             LargeProfile(it, defaultModifier)
                             Spacer(modifier = Modifier.height(16.dp))
@@ -301,7 +301,7 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
                 }
             }
             Spacer(modifier = Modifier.height(16.dp))
-            ProfileCards(profileState, theme, error)
+            ProfileComponents(profileState, theme, error)
         }
     }
 }
