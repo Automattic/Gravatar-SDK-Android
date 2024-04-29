@@ -150,7 +150,7 @@ private fun GravatarTabs(
 }
 
 @Composable
-private fun ProfileCards(profileState: UserProfileState?, error: String) {
+private fun ProfileComponents(profileState: UserProfileState?, error: String) {
     val defaultModifier = Modifier
         .background(MaterialTheme.colorScheme.surfaceContainer)
         .fillMaxWidth()
@@ -226,7 +226,7 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
                 },
             ) { Text(text = stringResource(R.string.button_get_profile)) }
             Spacer(modifier = Modifier.height(16.dp))
-            ProfileCards(profileState, error)
+            ProfileComponents(profileState, error)
         }
     }
 }
