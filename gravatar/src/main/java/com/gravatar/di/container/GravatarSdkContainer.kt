@@ -17,9 +17,9 @@ internal class GravatarSdkContainer private constructor() {
         }
     }
 
-    private fun getRetrofitApiBuilder() = Retrofit.Builder().baseUrl(GRAVATAR_API_BASE_URL_V1)
+    private fun getRetrofitApiV1Builder() = Retrofit.Builder().baseUrl(GRAVATAR_API_BASE_URL_V1)
 
-    private fun getRetrofitBaseBuilder() = Retrofit.Builder().baseUrl(GRAVATAR_API_BASE_URL_V3)
+    private fun getRetrofitApiV3Builder() = Retrofit.Builder().baseUrl(GRAVATAR_API_BASE_URL_V3)
 
     val dispatcherMain: CoroutineDispatcher = Dispatchers.Main
     val dispatcherDefault = Dispatchers.Default
@@ -33,14 +33,14 @@ internal class GravatarSdkContainer private constructor() {
      * @param okHttpClient The OkHttp client to use
      * @return The Gravatar API service
      */
-    fun getGravatarApiService(okHttpClient: OkHttpClient? = null): GravatarApiService {
-        return getRetrofitApiBuilder().apply {
+    fun getGravatarApiV1Service(okHttpClient: OkHttpClient? = null): GravatarApiService {
+        return getRetrofitApiV1Builder().apply {
             okHttpClient?.let { client(it) }
         }.build().create(GravatarApiService::class.java)
     }
 
-    fun getGravatarBaseService(okHttpClient: OkHttpClient? = null): GravatarApiService {
-        return getRetrofitBaseBuilder().apply {
+    fun getGravatarApiV3Service(okHttpClient: OkHttpClient? = null): GravatarApiService {
+        return getRetrofitApiV3Builder().apply {
             okHttpClient?.let { client(it) }
         }.addConverterFactory(GsonConverterFactory.create(gson))
             .build().create(GravatarApiService::class.java)

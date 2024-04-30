@@ -26,7 +26,7 @@ public class ProfileService(private val okHttpClient: OkHttpClient? = null) {
     private val coroutineScope = CoroutineScope(GravatarSdkDI.dispatcherMain)
 
     private fun fetchWithListener(hashOrUsername: String, getProfileListener: GravatarListener<Profile, ErrorType>) {
-        val service = GravatarSdkDI.getGravatarBaseService(okHttpClient)
+        val service = GravatarSdkDI.getGravatarApiV3Service(okHttpClient)
         service.getProfileById(hashOrUsername).enqueue(
             object : Callback<Profile> {
                 override fun onResponse(call: Call<Profile>, response: Response<Profile>) {

@@ -39,7 +39,7 @@ public class AvatarService(private val okHttpClient: OkHttpClient? = null) {
         accessToken: String,
         gravatarUploadListener: GravatarListener<Unit, ErrorType>,
     ) {
-        val service = GravatarSdkDI.getGravatarApiService(okHttpClient)
+        val service = GravatarSdkDI.getGravatarApiV1Service(okHttpClient)
         val identity = MultipartBody.Part.createFormData("account", email.toString())
         val filePart =
             MultipartBody.Part.createFormData("filedata", file.name, file.asRequestBody())
