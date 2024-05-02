@@ -4,6 +4,7 @@ import com.google.gson.GsonBuilder
 import com.gravatar.GravatarApiService
 import com.gravatar.GravatarConstants.GRAVATAR_API_BASE_URL
 import com.gravatar.GravatarConstants.GRAVATAR_BASE_URL
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -20,8 +21,10 @@ internal class GravatarSdkContainer private constructor() {
 
     private fun getRetrofitBaseBuilder() = Retrofit.Builder().baseUrl(GRAVATAR_BASE_URL)
 
+    val dispatcherMain: CoroutineDispatcher = Dispatchers.Main
     val dispatcherDefault = Dispatchers.Default
     val dispatcherIO = Dispatchers.IO
+
     private val gson = GsonBuilder().setLenient().create()
 
     /**

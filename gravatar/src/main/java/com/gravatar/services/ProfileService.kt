@@ -22,7 +22,8 @@ public class ProfileService(private val okHttpClient: OkHttpClient? = null) {
         const val LOG_TAG = "ProfileService"
     }
 
-    private val coroutineScope = CoroutineScope(GravatarSdkDI.dispatcherDefault)
+    // Run onResponse and onError callbacks on the main thread
+    private val coroutineScope = CoroutineScope(GravatarSdkDI.dispatcherMain)
 
     private fun fetchWithListener(
         hashOrUsername: String,
@@ -52,7 +53,9 @@ public class ProfileService(private val okHttpClient: OkHttpClient? = null) {
                 }
 
                 override fun onFailure(call: Call<UserProfiles>, t: Throwable) {
-                    handleError(t, getProfileListener, coroutineScope)
+                    coroutineScope.launch {
+                        getProfileListener.onError(t.error())
+                    }
                 }
             },
         )

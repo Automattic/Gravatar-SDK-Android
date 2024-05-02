@@ -22,7 +22,8 @@ public class AvatarService(private val okHttpClient: OkHttpClient? = null) {
         const val LOG_TAG = "AvatarService"
     }
 
-    private val coroutineScope = CoroutineScope(GravatarSdkDI.dispatcherDefault)
+    // Run onResponse and onError callbacks on the main thread
+    private val coroutineScope = CoroutineScope(GravatarSdkDI.dispatcherMain)
 
     /**
      * Uploads a Gravatar image for the given email address.
@@ -61,7 +62,9 @@ public class AvatarService(private val okHttpClient: OkHttpClient? = null) {
                 }
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    handleError(t, gravatarUploadListener, coroutineScope)
+                    coroutineScope.launch {
+                        gravatarUploadListener.onError(t.error())
+                    }
                 }
             },
         )
