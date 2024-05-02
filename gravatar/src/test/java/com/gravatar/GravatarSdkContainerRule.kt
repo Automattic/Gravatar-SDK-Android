@@ -23,8 +23,10 @@ class GravatarSdkContainerRule : TestRule {
                 gravatarSdkContainerMock = mockk<GravatarSdkContainer>()
                 gravatarApiServiceMock = mockk<GravatarApiService>(relaxed = true)
                 mockkObject(GravatarSdkContainer)
-                every { GravatarSdkContainer.instance } returns gravatarSdkContainerMock
+                every { gravatarSdkContainerMock.dispatcherMain } returns testDispatcher
                 every { gravatarSdkContainerMock.dispatcherDefault } returns testDispatcher
+                every { gravatarSdkContainerMock.dispatcherIO } returns testDispatcher
+                every { GravatarSdkContainer.instance } returns gravatarSdkContainerMock
                 every { gravatarSdkContainerMock.getGravatarApiService(any()) } returns gravatarApiServiceMock
 
                 base.evaluate()
