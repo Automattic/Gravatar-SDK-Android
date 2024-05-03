@@ -31,6 +31,34 @@ dependencies {
 }
 ```
 
+### Store the Gravatar API key in your app
+
+There are many ways to store the Gravatar API key in your app. The best way to do this depends on your app's architecture and requirements and how you're already storing other sensitive information. Make sure to avoid hardcoding the API key in your app's code and make sure to avoid storing it in a public repository.
+
+One way to API key in your app by adding it to the `local.properties` file:
+
+```properties
+gravatar.api.key = 0xdeadbeef
+```
+
+Then update your gradle file to read the API key from the `local.properties` file and put it in the generated `BuildConfig` class:
+
+```groovy
+android {
+    defaultConfig {
+        Properties properties = new Properties()
+        properties.load(project.rootProject.file('local.properties').newDataInputStream())
+        buildConfigField "String", "GRAVATAR_API_KEY", "\"${properties.get("gravatar.api.key")}\""
+    }
+}
+```
+
+Then you can access the API key in your app's code like this:
+
+```kotlin
+Gravatar.initialize(BuildConfig.GRAVATAR_API_KEY) // TODO: Update this with the actual API key
+```
+
 ## Usage
 
 ### Add a Profile Component to your Jetpack Compose App
