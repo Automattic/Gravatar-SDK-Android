@@ -1,10 +1,15 @@
 
 # Get Started with Gravatar-SDK-Android
 
+## Setup
+
+TODO: Add the setup instructions here, create an account on dev.gravatar.com, get the API key, etc.
 
 ## Installation
 
 First step it to add the maven repositories and the right dependencies to the `build.gradle` file:
+
+### Add the Gravatar dependencies to your project
 
 ```groovy
 repositories {
@@ -39,23 +44,24 @@ fun SimpleGravatarProfileIntegration(emailAddress: String = "gravatar@automattic
     // Create a ProfileService instance
     val profileService = ProfileService()
 
-    // Create a mutable state for the user profile
-    var profile: UserProfile? by remember { mutableStateOf(null, neverEqualPolicy()) }
+    // Create a mutable state for the user profile state
+    var profileState: UserProfileState? by remember { mutableStateOf(null, neverEqualPolicy()) }
 
     // We wrap the fetch call in a LaunchedEffect to fetch the profile when the composable is first launched, but this
     // could be triggered by a button click, a text field change, etc.
-    LaunchedEffect(true) {
-        try {
-            // Fetch the user profile
-            profile = profileService.fetchSuspend(Email(emailAddress).hash().toString()).entry.first()
-        } catch (exception: ProfileService.FetchException) {
-            // An error can occur when a profile doesn't exist, if the phone is in airplane mode, etc.
-            // Here we log the error, but ideally we should show an error to the user.
-            Log.e("Gravatar", exception.errorType.name)
+    LaunchedEffect(emailAddress) {
+        // Set the profile state to loading
+        profileState = UserProfileState.Loading
+        // Fetch the user profile
+        profileService.fetch(Email(emailAddress)).valueOrNull()?.let {
+            profileState = UserProfileState.Loaded(it.entry.first())
         }
     }
+
     // Show the profile as a ProfileCard
-    ProfileCard(profile)
+    profileState?.let {
+        MiniProfileCard(it, modifier = Modifier.fillMaxWidth().padding(16.dp))
+    }
 }
 ```
 
