@@ -38,7 +38,7 @@ There are many ways to store the Gravatar API key in your app. The best way to d
 One way to API key in your app by adding it to the `local.properties` file:
 
 ```properties
-gravatar.api.key = 0xdeadbeef
+gravatar.api.key = REPLACE_ME
 ```
 
 Then update your gradle file to read the API key from the `local.properties` file and put it in the generated `BuildConfig` class:
@@ -56,7 +56,7 @@ android {
 Then you can access the API key in your app's code like this:
 
 ```kotlin
-Gravatar.initialize(BuildConfig.GRAVATAR_API_KEY) // TODO: Update this with the actual API key
+Gravatar.initialize(BuildConfig.GRAVATAR_API_KEY)
 ```
 
 ## Usage
@@ -66,14 +66,13 @@ Gravatar.initialize(BuildConfig.GRAVATAR_API_KEY) // TODO: Update this with the 
 Then, you can use the following code snippet to integrate the Gravatar profile in your app. This is a very simple component that fetches a Gravatar profile and displays it in a `ProfileCard` composable.
 
 ```kotlin
-
 @Composable
-fun SimpleGravatarProfileIntegration(emailAddress: String = "gravatar@automattic.com") {
+fun GravatarProfileSummary(emailAddress: String = "gravatar@automattic.com") {
     // Create a ProfileService instance
     val profileService = ProfileService()
 
-    // Create a mutable state for the user profile state
-    var profileState: UserProfileState? by remember { mutableStateOf(null, neverEqualPolicy()) }
+    // Set the default profile state to loading
+    var profileState: UserProfileState by remember { mutableStateOf(UserProfileState.Loading, neverEqualPolicy()) }
 
     // We wrap the fetch call in a LaunchedEffect to fetch the profile when the composable is first launched, but this
     // could be triggered by a button click, a text field change, etc.
@@ -81,15 +80,25 @@ fun SimpleGravatarProfileIntegration(emailAddress: String = "gravatar@automattic
         // Set the profile state to loading
         profileState = UserProfileState.Loading
         // Fetch the user profile
-        profileService.fetch(Email(emailAddress)).valueOrNull()?.let {
-            profileState = UserProfileState.Loaded(it.entry.first())
+        when (val result = profileService.fetch(Email(emailAddress))) {
+            is Result.Success -> {
+                // Update the profile state with the loaded profile
+                result.value.let {
+                    profileState = UserProfileState.Loaded(it)
+                }
+            }
+            is Result.Failure -> {
+                // An error can occur when a profile doesn't exist, if the phone is in airplane mode, etc.
+                // Here we log the error, but ideally we should show an error to the user.
+                Log.e("Gravatar", result.error.name)
+                // Set the Empty state on error
+                profileState = UserProfileState.Empty
+            }
         }
     }
 
     // Show the profile as a ProfileCard
-    profileState?.let {
-        MiniProfileCard(it, modifier = Modifier.fillMaxWidth().padding(16.dp))
-    }
+    ProfileSummary(profileState, modifier = Modifier.fillMaxWidth().padding(16.dp))
 }
 ```
 
@@ -109,7 +118,7 @@ class ExampleActivity : ComponentActivity() {
 
         setContent {
             MaterialTheme {
-                SimpleGravatarProfileIntegration("gravatar@automattic.com")
+                GravatarProfileSummary("gravatar@automattic.com")
             }
         }
     }
@@ -117,27 +126,27 @@ class ExampleActivity : ComponentActivity() {
 
 
 @Composable
-fun SimpleGravatarProfileIntegration(emailAddress: String) {
+fun GravatarProfileSummary(emailAddress: String = "gravatar@automattic.com") {
     // Create a ProfileService instance
     val profileService = ProfileService()
 
-    // Create a mutable state for the user profile
-    var profile: UserProfile? by remember { mutableStateOf(null, neverEqualPolicy()) }
+    // Set the default profile state to loading
+    var profileState: UserProfileState by remember { mutableStateOf(UserProfileState.Loading, neverEqualPolicy()) }
 
     // We wrap the fetch call in a LaunchedEffect to fetch the profile when the composable is first launched, but this
     // could be triggered by a button click, a text field change, etc.
-    LaunchedEffect(true) {
-        try {
-            // Fetch the user profile
-            profile = profileService.fetchSuspend(Email(emailAddress).hash().toString()).entry.first()
-        } catch (exception: ProfileService.FetchException) {
-            // An error can occur when a profile doesn't exist, if the phone is in airplane mode, etc.
-            // Here we log the error, but ideally we should show an error to the user.
-            Log.e("Gravatar", exception.errorType.name)
+    LaunchedEffect(emailAddress) {
+        // Set the profile state to loading
+        profileState = UserProfileState.Loading
+        // Fetch the user profile
+        val result = profileService.fetch(Email(emailAddress))
+        (result as? Result.Success)?.value?.let {
+            profileState = UserProfileState.Loaded(it)
         }
     }
+
     // Show the profile as a ProfileCard
-    ProfileCard(profile)
+    ProfileSummary(profileState, modifier = Modifier.fillMaxWidth().padding(16.dp))
 }
 ```
 
@@ -147,3 +156,22 @@ More information on the official documentation: [Using Compose in Views](https:/
 
 ### Override the GravatarTheme
 
+You're free to customize the Gravatar profile component to fit your app's design. You can do this by overriding the `GravatarTheme` in your app's theme.
+
+```kotlin
+CompositionLocalProvider(LocalGravatarTheme provides object : GravatarTheme {
+    // Override theme colors
+    override val colorScheme: ColorScheme
+        @Composable
+        get() = MaterialTheme.colorScheme.copy(outline = Color.LightGray)
+
+    // Override typography style
+    override val typography: Typography
+        @Composable
+        get() = MaterialTheme.typography.copy(
+            headlineSmall = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.ExtraBold),
+        )
+}) {
+    LargeProfileSummary(profile = userProfile)
+}
+```
