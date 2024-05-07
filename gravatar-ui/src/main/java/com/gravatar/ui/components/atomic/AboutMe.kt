@@ -1,14 +1,23 @@
 package com.gravatar.ui.components.atomic
 
 import android.content.res.Configuration
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.graphics.PathEffect
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.gravatar.api.models.UserProfile
+import com.gravatar.ui.R
 import com.gravatar.ui.TextSkeletonEffect
 import com.gravatar.ui.components.LoadingToLoadedStatePreview
 import com.gravatar.ui.components.UserProfileState
@@ -58,6 +67,36 @@ public fun AboutMe(
         is UserProfileState.Loaded -> {
             AboutMe(state.userProfile, modifier, textStyle, content)
         }
+
+        UserProfileState.Empty -> {
+            DashedBorder(modifier) {
+                content.invoke(
+                    stringResource(id = R.string.empty_state_about_me),
+                    Modifier.padding(8.dp),
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun DashedBorder(modifier: Modifier = Modifier, content: @Composable () -> Unit) {
+    val stroke = Stroke(
+        width = 2f,
+        pathEffect = PathEffect.dashPathEffect(floatArrayOf(9f, 4f), 0f),
+    )
+    val borderColor = MaterialTheme.colorScheme.outlineVariant
+    Box(
+        modifier
+            .drawBehind {
+                drawRoundRect(
+                    color = borderColor,
+                    style = stroke,
+                    cornerRadius = CornerRadius(4.dp.toPx()),
+                )
+            },
+    ) {
+        content.invoke()
     }
 }
 
@@ -80,6 +119,12 @@ private fun AboutMePreview() {
                 "doctor away. This about me description is quite long, this is good for testing.",
         ),
     )
+}
+
+@Preview
+@Composable
+private fun AboutMeEmptyState() {
+    AboutMe(UserProfileState.Empty)
 }
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)

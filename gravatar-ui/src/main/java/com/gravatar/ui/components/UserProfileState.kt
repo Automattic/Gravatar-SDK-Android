@@ -34,6 +34,11 @@ public sealed class UserProfileState {
      * @property userProfile The user's profile information
      */
     public data class Loaded(val userProfile: UserProfile) : UserProfileState()
+
+    /**
+     * [Empty] represents the state where the user profile is empty, so it can be claimed.
+     */
+    public data object Empty : UserProfileState()
 }
 
 @Preview

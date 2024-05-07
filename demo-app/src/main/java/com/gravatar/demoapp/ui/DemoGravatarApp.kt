@@ -61,6 +61,7 @@ import com.gravatar.demoapp.R
 import com.gravatar.demoapp.theme.GravatarDemoAppTheme
 import com.gravatar.demoapp.ui.components.GravatarEmailInput
 import com.gravatar.demoapp.ui.model.SettingsState
+import com.gravatar.services.ErrorType
 import com.gravatar.services.ProfileService
 import com.gravatar.services.Result
 import com.gravatar.types.Email
@@ -258,8 +259,16 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
                                 }
 
                                 is Result.Failure -> {
-                                    onError(result.error.name, null)
-                                    error = result.error.name
+                                    when (result.error) {
+                                        ErrorType.NOT_FOUND -> {
+                                            profileState = UserProfileState.Empty
+                                        }
+
+                                        else -> {
+                                            onError(result.error.name, null)
+                                            error = result.error.name
+                                        }
+                                    }
                                 }
                             }
                         }

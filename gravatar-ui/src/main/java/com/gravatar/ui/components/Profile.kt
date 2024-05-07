@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -55,7 +56,7 @@ public fun Profile(state: UserProfileState, modifier: Modifier = Modifier) {
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.Top,
         ) {
-            Row {
+            Row(verticalAlignment = Alignment.CenterVertically) {
                 Avatar(
                     state = state,
                     size = 72.dp,
@@ -113,4 +114,15 @@ private fun ProfilePreview() {
 @Composable
 private fun ProfileLoadingPreview() {
     LoadingToLoadedStatePreview { Profile(it) }
+}
+
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun ProfileEmptyPreview() {
+    GravatarTheme {
+        Surface(Modifier.fillMaxWidth()) {
+            Profile(UserProfileState.Empty)
+        }
+    }
 }

@@ -62,6 +62,8 @@ public fun Location(
         is UserProfileState.Loaded -> {
             Location(state.userProfile, modifier, textStyle, content)
         }
+
+        UserProfileState.Empty -> TODO()
     }
 }
 
