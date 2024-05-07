@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -100,4 +101,15 @@ private fun LargeProfilePreview() {
 @Composable
 public fun DisplayNamePreview() {
     LoadingToLoadedStatePreview { LargeProfile(it) }
+}
+
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun ProfileEmptyPreview() {
+    GravatarTheme {
+        Surface(Modifier.fillMaxWidth()) {
+            LargeProfile(UserProfileState.Empty)
+        }
+    }
 }
