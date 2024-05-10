@@ -43,6 +43,20 @@ Run unit tests on your machine via the following command:
 ./gradlew test
 ```
 
+## Screenshot Tests
+
+We use [Roborazzi](https://github.com/takahirom/roborazzi) to take screenshots of the UI components. The screenshots are stored in the [`screenshotsTests` directory](gravatar-ui/screenshotTests/roborazzi/). To regenerate the screenshots, run the following command:
+
+```sh
+./gradlew recordRoborazziDebug
+```
+
+To compare the screenshots, run the following command:
+
+```sh
+./gradlew verifyRoborazziDebug
+``` 
+
 ## Coding Style
 
 We use [Ktlint](https://pinterest.github.io/ktlint) to enforce a consistent coding style. It
