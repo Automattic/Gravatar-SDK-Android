@@ -26,10 +26,17 @@ steps:
       # `build` task would also run tasks, which are executed in a separate job
       ./gradlew assemble
 
-  - label: "Unit and screenshot tests"
+  - label: "Unit tests"
     command: |
-      echo "--- 🧪📸 Testing"
-      ./gradlew verifyRoborazziDebug
+      echo "--- 🧪 Testing"
+      ./gradlew test
+    artifact_paths:
+      - "**/build/test-results/*/*.xml"
+
+  - label: "Screenshot tests"
+    command: |
+      echo "--- 🧪📸 Screenshot Testing"
+      ./gradlew :gravatar-ui:verifyRoborazziDebug -Pscreenshot
     artifact_paths:
       - "**/build/test-results/*/*.xml"
 

@@ -73,6 +73,16 @@ android {
     testOptions {
         unitTests {
             isIncludeAndroidResources = true
+            all {
+                // -Pscreenshot to filter screenshot tests
+                it.useJUnit {
+                    if (project.hasProperty("screenshot")) {
+                        includeCategories("com.gravatar.gravatar.ui.ScreenshotTests")
+                    } else {
+                        excludeCategories("com.gravatar.gravatar.ui.ScreenshotTests")
+                    }
+                }
+            }
         }
     }
 }

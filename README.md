@@ -48,13 +48,13 @@ Run unit tests on your machine via the following command:
 We use [Roborazzi](https://github.com/takahirom/roborazzi) to take screenshots of the UI components. The screenshots are stored in the [`screenshotsTests` directory](gravatar-ui/screenshotTests/roborazzi/). To regenerate the screenshots, run the following command:
 
 ```sh
-./gradlew recordRoborazziDebug
+./gradlew :gravatar-ui:recordRoborazziDebug -Pscreenshot
 ```
 
 To compare the screenshots, run the following command:
 
 ```sh
-./gradlew verifyRoborazziDebug
+./gradlew :gravatar-ui:verifyRoborazziDebug -Pscreenshot
 ``` 
 
 ## Coding Style
