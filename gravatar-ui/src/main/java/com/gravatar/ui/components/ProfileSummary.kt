@@ -46,36 +46,38 @@ public fun ProfileSummary(profile: UserProfile, modifier: Modifier = Modifier) {
 @Composable
 public fun ProfileSummary(state: UserProfileState, modifier: Modifier = Modifier) {
     GravatarTheme {
-        Row(modifier = modifier) {
-            Avatar(
-                state = state,
-                size = 72.dp,
-                modifier = Modifier.clip(CircleShape),
-            )
-            Column(modifier = Modifier.padding(start = 14.dp)) {
-                DisplayName(
-                    state,
-                    textStyle = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+        EmptyProfileClickableContainer(state) {
+            Row(modifier = modifier) {
+                Avatar(
+                    state = state,
+                    size = 72.dp,
+                    modifier = Modifier.clip(CircleShape),
                 )
-                when (state) {
-                    is UserProfileState.Loaded -> {
-                        if (!state.userProfile.currentLocation.isNullOrBlank()) {
+                Column(modifier = Modifier.padding(start = 14.dp)) {
+                    DisplayName(
+                        state,
+                        textStyle = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                    )
+                    when (state) {
+                        is UserProfileState.Loaded -> {
+                            if (!state.userProfile.currentLocation.isNullOrBlank()) {
+                                Location(state)
+                            }
+                        }
+
+                        UserProfileState.Loading -> {
+                            Location(state, modifier.width(120.dp))
+                        }
+
+                        UserProfileState.Empty -> {
                             Location(state)
                         }
                     }
-
-                    UserProfileState.Loading -> {
-                        Location(state, modifier.width(120.dp))
-                    }
-
-                    UserProfileState.Empty -> {
-                        Location(state)
-                    }
+                    ViewProfileButton(
+                        state,
+                        modifier = Modifier.height(32.dp),
+                    )
                 }
-                ViewProfileButton(
-                    state,
-                    modifier = Modifier.height(32.dp),
-                )
             }
         }
     }

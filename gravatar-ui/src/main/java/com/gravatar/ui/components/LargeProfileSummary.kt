@@ -45,24 +45,26 @@ public fun LargeProfileSummary(profile: UserProfile, modifier: Modifier = Modifi
 @Composable
 public fun LargeProfileSummary(state: UserProfileState, modifier: Modifier = Modifier) {
     GravatarTheme {
-        Column(
-            modifier = modifier,
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Avatar(
-                state = state,
-                size = 132.dp,
-                modifier = Modifier.clip(CircleShape),
-            )
-            DisplayName(state, modifier = Modifier.padding(top = 16.dp))
-            UserInfo(
-                state,
-                textStyle = MaterialTheme.typography.bodyMedium.copy(
-                    color = MaterialTheme.colorScheme.outline,
-                    textAlign = TextAlign.Center,
-                ),
-            )
-            ViewProfileButton(state, Modifier.padding(0.dp), inlineContent = null)
+        EmptyProfileClickableContainer(state) {
+            Column(
+                modifier = modifier,
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Avatar(
+                    state = state,
+                    size = 132.dp,
+                    modifier = Modifier.clip(CircleShape),
+                )
+                DisplayName(state, modifier = Modifier.padding(top = 16.dp))
+                UserInfo(
+                    state,
+                    textStyle = MaterialTheme.typography.bodyMedium.copy(
+                        color = MaterialTheme.colorScheme.outline,
+                        textAlign = TextAlign.Center,
+                    ),
+                )
+                ViewProfileButton(state, Modifier.padding(0.dp), inlineContent = null)
+            }
         }
     }
 }

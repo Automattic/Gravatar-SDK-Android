@@ -47,26 +47,28 @@ public fun LargeProfile(profile: UserProfile, modifier: Modifier = Modifier) {
 @Composable
 public fun LargeProfile(state: UserProfileState, modifier: Modifier = Modifier) {
     GravatarTheme {
-        Column(
-            modifier = modifier,
-        ) {
-            Avatar(
-                state = state,
-                size = 132.dp,
-                modifier = Modifier.clip(CircleShape),
-            )
-            DisplayName(state, modifier = Modifier.padding(top = 16.dp))
-            UserInfo(state)
-            AboutMe(state, modifier = Modifier.padding(top = 8.dp))
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 4.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
+        EmptyProfileClickableContainer(state) {
+            Column(
+                modifier = modifier,
             ) {
-                SocialIconRow(state, maxIcons = 4)
-                ViewProfileButton(state, Modifier.padding(0.dp))
+                Avatar(
+                    state = state,
+                    size = 132.dp,
+                    modifier = Modifier.clip(CircleShape),
+                )
+                DisplayName(state, modifier = Modifier.padding(top = 16.dp))
+                UserInfo(state)
+                AboutMe(state, modifier = Modifier.padding(top = 8.dp))
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 4.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    SocialIconRow(state, maxIcons = 4)
+                    ViewProfileButton(state, Modifier.padding(0.dp))
+                }
             }
         }
     }
