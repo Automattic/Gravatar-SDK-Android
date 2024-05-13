@@ -18,4 +18,7 @@ public object GravatarConstants {
 
     /** Gravatar base host */
     public const val GRAVATAR_BASE_URL: String = "https://gravatar.com"
+
+    /** Gravatar Sign-in URL */
+    public const val GRAVATAR_SIGN_IN_URL: String = "$GRAVATAR_BASE_URL/profile"
 }

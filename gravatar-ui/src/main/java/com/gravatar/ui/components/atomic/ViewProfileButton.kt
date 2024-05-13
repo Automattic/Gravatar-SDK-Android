@@ -140,7 +140,7 @@ public fun ViewProfileButton(
         UserProfileState.Empty -> {
             ViewProfileButton(
                 buttonText = stringResource(id = R.string.empty_state_view_profile_button),
-                url = GravatarConstants.GRAVATAR_BASE_URL,
+                url = GravatarConstants.GRAVATAR_SIGN_IN_URL,
                 textStyle = textStyle,
                 inlineContent = inlineContent,
             )
