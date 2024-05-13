@@ -28,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.gravatar.GravatarConstants
 import com.gravatar.api.models.UserProfile
 import com.gravatar.extensions.profileUrl
 import com.gravatar.ui.R
@@ -51,10 +52,27 @@ public fun ViewProfileButton(
     textStyle: TextStyle = MaterialTheme.typography.titleSmall.copy(color = MaterialTheme.colorScheme.onBackground),
     inlineContent: @Composable ((String) -> Unit)? = { DefaultInlineContent(textStyle.color) },
 ) {
+    ViewProfileButton(
+        stringResource(R.string.view_profile_button),
+        profile.profileUrl().url.toString(),
+        textStyle,
+        modifier,
+        inlineContent,
+    )
+}
+
+@Composable
+private fun ViewProfileButton(
+    buttonText: String,
+    url: String,
+    textStyle: TextStyle,
+    modifier: Modifier = Modifier,
+    inlineContent: @Composable ((String) -> Unit)?,
+) {
     val uriHandler = LocalUriHandler.current
     val iconInlineId = "->"
     val text = buildAnnotatedString {
-        append(stringResource(R.string.view_profile_button))
+        append(buttonText)
         if (inlineContent != null) {
             append(" ")
             // Append a placeholder string "[myBox]" and attach an annotation "inlineContent" on it.
@@ -79,7 +97,7 @@ public fun ViewProfileButton(
 
     TextButton(
         onClick = {
-            uriHandler.openUri(profile.profileUrl().url.toString())
+            uriHandler.openUri(url)
         },
         contentPadding = PaddingValues(start = 0.dp, end = 0.dp),
         modifier = modifier,
@@ -117,6 +135,15 @@ public fun ViewProfileButton(
 
         is UserProfileState.Loaded -> {
             ViewProfileButton(state.userProfile, modifier, textStyle, inlineContent)
+        }
+
+        UserProfileState.Empty -> {
+            ViewProfileButton(
+                buttonText = stringResource(id = R.string.empty_state_view_profile_button),
+                url = GravatarConstants.GRAVATAR_SIGN_IN_URL,
+                textStyle = textStyle,
+                inlineContent = inlineContent,
+            )
         }
     }
 }

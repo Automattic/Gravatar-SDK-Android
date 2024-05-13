@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.decode.SvgDecoder
 import coil.request.ImageRequest
+import com.gravatar.GravatarConstants
 import com.gravatar.api.models.Account
 import com.gravatar.api.models.UserProfile
 import com.gravatar.extensions.profileUrl
@@ -197,6 +198,17 @@ public fun SocialIconRow(state: UserProfileState, modifier: Modifier = Modifier,
 
         is UserProfileState.Loaded -> {
             SocialIconRow(state.userProfile, modifier, maxIcons)
+        }
+
+        UserProfileState.Empty -> {
+            SocialIcon(
+                media = SocialMedia(
+                    URL(GravatarConstants.GRAVATAR_BASE_URL),
+                    LocalIcon.Gravatar.name,
+                    icon = LocalIcon.Gravatar,
+                ),
+                modifier = Modifier.size(32.dp),
+            )
         }
     }
 }

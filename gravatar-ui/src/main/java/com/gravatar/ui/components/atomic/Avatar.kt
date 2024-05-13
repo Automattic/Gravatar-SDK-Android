@@ -13,8 +13,10 @@ import coil.compose.AsyncImage
 import com.gravatar.AvatarQueryOptions
 import com.gravatar.api.models.UserProfile
 import com.gravatar.extensions.avatarUrl
+import com.gravatar.ui.R
 import com.gravatar.ui.components.LoadingToLoadedStatePreview
 import com.gravatar.ui.components.UserProfileState
+import com.gravatar.ui.components.isNightModeEnabled
 import com.gravatar.ui.skeletonEffect
 
 /**
@@ -33,13 +35,22 @@ public fun Avatar(
     avatarQueryOptions: AvatarQueryOptions? = null,
 ) {
     val preferredSize = with(LocalDensity.current) { size.roundToPx() }
-    AsyncImage(
-        profile.avatarUrl(
+    Avatar(
+        model = profile.avatarUrl(
             // Override the preferredSize
             avatarQueryOptions?.copy(
                 preferredSize = preferredSize,
             ) ?: AvatarQueryOptions(preferredSize = preferredSize),
         ).url().toString(),
+        size = size,
+        modifier = modifier,
+    )
+}
+
+@Composable
+private fun Avatar(model: Any?, size: Dp, modifier: Modifier) {
+    AsyncImage(
+        model = model,
         contentDescription = "User profile image",
         modifier = modifier.size(size),
     )
@@ -77,6 +88,16 @@ public fun Avatar(
                 avatarQueryOptions = avatarQueryOptions,
             )
         }
+
+        UserProfileState.Empty -> Avatar(
+            model = if (isNightModeEnabled()) {
+                R.drawable.empty_profile_avatar_dark
+            } else {
+                R.drawable.empty_profile_avatar
+            },
+            size = size,
+            modifier = modifier,
+        )
     }
 }
 
@@ -91,4 +112,10 @@ private fun AvatarPreview() {
 @Composable
 private fun AvatarStatePreview() {
     LoadingToLoadedStatePreview { Avatar(it, 256.dp) }
+}
+
+@Preview
+@Composable
+private fun AvatarEmptyPreview() {
+    Avatar(UserProfileState.Empty, 256.dp)
 }

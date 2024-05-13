@@ -6,12 +6,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.gravatar.api.models.UserProfile
 import com.gravatar.extensions.formattedUserInfo
+import com.gravatar.ui.R
 import com.gravatar.ui.TextSkeletonEffect
 import com.gravatar.ui.components.LoadingToLoadedStatePreview
 import com.gravatar.ui.components.UserProfileState
@@ -65,6 +67,8 @@ public fun UserInfo(
         is UserProfileState.Loaded -> {
             UserInfo(state.userProfile, modifier, textStyle, content)
         }
+
+        UserProfileState.Empty -> content.invoke(stringResource(R.string.empty_state_user_info), modifier)
     }
 }
 

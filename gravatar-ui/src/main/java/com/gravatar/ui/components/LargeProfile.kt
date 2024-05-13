@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,26 +47,28 @@ public fun LargeProfile(profile: UserProfile, modifier: Modifier = Modifier) {
 @Composable
 public fun LargeProfile(state: UserProfileState, modifier: Modifier = Modifier) {
     GravatarTheme {
-        Column(
-            modifier = modifier,
-        ) {
-            Avatar(
-                state = state,
-                size = 132.dp,
-                modifier = Modifier.clip(CircleShape),
-            )
-            DisplayName(state, modifier = Modifier.padding(top = 16.dp))
-            UserInfo(state)
-            AboutMe(state, modifier = Modifier.padding(top = 8.dp))
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 4.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
+        EmptyProfileClickableContainer(state) {
+            Column(
+                modifier = modifier,
             ) {
-                SocialIconRow(state, maxIcons = 4)
-                ViewProfileButton(state, Modifier.padding(0.dp))
+                Avatar(
+                    state = state,
+                    size = 132.dp,
+                    modifier = Modifier.clip(CircleShape),
+                )
+                DisplayName(state, modifier = Modifier.padding(top = 16.dp))
+                UserInfo(state)
+                AboutMe(state, modifier = Modifier.padding(top = 8.dp))
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 4.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    SocialIconRow(state, maxIcons = 4)
+                    ViewProfileButton(state, Modifier.padding(0.dp))
+                }
             }
         }
     }
@@ -100,4 +103,15 @@ private fun LargeProfilePreview() {
 @Composable
 public fun DisplayNamePreview() {
     LoadingToLoadedStatePreview { LargeProfile(it) }
+}
+
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun ProfileEmptyPreview() {
+    GravatarTheme {
+        Surface(Modifier.fillMaxWidth()) {
+            LargeProfile(UserProfileState.Empty)
+        }
+    }
 }

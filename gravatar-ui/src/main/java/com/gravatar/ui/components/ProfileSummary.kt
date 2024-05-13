@@ -4,11 +4,13 @@ import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -44,32 +46,38 @@ public fun ProfileSummary(profile: UserProfile, modifier: Modifier = Modifier) {
 @Composable
 public fun ProfileSummary(state: UserProfileState, modifier: Modifier = Modifier) {
     GravatarTheme {
-        Row(modifier = modifier) {
-            Avatar(
-                state = state,
-                size = 72.dp,
-                modifier = Modifier.clip(CircleShape),
-            )
-            Column(modifier = Modifier.padding(start = 14.dp)) {
-                DisplayName(
-                    state,
-                    textStyle = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+        EmptyProfileClickableContainer(state) {
+            Row(modifier = modifier) {
+                Avatar(
+                    state = state,
+                    size = 72.dp,
+                    modifier = Modifier.clip(CircleShape),
                 )
-                when (state) {
-                    is UserProfileState.Loaded -> {
-                        if (!state.userProfile.currentLocation.isNullOrBlank()) {
+                Column(modifier = Modifier.padding(start = 14.dp)) {
+                    DisplayName(
+                        state,
+                        textStyle = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                    )
+                    when (state) {
+                        is UserProfileState.Loaded -> {
+                            if (!state.userProfile.currentLocation.isNullOrBlank()) {
+                                Location(state)
+                            }
+                        }
+
+                        UserProfileState.Loading -> {
+                            Location(state, modifier.width(120.dp))
+                        }
+
+                        UserProfileState.Empty -> {
                             Location(state)
                         }
                     }
-
-                    UserProfileState.Loading -> {
-                        Location(state, modifier.width(120.dp))
-                    }
+                    ViewProfileButton(
+                        state,
+                        modifier = Modifier.height(32.dp),
+                    )
                 }
-                ViewProfileButton(
-                    state,
-                    modifier = Modifier.height(32.dp),
-                )
             }
         }
     }
@@ -92,4 +100,15 @@ private fun ProfileSummaryPreview() {
 @Composable
 private fun ProfileSummaryLoadingPreview() {
     LoadingToLoadedStatePreview { ProfileSummary(it) }
+}
+
+@Preview(uiMode = UI_MODE_NIGHT_NO)
+@Preview(uiMode = UI_MODE_NIGHT_YES)
+@Composable
+private fun ProfileSummaryEmptyPreview() {
+    GravatarTheme {
+        Surface(Modifier.fillMaxWidth()) {
+            ProfileSummary(UserProfileState.Empty)
+        }
+    }
 }
