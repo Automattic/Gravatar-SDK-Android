@@ -13,6 +13,9 @@ plugins {
 
     // Dokka
     id("org.jetbrains.dokka")
+
+    // Roborazzi
+    id("io.github.takahirom.roborazzi")
 }
 
 android {
@@ -66,6 +69,22 @@ android {
     kotlin {
         explicitApi()
     }
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+            all {
+                // -Pscreenshot to filter screenshot tests
+                it.useJUnit {
+                    if (project.hasProperty("screenshot")) {
+                        includeCategories("com.gravatar.gravatar.ui.ScreenshotTests")
+                    } else {
+                        excludeCategories("com.gravatar.gravatar.ui.ScreenshotTests")
+                    }
+                }
+            }
+        }
+    }
 }
 
 dependencies {
@@ -90,6 +109,14 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
     debugImplementation("androidx.compose.ui:ui-tooling:1.6.2")
+
+    // Roborazzi
+    testImplementation("org.robolectric:robolectric:4.11.1")
+    testImplementation("androidx.compose.ui:ui-test-junit4:1.6.7")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.6.7")
+    testImplementation("io.github.takahirom.roborazzi:roborazzi:1.15.0")
+    testImplementation("io.github.takahirom.roborazzi:roborazzi-compose:1.15.0")
+    testImplementation("io.github.takahirom.roborazzi:roborazzi-junit-rule:1.15.0")
 }
 
 project.afterEvaluate {

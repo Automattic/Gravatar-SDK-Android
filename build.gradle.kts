@@ -14,6 +14,9 @@ plugins {
 
     // Dokka
     id("org.jetbrains.dokka")
+
+    // Roborazzi
+    id("io.github.takahirom.roborazzi") version "1.15.0" apply false
 }
 
 buildscript {
