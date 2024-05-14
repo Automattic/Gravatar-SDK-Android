@@ -39,7 +39,7 @@ dependencies {
     dokkaHtmlMultiModulePlugin("org.jetbrains.dokka:android-documentation-plugin:1.9.20")
 }
 
-// Apply dokka and dokka plugins to all subprojects except the demo-app
+// Apply dokka to all subprojects except the demo-app
 subprojects {
     if (this.name != "demo-app") {
         apply {
@@ -48,15 +48,18 @@ subprojects {
     }
 }
 
-val currentVersion = "0.3.0"
+// Semantic versioning for release version
+val versionName = "0.3.0"
 
 tasks.dokkaHtmlMultiModule {
     notCompatibleWithConfigurationCache("https://github.com/Kotlin/dokka/issues/2231")
-    val historyDir = projectDir.resolve("docs/dokka/history/")
-    val currentDir = historyDir.resolve(currentVersion)
+    val mainDir = projectDir.resolve("docs/dokka/") // docs/dokka/
+    val historyDir = mainDir.resolve("history/") // docs/dokka/history/ - all versions
+    val currentDir = mainDir.resolve("current/") // docs/dokka/current/ - what we'll serve in github pages
+    val newVersionDir = historyDir.resolve(versionName) // docs/dokka/history/x.x.x/ - new version
 
     moduleName.set("Gravatar Android SDK")
-    outputDirectory.set(currentDir)
+    outputDirectory.set(newVersionDir)
 
     pluginConfiguration<DokkaBase, DokkaBaseConfiguration> {
         customAssets = listOf(file("./docs/images/dokka/logo-icon.svg"))
@@ -64,7 +67,16 @@ tasks.dokkaHtmlMultiModule {
     }
 
     pluginConfiguration<VersioningPlugin, VersioningConfiguration> {
-        version = currentVersion
+        version = versionName
         olderVersionsDir = historyDir
+    }
+
+    doLast {
+        // Delete the current directory, it will be replaced by the new version
+        currentDir.deleteRecursively()
+        // Copy the new version to the current directory
+        newVersionDir.copyRecursively(currentDir)
+        // Delete the "older" directory from the new version
+        newVersionDir.resolve("older").deleteRecursively()
     }
 }
