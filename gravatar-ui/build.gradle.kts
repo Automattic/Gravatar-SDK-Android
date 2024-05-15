@@ -11,9 +11,6 @@ plugins {
     // Detekt
     id("io.gitlab.arturbosch.detekt")
 
-    // Dokka
-    id("org.jetbrains.dokka")
-
     // Roborazzi
     id("io.github.takahirom.roborazzi")
 }

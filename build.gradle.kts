@@ -1,5 +1,7 @@
 import org.jetbrains.dokka.base.DokkaBase
 import org.jetbrains.dokka.base.DokkaBaseConfiguration
+import org.jetbrains.dokka.versioning.VersioningConfiguration
+import org.jetbrains.dokka.versioning.VersioningPlugin
 
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
@@ -22,6 +24,7 @@ plugins {
 buildscript {
     dependencies {
         classpath("org.jetbrains.dokka:dokka-base:1.9.20")
+        classpath("org.jetbrains.dokka:versioning-plugin:1.9.20")
 
         /**
          * Forcing the use of Jackson Core to avoid a conflict between the version used by
@@ -31,14 +34,37 @@ buildscript {
     }
 }
 
+dependencies {
+    dokkaHtmlMultiModulePlugin("org.jetbrains.dokka:versioning-plugin:1.9.20")
+    dokkaHtmlMultiModulePlugin("org.jetbrains.dokka:android-documentation-plugin:1.9.20")
+}
+
+// Apply dokka and dokka plugins to all subprojects except the demo-app
+subprojects {
+    if (this.name != "demo-app") {
+        apply {
+            plugin("org.jetbrains.dokka")
+        }
+    }
+}
+
+val currentVersion = "0.3.0"
+
 tasks.dokkaHtmlMultiModule {
     notCompatibleWithConfigurationCache("https://github.com/Kotlin/dokka/issues/2231")
+    val historyDir = projectDir.resolve("docs/dokka/history/")
+    val currentDir = historyDir.resolve(currentVersion)
 
     moduleName.set("Gravatar Android SDK")
-    outputDirectory.set(file("docs/dokka"))
+    outputDirectory.set(currentDir)
 
     pluginConfiguration<DokkaBase, DokkaBaseConfiguration> {
         customAssets = listOf(file("./docs/images/dokka/logo-icon.svg"))
         footerMessage = "© Automattic Inc."
+    }
+
+    pluginConfiguration<VersioningPlugin, VersioningConfiguration> {
+        version = currentVersion
+        olderVersionsDir = historyDir
     }
 }
