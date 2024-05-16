@@ -73,6 +73,7 @@ import com.gravatar.ui.components.ProfileSummary
 import com.gravatar.ui.components.UserProfileState
 import com.gravatar.ui.gravatarTheme
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Composable
@@ -248,7 +249,7 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
                 Button(
                     onClick = {
                         keyboardController?.hide()
-                        scope.launch {
+                        scope.launch(Dispatchers.IO) {
                             error = ""
                             profileState = UserProfileState.Loading
                             when (val result = profileService.fetch(Email(email))) {

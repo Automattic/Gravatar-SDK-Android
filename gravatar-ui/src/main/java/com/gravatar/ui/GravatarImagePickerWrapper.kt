@@ -13,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.neverEqualPolicy
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -20,10 +21,14 @@ import androidx.core.net.toFile
 import com.gravatar.services.AvatarService
 import com.gravatar.services.ErrorType
 import com.gravatar.services.GravatarListener
+import com.gravatar.services.Result
 import com.gravatar.types.Email
 import com.yalantis.ucrop.UCrop
 import com.yalantis.ucrop.UCropActivity
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
+import com.gravatar.di.container.GravatarSdkContainer.Companion.instance as GravatarSdkDI
 
 /**
  * UI component that wraps the received [@Composable], allowing the user to pick an image from the
@@ -49,11 +54,20 @@ public fun GravatarImagePickerWrapper(
     val imagePickerLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
         selectedImageUri = it
     }
+    val coroutineScope = rememberCoroutineScope()
     val uCropLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         it.data?.let { intentData ->
             UCrop.getOutput(intentData)?.let { croppedImageUri ->
                 listener.onAvatarUploadStarted()
-                AvatarService().upload(croppedImageUri.toFile(), Email(email), wordpressBearerToken, listener)
+                coroutineScope.launch(GravatarSdkDI.dispatcherIO) {
+                    val response = AvatarService().upload(croppedImageUri.toFile(), Email(email), wordpressBearerToken)
+                    withContext(GravatarSdkDI.dispatcherMain) {
+                        when (response) {
+                            is Result.Success -> listener.onSuccess(Unit)
+                            is Result.Failure -> listener.onError(response.error)
+                        }
+                    }
+                }
             }
         }
     }
