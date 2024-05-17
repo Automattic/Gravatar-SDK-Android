@@ -35,43 +35,44 @@ class AvatarServiceTest {
     }
 
     @Test
-    fun `given a file, email and accessToken when uploading avatar then Gravatar service is invoked`() = runTest {
-        val uploadGravatarListener = spyk<GravatarListener<Unit, ErrorType>>()
-        val callResponse = mockk<Call<ResponseBody>>()
-        every { containerRule.gravatarApiServiceMock.uploadImage(any(), any(), any()) } returns callResponse
-        every { callResponse.enqueue(any()) } answers { call ->
-            @Suppress("UNCHECKED_CAST")
-            (call.invocation.args[0] as? Callback<ResponseBody>)?.onResponse(
-                callResponse,
-                mockk(relaxed = true) {
-                    every { isSuccessful } returns true
-                },
-            )
-        }
+    fun `given a file, email and wordpressBearerToken when uploading avatar then Gravatar service is invoked`() =
+        runTest {
+            val uploadGravatarListener = spyk<GravatarListener<Unit, ErrorType>>()
+            val callResponse = mockk<Call<ResponseBody>>()
+            every { containerRule.gravatarApiServiceMock.uploadImage(any(), any(), any()) } returns callResponse
+            every { callResponse.enqueue(any()) } answers { call ->
+                @Suppress("UNCHECKED_CAST")
+                (call.invocation.args[0] as? Callback<ResponseBody>)?.onResponse(
+                    callResponse,
+                    mockk(relaxed = true) {
+                        every { isSuccessful } returns true
+                    },
+                )
+            }
 
-        avatarService.upload(File("avatarFile"), Email("email"), "accessToken", uploadGravatarListener)
+            avatarService.upload(File("avatarFile"), Email("email"), "wordpressBearerToken", uploadGravatarListener)
 
-        verify(exactly = 1) {
-            containerRule.gravatarApiServiceMock.uploadImage(
-                "Bearer accessToken",
-                withArg {
-                    assertTrue(
-                        it.headers?.values("Content-Disposition").toString().contains("account"),
-                    )
-                },
-                withArg {
-                    assertTrue(
-                        with(it.headers?.values("Content-Disposition").toString()) {
-                            contains("filedata") && contains("avatarFile")
-                        },
-                    )
-                },
-            )
+            verify(exactly = 1) {
+                containerRule.gravatarApiServiceMock.uploadImage(
+                    "Bearer wordpressBearerToken",
+                    withArg {
+                        assertTrue(
+                            it.headers?.values("Content-Disposition").toString().contains("account"),
+                        )
+                    },
+                    withArg {
+                        assertTrue(
+                            with(it.headers?.values("Content-Disposition").toString()) {
+                                contains("filedata") && contains("avatarFile")
+                            },
+                        )
+                    },
+                )
+            }
+            verify(exactly = 1) {
+                uploadGravatarListener.onSuccess(Unit)
+            }
         }
-        verify(exactly = 1) {
-            uploadGravatarListener.onSuccess(Unit)
-        }
-    }
 
     @Test
     fun `given gravatar update when a unknown error occurs then Gravatar returns UNKNOWN error`() =
@@ -134,7 +135,7 @@ class AvatarServiceTest {
             )
         }
 
-        avatarService.upload(File("avatarFile"), Email("email"), "accessToken", uploadGravatarListener)
+        avatarService.upload(File("avatarFile"), Email("email"), "wordpressBearerToken", uploadGravatarListener)
 
         verify(exactly = 1) {
             uploadGravatarListener.onError(expectedErrorType)
@@ -156,7 +157,7 @@ class AvatarServiceTest {
             )
         }
 
-        avatarService.upload(File("avatarFile"), Email("email"), "accessToken", uploadGravatarListener)
+        avatarService.upload(File("avatarFile"), Email("email"), "wordpressBearerToken", uploadGravatarListener)
 
         verify(exactly = 1) {
             uploadGravatarListener.onError(expectedErrorType)

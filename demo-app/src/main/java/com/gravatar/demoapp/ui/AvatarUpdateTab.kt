@@ -35,8 +35,8 @@ import com.gravatar.ui.GravatarImagePickerWrapperListener
 @Composable
 fun AvatarUpdateTab(showSnackBar: (String?, Throwable?) -> Unit, modifier: Modifier = Modifier) {
     var email by remember { mutableStateOf(BuildConfig.DEMO_EMAIL) }
-    var accessToken by remember { mutableStateOf("") }
-    var accessTokenVisible by rememberSaveable { mutableStateOf(false) }
+    var wordpressBearerToken by remember { mutableStateOf(BuildConfig.DEMO_WORDPRESS_BEARER_TOKEN) }
+    var wordpressBearerTokenVisible by rememberSaveable { mutableStateOf(false) }
     var isUploading by remember { mutableStateOf(false) }
 
     Column(
@@ -49,11 +49,11 @@ fun AvatarUpdateTab(showSnackBar: (String?, Throwable?) -> Unit, modifier: Modif
         val context = LocalContext.current
         GravatarEmailInput(email = email, onValueChange = { email = it }, Modifier.fillMaxWidth())
         GravatarPasswordInput(
-            password = accessToken,
-            passwordIsVisible = accessTokenVisible,
-            onValueChange = { accessToken = it },
-            onVisibilityChange = { accessTokenVisible = it },
-            label = { Text(stringResource(R.string.access_token_label)) },
+            password = wordpressBearerToken,
+            passwordIsVisible = wordpressBearerTokenVisible,
+            onValueChange = { wordpressBearerToken = it },
+            onVisibilityChange = { wordpressBearerTokenVisible = it },
+            label = { Text(stringResource(R.string.wordpress_bearer_token_label)) },
             modifier = Modifier
                 .padding(top = 16.dp)
                 .fillMaxWidth(),
@@ -61,7 +61,7 @@ fun AvatarUpdateTab(showSnackBar: (String?, Throwable?) -> Unit, modifier: Modif
         GravatarImagePickerWrapper(
             { UpdateAvatarComposable(isUploading) },
             email,
-            accessToken,
+            wordpressBearerToken,
             object : GravatarImagePickerWrapperListener {
                 override fun onAvatarUploadStarted() {
                     isUploading = true

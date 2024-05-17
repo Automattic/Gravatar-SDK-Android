@@ -31,7 +31,7 @@ import java.io.File
  *
  * @param content The content to be wrapped by the [GravatarImagePickerWrapper].
  * @param email The email associated with the Gravatar account.
- * @param accessToken The access token to authenticate the Gravatar account.
+ * @param wordpressBearerToken The wordpress bearer token to authenticate the Gravatar account.
  * @param listener The listener to be informed about the avatar upload status.
  * @param modifier Composable modifier that allows customize the [GravatarImagePickerWrapper].
  * @param imageEditionOptions The options to customize the image edition UI.
@@ -40,7 +40,7 @@ import java.io.File
 public fun GravatarImagePickerWrapper(
     content: @Composable () -> Unit,
     email: String,
-    accessToken: String,
+    wordpressBearerToken: String,
     listener: GravatarImagePickerWrapperListener,
     modifier: Modifier = Modifier,
     imageEditionOptions: ImageEditionStyling = ImageEditionStyling(),
@@ -53,7 +53,7 @@ public fun GravatarImagePickerWrapper(
         it.data?.let { intentData ->
             UCrop.getOutput(intentData)?.let { croppedImageUri ->
                 listener.onAvatarUploadStarted()
-                AvatarService().upload(croppedImageUri.toFile(), Email(email), accessToken, listener)
+                AvatarService().upload(croppedImageUri.toFile(), Email(email), wordpressBearerToken, listener)
             }
         }
     }
