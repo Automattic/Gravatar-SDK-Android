@@ -35,7 +35,7 @@ import com.gravatar.ui.GravatarImagePickerWrapperListener
 @Composable
 fun AvatarUpdateTab(showSnackBar: (String?, Throwable?) -> Unit, modifier: Modifier = Modifier) {
     var email by remember { mutableStateOf(BuildConfig.DEMO_EMAIL) }
-    var accessToken by remember { mutableStateOf("") }
+    var accessToken by remember { mutableStateOf(BuildConfig.DEMO_ACCESS_TOKEN) }
     var accessTokenVisible by rememberSaveable { mutableStateOf(false) }
     var isUploading by remember { mutableStateOf(false) }
 

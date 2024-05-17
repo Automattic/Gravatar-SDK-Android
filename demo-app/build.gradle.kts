@@ -41,6 +41,11 @@ android {
                 "DEMO_EMAIL",
                 "\"${properties["demo-app.email"]?.toString() ?: "gravatar@automattic.com"}\"",
             )
+            buildConfigField(
+                "String",
+                "DEMO_ACCESS_TOKEN",
+                "\"${properties["demo-app.accessToken"]?.toString() ?: ""}\"",
+            )
         }
     }
 
