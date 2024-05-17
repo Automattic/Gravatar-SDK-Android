@@ -30,13 +30,13 @@ public class AvatarService(private val okHttpClient: OkHttpClient? = null) {
      *
      * @param file The image file to upload
      * @param email The email address to associate the image with
-     * @param accessToken The bearer token for the user's WordPress/Gravatar account
+     * @param wordpressBearerToken The bearer token for the user's WordPress/Gravatar account
      * @param gravatarUploadListener The listener to notify of the upload result
      */
     public fun upload(
         file: File,
         email: Email,
-        accessToken: String,
+        wordpressBearerToken: String,
         gravatarUploadListener: GravatarListener<Unit, ErrorType>,
     ) {
         val service = GravatarSdkDI.getGravatarApiV1Service(okHttpClient)
@@ -44,7 +44,7 @@ public class AvatarService(private val okHttpClient: OkHttpClient? = null) {
         val filePart =
             MultipartBody.Part.createFormData("filedata", file.name, file.asRequestBody())
 
-        service.uploadImage("Bearer $accessToken", identity, filePart).enqueue(
+        service.uploadImage("Bearer $wordpressBearerToken", identity, filePart).enqueue(
             object : Callback<ResponseBody> {
                 override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                     coroutineScope.launch {

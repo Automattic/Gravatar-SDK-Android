@@ -43,8 +43,8 @@ android {
             )
             buildConfigField(
                 "String",
-                "DEMO_ACCESS_TOKEN",
-                "\"${properties["demo-app.accessToken"]?.toString() ?: ""}\"",
+                "DEMO_WORDPRESS_BEARER_TOKEN",
+                "\"${properties["demo-app.wordPressBearerToken"]?.toString() ?: ""}\"",
             )
         }
     }
