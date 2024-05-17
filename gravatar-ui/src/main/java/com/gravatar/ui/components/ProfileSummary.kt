@@ -17,7 +17,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.gravatar.api.models.UserProfile
+import com.gravatar.api.models.Profile
+import com.gravatar.extensions.emptyProfile
 import com.gravatar.ui.GravatarTheme
 import com.gravatar.ui.components.atomic.Avatar
 import com.gravatar.ui.components.atomic.DisplayName
@@ -26,19 +27,19 @@ import com.gravatar.ui.components.atomic.ViewProfileButton
 
 /**
  * [ProfileSummary] is a composable that displays a mini profile card.
- * Given a [UserProfile], it displays a mini profile card using the other atomic components provided within the SDK.
+ * Given a [Profile], it displays a profile summary card using the other atomic components provided within the SDK.
  *
  * @param profile The user's profile information
  * @param modifier Composable modifier
  */
 @Composable
-public fun ProfileSummary(profile: UserProfile, modifier: Modifier = Modifier) {
+public fun ProfileSummary(profile: Profile, modifier: Modifier = Modifier) {
     ProfileSummary(state = UserProfileState.Loaded(profile), modifier = modifier)
 }
 
 /**
  * [ProfileSummary] is a composable that displays a mini profile card.
- * Given a [UserProfile], it displays a mini profile card using the other atomic components provided within the SDK.
+ * Given a [UserProfileState], it displays a profile summary card using the other atomic components.
  *
  * @param state The user's profile state
  * @param modifier Composable modifier
@@ -60,7 +61,7 @@ public fun ProfileSummary(state: UserProfileState, modifier: Modifier = Modifier
                     )
                     when (state) {
                         is UserProfileState.Loaded -> {
-                            if (!state.userProfile.currentLocation.isNullOrBlank()) {
+                            if (state.userProfile.location.isNotBlank()) {
                                 Location(state)
                             }
                         }
@@ -87,10 +88,10 @@ public fun ProfileSummary(state: UserProfileState, modifier: Modifier = Modifier
 @Composable
 private fun ProfileSummaryPreview() {
     ProfileSummary(
-        UserProfile(
-            "4539566a0223b11d28fc47c864336fa27b8fe49b5f85180178c9e3813e910d6a",
+        emptyProfile(
+            hash = "4539566a0223b11d28fc47c864336fa27b8fe49b5f85180178c9e3813e910d6a",
             displayName = "John Doe",
-            currentLocation = "Crac'h, France",
+            location = "Crac'h, France",
         ),
     )
 }

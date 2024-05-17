@@ -1,6 +1,6 @@
 package com.gravatar.services
 
-import com.gravatar.api.models.UserProfiles
+import com.gravatar.api.models.Profile
 import com.gravatar.logger.Logger
 import com.gravatar.types.Email
 import com.gravatar.types.Hash
@@ -25,14 +25,11 @@ public class ProfileService(private val okHttpClient: OkHttpClient? = null) {
     // Run onResponse and onError callbacks on the main thread
     private val coroutineScope = CoroutineScope(GravatarSdkDI.dispatcherMain)
 
-    private fun fetchWithListener(
-        hashOrUsername: String,
-        getProfileListener: GravatarListener<UserProfiles, ErrorType>,
-    ) {
-        val service = GravatarSdkDI.getGravatarBaseService(okHttpClient)
-        service.getProfile(hashOrUsername).enqueue(
-            object : Callback<UserProfiles> {
-                override fun onResponse(call: Call<UserProfiles>, response: Response<UserProfiles>) {
+    private fun fetchWithListener(hashOrUsername: String, getProfileListener: GravatarListener<Profile, ErrorType>) {
+        val service = GravatarSdkDI.getGravatarApiV3Service(okHttpClient)
+        service.getProfileById(hashOrUsername).enqueue(
+            object : Callback<Profile> {
+                override fun onResponse(call: Call<Profile>, response: Response<Profile>) {
                     coroutineScope.launch {
                         if (response.isSuccessful) {
                             val data = response.body()
@@ -52,7 +49,7 @@ public class ProfileService(private val okHttpClient: OkHttpClient? = null) {
                     }
                 }
 
-                override fun onFailure(call: Call<UserProfiles>, t: Throwable) {
+                override fun onFailure(call: Call<Profile>, t: Throwable) {
                     coroutineScope.launch {
                         getProfileListener.onError(t.error())
                     }
@@ -67,7 +64,7 @@ public class ProfileService(private val okHttpClient: OkHttpClient? = null) {
      * @param email The email address to fetch the profile for
      * @param getProfileListener The listener to notify of the fetch result
      */
-    public fun fetchWithListener(email: Email, getProfileListener: GravatarListener<UserProfiles, ErrorType>) {
+    public fun fetchWithListener(email: Email, getProfileListener: GravatarListener<Profile, ErrorType>) {
         fetchWithListener(email.hash(), getProfileListener = getProfileListener)
     }
 
@@ -77,7 +74,7 @@ public class ProfileService(private val okHttpClient: OkHttpClient? = null) {
      * @param hash The hash to fetch the profile for
      * @param getProfileListener The listener to notify of the fetch result
      */
-    public fun fetchWithListener(hash: Hash, getProfileListener: GravatarListener<UserProfiles, ErrorType>) {
+    public fun fetchWithListener(hash: Hash, getProfileListener: GravatarListener<Profile, ErrorType>) {
         fetchWithListener(hash.toString(), getProfileListener = getProfileListener)
     }
 
@@ -89,7 +86,7 @@ public class ProfileService(private val okHttpClient: OkHttpClient? = null) {
      */
     public fun fetchWithListenerByUsername(
         username: String,
-        getProfileListener: GravatarListener<UserProfiles, ErrorType>,
+        getProfileListener: GravatarListener<Profile, ErrorType>,
     ) {
         fetchWithListener(username, getProfileListener = getProfileListener)
     }
@@ -100,12 +97,12 @@ public class ProfileService(private val okHttpClient: OkHttpClient? = null) {
      * @param hashOrUsername The hash or username to fetch the profile for
      * @return The fetched profile
      */
-    public suspend fun fetch(hashOrUsername: String): Result<UserProfiles, ErrorType> {
+    public suspend fun fetch(hashOrUsername: String): Result<Profile, ErrorType> {
         return suspendCoroutine {
             fetchWithListener(
                 hashOrUsername,
-                object : GravatarListener<UserProfiles, ErrorType> {
-                    override fun onSuccess(response: UserProfiles) {
+                object : GravatarListener<Profile, ErrorType> {
+                    override fun onSuccess(response: Profile) {
                         it.resume(Result.Success(response))
                     }
 
@@ -123,7 +120,7 @@ public class ProfileService(private val okHttpClient: OkHttpClient? = null) {
      * @param email The email address to fetch the profile for
      * @return The fetched profiles
      */
-    public suspend fun fetch(email: Email): Result<UserProfiles, ErrorType> {
+    public suspend fun fetch(email: Email): Result<Profile, ErrorType> {
         return fetch(email.hash())
     }
 
@@ -133,7 +130,7 @@ public class ProfileService(private val okHttpClient: OkHttpClient? = null) {
      * @param hash The hash to fetch the profile for
      * @return The fetched profiles
      */
-    public suspend fun fetch(hash: Hash): Result<UserProfiles, ErrorType> {
+    public suspend fun fetch(hash: Hash): Result<Profile, ErrorType> {
         return fetch(hash.toString())
     }
 
@@ -143,7 +140,7 @@ public class ProfileService(private val okHttpClient: OkHttpClient? = null) {
      * @param username The username to fetch the profile for
      * @return The fetched profiles
      */
-    public suspend fun fetchByUsername(username: String): Result<UserProfiles, ErrorType> {
+    public suspend fun fetchByUsername(username: String): Result<Profile, ErrorType> {
         return fetch(username)
     }
 }

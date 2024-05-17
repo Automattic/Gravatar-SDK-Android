@@ -14,9 +14,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.gravatar.api.models.Account
-import com.gravatar.api.models.Email
-import com.gravatar.api.models.UserProfile
+import com.gravatar.api.models.Profile
+import com.gravatar.api.models.VerifiedAccount
+import com.gravatar.extensions.emptyProfile
 import com.gravatar.ui.GravatarTheme
 import com.gravatar.ui.components.atomic.AboutMe
 import com.gravatar.ui.components.atomic.Avatar
@@ -24,6 +24,7 @@ import com.gravatar.ui.components.atomic.DisplayName
 import com.gravatar.ui.components.atomic.SocialIconRow
 import com.gravatar.ui.components.atomic.UserInfo
 import com.gravatar.ui.components.atomic.ViewProfileButton
+import java.net.URI
 
 /**
  * [LargeProfile] is a composable that displays a user's profile card.
@@ -33,7 +34,7 @@ import com.gravatar.ui.components.atomic.ViewProfileButton
  * @param modifier Composable modifier
  */
 @Composable
-public fun LargeProfile(profile: UserProfile, modifier: Modifier = Modifier) {
+public fun LargeProfile(profile: Profile, modifier: Modifier = Modifier) {
     LargeProfile(state = UserProfileState.Loaded(profile), modifier = modifier)
 }
 
@@ -78,22 +79,32 @@ public fun LargeProfile(state: UserProfileState, modifier: Modifier = Modifier) 
 @Composable
 private fun LargeProfilePreview() {
     LargeProfile(
-        UserProfile(
+        emptyProfile(
             hash = "1234567890",
             displayName = "Dominique Doe",
-            preferredUsername = "ddoe",
             jobTitle = "Farmer",
             company = "Farmers United",
-            currentLocation = "Crac'h, France",
+            location = "Crac'h, France",
             pronouns = "They/Them",
-            accounts = listOf(
-                Account(name = "Mastodon", url = "https://mastodon.social/@ddoe"),
-                Account(name = "Tumblr", url = "https://ddoe.tumblr.com"),
-                Account(name = "WordPress", url = "https://ddoe.wordpress.com"),
+            verifiedAccounts = listOf(
+                VerifiedAccount(
+                    serviceLabel = "Mastodon",
+                    serviceIcon = URI("https://example.com"),
+                    url = URI("https://mastodon.social/@ddoe"),
+                ),
+                VerifiedAccount(
+                    serviceLabel = "Tumblr",
+                    serviceIcon = URI("https://example.com"),
+                    url = URI("https://ddoe.tumblr.com"),
+                ),
+                VerifiedAccount(
+                    serviceLabel = "WordPress",
+                    serviceIcon = URI("https://example.com"),
+                    url = URI("https://ddoe.wordpress.com"),
+                ),
             ),
-            aboutMe = "I'm a farmer, I love to code. I ride my bicycle to work. One apple a day keeps the " +
+            description = "I'm a farmer, I love to code. I ride my bicycle to work. One apple a day keeps the " +
                 "doctor away. This about me description is quite long, this is good for testing.",
-            emails = listOf(Email(primary = true, value = "john@doe.com")),
         ),
     )
 }

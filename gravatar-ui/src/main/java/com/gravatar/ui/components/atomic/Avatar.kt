@@ -11,8 +11,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.gravatar.AvatarQueryOptions
-import com.gravatar.api.models.UserProfile
+import com.gravatar.api.models.Profile
 import com.gravatar.extensions.avatarUrl
+import com.gravatar.extensions.emptyProfile
 import com.gravatar.ui.R
 import com.gravatar.ui.components.LoadingToLoadedStatePreview
 import com.gravatar.ui.components.UserProfileState
@@ -29,7 +30,7 @@ import com.gravatar.ui.skeletonEffect
  */
 @Composable
 public fun Avatar(
-    profile: UserProfile,
+    profile: Profile,
     size: Dp,
     modifier: Modifier = Modifier,
     avatarQueryOptions: AvatarQueryOptions? = null,
@@ -104,7 +105,7 @@ public fun Avatar(
 @Preview
 @Composable
 private fun AvatarPreview() {
-    Avatar(UserProfile("4539566a0223b11d28fc47c864336fa27b8fe49b5f85180178c9e3813e910d6a"), 256.dp)
+    Avatar(emptyProfile("4539566a0223b11d28fc47c864336fa27b8fe49b5f85180178c9e3813e910d6a"), 256.dp)
 }
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)

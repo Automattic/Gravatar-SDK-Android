@@ -16,7 +16,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.gravatar.api.models.UserProfile
+import com.gravatar.api.models.Profile
+import com.gravatar.extensions.emptyProfile
 import com.gravatar.ui.R
 import com.gravatar.ui.TextSkeletonEffect
 import com.gravatar.ui.components.LoadingToLoadedStatePreview
@@ -32,14 +33,14 @@ import com.gravatar.ui.components.UserProfileState
  */
 @Composable
 public fun AboutMe(
-    profile: UserProfile,
+    profile: Profile,
     modifier: Modifier = Modifier,
     textStyle: TextStyle = MaterialTheme.typography.bodyMedium,
     content: @Composable ((String, Modifier) -> Unit) = { userInfo, contentModifier ->
         AboutMeDefaultContent(userInfo, textStyle, contentModifier)
     },
 ) {
-    content(profile.aboutMe.orEmpty(), modifier)
+    content(profile.description, modifier)
 }
 
 /**
@@ -113,9 +114,9 @@ private fun AboutMeDefaultContent(userInfo: String, textStyle: TextStyle, modifi
 @Composable
 private fun AboutMePreview() {
     AboutMe(
-        UserProfile(
-            "",
-            aboutMe = "I'm a farmer, I love to code. I ride my bicycle to work. One apple a day keeps the " +
+        emptyProfile(
+            hash = "",
+            description = "I'm a farmer, I love to code. I ride my bicycle to work. One apple a day keeps the " +
                 "doctor away. This about me description is quite long, this is good for testing.",
         ),
     )
