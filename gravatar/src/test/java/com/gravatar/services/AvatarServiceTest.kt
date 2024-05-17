@@ -1,8 +1,7 @@
-package com.gravatar
+package com.gravatar.services
 
-import com.gravatar.services.AvatarService
-import com.gravatar.services.ErrorType
-import com.gravatar.services.Result
+import com.gravatar.GravatarSdkContainerRule
+import com.gravatar.HttpResponseCode
 import com.gravatar.types.Email
 import io.mockk.coEvery
 import io.mockk.coVerify

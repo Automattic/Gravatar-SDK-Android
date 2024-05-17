@@ -1,7 +1,5 @@
-package com.gravatar
+package com.gravatar.extensions
 
-import com.gravatar.extensions.emptyProfile
-import com.gravatar.extensions.formattedUserInfo
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 
