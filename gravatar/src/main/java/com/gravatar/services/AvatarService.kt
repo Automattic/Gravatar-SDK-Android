@@ -12,10 +12,12 @@ import com.gravatar.di.container.GravatarSdkContainer.Companion.instance as Grav
 /**
  * Service for managing Gravatar avatars.
  */
-public class AvatarService(private val okHttpClient: OkHttpClient? = null) {
+public class AvatarService(okHttpClient: OkHttpClient? = null) {
     private companion object {
         const val LOG_TAG = "AvatarService"
     }
+
+    private val service = GravatarSdkDI.getGravatarApiV1Service(okHttpClient)
 
     /**
      * Uploads a Gravatar image for the given email address.
@@ -25,7 +27,6 @@ public class AvatarService(private val okHttpClient: OkHttpClient? = null) {
      * @param wordpressBearerToken The bearer token for the user's WordPress/Gravatar account
      */
     public suspend fun upload(file: File, email: Email, wordpressBearerToken: String): Result<Unit, ErrorType> {
-        val service = GravatarSdkDI.getGravatarApiV1Service(okHttpClient)
         val identity = MultipartBody.Part.createFormData("account", email.toString())
         val filePart =
             MultipartBody.Part.createFormData("filedata", file.name, file.asRequestBody())

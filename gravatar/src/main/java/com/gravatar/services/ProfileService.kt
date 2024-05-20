@@ -11,10 +11,12 @@ import com.gravatar.di.container.GravatarSdkContainer.Companion.instance as Grav
 /**
  * Service for managing Gravatar profiles.
  */
-public class ProfileService(private val okHttpClient: OkHttpClient? = null) {
+public class ProfileService(okHttpClient: OkHttpClient? = null) {
     private companion object {
         const val LOG_TAG = "ProfileService"
     }
+
+    private val service = GravatarSdkDI.getGravatarApiV3Service(okHttpClient)
 
     /**
      * Fetches a Gravatar profile for the given hash or username.
@@ -22,27 +24,23 @@ public class ProfileService(private val okHttpClient: OkHttpClient? = null) {
      * @param hashOrUsername The hash or username to fetch the profile for
      * @return The fetched profile
      */
-    public suspend fun fetch(hashOrUsername: String): Result<Profile, ErrorType> {
-        val service = GravatarSdkDI.getGravatarApiV3Service(okHttpClient)
-
-        return runCatchingService {
-            withContext(GravatarSdkDI.dispatcherIO) {
-                val response = service.getProfileById(hashOrUsername)
-                if (response.isSuccessful) {
-                    val data = response.body()
-                    if (data != null) {
-                        Result.Success(data)
-                    } else {
-                        Result.Failure(ErrorType.UNKNOWN)
-                    }
+    public suspend fun fetch(hashOrUsername: String): Result<Profile, ErrorType> = runCatchingService {
+        withContext(GravatarSdkDI.dispatcherIO) {
+            val response = service.getProfileById(hashOrUsername)
+            if (response.isSuccessful) {
+                val data = response.body()
+                if (data != null) {
+                    Result.Success(data)
                 } else {
-                    // Log the response body for debugging purposes if the response is not successful
-                    Logger.w(
-                        LOG_TAG,
-                        "Network call unsuccessful trying to get Gravatar profile: $response.body",
-                    )
-                    Result.Failure(errorTypeFromHttpCode(response.code()))
+                    Result.Failure(ErrorType.UNKNOWN)
                 }
+            } else {
+                // Log the response body for debugging purposes if the response is not successful
+                Logger.w(
+                    LOG_TAG,
+                    "Network call unsuccessful trying to get Gravatar profile: $response.body",
+                )
+                Result.Failure(errorTypeFromHttpCode(response.code()))
             }
         }
     }
