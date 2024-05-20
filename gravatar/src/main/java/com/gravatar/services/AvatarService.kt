@@ -30,8 +30,7 @@ public class AvatarService(private val okHttpClient: OkHttpClient? = null) {
         val filePart =
             MultipartBody.Part.createFormData("filedata", file.name, file.asRequestBody())
 
-        @Suppress("TooGenericExceptionCaught")
-        return try {
+        return runCatchingService {
             withContext(GravatarSdkDI.dispatcherIO) {
                 val response = service.uploadImage("Bearer $wordpressBearerToken", identity, filePart)
 
@@ -46,8 +45,6 @@ public class AvatarService(private val okHttpClient: OkHttpClient? = null) {
                     Result.Failure(errorTypeFromHttpCode(response.code()))
                 }
             }
-        } catch (ex: Exception) {
-            Result.Failure(ex.error())
         }
     }
 }

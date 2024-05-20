@@ -24,8 +24,8 @@ public class ProfileService(private val okHttpClient: OkHttpClient? = null) {
      */
     public suspend fun fetch(hashOrUsername: String): Result<Profile, ErrorType> {
         val service = GravatarSdkDI.getGravatarApiV3Service(okHttpClient)
-        @Suppress("TooGenericExceptionCaught")
-        return try {
+
+        return runCatchingService {
             withContext(GravatarSdkDI.dispatcherIO) {
                 val response = service.getProfileById(hashOrUsername)
                 if (response.isSuccessful) {
@@ -44,8 +44,6 @@ public class ProfileService(private val okHttpClient: OkHttpClient? = null) {
                     Result.Failure(errorTypeFromHttpCode(response.code()))
                 }
             }
-        } catch (ex: Exception) {
-            Result.Failure(ex.error())
         }
     }
 
