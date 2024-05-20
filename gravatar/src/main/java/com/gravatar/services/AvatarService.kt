@@ -2,6 +2,7 @@ package com.gravatar.services
 
 import com.gravatar.logger.Logger
 import com.gravatar.types.Email
+import kotlinx.coroutines.withContext
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -31,17 +32,19 @@ public class AvatarService(private val okHttpClient: OkHttpClient? = null) {
 
         @Suppress("TooGenericExceptionCaught")
         return try {
-            val response = service.uploadImage("Bearer $wordpressBearerToken", identity, filePart)
+            withContext(GravatarSdkDI.dispatcherIO) {
+                val response = service.uploadImage("Bearer $wordpressBearerToken", identity, filePart)
 
-            if (response.isSuccessful) {
-                Result.Success(Unit)
-            } else {
-                // Log the response body for debugging purposes if the response is not successful
-                Logger.w(
-                    LOG_TAG,
-                    "Network call unsuccessful trying to upload Gravatar: $response.body",
-                )
-                Result.Failure(errorTypeFromHttpCode(response.code()))
+                if (response.isSuccessful) {
+                    Result.Success(Unit)
+                } else {
+                    // Log the response body for debugging purposes if the response is not successful
+                    Logger.w(
+                        LOG_TAG,
+                        "Network call unsuccessful trying to upload Gravatar: $response.body",
+                    )
+                    Result.Failure(errorTypeFromHttpCode(response.code()))
+                }
             }
         } catch (ex: Exception) {
             Result.Failure(ex.error())

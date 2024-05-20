@@ -4,6 +4,7 @@ import com.gravatar.api.models.Profile
 import com.gravatar.logger.Logger
 import com.gravatar.types.Email
 import com.gravatar.types.Hash
+import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import com.gravatar.di.container.GravatarSdkContainer.Companion.instance as GravatarSdkDI
 
@@ -25,21 +26,23 @@ public class ProfileService(private val okHttpClient: OkHttpClient? = null) {
         val service = GravatarSdkDI.getGravatarApiV3Service(okHttpClient)
         @Suppress("TooGenericExceptionCaught")
         return try {
-            val response = service.getProfileById(hashOrUsername)
-            if (response.isSuccessful) {
-                val data = response.body()
-                if (data != null) {
-                    Result.Success(data)
+            withContext(GravatarSdkDI.dispatcherIO) {
+                val response = service.getProfileById(hashOrUsername)
+                if (response.isSuccessful) {
+                    val data = response.body()
+                    if (data != null) {
+                        Result.Success(data)
+                    } else {
+                        Result.Failure(ErrorType.UNKNOWN)
+                    }
                 } else {
-                    Result.Failure(ErrorType.UNKNOWN)
+                    // Log the response body for debugging purposes if the response is not successful
+                    Logger.w(
+                        LOG_TAG,
+                        "Network call unsuccessful trying to get Gravatar profile: $response.body",
+                    )
+                    Result.Failure(errorTypeFromHttpCode(response.code()))
                 }
-            } else {
-                // Log the response body for debugging purposes if the response is not successful
-                Logger.w(
-                    LOG_TAG,
-                    "Network call unsuccessful trying to get Gravatar profile: $response.body",
-                )
-                Result.Failure(errorTypeFromHttpCode(response.code()))
             }
         } catch (ex: Exception) {
             Result.Failure(ex.error())

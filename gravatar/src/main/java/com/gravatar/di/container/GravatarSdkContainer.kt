@@ -10,15 +10,9 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-/**
- * Container that handle the DI for the Gravatar SDK.
- */
-public class GravatarSdkContainer private constructor() {
-    public companion object {
-        /**
-         * The singleton instance of the Gravatar SDK container.
-         */
-        public val instance: GravatarSdkContainer by lazy {
+internal class GravatarSdkContainer private constructor() {
+    companion object {
+        val instance: GravatarSdkContainer by lazy {
             GravatarSdkContainer()
         }
     }
@@ -27,20 +21,9 @@ public class GravatarSdkContainer private constructor() {
 
     private fun getRetrofitApiV3Builder() = Retrofit.Builder().baseUrl(GRAVATAR_API_BASE_URL_V3)
 
-    /**
-     * The main dispatcher for the SDK.
-     */
-    public val dispatcherMain: CoroutineDispatcher = Dispatchers.Main
-
-    /**
-     * The default dispatcher for the SDK.
-     */
-    public val dispatcherDefault: CoroutineDispatcher = Dispatchers.Default
-
-    /**
-     * The IO dispatcher for the SDK.
-     */
-    public val dispatcherIO: CoroutineDispatcher = Dispatchers.IO
+    val dispatcherMain: CoroutineDispatcher = Dispatchers.Main
+    val dispatcherDefault = Dispatchers.Default
+    val dispatcherIO = Dispatchers.IO
 
     private val gson = GsonBuilder().setLenient().create()
 
@@ -50,13 +33,13 @@ public class GravatarSdkContainer private constructor() {
      * @param okHttpClient The OkHttp client to use
      * @return The Gravatar API service
      */
-    internal fun getGravatarApiV1Service(okHttpClient: OkHttpClient? = null): GravatarApiService {
+    fun getGravatarApiV1Service(okHttpClient: OkHttpClient? = null): GravatarApiService {
         return getRetrofitApiV1Builder().apply {
             okHttpClient?.let { client(it) }
         }.build().create(GravatarApiService::class.java)
     }
 
-    internal fun getGravatarApiV3Service(okHttpClient: OkHttpClient? = null): GravatarApiService {
+    fun getGravatarApiV3Service(okHttpClient: OkHttpClient? = null): GravatarApiService {
         return getRetrofitApiV3Builder().apply {
             okHttpClient?.let { client(it) }
         }.addConverterFactory(GsonConverterFactory.create(gson))

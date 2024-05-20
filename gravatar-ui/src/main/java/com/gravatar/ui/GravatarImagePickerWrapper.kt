@@ -26,9 +26,7 @@ import com.gravatar.types.Email
 import com.yalantis.ucrop.UCrop
 import com.yalantis.ucrop.UCropActivity
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.io.File
-import com.gravatar.di.container.GravatarSdkContainer.Companion.instance as GravatarSdkDI
 
 /**
  * UI component that wraps the received [@Composable], allowing the user to pick an image from the
@@ -59,13 +57,16 @@ public fun GravatarImagePickerWrapper(
         it.data?.let { intentData ->
             UCrop.getOutput(intentData)?.let { croppedImageUri ->
                 listener.onAvatarUploadStarted()
-                coroutineScope.launch(GravatarSdkDI.dispatcherIO) {
-                    val response = AvatarService().upload(croppedImageUri.toFile(), Email(email), wordpressBearerToken)
-                    withContext(GravatarSdkDI.dispatcherMain) {
-                        when (response) {
-                            is Result.Success -> listener.onSuccess(Unit)
-                            is Result.Failure -> listener.onError(response.error)
-                        }
+                coroutineScope.launch {
+                    when (
+                        val response = AvatarService().upload(
+                            croppedImageUri.toFile(),
+                            Email(email),
+                            wordpressBearerToken,
+                        )
+                    ) {
+                        is Result.Success -> listener.onSuccess(Unit)
+                        is Result.Failure -> listener.onError(response.error)
                     }
                 }
             }
