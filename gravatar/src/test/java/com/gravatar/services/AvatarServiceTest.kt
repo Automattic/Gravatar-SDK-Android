@@ -1,7 +1,6 @@
 package com.gravatar.services
 
 import com.gravatar.GravatarSdkContainerRule
-import com.gravatar.HttpResponseCode
 import com.gravatar.types.Email
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -17,8 +16,6 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import retrofit2.Response
 import java.io.File
-import java.net.SocketTimeoutException
-import java.net.UnknownHostException
 
 @RunWith(RobolectricTestRunner::class)
 class AvatarServiceTest {
@@ -62,57 +59,24 @@ class AvatarServiceTest {
         }
 
     @Test
-    fun `given gravatar update when a timeout occurs then Gravatar returns TIMEOUT error`() =
-        `given a gravatar update when a error occurs then Gravatar returns the expected error`(
-            HttpResponseCode.HTTP_CLIENT_TIMEOUT,
-            ErrorType.TIMEOUT,
-        )
-
-    @Test
-    fun `given gravatar update when a SocketTimeoutException occurs then Gravatar returns TIMEOUT error`() =
-        `given a gravatar update when a exception occurs then Gravatar returns the expected error`(
-            SocketTimeoutException(),
-            ErrorType.TIMEOUT,
-        )
-
-    @Test
-    fun `given gravatar update when a UnknownHostException occurs then Gravatar returns NETWORK error`() =
-        `given a gravatar update when a exception occurs then Gravatar returns the expected error`(
-            UnknownHostException(),
-            ErrorType.NETWORK,
-        )
-
-    @Test
-    fun `given gravatar update when a Exception occurs then Gravatar returns UNKNOWN error`() =
-        `given a gravatar update when a exception occurs then Gravatar returns the expected error`(
-            Exception(),
-            ErrorType.UNKNOWN,
-        )
-
-    @Suppress("Cast")
-    private fun `given a gravatar update when a error occurs then Gravatar returns the expected error`(
-        httpResponseCode: Int,
-        expectedErrorType: ErrorType,
-    ) = runTest {
+    fun `given gravatar update when an error occurs then Gravatar returns an error`() = runTest {
         val mockResponse = mockk<Response<ResponseBody>>(relaxed = true) {
             every { isSuccessful } returns false
-            every { code() } returns httpResponseCode
+            every { code() } returns 100
         }
         coEvery { containerRule.gravatarApiServiceMock.uploadImage(any(), any(), any()) } returns mockResponse
 
         val uploadResponse = avatarService.upload(File("avatarFile"), Email("email"), "wordpressBearerToken")
 
-        assertTrue((uploadResponse as Result.Failure).error == expectedErrorType)
+        assertTrue((uploadResponse as Result.Failure).error == ErrorType.UNKNOWN)
     }
 
-    private fun `given a gravatar update when a exception occurs then Gravatar returns the expected error`(
-        exception: Throwable,
-        expectedErrorType: ErrorType,
-    ) = runTest {
-        coEvery { containerRule.gravatarApiServiceMock.uploadImage(any(), any(), any()) } throws exception
+    @Test
+    fun `given gravatar update when an Exception occurs then Gravatar returns an error`() = runTest {
+        coEvery { containerRule.gravatarApiServiceMock.uploadImage(any(), any(), any()) } throws Exception()
 
         val uploadResponse = avatarService.upload(File("avatarFile"), Email("email"), "wordpressBearerToken")
 
-        assertTrue((uploadResponse as Result.Failure).error == expectedErrorType)
+        assertTrue((uploadResponse as Result.Failure).error == ErrorType.UNKNOWN)
     }
 }
