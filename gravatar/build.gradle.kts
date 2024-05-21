@@ -116,6 +116,7 @@ openApiGenerate {
             "serializationLibrary" to "gson",
             "groupId" to "com.gravatar",
             "packageName" to "com.gravatar.api",
+            "useCoroutines" to "true",
         ),
     )
 

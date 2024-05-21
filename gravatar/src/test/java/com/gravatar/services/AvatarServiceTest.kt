@@ -1,13 +1,12 @@
-package com.gravatar
+package com.gravatar.services
 
-import com.gravatar.services.AvatarService
-import com.gravatar.services.ErrorType
-import com.gravatar.services.GravatarListener
+import com.gravatar.GravatarSdkContainerRule
+import com.gravatar.HttpResponseCode
 import com.gravatar.types.Email
+import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.spyk
-import io.mockk.verify
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.test.runTest
 import okhttp3.ResponseBody
@@ -16,8 +15,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import retrofit2.Call
-import retrofit2.Callback
+import retrofit2.Response
 import java.io.File
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
@@ -37,22 +35,13 @@ class AvatarServiceTest {
     @Test
     fun `given a file, email and wordpressBearerToken when uploading avatar then Gravatar service is invoked`() =
         runTest {
-            val uploadGravatarListener = spyk<GravatarListener<Unit, ErrorType>>()
-            val callResponse = mockk<Call<ResponseBody>>()
-            every { containerRule.gravatarApiServiceMock.uploadImage(any(), any(), any()) } returns callResponse
-            every { callResponse.enqueue(any()) } answers { call ->
-                @Suppress("UNCHECKED_CAST")
-                (call.invocation.args[0] as? Callback<ResponseBody>)?.onResponse(
-                    callResponse,
-                    mockk(relaxed = true) {
-                        every { isSuccessful } returns true
-                    },
-                )
-            }
+            val mockResponse = mockk<Response<ResponseBody>>()
+            coEvery { containerRule.gravatarApiServiceMock.uploadImage(any(), any(), any()) } returns mockResponse
+            every { mockResponse.isSuccessful } returns true
 
-            avatarService.upload(File("avatarFile"), Email("email"), "wordpressBearerToken", uploadGravatarListener)
+            val uploadResponse = avatarService.upload(File("avatarFile"), Email("email"), "wordpressBearerToken")
 
-            verify(exactly = 1) {
+            coVerify(exactly = 1) {
                 containerRule.gravatarApiServiceMock.uploadImage(
                     "Bearer wordpressBearerToken",
                     withArg {
@@ -69,9 +58,7 @@ class AvatarServiceTest {
                     },
                 )
             }
-            verify(exactly = 1) {
-                uploadGravatarListener.onSuccess(Unit)
-            }
+            assertTrue(uploadResponse is Result.Success)
         }
 
     @Test
@@ -121,46 +108,25 @@ class AvatarServiceTest {
         httpResponseCode: Int,
         expectedErrorType: ErrorType,
     ) = runTest {
-        val uploadGravatarListener = spyk<GravatarListener<Unit, ErrorType>>()
-        val callResponse = mockk<Call<ResponseBody>>()
-        every { containerRule.gravatarApiServiceMock.uploadImage(any(), any(), any()) } returns callResponse
-        every { callResponse.enqueue(any()) } answers { call ->
-            @Suppress("UNCHECKED_CAST")
-            (call.invocation.args[0] as? Callback<ResponseBody>)?.onResponse(
-                callResponse,
-                mockk(relaxed = true) {
-                    every { isSuccessful } returns false
-                    every { code() } returns httpResponseCode
-                },
-            )
+        val mockResponse = mockk<Response<ResponseBody>>(relaxed = true) {
+            every { isSuccessful } returns false
+            every { code() } returns httpResponseCode
         }
+        coEvery { containerRule.gravatarApiServiceMock.uploadImage(any(), any(), any()) } returns mockResponse
 
-        avatarService.upload(File("avatarFile"), Email("email"), "wordpressBearerToken", uploadGravatarListener)
+        val uploadResponse = avatarService.upload(File("avatarFile"), Email("email"), "wordpressBearerToken")
 
-        verify(exactly = 1) {
-            uploadGravatarListener.onError(expectedErrorType)
-        }
+        assertTrue((uploadResponse as Result.Failure).error == expectedErrorType)
     }
 
     private fun `given a gravatar update when a exception occurs then Gravatar returns the expected error`(
         exception: Throwable,
         expectedErrorType: ErrorType,
     ) = runTest {
-        val uploadGravatarListener = spyk<GravatarListener<Unit, ErrorType>>()
-        val callResponse = mockk<Call<ResponseBody>>()
-        every { containerRule.gravatarApiServiceMock.uploadImage(any(), any(), any()) } returns callResponse
-        every { callResponse.enqueue(any()) } answers { call ->
-            @Suppress("UNCHECKED_CAST")
-            (call.invocation.args[0] as? Callback<ResponseBody>)?.onFailure(
-                callResponse,
-                exception,
-            )
-        }
+        coEvery { containerRule.gravatarApiServiceMock.uploadImage(any(), any(), any()) } throws exception
 
-        avatarService.upload(File("avatarFile"), Email("email"), "wordpressBearerToken", uploadGravatarListener)
+        val uploadResponse = avatarService.upload(File("avatarFile"), Email("email"), "wordpressBearerToken")
 
-        verify(exactly = 1) {
-            uploadGravatarListener.onError(expectedErrorType)
-        }
+        assertTrue((uploadResponse as Result.Failure).error == expectedErrorType)
     }
 }
