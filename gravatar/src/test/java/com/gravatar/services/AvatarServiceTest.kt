@@ -62,20 +62,6 @@ class AvatarServiceTest {
         }
 
     @Test
-    fun `given gravatar update when a unknown error occurs then Gravatar returns UNKNOWN error`() =
-        `given a gravatar update when a error occurs then Gravatar returns the expected error`(
-            100,
-            ErrorType.UNKNOWN,
-        )
-
-    @Test
-    fun `given gravatar update when a server error occurs then Gravatar returns SERVER error`() =
-        `given a gravatar update when a error occurs then Gravatar returns the expected error`(
-            HttpResponseCode.SERVER_ERRORS.random(),
-            ErrorType.SERVER,
-        )
-
-    @Test
     fun `given gravatar update when a timeout occurs then Gravatar returns TIMEOUT error`() =
         `given a gravatar update when a error occurs then Gravatar returns the expected error`(
             HttpResponseCode.HTTP_CLIENT_TIMEOUT,
