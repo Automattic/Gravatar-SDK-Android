@@ -26,10 +26,6 @@ internal class GravatarSdkContainer private constructor() {
 
     private fun getRetrofitApiV3Builder() = Retrofit.Builder().baseUrl(GRAVATAR_API_BASE_URL_V3)
 
-    val dispatcherMain: CoroutineDispatcher = Dispatchers.Main
-    val dispatcherDefault = Dispatchers.Default
-    val dispatcherIO = Dispatchers.IO
-
     private val gson = GsonBuilder().setLenient()
         .registerTypeAdapter(
             Instant::class.java,
@@ -38,6 +34,12 @@ internal class GravatarSdkContainer private constructor() {
             },
         )
         .create()
+
+    val dispatcherMain: CoroutineDispatcher = Dispatchers.Main
+    val dispatcherDefault = Dispatchers.Default
+    val dispatcherIO = Dispatchers.IO
+
+    var apiKey: String? = null
 
     /**
      * Get Gravatar API service

@@ -1,6 +1,7 @@
 package com.gravatar.services
 
 import com.gravatar.GravatarSdkContainerRule
+import com.gravatar.GravatarSdkContainerRule.Companion.DEFAULT_API_KEY
 import com.gravatar.api.models.Profile
 import com.gravatar.types.Email
 import com.gravatar.types.Hash
@@ -118,4 +119,31 @@ class ProfileServiceTests {
         coVerify(exactly = 1) { containerRule.gravatarApiServiceMock.getProfileById(usernameEmail.hash().toString()) }
         assertTrue(loadProfileResponse is Result.Success)
     }
+
+    @Test
+    fun `given an username and an api key when loading the profile then api key is sent and result is successful`() =
+        runTest {
+            val username = "username"
+            val mockResponse = mockk<Response<Profile>> {
+                every { isSuccessful } returns true
+                every { body() } returns mockk()
+            }
+            containerRule.withApiKey()
+            coEvery {
+                containerRule.gravatarApiServiceMock.getProfileById(
+                    username,
+                    "Bearer $DEFAULT_API_KEY",
+                )
+            } returns mockResponse
+
+            val loadProfileResponse = profileService.fetchByUsername(username)
+
+            coVerify(exactly = 1) {
+                containerRule.gravatarApiServiceMock.getProfileById(
+                    username,
+                    "Bearer $DEFAULT_API_KEY",
+                )
+            }
+            assertTrue(loadProfileResponse is Result.Success)
+        }
 }
