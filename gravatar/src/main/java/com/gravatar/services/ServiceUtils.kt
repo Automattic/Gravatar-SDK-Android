@@ -9,6 +9,6 @@ internal inline fun <T> runCatchingService(block: () -> Result<T, ErrorType>): R
     } catch (cancellationException: CancellationException) {
         throw cancellationException
     } catch (ex: Exception) {
-        Result.Failure(ex.error())
+        Result.Failure(ex.errorType())
     }
 }
