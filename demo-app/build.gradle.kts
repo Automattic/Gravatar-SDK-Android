@@ -46,6 +46,11 @@ android {
                 "DEMO_WORDPRESS_BEARER_TOKEN",
                 "\"${properties["demo-app.wordPressBearerToken"]?.toString() ?: ""}\"",
             )
+            buildConfigField(
+                "String",
+                "DEMO_GRAVATAR_API_KEY",
+                properties["demo-app.gravatar.api.key"]?.let { "\"$it\"" } ?: "null",
+            )
         }
     }
 
