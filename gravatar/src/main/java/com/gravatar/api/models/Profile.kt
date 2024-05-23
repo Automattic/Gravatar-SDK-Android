@@ -85,8 +85,8 @@ public data class Profile(
     val numberVerifiedAccounts: kotlin.Int? = null,
     // The date and time (UTC) the user last edited their profile. This is only provided in authenticated API requests.
     @SerializedName("last_profile_edit")
-    val lastProfileEdit: java.time.OffsetDateTime? = null,
+    val lastProfileEdit: java.time.Instant? = null,
     // The date the user registered their account. This is only provided in authenticated API requests.
     @SerializedName("registration_date")
-    val registrationDate: java.time.LocalDate? = null,
+    val registrationDate: java.time.Instant? = null,
 )
