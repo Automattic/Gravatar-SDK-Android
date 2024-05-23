@@ -280,7 +280,7 @@
           "registration_date": {
             "type": "string",
             "description": "The date the user registered their account. This is only provided in authenticated API requests.",
-            "format": "date",
+            "format": "date-time",
             "examples": [ "2021-10-01" ]
           }
         }
