@@ -59,8 +59,10 @@ import com.gravatar.ImageRating
 import com.gravatar.demoapp.BuildConfig
 import com.gravatar.demoapp.R
 import com.gravatar.demoapp.theme.GravatarDemoAppTheme
+import com.gravatar.demoapp.ui.components.ExpandableSection
 import com.gravatar.demoapp.ui.components.GravatarEmailInput
 import com.gravatar.demoapp.ui.model.SettingsState
+import com.gravatar.demoapp.ui.utils.prettyPrint
 import com.gravatar.services.ErrorType
 import com.gravatar.services.ProfileService
 import com.gravatar.services.Result
@@ -310,6 +312,14 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
                 }
             }
             Spacer(modifier = Modifier.height(16.dp))
+            profileState?.let { state ->
+                if (state is UserProfileState.Loaded) {
+                    ExpandableSection(title = stringResource(R.string.raw_profile_title)) {
+                        Text(text = state.userProfile.prettyPrint())
+                    }
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+            }
             ProfileComponents(profileState, theme, error)
         }
     }
