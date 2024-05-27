@@ -18,7 +18,7 @@ You can create the API Key as follows:
 
 ## Installation
 
-First step it to add the maven repositories and the right dependencies to the `build.gradle` file:
+First step it to add the maven repositories to the file where you manage your the dependency resolution and the right dependencies to the `build.gradle` file:
 
 ### Add the Gravatar dependencies to your project
 
@@ -35,7 +35,9 @@ repositories {
         }
     }
 }
+```
 
+```groovy
 dependencies {
     implementation ("com.gravatar:gravatar:<version>")
     implementation ("com.gravatar:gravatar-ui:<version>")
@@ -56,11 +58,11 @@ Then update your gradle file to read the API key from the `local.properties` fil
 
 ```groovy
 android {
-    defaultConfig {
-        Properties properties = new Properties()
-        properties.load(project.rootProject.file('local.properties').newDataInputStream())
-        buildConfigField "String", "GRAVATAR_API_KEY", "\"${properties.get("gravatar.api.key")}\""
-    }
+    buildFeatures.buildConfig = true
+
+    val properties = Properties()
+    properties.load(FileInputStream(project.rootProject.file("local.properties")))
+    buildConfigField("String", "GRAVATAR_API_KEY", "\"${properties["gravatar.api.key"]}\"")
 }
 ```
 
@@ -121,16 +123,32 @@ Once you have integrated this component into your app, you should see:
 
 If you are using a View-based app, you can use the following code snippet to integrate the Gravatar profile in your app. This is an example of a very simple component that fetches a Gravatar profile and displays it in a `ProfileCard`.
 
+In your layout xml file, you need to add the following view:
+
+```xml
+... 
+    <androidx.compose.ui.platform.ComposeView
+        android:id="@+id/gravatarComposeView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+...
+
+```
+
+From the code, you can set the composable code to that view as follows:
 ```kotlin
 
 class ExampleActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContent {
-            MaterialTheme {
-                GravatarProfileSummary("gravatar@automattic.com")
-            }
+        setContentView(R.layout.activity_main)
+        findViewById<ComposeView>(R.id.gravatarComposeView).setContent {
+            GravatarProfileSummary()
         }
     }
 }
