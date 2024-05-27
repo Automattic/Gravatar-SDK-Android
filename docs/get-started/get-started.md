@@ -3,7 +3,18 @@
 
 ## Setup
 
-TODO: Add the setup instructions here, create an account on dev.gravatar.com, get the API key, etc.
+You'll need an API key to use the SDK's full capabilities. You can use some features without an API Key, but you'll receive limited information, so we highly encourage you to create one in the [developers' portal](https://gravatar.com/developers/). 
+
+You can create the API Key as follows:
+
+1. Login in to your Gravatar account (or the Gravatar account you want to use to generate the key)
+2. Navigate to the [developers portal](https://gravatar.com/developers/)
+3. Tap on [`Create new Application`](https://gravatar.com/developers/new-application)
+4. Fill the required data and follow the flow
+
+<img src="screenshot-developers-portal.png" alt="Creating an API Key in the developers portal" width="600"/>
+
+5. You'll get your Gravatar API Key. Save it in a safe place!
 
 ## Installation
 
