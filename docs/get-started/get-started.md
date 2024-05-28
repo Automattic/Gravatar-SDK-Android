@@ -181,6 +181,28 @@ fun GravatarProfileSummary(emailAddress: String = "gravatar@automattic.com") {
 
 More information on the official documentation: [Using Compose in Views](https://developer.android.com/develop/ui/compose/migrate/interoperability-apis/compose-in-views).
 
+### Fetch user profile data
+
+It is possible that you want to use your own UI components with Gravatar data. In that case, you can use the SDK to fetch any user profile data given their username, email, or hash identifier. 
+
+For example, using the user's email:
+
+```kotlin
+coroutineScope.launch {
+    when (val profile = ProfileService().fetch(Email("gravatar@automattic.com"))) {
+        is Result.Success -> {
+            Log.d("Gravatar", "Profile: ${profile.value}")
+            // Do something with the profile
+        }
+
+        is Result.Failure -> {
+            Log.e("Gravatar", "Error: ${profile.error}")
+            // Handle the error
+        }
+    }
+}
+```
+
 ## Customization
 
 ### Override the GravatarTheme
