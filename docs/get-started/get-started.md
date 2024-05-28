@@ -1,9 +1,9 @@
 
 # Get Started with Gravatar-SDK-Android
 
-## Setup
+## Creating an API key
 
-You'll need an API key to use the SDK's full capabilities. You can use some features without an API Key, but you'll receive limited information, so we highly encourage you to create one in the [developers' portal](https://gravatar.com/developers/). 
+You'll need an API key to use the SDK's full capabilities. You can use some features without an API Key, but you'll receive limited information, and stricter rate limits may apply, so we highly encourage you to create one in the [developers' portal](https://gravatar.com/developers/). 
 
 You can create the API Key as follows:
 
