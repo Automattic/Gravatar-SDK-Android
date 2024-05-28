@@ -26,7 +26,7 @@ public class ProfileService(okHttpClient: OkHttpClient? = null) {
      */
     public suspend fun fetch(hashOrUsername: String): Result<Profile, ErrorType> = runCatchingService {
         withContext(GravatarSdkDI.dispatcherIO) {
-            val response = service.getProfileById(hashOrUsername, authenticationBearer)
+            val response = service.getProfileById(hashOrUsername)
             if (response.isSuccessful) {
                 val data = response.body()
                 if (data != null) {
