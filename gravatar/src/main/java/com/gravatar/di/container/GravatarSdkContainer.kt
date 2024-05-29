@@ -56,7 +56,7 @@ internal class GravatarSdkContainer private constructor() {
 
     fun getGravatarApiV3Service(okHttpClient: OkHttpClient? = null): GravatarApiService {
         return getRetrofitApiV3Builder().apply {
-            client(okHttpClient ?: OkHttpClient().newBuilder().addInterceptor(AuthenticationInterceptor()).build())
+            client((okHttpClient ?: OkHttpClient()).newBuilder().addInterceptor(AuthenticationInterceptor()).build())
         }.addConverterFactory(GsonConverterFactory.create(gson))
             .build().create(GravatarApiService::class.java)
     }
