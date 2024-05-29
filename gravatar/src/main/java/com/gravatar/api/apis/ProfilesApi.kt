@@ -10,7 +10,6 @@ package com.gravatar.api.apis
 import com.gravatar.api.models.Profile
 import retrofit2.Response
 import retrofit2.http.GET
-import retrofit2.http.Header
 import retrofit2.http.Path
 
 internal interface ProfilesApi {
@@ -23,13 +22,11 @@ internal interface ProfilesApi {
      *  - 429: Rate limit exceeded
      *  - 500: Internal server error
      *
-     * @param profileIdentifier This can either be an email address, SHA256 hash of an email address, or profile URL slug.
-     * @param authorization Bearer token to authenticate the request. Full profile information is only available in authenticated requests. (optional)
+     * @param profileIdentifier This can either be an SHA256 hash of an email address or profile URL slug.
      * @return [Profile]
      */
     @GET("profiles/{profileIdentifier}")
     suspend fun getProfileById(
         @Path("profileIdentifier") profileIdentifier: kotlin.String,
-        @Header("Authorization") authorization: kotlin.String? = null,
     ): Response<Profile>
 }

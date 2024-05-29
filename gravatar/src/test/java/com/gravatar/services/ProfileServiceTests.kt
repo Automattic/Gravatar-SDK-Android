@@ -36,7 +36,7 @@ class ProfileServiceTests {
             every { isSuccessful } returns true
             every { body() } returns mockk()
         }
-        coEvery { containerRule.gravatarApiServiceMock.getProfileById(username, any()) } returns mockResponse
+        coEvery { containerRule.gravatarApiServiceMock.getProfileById(username) } returns mockResponse
 
         val loadProfileResponse = profileService.fetchByUsername(username)
 
@@ -52,7 +52,7 @@ class ProfileServiceTests {
                 every { isSuccessful } returns true
                 every { body() } returns null
             }
-            coEvery { containerRule.gravatarApiServiceMock.getProfileById(username, any()) } returns mockResponse
+            coEvery { containerRule.gravatarApiServiceMock.getProfileById(username) } returns mockResponse
 
             val loadProfileResponse = profileService.fetchByUsername(username)
 
@@ -66,7 +66,7 @@ class ProfileServiceTests {
         val mockResponse = mockk<Response<Profile>> {
             every { isSuccessful } returns false
         }
-        coEvery { containerRule.gravatarApiServiceMock.getProfileById(username, any()) } returns mockResponse
+        coEvery { containerRule.gravatarApiServiceMock.getProfileById(username) } returns mockResponse
 
         val loadProfileResponse = profileService.fetchByUsername(username)
 
@@ -77,7 +77,7 @@ class ProfileServiceTests {
     @Test
     fun `given an username when loading its profile and an exception is thrown then result is failure`() = runTest {
         val username = "username"
-        coEvery { containerRule.gravatarApiServiceMock.getProfileById(username, any()) } throws Exception()
+        coEvery { containerRule.gravatarApiServiceMock.getProfileById(username) } throws Exception()
 
         val loadProfileResponse = profileService.fetchByUsername(username)
 
@@ -93,7 +93,7 @@ class ProfileServiceTests {
             every { body() } returns mockk()
         }
         coEvery {
-            containerRule.gravatarApiServiceMock.getProfileById(usernameHash.toString(), any())
+            containerRule.gravatarApiServiceMock.getProfileById(usernameHash.toString())
         } returns mockResponse
 
         val loadProfileResponse = profileService.fetch(usernameHash)
@@ -110,7 +110,7 @@ class ProfileServiceTests {
             every { body() } returns mockk()
         }
         coEvery {
-            containerRule.gravatarApiServiceMock.getProfileById(usernameEmail.hash().toString(), any())
+            containerRule.gravatarApiServiceMock.getProfileById(usernameEmail.hash().toString())
         } returns mockResponse
 
         val loadProfileResponse = profileService.fetch(usernameEmail)

@@ -14,18 +14,23 @@ import org.junit.runners.model.Statement
 class GravatarSdkContainerRule : TestRule {
     val testDispatcher = UnconfinedTestDispatcher()
 
+    companion object {
+        const val DEFAULT_API_KEY = "apiKey"
+    }
+
     internal var gravatarSdkContainerMock = mockk<GravatarSdkContainer>()
     internal var gravatarApiServiceMock = mockk<GravatarApiService>()
 
     override fun apply(base: Statement, description: Description): Statement {
         return object : Statement() {
             override fun evaluate() {
-                gravatarSdkContainerMock = mockk<GravatarSdkContainer>()
+                gravatarSdkContainerMock = mockk<GravatarSdkContainer>(relaxed = true)
                 gravatarApiServiceMock = mockk<GravatarApiService>(relaxed = true)
                 mockkObject(GravatarSdkContainer)
                 every { gravatarSdkContainerMock.dispatcherMain } returns testDispatcher
                 every { gravatarSdkContainerMock.dispatcherDefault } returns testDispatcher
                 every { gravatarSdkContainerMock.dispatcherIO } returns testDispatcher
+                every { gravatarSdkContainerMock.apiKey } returns null
                 every { GravatarSdkContainer.instance } returns gravatarSdkContainerMock
                 every { gravatarSdkContainerMock.getGravatarApiV1Service(any()) } returns gravatarApiServiceMock
                 every { gravatarSdkContainerMock.getGravatarApiV3Service(any()) } returns gravatarApiServiceMock
@@ -33,5 +38,9 @@ class GravatarSdkContainerRule : TestRule {
                 base.evaluate()
             }
         }
+    }
+
+    fun withApiKey(apiKey: String? = DEFAULT_API_KEY) {
+        every { gravatarSdkContainerMock.apiKey } returns apiKey
     }
 }
