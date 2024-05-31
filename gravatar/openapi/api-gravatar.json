@@ -68,11 +68,17 @@
         "type": "object",
         "description": "A verified account on a user's profile.",
         "required": [
+          "service_type",
           "service_label",
           "service_icon",
           "url"
         ],
         "properties": {
+          "service_type": {
+            "type": "string",
+            "description": "The type of the service.",
+            "examples": [ "tumblr" ]
+          },
           "service_label": {
             "type": "string",
             "description": "The name of the service.",

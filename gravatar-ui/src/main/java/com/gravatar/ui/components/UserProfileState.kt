@@ -58,27 +58,32 @@ public fun LoadingToLoadedStatePreview(composable: @Composable (state: UserProfi
                 pronouns = "They/Them",
                 verifiedAccounts = listOf(
                     VerifiedAccount(
+                        serviceType = "mastodon",
                         serviceLabel = "Mastodon",
                         url = URI("https://example.com"),
                         serviceIcon = URI("https://example.com/icon.svg"),
                     ),
                     VerifiedAccount(
+                        serviceType = "tumblr",
                         serviceLabel = "Tumblr",
                         url = URI("https://example.com"),
                         serviceIcon = URI("https://example.com/icon.svg"),
                     ),
                     // Invalid url, should be ignored:
                     VerifiedAccount(
+                        serviceType = "tiktok",
                         serviceLabel = "TikTok",
                         url = URI("https://example.com"),
                         serviceIcon = URI("https://example.com/icon.svg"),
                     ),
                     VerifiedAccount(
+                        serviceType = "wordpress",
                         serviceLabel = "WordPress",
                         url = URI("https://example.com"),
                         serviceIcon = URI("https://example.com/icon.svg"),
                     ),
                     VerifiedAccount(
+                        serviceType = "github",
                         serviceLabel = "GitHub",
                         url = URI("https://example.com"),
                         serviceIcon = URI("https://example.com/icon.svg"),

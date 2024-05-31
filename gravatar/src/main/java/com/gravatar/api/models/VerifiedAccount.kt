@@ -12,12 +12,16 @@ import com.google.gson.annotations.SerializedName
 /**
  * A verified account on a user's profile.
  *
+ * @param serviceType The type of the service.
  * @param serviceLabel The name of the service.
  * @param serviceIcon The URL to the service's icon.
  * @param url The URL to the user's profile on the service.
  */
 
 public data class VerifiedAccount(
+    // The type of the service.
+    @SerializedName("service_type")
+    val serviceType: kotlin.String,
     // The name of the service.
     @SerializedName("service_label")
     val serviceLabel: kotlin.String,
