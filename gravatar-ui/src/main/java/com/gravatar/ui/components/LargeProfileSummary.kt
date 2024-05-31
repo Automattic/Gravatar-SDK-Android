@@ -84,16 +84,19 @@ private fun LargeProfileSummaryPreview() {
                 pronouns = "They/Them",
                 verifiedAccounts = listOf(
                     VerifiedAccount(
+                        serviceType = "mastodon",
                         serviceLabel = "Mastodon",
                         url = URI("https://mastodon.social/@ddoe"),
                         serviceIcon = URI("https://example.com/icon.svg"),
                     ),
                     VerifiedAccount(
+                        serviceType = "tumblr",
                         serviceLabel = "Tumblr",
                         url = URI("https://ddoe.tumblr.com"),
                         serviceIcon = URI("https://example.com/icon.svg"),
                     ),
                     VerifiedAccount(
+                        serviceType = "wordpress",
                         serviceLabel = "WordPress",
                         url = URI("https://ddoe.wordpress.com"),
                         serviceIcon = URI("https://example.com/icon.svg"),
