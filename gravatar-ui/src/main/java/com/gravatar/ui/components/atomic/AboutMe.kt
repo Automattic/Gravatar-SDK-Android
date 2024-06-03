@@ -20,8 +20,8 @@ import com.gravatar.api.models.Profile
 import com.gravatar.extensions.emptyProfile
 import com.gravatar.ui.R
 import com.gravatar.ui.TextSkeletonEffect
+import com.gravatar.ui.components.ComponentState
 import com.gravatar.ui.components.LoadingToLoadedStatePreview
-import com.gravatar.ui.components.UserProfileState
 
 /**
  * [AboutMe] is a composable that displays a user's about me description.
@@ -53,7 +53,7 @@ public fun AboutMe(
  */
 @Composable
 public fun AboutMe(
-    state: UserProfileState,
+    state: ComponentState<Profile>,
     modifier: Modifier = Modifier,
     textStyle: TextStyle = MaterialTheme.typography.bodyMedium,
     content: @Composable ((String, Modifier) -> Unit) = { userInfo, contentModifier ->
@@ -61,15 +61,15 @@ public fun AboutMe(
     },
 ) {
     when (state) {
-        is UserProfileState.Loading -> {
+        is ComponentState.Loading -> {
             TextSkeletonEffect(textStyle = textStyle)
         }
 
-        is UserProfileState.Loaded -> {
-            AboutMe(state.userProfile, modifier, textStyle, content)
+        is ComponentState.Loaded -> {
+            AboutMe(state.loadedValue, modifier, textStyle, content)
         }
 
-        UserProfileState.Empty -> {
+        ComponentState.Empty -> {
             DashedBorder(modifier) {
                 content.invoke(
                     stringResource(id = R.string.empty_state_about_me),
@@ -125,7 +125,7 @@ private fun AboutMePreview() {
 @Preview
 @Composable
 private fun AboutMeEmptyState() {
-    AboutMe(UserProfileState.Empty)
+    AboutMe(ComponentState.Empty)
 }
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)

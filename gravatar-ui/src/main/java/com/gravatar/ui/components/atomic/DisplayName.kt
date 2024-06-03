@@ -12,8 +12,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.gravatar.api.models.Profile
 import com.gravatar.ui.R
 import com.gravatar.ui.TextSkeletonEffect
+import com.gravatar.ui.components.ComponentState
 import com.gravatar.ui.components.LoadingToLoadedStatePreview
-import com.gravatar.ui.components.UserProfileState
 
 /**
  * [DisplayName] is a composable that displays the user's display name.
@@ -45,20 +45,20 @@ private fun DisplayName(displayName: String, modifier: Modifier, textStyle: Text
  */
 @Composable
 public fun DisplayName(
-    state: UserProfileState,
+    state: ComponentState<Profile>,
     modifier: Modifier = Modifier,
     textStyle: TextStyle = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
 ) {
     when (state) {
-        is UserProfileState.Loading -> {
+        is ComponentState.Loading -> {
             TextSkeletonEffect(textStyle = textStyle)
         }
 
-        is UserProfileState.Loaded -> {
-            DisplayName(state.userProfile, modifier, textStyle)
+        is ComponentState.Loaded -> {
+            DisplayName(state.loadedValue, modifier, textStyle)
         }
 
-        UserProfileState.Empty -> DisplayName(
+        ComponentState.Empty -> DisplayName(
             displayName = stringResource(id = R.string.empty_state_display_name),
             modifier,
             textStyle,

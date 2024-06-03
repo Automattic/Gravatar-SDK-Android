@@ -28,8 +28,8 @@ import com.gravatar.api.models.VerifiedAccount
 import com.gravatar.extensions.emptyProfile
 import com.gravatar.extensions.profileUrl
 import com.gravatar.ui.R
+import com.gravatar.ui.components.ComponentState
 import com.gravatar.ui.components.LoadingToLoadedStatePreview
-import com.gravatar.ui.components.UserProfileState
 import com.gravatar.ui.skeletonEffect
 import java.net.MalformedURLException
 import java.net.URI
@@ -194,9 +194,9 @@ public fun SocialIconRow(profile: Profile, modifier: Modifier = Modifier, maxIco
  * @param maxIcons The maximum number of icons to display
  */
 @Composable
-public fun SocialIconRow(state: UserProfileState, modifier: Modifier = Modifier, maxIcons: Int = 4) {
+public fun SocialIconRow(state: ComponentState<Profile>, modifier: Modifier = Modifier, maxIcons: Int = 4) {
     when (state) {
-        is UserProfileState.Loading -> {
+        is ComponentState.Loading -> {
             Row(modifier = modifier) {
                 repeat(maxIcons) {
                     Box(
@@ -210,11 +210,11 @@ public fun SocialIconRow(state: UserProfileState, modifier: Modifier = Modifier,
             }
         }
 
-        is UserProfileState.Loaded -> {
-            SocialIconRow(state.userProfile, modifier, maxIcons)
+        is ComponentState.Loaded -> {
+            SocialIconRow(state.loadedValue, modifier, maxIcons)
         }
 
-        UserProfileState.Empty -> {
+        ComponentState.Empty -> {
             SocialIcon(
                 media = SocialMedia(
                     URL(GravatarConstants.GRAVATAR_BASE_URL),

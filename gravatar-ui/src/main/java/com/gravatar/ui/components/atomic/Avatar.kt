@@ -15,8 +15,8 @@ import com.gravatar.api.models.Profile
 import com.gravatar.extensions.avatarUrl
 import com.gravatar.extensions.emptyProfile
 import com.gravatar.ui.R
+import com.gravatar.ui.components.ComponentState
 import com.gravatar.ui.components.LoadingToLoadedStatePreview
-import com.gravatar.ui.components.UserProfileState
 import com.gravatar.ui.components.isNightModeEnabled
 import com.gravatar.ui.skeletonEffect
 
@@ -67,13 +67,13 @@ private fun Avatar(model: Any?, size: Dp, modifier: Modifier) {
  */
 @Composable
 public fun Avatar(
-    state: UserProfileState,
+    state: ComponentState<Profile>,
     size: Dp,
     modifier: Modifier = Modifier,
     avatarQueryOptions: AvatarQueryOptions? = null,
 ) {
     when (state) {
-        is UserProfileState.Loading -> {
+        is ComponentState.Loading -> {
             Box(
                 modifier = modifier
                     .size(size)
@@ -81,16 +81,16 @@ public fun Avatar(
             )
         }
 
-        is UserProfileState.Loaded -> {
+        is ComponentState.Loaded -> {
             Avatar(
-                profile = state.userProfile,
+                profile = state.loadedValue,
                 size = size,
                 modifier = modifier,
                 avatarQueryOptions = avatarQueryOptions,
             )
         }
 
-        UserProfileState.Empty -> Avatar(
+        ComponentState.Empty -> Avatar(
             model = if (isNightModeEnabled()) {
                 R.drawable.empty_profile_avatar_dark
             } else {
@@ -118,5 +118,5 @@ private fun AvatarStatePreview() {
 @Preview
 @Composable
 private fun AvatarEmptyPreview() {
-    Avatar(UserProfileState.Empty, 256.dp)
+    Avatar(ComponentState.Empty, 256.dp)
 }

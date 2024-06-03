@@ -15,8 +15,8 @@ import com.gravatar.api.models.Profile
 import com.gravatar.extensions.emptyProfile
 import com.gravatar.ui.R
 import com.gravatar.ui.TextSkeletonEffect
+import com.gravatar.ui.components.ComponentState
 import com.gravatar.ui.components.LoadingToLoadedStatePreview
-import com.gravatar.ui.components.UserProfileState
 
 /**
  * [Location] is a composable that displays a user's location in text format.
@@ -50,7 +50,7 @@ public fun Location(
  */
 @Composable
 public fun Location(
-    state: UserProfileState,
+    state: ComponentState<Profile>,
     modifier: Modifier = Modifier,
     textStyle: TextStyle = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.outline),
     content: @Composable ((String, Modifier) -> Unit) = { location, contentModifier ->
@@ -58,15 +58,15 @@ public fun Location(
     },
 ) {
     when (state) {
-        is UserProfileState.Loading -> {
+        is ComponentState.Loading -> {
             TextSkeletonEffect(textStyle = textStyle, modifier = Modifier.width(120.dp))
         }
 
-        is UserProfileState.Loaded -> {
-            Location(state.userProfile, modifier, textStyle, content)
+        is ComponentState.Loaded -> {
+            Location(state.loadedValue, modifier, textStyle, content)
         }
 
-        UserProfileState.Empty -> {
+        ComponentState.Empty -> {
             content.invoke(stringResource(id = R.string.empty_state_user_info), modifier)
         }
     }

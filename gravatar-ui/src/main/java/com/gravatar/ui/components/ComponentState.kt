@@ -14,38 +14,39 @@ import com.gravatar.api.models.Profile
 import com.gravatar.api.models.VerifiedAccount
 import com.gravatar.extensions.emptyProfile
 import com.gravatar.ui.GravatarTheme
-import com.gravatar.ui.components.UserProfileState.Loaded
-import com.gravatar.ui.components.UserProfileState.Loading
+import com.gravatar.ui.components.ComponentState.Loaded
+import com.gravatar.ui.components.ComponentState.Loading
 import kotlinx.coroutines.delay
 import java.net.URI
 
 /**
- * [UserProfileState] represents the state of a user profile loading.
+ * [ComponentState] represents the state of a user profile loading.
  * It can be in a [Loading] state or a [Loaded] state.
  */
-public sealed class UserProfileState {
+public sealed class ComponentState<out T> {
     /**
-     * [Loading] represents the state where the user profile is still loading.
+     * [Loading] represents the state where the data is still loading.
      */
-    public data object Loading : UserProfileState()
+    public data object Loading : ComponentState<Nothing>()
 
     /**
-     * [Loaded] represents the state where the user profile has been loaded.
+     * [Loaded] represents the state where the user data has been loaded.
      *
-     * @property userProfile The user's profile information
+     * @param T the type of the information to load
+     * @property loadedValue The loaded information
      */
-    public data class Loaded(val userProfile: Profile) : UserProfileState()
+    public data class Loaded<T>(val loadedValue: T) : ComponentState<T>()
 
     /**
-     * [Empty] represents the state where the user profile is empty, so it can be claimed.
+     * [Empty] represents the state where the data is empty
      */
-    public data object Empty : UserProfileState()
+    public data object Empty : ComponentState<Nothing>()
 }
 
 @Preview
 @Composable
-public fun LoadingToLoadedStatePreview(composable: @Composable (state: UserProfileState) -> Unit = {}) {
-    var state: UserProfileState by remember { mutableStateOf(Loading) }
+public fun LoadingToLoadedStatePreview(composable: @Composable (state: ComponentState<Profile>) -> Unit = {}) {
+    var state: ComponentState<Profile> by remember { mutableStateOf(Loading) }
     LaunchedEffect(key1 = state) {
         delay(5000)
         state = Loaded(

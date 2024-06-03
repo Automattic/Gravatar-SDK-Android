@@ -16,8 +16,8 @@ import com.gravatar.extensions.emptyProfile
 import com.gravatar.extensions.formattedUserInfo
 import com.gravatar.ui.R
 import com.gravatar.ui.TextSkeletonEffect
+import com.gravatar.ui.components.ComponentState
 import com.gravatar.ui.components.LoadingToLoadedStatePreview
-import com.gravatar.ui.components.UserProfileState
 
 /**
  * [UserInfo] is a composable that displays a user's information in a formatted way.
@@ -53,7 +53,7 @@ public fun UserInfo(
  */
 @Composable
 public fun UserInfo(
-    state: UserProfileState,
+    state: ComponentState<Profile>,
     modifier: Modifier = Modifier,
     textStyle: TextStyle = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.outline),
     content: @Composable ((String, Modifier) -> Unit) = { userInfo, contentModifier ->
@@ -61,15 +61,15 @@ public fun UserInfo(
     },
 ) {
     when (state) {
-        is UserProfileState.Loading -> {
+        is ComponentState.Loading -> {
             TextSkeletonEffect(textStyle = textStyle, modifier = Modifier.width(120.dp))
         }
 
-        is UserProfileState.Loaded -> {
-            UserInfo(state.userProfile, modifier, textStyle, content)
+        is ComponentState.Loaded -> {
+            UserInfo(state.loadedValue, modifier, textStyle, content)
         }
 
-        UserProfileState.Empty -> content.invoke(stringResource(R.string.empty_state_user_info), modifier)
+        ComponentState.Empty -> content.invoke(stringResource(R.string.empty_state_user_info), modifier)
     }
 }
 
