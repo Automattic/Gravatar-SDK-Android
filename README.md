@@ -5,6 +5,9 @@
 
 Gravatar Android library
 
+## Getting Started
+If you are here because you want to integrate the Gravatar SDK in your Android app, please go to our [Get Started](/gravatar/docs/get-started/get-started.md) document. There, you can find a quick tour about obtaining an API key and using the library in your projects.
+
 ## Architecture
 
 This project contains the source code for the Gravatar SDK library and a demo app. The demo app aims to achieve two different goals. On the one hand, it demonstrates how to use the Gravatar SDK library. On the other hand it serves as a testbed for the library.
