@@ -34,7 +34,7 @@ import com.gravatar.ui.components.atomic.ViewProfileButton
  */
 @Composable
 public fun ProfileSummary(profile: Profile, modifier: Modifier = Modifier) {
-    ProfileSummary(state = UserProfileState.Loaded(profile), modifier = modifier)
+    ProfileSummary(state = ComponentState.Loaded(profile), modifier = modifier)
 }
 
 /**
@@ -45,7 +45,7 @@ public fun ProfileSummary(profile: Profile, modifier: Modifier = Modifier) {
  * @param modifier Composable modifier
  */
 @Composable
-public fun ProfileSummary(state: UserProfileState, modifier: Modifier = Modifier) {
+public fun ProfileSummary(state: ComponentState<Profile>, modifier: Modifier = Modifier) {
     GravatarTheme {
         EmptyProfileClickableContainer(state) {
             Row(modifier = modifier) {
@@ -60,17 +60,17 @@ public fun ProfileSummary(state: UserProfileState, modifier: Modifier = Modifier
                         textStyle = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                     )
                     when (state) {
-                        is UserProfileState.Loaded -> {
-                            if (state.userProfile.location.isNotBlank()) {
+                        is ComponentState.Loaded -> {
+                            if (state.loadedValue.location.isNotBlank()) {
                                 Location(state)
                             }
                         }
 
-                        UserProfileState.Loading -> {
+                        ComponentState.Loading -> {
                             Location(state, modifier.width(120.dp))
                         }
 
-                        UserProfileState.Empty -> {
+                        ComponentState.Empty -> {
                             Location(state)
                         }
                     }
@@ -109,7 +109,7 @@ private fun ProfileSummaryLoadingPreview() {
 private fun ProfileSummaryEmptyPreview() {
     GravatarTheme {
         Surface(Modifier.fillMaxWidth()) {
-            ProfileSummary(UserProfileState.Empty)
+            ProfileSummary(ComponentState.Empty)
         }
     }
 }

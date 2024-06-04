@@ -34,8 +34,8 @@ import com.gravatar.extensions.emptyProfile
 import com.gravatar.extensions.profileUrl
 import com.gravatar.ui.R
 import com.gravatar.ui.TextSkeletonEffect
+import com.gravatar.ui.components.ComponentState
 import com.gravatar.ui.components.LoadingToLoadedStatePreview
-import com.gravatar.ui.components.UserProfileState
 
 /**
  * ViewProfileButton is a composable that displays a button to view a user's profile.
@@ -118,13 +118,13 @@ private fun ViewProfileButton(
  */
 @Composable
 public fun ViewProfileButton(
-    state: UserProfileState,
+    state: ComponentState<Profile>,
     modifier: Modifier = Modifier,
     textStyle: TextStyle = MaterialTheme.typography.titleSmall.copy(color = MaterialTheme.colorScheme.onBackground),
     inlineContent: @Composable ((String) -> Unit)? = { DefaultInlineContent(textStyle.color) },
 ) {
     when (state) {
-        is UserProfileState.Loading -> {
+        is ComponentState.Loading -> {
             TextButton(
                 onClick = {},
                 contentPadding = PaddingValues(start = 0.dp, end = 0.dp),
@@ -134,11 +134,11 @@ public fun ViewProfileButton(
             }
         }
 
-        is UserProfileState.Loaded -> {
-            ViewProfileButton(state.userProfile, modifier, textStyle, inlineContent)
+        is ComponentState.Loaded -> {
+            ViewProfileButton(state.loadedValue, modifier, textStyle, inlineContent)
         }
 
-        UserProfileState.Empty -> {
+        ComponentState.Empty -> {
             ViewProfileButton(
                 buttonText = stringResource(id = R.string.empty_state_view_profile_button),
                 url = GravatarConstants.GRAVATAR_SIGN_IN_URL,

@@ -6,10 +6,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import com.gravatar.GravatarConstants
+import com.gravatar.api.models.Profile
 
 @Composable
-internal fun EmptyProfileClickableContainer(userProfileState: UserProfileState?, content: @Composable () -> Unit) {
-    if (userProfileState is UserProfileState.Empty) {
+internal fun EmptyProfileClickableContainer(
+    userProfileState: ComponentState<Profile>?,
+    content: @Composable () -> Unit,
+) {
+    if (userProfileState is ComponentState.Empty) {
         Box(Modifier.emptyProfileClick(userProfileState)) {
             content()
         }
@@ -19,8 +23,8 @@ internal fun EmptyProfileClickableContainer(userProfileState: UserProfileState?,
 }
 
 @Composable
-private fun Modifier.emptyProfileClick(userProfileState: UserProfileState?): Modifier {
-    return if (userProfileState is UserProfileState.Empty) {
+private fun Modifier.emptyProfileClick(userProfileState: ComponentState<Profile>?): Modifier {
+    return if (userProfileState is ComponentState.Empty) {
         val uriHandler = LocalUriHandler.current
         this.clickable {
             uriHandler.openUri(GravatarConstants.GRAVATAR_SIGN_IN_URL)

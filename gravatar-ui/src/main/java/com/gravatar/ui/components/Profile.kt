@@ -39,7 +39,7 @@ import java.net.URI
  */
 @Composable
 public fun Profile(profile: Profile, modifier: Modifier = Modifier) {
-    Profile(state = UserProfileState.Loaded(profile), modifier = modifier)
+    Profile(state = ComponentState.Loaded(profile), modifier = modifier)
 }
 
 /**
@@ -50,7 +50,7 @@ public fun Profile(profile: Profile, modifier: Modifier = Modifier) {
  * @param modifier Composable modifier
  */
 @Composable
-public fun Profile(state: UserProfileState, modifier: Modifier = Modifier) {
+public fun Profile(state: ComponentState<Profile>, modifier: Modifier = Modifier) {
     GravatarTheme {
         EmptyProfileClickableContainer(state) {
             Column(
@@ -138,7 +138,7 @@ private fun ProfileLoadingPreview() {
 private fun ProfileEmptyPreview() {
     GravatarTheme {
         Surface(Modifier.fillMaxWidth()) {
-            Profile(UserProfileState.Empty)
+            Profile(ComponentState.Empty)
         }
     }
 }

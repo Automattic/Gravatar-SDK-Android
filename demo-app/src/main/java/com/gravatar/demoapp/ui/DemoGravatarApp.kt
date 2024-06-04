@@ -56,6 +56,7 @@ import com.gravatar.AvatarQueryOptions
 import com.gravatar.AvatarUrl
 import com.gravatar.DefaultAvatarOption
 import com.gravatar.ImageRating
+import com.gravatar.api.models.Profile
 import com.gravatar.demoapp.BuildConfig
 import com.gravatar.demoapp.R
 import com.gravatar.demoapp.theme.GravatarDemoAppTheme
@@ -68,11 +69,11 @@ import com.gravatar.services.ProfileService
 import com.gravatar.services.Result
 import com.gravatar.types.Email
 import com.gravatar.ui.GravatarTheme
+import com.gravatar.ui.components.ComponentState
 import com.gravatar.ui.components.LargeProfile
 import com.gravatar.ui.components.LargeProfileSummary
 import com.gravatar.ui.components.Profile
 import com.gravatar.ui.components.ProfileSummary
-import com.gravatar.ui.components.UserProfileState
 import com.gravatar.ui.gravatarTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -171,7 +172,7 @@ private enum class ThemeOptions {
 }
 
 @Composable
-private fun ProfileComponents(profileState: UserProfileState?, theme: ThemeOptions, error: String) {
+private fun ProfileComponents(profileState: ComponentState<Profile>?, theme: ThemeOptions, error: String) {
     val configuration = Configuration(LocalConfiguration.current).apply {
         uiMode = when (theme) {
             ThemeOptions.LIGHT -> Configuration.UI_MODE_NIGHT_NO
@@ -223,7 +224,7 @@ private fun ProfileComponents(profileState: UserProfileState?, theme: ThemeOptio
 @Composable
 private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwable?) -> Unit) {
     var email by remember { mutableStateOf(BuildConfig.DEMO_EMAIL, neverEqualPolicy()) }
-    var profileState: UserProfileState? by remember { mutableStateOf(null, neverEqualPolicy()) }
+    var profileState: ComponentState<Profile>? by remember { mutableStateOf(null, neverEqualPolicy()) }
     var error by remember { mutableStateOf("") }
     val profileService = ProfileService()
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -252,18 +253,18 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
                         keyboardController?.hide()
                         scope.launch {
                             error = ""
-                            profileState = UserProfileState.Loading
+                            profileState = ComponentState.Loading
                             when (val result = profileService.fetch(Email(email))) {
                                 is Result.Success -> {
                                     result.value.let {
-                                        profileState = UserProfileState.Loaded(it)
+                                        profileState = ComponentState.Loaded(it)
                                     }
                                 }
 
                                 is Result.Failure -> {
                                     when (result.error) {
                                         ErrorType.NOT_FOUND -> {
-                                            profileState = UserProfileState.Empty
+                                            profileState = ComponentState.Empty
                                         }
 
                                         else -> {
@@ -278,9 +279,9 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
                 ) { Text(text = stringResource(R.string.button_get_profile)) }
                 Spacer(modifier = Modifier.width(4.dp))
                 Button(
-                    enabled = profileState !is UserProfileState.Loading,
+                    enabled = profileState !is ComponentState.Loading,
                     onClick = {
-                        profileState = UserProfileState.Loading
+                        profileState = ComponentState.Loading
                     },
                 ) {
                     Text(text = stringResource(R.string.button_enable_loading_state))
@@ -313,9 +314,9 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
             }
             Spacer(modifier = Modifier.height(16.dp))
             profileState?.let { state ->
-                if (state is UserProfileState.Loaded) {
+                if (state is ComponentState.Loaded) {
                     ExpandableSection(title = stringResource(R.string.raw_profile_title)) {
-                        Text(text = state.userProfile.prettyPrint())
+                        Text(text = state.loadedValue.prettyPrint())
                     }
                     Spacer(modifier = Modifier.height(16.dp))
                 }
