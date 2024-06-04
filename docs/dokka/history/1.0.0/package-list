@@ -1,0 +1,13 @@
+$dokka.format:html-v1
+$dokka.linkExtension:html
+
+module:gravatar
+com.gravatar
+com.gravatar.api.models
+com.gravatar.extensions
+com.gravatar.services
+com.gravatar.types
+module:gravatar-ui
+com.gravatar.ui
+com.gravatar.ui.components
+com.gravatar.ui.components.atomic
