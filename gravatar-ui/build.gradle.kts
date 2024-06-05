@@ -3,6 +3,7 @@ import org.jetbrains.dokka.gradle.DokkaTaskPartial
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("org.jetbrains.kotlin.plugin.compose")
     id("com.automattic.android.publish-to-s3")
 
     // Ktlint
@@ -50,8 +51,13 @@ android {
     buildFeatures {
         compose = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.8"
+    composeCompiler {
+        // Enable 'strong skipping'
+        // https://medium.com/androiddevelopers/jetpack-compose-strong-skipping-mode-explained-cbdb2aa4b900
+        enableStrongSkippingMode.set(true)
+        // Needed for Layout Inspector to be able to see all of the nodes in the component tree:
+        // https://issuetracker.google.com/issues/338842143
+        includeSourceInformation.set(true)
     }
 
     tasks.withType<DokkaTaskPartial>().configureEach {
