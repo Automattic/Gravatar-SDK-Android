@@ -6,7 +6,7 @@
 The Gravatar Android SDK is a library that provides a set of UI components and utilities to fetch and display [Gravatar](https://gravatar.com/) images and profile data in Android applications.
 
 ## Getting started
-Hi there! If you're here because you want to integrate the Gravatar SDK into your Android application, please take a look at our [Get Started guide](/gravatar/docs/get-started/get-started.md). You'll find a quick overview of how to get an API key and use the library in your projects.
+Hi there! If you're here because you want to integrate the Gravatar SDK into your Android application, please take a look at our [Get Started guide](/docs/get-started/get-started.md). You'll find a quick overview of how to get an API key and use the library in your projects.
 
 ## Architecture
 
