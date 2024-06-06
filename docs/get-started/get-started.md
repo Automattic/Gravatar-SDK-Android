@@ -85,19 +85,19 @@ fun GravatarProfileSummary(emailAddress: String = "gravatar@automattic.com") {
     val profileService = ProfileService()
 
     // Set the default profile state to loading
-    var profileState: UserProfileState by remember { mutableStateOf(UserProfileState.Loading, neverEqualPolicy()) }
+    var profileState: ComponentState<Profile> by remember { mutableStateOf(ComponentState.Loading, neverEqualPolicy()) }
 
     // We wrap the fetch call in a LaunchedEffect to fetch the profile when the composable is first launched, but this
     // could be triggered by a button click, a text field change, etc.
     LaunchedEffect(emailAddress) {
         // Set the profile state to loading
-        profileState = UserProfileState.Loading
+        profileState = ComponentState.Loading
         // Fetch the user profile
         when (val result = profileService.fetch(Email(emailAddress))) {
             is Result.Success -> {
                 // Update the profile state with the loaded profile
                 result.value.let {
-                    profileState = UserProfileState.Loaded(it)
+                    profileState = ComponentState.Loaded(it)
                 }
             }
             is Result.Failure -> {
@@ -105,7 +105,7 @@ fun GravatarProfileSummary(emailAddress: String = "gravatar@automattic.com") {
                 // Here we log the error, but ideally we should show an error to the user.
                 Log.e("Gravatar", result.error.name)
                 // Set the Empty state on error
-                profileState = UserProfileState.Empty
+                profileState = ComponentState.Empty
             }
         }
     }
@@ -160,17 +160,28 @@ fun GravatarProfileSummary(emailAddress: String = "gravatar@automattic.com") {
     val profileService = ProfileService()
 
     // Set the default profile state to loading
-    var profileState: UserProfileState by remember { mutableStateOf(UserProfileState.Loading, neverEqualPolicy()) }
+    var profileState: ComponentState<Profile> by remember { mutableStateOf(ComponentState.Loading, neverEqualPolicy()) }
 
     // We wrap the fetch call in a LaunchedEffect to fetch the profile when the composable is first launched, but this
     // could be triggered by a button click, a text field change, etc.
     LaunchedEffect(emailAddress) {
         // Set the profile state to loading
-        profileState = UserProfileState.Loading
+        profileState = ComponentState.Loading
         // Fetch the user profile
-        val result = profileService.fetch(Email(emailAddress))
-        (result as? Result.Success)?.value?.let {
-            profileState = UserProfileState.Loaded(it)
+        when (val result = profileService.fetch(Email(emailAddress))) {
+            is Result.Success -> {
+                // Update the profile state with the loaded profile
+                result.value.let {
+                    profileState = ComponentState.Loaded(it)
+                }
+            }
+            is Result.Failure -> {
+                // An error can occur when a profile doesn't exist, if the phone is in airplane mode, etc.
+                // Here we log the error, but ideally we should show an error to the user.
+                Log.e("Gravatar", result.error.name)
+                // Set the Empty state on error
+                profileState = ComponentState.Empty
+            }
         }
     }
 
