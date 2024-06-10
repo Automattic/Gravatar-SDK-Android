@@ -52,9 +52,6 @@ android {
         compose = true
     }
     composeCompiler {
-        // Enable 'strong skipping'
-        // https://medium.com/androiddevelopers/jetpack-compose-strong-skipping-mode-explained-cbdb2aa4b900
-        enableStrongSkippingMode.set(true)
         // Needed for Layout Inspector to be able to see all of the nodes in the component tree:
         // https://issuetracker.google.com/issues/338842143
         includeSourceInformation.set(true)
