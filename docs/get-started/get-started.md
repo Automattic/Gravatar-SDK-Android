@@ -44,6 +44,35 @@ dependencies {
 }
 ```
 
+### Enable desugaring
+
+The Gravatar SDK uses Java 8 features in it's core module, so you need to [enable desugaring](https://developer.android.com/studio/write/java8-support#library-desugaring) in each module depending on the SDK. You can do this by adding the following to your `build.gradle` file:
+
+```groovy
+android {
+    compileOptions {
+        // For AGP 4.1+
+        isCoreLibraryDesugaringEnabled = true
+        // For AGP 4.0
+        // coreLibraryDesugaringEnabled = true
+
+        // Sets Java compatibility to Java 8
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    // For AGP 7.4+
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
+    // For AGP 7.3
+    // coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.2.3")
+    // For AGP 4.0 to 7.2
+    // coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.9")
+}
+
+```
+
 ### Store the Gravatar API key in your app
 
 There are many ways to store the Gravatar API key in your app. The best way to do this depends on your app's architecture and requirements and how you're already storing other sensitive information. Make sure to avoid hardcoding the API key in your app's code and make sure to avoid storing it in a public repository.
