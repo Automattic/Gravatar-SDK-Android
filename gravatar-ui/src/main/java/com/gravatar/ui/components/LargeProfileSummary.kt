@@ -38,7 +38,8 @@ public fun LargeProfileSummary(profile: Profile, modifier: Modifier = Modifier) 
 
 /**
  * [LargeProfileSummary] is a composable that displays a user's profile in a resumed way.
- * Given a [UserProfileState], it displays a [LargeProfileSummary] or the skeleton if it's in a loading state.
+ * Given a [ComponentState] for a [Profile], it displays a [LargeProfileSummary] or the skeleton if it's
+ * in a loading state.
  *
  * @param state The user's profile state
  * @param modifier Composable modifier
@@ -46,25 +47,27 @@ public fun LargeProfileSummary(profile: Profile, modifier: Modifier = Modifier) 
 @Composable
 public fun LargeProfileSummary(state: ComponentState<Profile>, modifier: Modifier = Modifier) {
     GravatarTheme {
-        EmptyProfileClickableContainer(state) {
-            Column(
-                modifier = modifier,
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Avatar(
-                    state = state,
-                    size = 132.dp,
-                    modifier = Modifier.clip(CircleShape),
-                )
-                DisplayName(state, modifier = Modifier.padding(top = 16.dp))
-                UserInfo(
-                    state,
-                    textStyle = MaterialTheme.typography.bodyMedium.copy(
-                        color = MaterialTheme.colorScheme.outline,
-                        textAlign = TextAlign.Center,
-                    ),
-                )
-                ViewProfileButton(state, Modifier.padding(0.dp), inlineContent = null)
+        Surface {
+            EmptyProfileClickableContainer(state) {
+                Column(
+                    modifier = modifier,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    Avatar(
+                        state = state,
+                        size = 132.dp,
+                        modifier = Modifier.clip(CircleShape),
+                    )
+                    DisplayName(state, modifier = Modifier.padding(top = 16.dp))
+                    UserInfo(
+                        state,
+                        textStyle = MaterialTheme.typography.bodyMedium.copy(
+                            color = MaterialTheme.colorScheme.outline,
+                            textAlign = TextAlign.Center,
+                        ),
+                    )
+                    ViewProfileButton(state, Modifier.padding(0.dp), inlineContent = null)
+                }
             }
         }
     }
