@@ -44,7 +44,7 @@ public fun Profile(profile: Profile, modifier: Modifier = Modifier) {
 
 /**
  * [Profile] is a composable that displays a user's profile card.
- * Given a [UserProfileState], it displays a profile UI component or the skeleton if it's in a loading state.
+ * Given a [ComponentState] for a [Profile], it displays a [Profile] or the skeleton if it's in a loading state.
  *
  * @param state The user's profile state
  * @param modifier Composable modifier
@@ -52,36 +52,38 @@ public fun Profile(profile: Profile, modifier: Modifier = Modifier) {
 @Composable
 public fun Profile(state: ComponentState<Profile>, modifier: Modifier = Modifier) {
     GravatarTheme {
-        EmptyProfileClickableContainer(state) {
-            Column(
-                modifier = modifier,
-                horizontalAlignment = Alignment.Start,
-                verticalArrangement = Arrangement.Top,
-            ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Avatar(
-                        state = state,
-                        size = 72.dp,
-                        modifier = Modifier.clip(CircleShape),
-                    )
-                    Column(modifier = Modifier.padding(14.dp, 0.dp, 0.dp, 0.dp)) {
-                        DisplayName(
-                            state,
-                            textStyle = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                        )
-                        UserInfo(state)
-                    }
-                }
-                Spacer(modifier = Modifier.height(16.dp))
-                AboutMe(state)
-                Spacer(modifier = Modifier.height(4.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically,
+        Surface {
+            EmptyProfileClickableContainer(state) {
+                Column(
+                    modifier = modifier,
+                    horizontalAlignment = Alignment.Start,
+                    verticalArrangement = Arrangement.Top,
                 ) {
-                    SocialIconRow(state, maxIcons = 4)
-                    ViewProfileButton(state, Modifier.padding(0.dp))
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Avatar(
+                            state = state,
+                            size = 72.dp,
+                            modifier = Modifier.clip(CircleShape),
+                        )
+                        Column(modifier = Modifier.padding(14.dp, 0.dp, 0.dp, 0.dp)) {
+                            DisplayName(
+                                state,
+                                textStyle = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                            )
+                            UserInfo(state)
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(16.dp))
+                    AboutMe(state)
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        SocialIconRow(state, maxIcons = 4)
+                        ViewProfileButton(state, Modifier.padding(0.dp))
+                    }
                 }
             }
         }

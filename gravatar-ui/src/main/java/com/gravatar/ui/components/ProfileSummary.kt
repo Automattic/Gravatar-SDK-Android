@@ -39,7 +39,7 @@ public fun ProfileSummary(profile: Profile, modifier: Modifier = Modifier) {
 
 /**
  * [ProfileSummary] is a composable that displays a mini profile card.
- * Given a [UserProfileState], it displays a profile summary card using the other atomic components.
+ * Given a [ComponentState] for a [Profile], it displays a [ProfileSummary] or the skeleton if it's in a loading state.
  *
  * @param state The user's profile state
  * @param modifier Composable modifier
@@ -47,37 +47,39 @@ public fun ProfileSummary(profile: Profile, modifier: Modifier = Modifier) {
 @Composable
 public fun ProfileSummary(state: ComponentState<Profile>, modifier: Modifier = Modifier) {
     GravatarTheme {
-        EmptyProfileClickableContainer(state) {
-            Row(modifier = modifier) {
-                Avatar(
-                    state = state,
-                    size = 72.dp,
-                    modifier = Modifier.clip(CircleShape),
-                )
-                Column(modifier = Modifier.padding(start = 14.dp)) {
-                    DisplayName(
-                        state,
-                        textStyle = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+        Surface {
+            EmptyProfileClickableContainer(state) {
+                Row(modifier = modifier) {
+                    Avatar(
+                        state = state,
+                        size = 72.dp,
+                        modifier = Modifier.clip(CircleShape),
                     )
-                    when (state) {
-                        is ComponentState.Loaded -> {
-                            if (state.loadedValue.location.isNotBlank()) {
+                    Column(modifier = Modifier.padding(start = 14.dp)) {
+                        DisplayName(
+                            state,
+                            textStyle = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                        )
+                        when (state) {
+                            is ComponentState.Loaded -> {
+                                if (state.loadedValue.location.isNotBlank()) {
+                                    Location(state)
+                                }
+                            }
+
+                            ComponentState.Loading -> {
+                                Location(state, modifier.width(120.dp))
+                            }
+
+                            ComponentState.Empty -> {
                                 Location(state)
                             }
                         }
-
-                        ComponentState.Loading -> {
-                            Location(state, modifier.width(120.dp))
-                        }
-
-                        ComponentState.Empty -> {
-                            Location(state)
-                        }
+                        ViewProfileButton(
+                            state,
+                            modifier = Modifier.height(32.dp),
+                        )
                     }
-                    ViewProfileButton(
-                        state,
-                        modifier = Modifier.height(32.dp),
-                    )
                 }
             }
         }

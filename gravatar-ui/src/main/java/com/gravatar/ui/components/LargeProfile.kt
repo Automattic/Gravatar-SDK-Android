@@ -28,7 +28,7 @@ import java.net.URI
 
 /**
  * [LargeProfile] is a composable that displays a user's profile card.
- * Given a [UserProfile], it displays a [LargeProfile] using the other atomic components provided within the SDK.
+ * Given a [ComponentState], it displays a [LargeProfile] using the other atomic components provided within the SDK.
  *
  * @param profile The user's profile information
  * @param modifier Composable modifier
@@ -40,7 +40,7 @@ public fun LargeProfile(profile: Profile, modifier: Modifier = Modifier) {
 
 /**
  * [LargeProfile] is a composable that displays a user's profile card.
- * Given a [UserProfileState], it displays a [LargeProfile] or the skeleton if it's in a loading state.
+ * Given a [ComponentState] for a [Profile], it displays a [LargeProfile] or the skeleton if it's in a loading state.
  *
  * @param state The user's profile state
  * @param modifier Composable modifier
@@ -48,27 +48,29 @@ public fun LargeProfile(profile: Profile, modifier: Modifier = Modifier) {
 @Composable
 public fun LargeProfile(state: ComponentState<Profile>, modifier: Modifier = Modifier) {
     GravatarTheme {
-        EmptyProfileClickableContainer(state) {
-            Column(
-                modifier = modifier,
-            ) {
-                Avatar(
-                    state = state,
-                    size = 132.dp,
-                    modifier = Modifier.clip(CircleShape),
-                )
-                DisplayName(state, modifier = Modifier.padding(top = 16.dp))
-                UserInfo(state)
-                AboutMe(state, modifier = Modifier.padding(top = 8.dp))
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 4.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically,
+        Surface {
+            EmptyProfileClickableContainer(state) {
+                Column(
+                    modifier = modifier,
                 ) {
-                    SocialIconRow(state, maxIcons = 4)
-                    ViewProfileButton(state, Modifier.padding(0.dp))
+                    Avatar(
+                        state = state,
+                        size = 132.dp,
+                        modifier = Modifier.clip(CircleShape),
+                    )
+                    DisplayName(state, modifier = Modifier.padding(top = 16.dp))
+                    UserInfo(state)
+                    AboutMe(state, modifier = Modifier.padding(top = 8.dp))
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 4.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        SocialIconRow(state, maxIcons = 4)
+                        ViewProfileButton(state, Modifier.padding(0.dp))
+                    }
                 }
             }
         }

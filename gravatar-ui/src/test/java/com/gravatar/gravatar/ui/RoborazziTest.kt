@@ -1,6 +1,5 @@
 package com.gravatar.gravatar.ui
 
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -36,9 +35,7 @@ abstract class RoborazziTest {
     fun gravatarScreenshotTest(composable: @Composable () -> Unit) {
         captureRoboImage {
             GravatarTheme {
-                Surface {
-                    composable()
-                }
+                composable()
             }
         }
     }
