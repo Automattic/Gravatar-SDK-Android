@@ -44,20 +44,34 @@ public fun LargeProfile(profile: Profile, modifier: Modifier = Modifier) {
  *
  * @param state The user's profile state
  * @param modifier Composable modifier
+ * @param avatar Composable to display the user avatar
+ * @param viewProfile Composable to display the view profile button
  */
 @Composable
-public fun LargeProfile(state: ComponentState<Profile>, modifier: Modifier = Modifier) {
+public fun LargeProfile(
+    state: ComponentState<Profile>,
+    modifier: Modifier = Modifier,
+    avatar: @Composable ((state: ComponentState<Profile>) -> Unit) = { profileState ->
+        Avatar(
+            state = profileState,
+            size = 132.dp,
+            modifier = Modifier.clip(CircleShape),
+        )
+    },
+    viewProfile: @Composable ((state: ComponentState<Profile>) -> Unit) = { profileState ->
+        ViewProfileButton(
+            profileState,
+            Modifier.padding(0.dp),
+        )
+    },
+) {
     GravatarTheme {
         Surface {
             EmptyProfileClickableContainer(state) {
                 Column(
                     modifier = modifier,
                 ) {
-                    Avatar(
-                        state = state,
-                        size = 132.dp,
-                        modifier = Modifier.clip(CircleShape),
-                    )
+                    avatar(state)
                     DisplayName(state, modifier = Modifier.padding(top = 16.dp))
                     UserInfo(state)
                     AboutMe(state, modifier = Modifier.padding(top = 8.dp))
@@ -69,7 +83,7 @@ public fun LargeProfile(state: ComponentState<Profile>, modifier: Modifier = Mod
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         SocialIconRow(state, maxIcons = 4)
-                        ViewProfileButton(state, Modifier.padding(0.dp))
+                        viewProfile(state)
                     }
                 }
             }
@@ -126,7 +140,7 @@ public fun DisplayNamePreview() {
 @Composable
 private fun ProfileEmptyPreview() {
     GravatarTheme {
-        Surface(Modifier.fillMaxWidth()) {
+        Surface {
             LargeProfile(ComponentState.Empty)
         }
     }

@@ -44,6 +44,8 @@ import com.gravatar.ui.components.LoadingToLoadedStatePreview
  * @param modifier Composable modifier
  * @param textStyle The style to apply to the text
  * @param inlineContent The content to display inline with the text, by default it is an arrow icon.
+ * @param buttonText The text to display on the button
+ *
  * It can be null if no content is needed.
  */
 @Composable
@@ -52,9 +54,10 @@ public fun ViewProfileButton(
     modifier: Modifier = Modifier,
     textStyle: TextStyle = MaterialTheme.typography.titleSmall.copy(color = MaterialTheme.colorScheme.onBackground),
     inlineContent: @Composable ((String) -> Unit)? = { DefaultInlineContent(textStyle.color) },
+    buttonText: String = stringResource(R.string.view_profile_button),
 ) {
     ViewProfileButton(
-        stringResource(R.string.view_profile_button),
+        buttonText,
         profile.profileUrl().url.toString(),
         textStyle,
         modifier,

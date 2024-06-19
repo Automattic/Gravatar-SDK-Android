@@ -38,14 +38,32 @@ public fun LargeProfileSummary(profile: Profile, modifier: Modifier = Modifier) 
 
 /**
  * [LargeProfileSummary] is a composable that displays a user's profile in a resumed way.
- * Given a [ComponentState] for a [Profile], it displays a [LargeProfileSummary] or the skeleton if it's
- * in a loading state.
+ * Given a [ComponentState] for a [Profile], it displays a [LargeProfileSummary] in the appropriate state.
  *
  * @param state The user's profile state
  * @param modifier Composable modifier
+ * @param avatar Composable to display the user avatar
+ * @param viewProfile Composable to display the view profile button
  */
 @Composable
-public fun LargeProfileSummary(state: ComponentState<Profile>, modifier: Modifier = Modifier) {
+public fun LargeProfileSummary(
+    state: ComponentState<Profile>,
+    modifier: Modifier = Modifier,
+    avatar: @Composable ((state: ComponentState<Profile>) -> Unit) = { profileState ->
+        Avatar(
+            state = profileState,
+            size = 132.dp,
+            modifier = Modifier.clip(CircleShape),
+        )
+    },
+    viewProfile: @Composable ((state: ComponentState<Profile>) -> Unit) = { profileState ->
+        ViewProfileButton(
+            profileState,
+            Modifier.padding(0.dp),
+            inlineContent = null,
+        )
+    },
+) {
     GravatarTheme {
         Surface {
             EmptyProfileClickableContainer(state) {
@@ -53,11 +71,7 @@ public fun LargeProfileSummary(state: ComponentState<Profile>, modifier: Modifie
                     modifier = modifier,
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-                    Avatar(
-                        state = state,
-                        size = 132.dp,
-                        modifier = Modifier.clip(CircleShape),
-                    )
+                    avatar(state)
                     DisplayName(state, modifier = Modifier.padding(top = 16.dp))
                     UserInfo(
                         state,
@@ -66,7 +80,7 @@ public fun LargeProfileSummary(state: ComponentState<Profile>, modifier: Modifie
                             textAlign = TextAlign.Center,
                         ),
                     )
-                    ViewProfileButton(state, Modifier.padding(0.dp), inlineContent = null)
+                    viewProfile(state)
                 }
             }
         }
@@ -124,7 +138,7 @@ public fun LargeProfileLoadingPreview() {
 @Composable
 private fun ProfileEmptyPreview() {
     GravatarTheme {
-        Surface(Modifier.fillMaxWidth()) {
+        Surface {
             LargeProfileSummary(ComponentState.Empty)
         }
     }
