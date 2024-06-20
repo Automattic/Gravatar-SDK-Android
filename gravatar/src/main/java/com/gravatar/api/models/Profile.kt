@@ -25,6 +25,7 @@ import com.google.gson.annotations.SerializedName
  * @param pronunciation The phonetic pronunciation of the user's name.
  * @param pronouns The pronouns the user uses.
  * @param links A list of links the user has added to their profile. This is only provided in authenticated API requests.
+ * @param interests A list of interests the user has added to their profile. This is only provided in authenticated API requests.
  * @param payments
  * @param contactInfo
  * @param gallery Additional images a user has uploaded. This is only provided in authenticated API requests.
@@ -73,6 +74,9 @@ public data class Profile(
     // A list of links the user has added to their profile. This is only provided in authenticated API requests.
     @SerializedName("links")
     val links: kotlin.collections.List<Link>? = null,
+    // A list of interests the user has added to their profile. This is only provided in authenticated API requests.
+    @SerializedName("interests")
+    val interests: kotlin.collections.List<Interest>? = null,
     @SerializedName("payments")
     val payments: ProfilePayments? = null,
     @SerializedName("contact_info")

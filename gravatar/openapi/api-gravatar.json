@@ -44,6 +44,26 @@
           }
         }
       },
+      "Interest": {
+        "type": "object",
+        "description": "An interest the user has added to their profile.",
+        "required": [
+          "id",
+          "name"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The unique identifier for the interest.",
+            "examples": [ 1 ]
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the interest.",
+            "examples": [ "Photography" ]
+          }
+        }
+      },
       "CryptoWalletAddress": {
         "type": "object",
         "description": "A crypto currency wallet address the user accepts.",
@@ -200,6 +220,13 @@
             "description": "A list of links the user has added to their profile. This is only provided in authenticated API requests.",
             "items": {
               "$ref": "#/components/schemas/Link"
+            }
+          },
+          "interests": {
+            "type": "array",
+            "description": "A list of interests the user has added to their profile. This is only provided in authenticated API requests.",
+            "items": {
+              "$ref": "#/components/schemas/Interest"
             }
           },
           "payments": {
