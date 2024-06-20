@@ -18,7 +18,7 @@ You can create the API Key as follows:
 
 ## Installation
 
-First step it to add the maven repositories to the file where you manage your the dependency resolution and the right dependencies to the `build.gradle` file:
+First step is to add the maven repositories to the file where you manage your the dependency resolution and the right dependencies to the `build.gradle` file:
 
 ### Add the Gravatar dependencies to your project
 
@@ -77,7 +77,7 @@ dependencies {
 
 There are many ways to store the Gravatar API key in your app. The best way to do this depends on your app's architecture and requirements and how you're already storing other sensitive information. Make sure to avoid hardcoding the API key in your app's code and make sure to avoid storing it in a public repository.
 
-One way to API key in your app by adding it to the `local.properties` file:
+One way to store the API key in your app is by adding it to the `local.properties` file:
 
 ```properties
 gravatar.api.key = REPLACE_ME
@@ -159,10 +159,7 @@ In your layout xml file, you need to add the following view:
     <androidx.compose.ui.platform.ComposeView
         android:id="@+id/gravatarComposeView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:layout_height="wrap_content" />
 
 ...
 
