@@ -37,6 +37,37 @@ import com.gravatar.ui.TextSkeletonEffect
 import com.gravatar.ui.components.ComponentState
 import com.gravatar.ui.components.LoadingToLoadedStatePreview
 
+@Composable
+private fun defaultViewProfileButtonText(): String = stringResource(R.string.view_profile_button)
+
+/**
+ * ViewProfileButton is a composable that displays a button to view a user's profile.
+ *
+ * @param profile The user's profile information
+ * @param modifier Composable modifier
+ * @param textStyle The style to apply to the text
+ * @param buttonText The text to display on the button
+ * @param inlineContent The content to display inline with the text, by default it is an arrow icon.
+ * It can be null if no content is needed.
+ *
+ */
+@Composable
+public fun ViewProfileButton(
+    profile: Profile,
+    modifier: Modifier = Modifier,
+    textStyle: TextStyle = MaterialTheme.typography.titleSmall.copy(color = MaterialTheme.colorScheme.onBackground),
+    buttonText: String = defaultViewProfileButtonText(),
+    inlineContent: @Composable ((String) -> Unit)? = { DefaultInlineContent(textStyle.color) },
+) {
+    ViewProfileButton(
+        buttonText,
+        profile.profileUrl().url.toString(),
+        textStyle,
+        modifier,
+        inlineContent,
+    )
+}
+
 /**
  * ViewProfileButton is a composable that displays a button to view a user's profile.
  *
@@ -44,8 +75,6 @@ import com.gravatar.ui.components.LoadingToLoadedStatePreview
  * @param modifier Composable modifier
  * @param textStyle The style to apply to the text
  * @param inlineContent The content to display inline with the text, by default it is an arrow icon.
- * @param buttonText The text to display on the button
- *
  * It can be null if no content is needed.
  */
 @Composable
@@ -54,10 +83,9 @@ public fun ViewProfileButton(
     modifier: Modifier = Modifier,
     textStyle: TextStyle = MaterialTheme.typography.titleSmall.copy(color = MaterialTheme.colorScheme.onBackground),
     inlineContent: @Composable ((String) -> Unit)? = { DefaultInlineContent(textStyle.color) },
-    buttonText: String = stringResource(R.string.view_profile_button),
 ) {
     ViewProfileButton(
-        buttonText,
+        defaultViewProfileButtonText(),
         profile.profileUrl().url.toString(),
         textStyle,
         modifier,
