@@ -44,13 +44,28 @@ public fun Profile(profile: Profile, modifier: Modifier = Modifier) {
 
 /**
  * [Profile] is a composable that displays a user's profile card.
- * Given a [ComponentState] for a [Profile], it displays a [Profile] or the skeleton if it's in a loading state.
+ * Given a [ComponentState] for a [Profile], it displays a [Profile] in the appropriate state.
  *
  * @param state The user's profile state
  * @param modifier Composable modifier
+ * @param avatar Composable to display the user avatar
+ * @param viewProfile Composable to display the view profile button
  */
 @Composable
-public fun Profile(state: ComponentState<Profile>, modifier: Modifier = Modifier) {
+public fun Profile(
+    state: ComponentState<Profile>,
+    modifier: Modifier = Modifier,
+    avatar: @Composable ((state: ComponentState<Profile>) -> Unit) = { profileState ->
+        Avatar(
+            state = profileState,
+            size = 72.dp,
+            modifier = Modifier.clip(CircleShape),
+        )
+    },
+    viewProfile: @Composable ((state: ComponentState<Profile>) -> Unit) = { profileState ->
+        ViewProfileButton(state, Modifier.padding(0.dp))
+    },
+) {
     GravatarTheme {
         Surface {
             EmptyProfileClickableContainer(state) {
@@ -60,11 +75,7 @@ public fun Profile(state: ComponentState<Profile>, modifier: Modifier = Modifier
                     verticalArrangement = Arrangement.Top,
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Avatar(
-                            state = state,
-                            size = 72.dp,
-                            modifier = Modifier.clip(CircleShape),
-                        )
+                        avatar(state)
                         Column(modifier = Modifier.padding(14.dp, 0.dp, 0.dp, 0.dp)) {
                             DisplayName(
                                 state,
@@ -82,7 +93,7 @@ public fun Profile(state: ComponentState<Profile>, modifier: Modifier = Modifier
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         SocialIconRow(state, maxIcons = 4)
-                        ViewProfileButton(state, Modifier.padding(0.dp))
+                        viewProfile(state)
                     }
                 }
             }
@@ -139,7 +150,7 @@ private fun ProfileLoadingPreview() {
 @Composable
 private fun ProfileEmptyPreview() {
     GravatarTheme {
-        Surface(Modifier.fillMaxWidth()) {
+        Surface {
             Profile(ComponentState.Empty)
         }
     }

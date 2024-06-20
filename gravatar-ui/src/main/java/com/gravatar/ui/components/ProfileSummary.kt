@@ -4,7 +4,6 @@ import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -39,22 +38,36 @@ public fun ProfileSummary(profile: Profile, modifier: Modifier = Modifier) {
 
 /**
  * [ProfileSummary] is a composable that displays a mini profile card.
- * Given a [ComponentState] for a [Profile], it displays a [ProfileSummary] or the skeleton if it's in a loading state.
+ * Given a [ComponentState] for a [Profile], it displays a profile summary card using the other atomic components.
  *
  * @param state The user's profile state
  * @param modifier Composable modifier
+ * @param avatar Composable to display the user avatar
+ * @param viewProfile Composable to display the view profile button
  */
 @Composable
-public fun ProfileSummary(state: ComponentState<Profile>, modifier: Modifier = Modifier) {
+public fun ProfileSummary(
+    state: ComponentState<Profile>,
+    modifier: Modifier = Modifier,
+    avatar: @Composable ((state: ComponentState<Profile>) -> Unit) = { profileState ->
+        Avatar(
+            state = profileState,
+            size = 72.dp,
+            modifier = Modifier.clip(CircleShape),
+        )
+    },
+    viewProfile: @Composable ((state: ComponentState<Profile>) -> Unit) = { profileState ->
+        ViewProfileButton(
+            profileState,
+            modifier = Modifier.height(32.dp),
+        )
+    },
+) {
     GravatarTheme {
         Surface {
             EmptyProfileClickableContainer(state) {
                 Row(modifier = modifier) {
-                    Avatar(
-                        state = state,
-                        size = 72.dp,
-                        modifier = Modifier.clip(CircleShape),
-                    )
+                    avatar(state)
                     Column(modifier = Modifier.padding(start = 14.dp)) {
                         DisplayName(
                             state,
@@ -75,10 +88,7 @@ public fun ProfileSummary(state: ComponentState<Profile>, modifier: Modifier = M
                                 Location(state)
                             }
                         }
-                        ViewProfileButton(
-                            state,
-                            modifier = Modifier.height(32.dp),
-                        )
+                        viewProfile(state)
                     }
                 }
             }
@@ -110,7 +120,7 @@ private fun ProfileSummaryLoadingPreview() {
 @Composable
 private fun ProfileSummaryEmptyPreview() {
     GravatarTheme {
-        Surface(Modifier.fillMaxWidth()) {
+        Surface {
             ProfileSummary(ComponentState.Empty)
         }
     }
