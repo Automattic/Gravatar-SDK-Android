@@ -20,6 +20,7 @@ plugins {
 
     // Roborazzi
     id("io.github.takahirom.roborazzi") version "1.15.0" apply false
+    id("org.jetbrains.kotlinx.binary-compatibility-validator") version "0.15.0-Beta.2"
 }
 
 buildscript {
@@ -47,6 +48,14 @@ subprojects {
             plugin("org.jetbrains.dokka")
         }
     }
+}
+
+apiValidation {
+
+    /**
+     * Sub-projects that are excluded from API validation
+     */
+    ignoredProjects.addAll(listOf("demo-app"))
 }
 
 // Semantic versioning for release version
