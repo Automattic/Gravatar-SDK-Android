@@ -40,6 +40,12 @@ steps:
     artifact_paths:
       - "**/build/test-results/*/*.xml"
 
+  - label: "Binary compatibility check"
+    if: build.pull_request.base_branch == "trunk"
+    command: |
+      echo "--- Validating binary compatibility"
+      ./gradlew apiCheck
+
   - wait: ~
     if: build.branch == "trunk" || build.tag != null
 
