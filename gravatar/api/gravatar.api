@@ -1,0 +1,369 @@
+public final class com/gravatar/AvatarQueryOptions {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/Integer;Lcom/gravatar/DefaultAvatarOption;Lcom/gravatar/ImageRating;Ljava/lang/Boolean;)V
+	public synthetic fun <init> (Ljava/lang/Integer;Lcom/gravatar/DefaultAvatarOption;Lcom/gravatar/ImageRating;Ljava/lang/Boolean;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/Integer;
+	public final fun component2 ()Lcom/gravatar/DefaultAvatarOption;
+	public final fun component3 ()Lcom/gravatar/ImageRating;
+	public final fun component4 ()Ljava/lang/Boolean;
+	public final fun copy (Ljava/lang/Integer;Lcom/gravatar/DefaultAvatarOption;Lcom/gravatar/ImageRating;Ljava/lang/Boolean;)Lcom/gravatar/AvatarQueryOptions;
+	public static synthetic fun copy$default (Lcom/gravatar/AvatarQueryOptions;Ljava/lang/Integer;Lcom/gravatar/DefaultAvatarOption;Lcom/gravatar/ImageRating;Ljava/lang/Boolean;ILjava/lang/Object;)Lcom/gravatar/AvatarQueryOptions;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDefaultAvatarOption ()Lcom/gravatar/DefaultAvatarOption;
+	public final fun getForceDefaultAvatar ()Ljava/lang/Boolean;
+	public final fun getPreferredSize ()Ljava/lang/Integer;
+	public final fun getRating ()Lcom/gravatar/ImageRating;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/gravatar/AvatarUrl {
+	public static final field Companion Lcom/gravatar/AvatarUrl$Companion;
+	public fun <init> (Lcom/gravatar/types/Email;Lcom/gravatar/AvatarQueryOptions;)V
+	public synthetic fun <init> (Lcom/gravatar/types/Email;Lcom/gravatar/AvatarQueryOptions;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Lcom/gravatar/types/Hash;Lcom/gravatar/AvatarQueryOptions;)V
+	public synthetic fun <init> (Lcom/gravatar/types/Hash;Lcom/gravatar/AvatarQueryOptions;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Ljava/net/URL;Lcom/gravatar/AvatarQueryOptions;)V
+	public synthetic fun <init> (Ljava/net/URL;Lcom/gravatar/AvatarQueryOptions;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getAvatarQueryOptions ()Lcom/gravatar/AvatarQueryOptions;
+	public final fun getCanonicalUrl ()Ljava/net/URL;
+	public final fun getHash ()Lcom/gravatar/types/Hash;
+	public final fun isAvatarUrl ()Z
+	public final fun setAvatarQueryOptions (Lcom/gravatar/AvatarQueryOptions;)V
+	public final fun url ()Ljava/net/URL;
+}
+
+public final class com/gravatar/AvatarUrl$Companion {
+}
+
+public abstract class com/gravatar/DefaultAvatarOption {
+	public final fun queryParam ()Ljava/lang/String;
+}
+
+public final class com/gravatar/DefaultAvatarOption$CustomUrl : com/gravatar/DefaultAvatarOption {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/gravatar/DefaultAvatarOption$CustomUrl;
+	public static synthetic fun copy$default (Lcom/gravatar/DefaultAvatarOption$CustomUrl;Ljava/lang/String;ILjava/lang/Object;)Lcom/gravatar/DefaultAvatarOption$CustomUrl;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDefaultImageUrl ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/gravatar/DefaultAvatarOption$Identicon : com/gravatar/DefaultAvatarOption$Predefined {
+	public static final field INSTANCE Lcom/gravatar/DefaultAvatarOption$Identicon;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/gravatar/DefaultAvatarOption$MonsterId : com/gravatar/DefaultAvatarOption$Predefined {
+	public static final field INSTANCE Lcom/gravatar/DefaultAvatarOption$MonsterId;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/gravatar/DefaultAvatarOption$MysteryPerson : com/gravatar/DefaultAvatarOption$Predefined {
+	public static final field INSTANCE Lcom/gravatar/DefaultAvatarOption$MysteryPerson;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract class com/gravatar/DefaultAvatarOption$Predefined : com/gravatar/DefaultAvatarOption {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun getStyle ()Ljava/lang/String;
+}
+
+public final class com/gravatar/DefaultAvatarOption$Retro : com/gravatar/DefaultAvatarOption$Predefined {
+	public static final field INSTANCE Lcom/gravatar/DefaultAvatarOption$Retro;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/gravatar/DefaultAvatarOption$RoboHash : com/gravatar/DefaultAvatarOption$Predefined {
+	public static final field INSTANCE Lcom/gravatar/DefaultAvatarOption$RoboHash;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/gravatar/DefaultAvatarOption$Status404 : com/gravatar/DefaultAvatarOption$Predefined {
+	public static final field INSTANCE Lcom/gravatar/DefaultAvatarOption$Status404;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/gravatar/DefaultAvatarOption$TransparentPNG : com/gravatar/DefaultAvatarOption$Predefined {
+	public static final field INSTANCE Lcom/gravatar/DefaultAvatarOption$TransparentPNG;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/gravatar/DefaultAvatarOption$Wavatar : com/gravatar/DefaultAvatarOption$Predefined {
+	public static final field INSTANCE Lcom/gravatar/DefaultAvatarOption$Wavatar;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/gravatar/Gravatar {
+	public static final field INSTANCE Lcom/gravatar/Gravatar;
+	public final fun initialize (Ljava/lang/String;)V
+}
+
+public final class com/gravatar/GravatarConstants {
+	public static final field GRAVATAR_BASE_URL Ljava/lang/String;
+	public static final field GRAVATAR_SIGN_IN_URL Ljava/lang/String;
+	public static final field INSTANCE Lcom/gravatar/GravatarConstants;
+}
+
+public final class com/gravatar/ImageRating : java/lang/Enum {
+	public static final field General Lcom/gravatar/ImageRating;
+	public static final field ParentalGuidance Lcom/gravatar/ImageRating;
+	public static final field Restricted Lcom/gravatar/ImageRating;
+	public static final field X Lcom/gravatar/ImageRating;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public final fun getRating ()Ljava/lang/String;
+	public static fun valueOf (Ljava/lang/String;)Lcom/gravatar/ImageRating;
+	public static fun values ()[Lcom/gravatar/ImageRating;
+}
+
+public final class com/gravatar/ProfileUrl {
+	public fun <init> (Lcom/gravatar/types/Email;)V
+	public fun <init> (Lcom/gravatar/types/Hash;)V
+	public final fun avatarUrl ()Lcom/gravatar/AvatarUrl;
+	public final fun getHash ()Lcom/gravatar/types/Hash;
+	public final fun getUrl ()Ljava/net/URL;
+}
+
+public final class com/gravatar/api/models/CryptoWalletAddress {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;)Lcom/gravatar/api/models/CryptoWalletAddress;
+	public static synthetic fun copy$default (Lcom/gravatar/api/models/CryptoWalletAddress;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lcom/gravatar/api/models/CryptoWalletAddress;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAddress ()Ljava/lang/String;
+	public final fun getLabel ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/gravatar/api/models/GalleryImage {
+	public fun <init> (Ljava/net/URI;)V
+	public final fun component1 ()Ljava/net/URI;
+	public final fun copy (Ljava/net/URI;)Lcom/gravatar/api/models/GalleryImage;
+	public static synthetic fun copy$default (Lcom/gravatar/api/models/GalleryImage;Ljava/net/URI;ILjava/lang/Object;)Lcom/gravatar/api/models/GalleryImage;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getUrl ()Ljava/net/URI;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/gravatar/api/models/Link {
+	public fun <init> (Ljava/lang/String;Ljava/net/URI;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/net/URI;
+	public final fun copy (Ljava/lang/String;Ljava/net/URI;)Lcom/gravatar/api/models/Link;
+	public static synthetic fun copy$default (Lcom/gravatar/api/models/Link;Ljava/lang/String;Ljava/net/URI;ILjava/lang/Object;)Lcom/gravatar/api/models/Link;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getLabel ()Ljava/lang/String;
+	public final fun getUrl ()Ljava/net/URI;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/gravatar/api/models/Profile {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/net/URI;Ljava/net/URI;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Lcom/gravatar/api/models/ProfilePayments;Lcom/gravatar/api/models/ProfileContactInfo;Ljava/util/List;Ljava/lang/Integer;Ljava/time/Instant;Ljava/time/Instant;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/net/URI;Ljava/net/URI;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Lcom/gravatar/api/models/ProfilePayments;Lcom/gravatar/api/models/ProfileContactInfo;Ljava/util/List;Ljava/lang/Integer;Ljava/time/Instant;Ljava/time/Instant;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component10 ()Ljava/util/List;
+	public final fun component11 ()Ljava/lang/String;
+	public final fun component12 ()Ljava/lang/String;
+	public final fun component13 ()Ljava/util/List;
+	public final fun component14 ()Lcom/gravatar/api/models/ProfilePayments;
+	public final fun component15 ()Lcom/gravatar/api/models/ProfileContactInfo;
+	public final fun component16 ()Ljava/util/List;
+	public final fun component17 ()Ljava/lang/Integer;
+	public final fun component18 ()Ljava/time/Instant;
+	public final fun component19 ()Ljava/time/Instant;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/net/URI;
+	public final fun component4 ()Ljava/net/URI;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun component6 ()Ljava/lang/String;
+	public final fun component7 ()Ljava/lang/String;
+	public final fun component8 ()Ljava/lang/String;
+	public final fun component9 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/net/URI;Ljava/net/URI;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Lcom/gravatar/api/models/ProfilePayments;Lcom/gravatar/api/models/ProfileContactInfo;Ljava/util/List;Ljava/lang/Integer;Ljava/time/Instant;Ljava/time/Instant;)Lcom/gravatar/api/models/Profile;
+	public static synthetic fun copy$default (Lcom/gravatar/api/models/Profile;Ljava/lang/String;Ljava/lang/String;Ljava/net/URI;Ljava/net/URI;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Lcom/gravatar/api/models/ProfilePayments;Lcom/gravatar/api/models/ProfileContactInfo;Ljava/util/List;Ljava/lang/Integer;Ljava/time/Instant;Ljava/time/Instant;ILjava/lang/Object;)Lcom/gravatar/api/models/Profile;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAvatarAltText ()Ljava/lang/String;
+	public final fun getAvatarUrl ()Ljava/net/URI;
+	public final fun getCompany ()Ljava/lang/String;
+	public final fun getContactInfo ()Lcom/gravatar/api/models/ProfileContactInfo;
+	public final fun getDescription ()Ljava/lang/String;
+	public final fun getDisplayName ()Ljava/lang/String;
+	public final fun getGallery ()Ljava/util/List;
+	public final fun getHash ()Ljava/lang/String;
+	public final fun getJobTitle ()Ljava/lang/String;
+	public final fun getLastProfileEdit ()Ljava/time/Instant;
+	public final fun getLinks ()Ljava/util/List;
+	public final fun getLocation ()Ljava/lang/String;
+	public final fun getNumberVerifiedAccounts ()Ljava/lang/Integer;
+	public final fun getPayments ()Lcom/gravatar/api/models/ProfilePayments;
+	public final fun getProfileUrl ()Ljava/net/URI;
+	public final fun getPronouns ()Ljava/lang/String;
+	public final fun getPronunciation ()Ljava/lang/String;
+	public final fun getRegistrationDate ()Ljava/time/Instant;
+	public final fun getVerifiedAccounts ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/gravatar/api/models/ProfileContactInfo {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/net/URI;Ljava/net/URI;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/net/URI;Ljava/net/URI;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Ljava/net/URI;
+	public final fun component6 ()Ljava/net/URI;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/net/URI;Ljava/net/URI;)Lcom/gravatar/api/models/ProfileContactInfo;
+	public static synthetic fun copy$default (Lcom/gravatar/api/models/ProfileContactInfo;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/net/URI;Ljava/net/URI;ILjava/lang/Object;)Lcom/gravatar/api/models/ProfileContactInfo;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCalendar ()Ljava/net/URI;
+	public final fun getCellPhone ()Ljava/lang/String;
+	public final fun getContactForm ()Ljava/net/URI;
+	public final fun getEmail ()Ljava/lang/String;
+	public final fun getHomePhone ()Ljava/lang/String;
+	public final fun getWorkPhone ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/gravatar/api/models/ProfilePayments {
+	public fun <init> (Ljava/util/List;Ljava/util/List;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun component2 ()Ljava/util/List;
+	public final fun copy (Ljava/util/List;Ljava/util/List;)Lcom/gravatar/api/models/ProfilePayments;
+	public static synthetic fun copy$default (Lcom/gravatar/api/models/ProfilePayments;Ljava/util/List;Ljava/util/List;ILjava/lang/Object;)Lcom/gravatar/api/models/ProfilePayments;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCryptoWallets ()Ljava/util/List;
+	public final fun getLinks ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/gravatar/api/models/VerifiedAccount {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/net/URI;Ljava/net/URI;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/net/URI;
+	public final fun component4 ()Ljava/net/URI;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/net/URI;Ljava/net/URI;)Lcom/gravatar/api/models/VerifiedAccount;
+	public static synthetic fun copy$default (Lcom/gravatar/api/models/VerifiedAccount;Ljava/lang/String;Ljava/lang/String;Ljava/net/URI;Ljava/net/URI;ILjava/lang/Object;)Lcom/gravatar/api/models/VerifiedAccount;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getServiceIcon ()Ljava/net/URI;
+	public final fun getServiceLabel ()Ljava/lang/String;
+	public final fun getServiceType ()Ljava/lang/String;
+	public final fun getUrl ()Ljava/net/URI;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/gravatar/extensions/UserProfileExtensionsKt {
+	public static final fun avatarUrl (Lcom/gravatar/api/models/Profile;Lcom/gravatar/AvatarQueryOptions;)Lcom/gravatar/AvatarUrl;
+	public static synthetic fun avatarUrl$default (Lcom/gravatar/api/models/Profile;Lcom/gravatar/AvatarQueryOptions;ILjava/lang/Object;)Lcom/gravatar/AvatarUrl;
+	public static final fun emptyProfile (Ljava/lang/String;Ljava/lang/String;Ljava/net/URI;Ljava/net/URI;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Lcom/gravatar/api/models/ProfilePayments;Lcom/gravatar/api/models/ProfileContactInfo;Ljava/util/List;Ljava/lang/Integer;Ljava/time/Instant;Ljava/time/Instant;)Lcom/gravatar/api/models/Profile;
+	public static synthetic fun emptyProfile$default (Ljava/lang/String;Ljava/lang/String;Ljava/net/URI;Ljava/net/URI;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Lcom/gravatar/api/models/ProfilePayments;Lcom/gravatar/api/models/ProfileContactInfo;Ljava/util/List;Ljava/lang/Integer;Ljava/time/Instant;Ljava/time/Instant;ILjava/lang/Object;)Lcom/gravatar/api/models/Profile;
+	public static final fun formattedUserInfo (Lcom/gravatar/api/models/Profile;)Ljava/lang/String;
+	public static final fun hash (Lcom/gravatar/api/models/Profile;)Lcom/gravatar/types/Hash;
+	public static final fun profileUrl (Lcom/gravatar/api/models/Profile;)Lcom/gravatar/ProfileUrl;
+}
+
+public final class com/gravatar/services/AvatarService {
+	public static final field LOG_TAG Ljava/lang/String;
+	public fun <init> ()V
+	public fun <init> (Lokhttp3/OkHttpClient;)V
+	public synthetic fun <init> (Lokhttp3/OkHttpClient;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun upload (Ljava/io/File;Lcom/gravatar/types/Email;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/gravatar/services/ErrorType : java/lang/Enum {
+	public static final field NETWORK Lcom/gravatar/services/ErrorType;
+	public static final field NOT_FOUND Lcom/gravatar/services/ErrorType;
+	public static final field RATE_LIMIT_EXCEEDED Lcom/gravatar/services/ErrorType;
+	public static final field SERVER Lcom/gravatar/services/ErrorType;
+	public static final field TIMEOUT Lcom/gravatar/services/ErrorType;
+	public static final field UNKNOWN Lcom/gravatar/services/ErrorType;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/gravatar/services/ErrorType;
+	public static fun values ()[Lcom/gravatar/services/ErrorType;
+}
+
+public abstract interface class com/gravatar/services/GravatarListener {
+	public abstract fun onError (Ljava/lang/Object;)V
+	public abstract fun onSuccess (Ljava/lang/Object;)V
+}
+
+public final class com/gravatar/services/ProfileService {
+	public static final field LOG_TAG Ljava/lang/String;
+	public fun <init> ()V
+	public fun <init> (Lokhttp3/OkHttpClient;)V
+	public synthetic fun <init> (Lokhttp3/OkHttpClient;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun fetch (Lcom/gravatar/types/Email;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun fetch (Lcom/gravatar/types/Hash;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun fetch (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun fetchByUsername (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract class com/gravatar/services/Result {
+	public final fun valueOrNull ()Ljava/lang/Object;
+}
+
+public final class com/gravatar/services/Result$Failure : com/gravatar/services/Result {
+	public fun <init> (Ljava/lang/Object;)V
+	public final fun component1 ()Ljava/lang/Object;
+	public final fun copy (Ljava/lang/Object;)Lcom/gravatar/services/Result$Failure;
+	public static synthetic fun copy$default (Lcom/gravatar/services/Result$Failure;Ljava/lang/Object;ILjava/lang/Object;)Lcom/gravatar/services/Result$Failure;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getError ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/gravatar/services/Result$Success : com/gravatar/services/Result {
+	public fun <init> (Ljava/lang/Object;)V
+	public final fun component1 ()Ljava/lang/Object;
+	public final fun copy (Ljava/lang/Object;)Lcom/gravatar/services/Result$Success;
+	public static synthetic fun copy$default (Lcom/gravatar/services/Result$Success;Ljava/lang/Object;ILjava/lang/Object;)Lcom/gravatar/services/Result$Success;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getValue ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/gravatar/types/Email {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun hash ()Lcom/gravatar/types/Hash;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/gravatar/types/Hash {
+	public fun <init> (Ljava/lang/String;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/gravatar/types/HashKt {
+	public static final fun sha256Hash (Ljava/lang/String;)Ljava/lang/String;
+}
+
