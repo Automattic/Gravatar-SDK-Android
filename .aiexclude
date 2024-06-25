@@ -1,0 +1,5 @@
+# Configuration files
+.properties
+
+# Build files
+build/
