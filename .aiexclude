@@ -1,6 +1,5 @@
 # Configuration files
-local.properties
-gradle.properties
+.properties
 
 # Build files
 build/
