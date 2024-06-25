@@ -11,11 +11,8 @@ import com.gravatar.types.sha256Hash
 import junit.framework.TestCase.assertEquals
 import org.junit.Assert.assertThrows
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import java.net.URL
 
-@RunWith(RobolectricTestRunner::class)
 class AvatarUrlTest {
     @Test
     fun `AvatarUrl created via an email address must not add any query param if not set`() {
