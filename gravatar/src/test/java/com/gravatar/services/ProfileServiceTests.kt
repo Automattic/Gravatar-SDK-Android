@@ -13,11 +13,8 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import retrofit2.Response
 
-@RunWith(RobolectricTestRunner::class)
 class ProfileServiceTests {
     @get:Rule
     var containerRule = GravatarSdkContainerRule()
