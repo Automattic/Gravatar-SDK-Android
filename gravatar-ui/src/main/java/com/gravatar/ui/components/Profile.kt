@@ -84,8 +84,10 @@ public fun Profile(
                             UserInfo(state)
                         }
                     }
-                    Spacer(modifier = Modifier.height(16.dp))
-                    AboutMe(state)
+                    if (state.isAboutMeVisible()) {
+                        Spacer(modifier = Modifier.height(16.dp))
+                        AboutMe(state)
+                    }
                     Spacer(modifier = Modifier.height(4.dp))
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -100,6 +102,9 @@ public fun Profile(
         }
     }
 }
+
+private fun ComponentState<Profile>.isAboutMeVisible(): Boolean =
+    this is ComponentState.Loaded && loadedValue.description.isNotEmpty() || this is ComponentState.Loading
 
 @Preview
 @Composable
@@ -134,6 +139,41 @@ private fun ProfilePreview() {
             ),
             description = "I'm a farmer, I love to code. I ride my bicycle to work. One apple a day keeps the " +
                 "doctor away. This about me description is quite long, this is good for testing.",
+        ),
+    )
+}
+
+@Preview
+@Composable
+private fun ProfileEmptyDescriptionPreview() {
+    Profile(
+        emptyProfile(
+            hash = "1234567890",
+            displayName = "Dominique Doe",
+            jobTitle = "Farmer",
+            company = "Farmers United",
+            location = "Crac'h, France",
+            pronouns = "They/Them",
+            verifiedAccounts = listOf(
+                VerifiedAccount(
+                    serviceType = "mastodon",
+                    serviceLabel = "Mastodon",
+                    url = URI("https://mastodon.social/@ddoe"),
+                    serviceIcon = URI("https://example.com/icon.svg"),
+                ),
+                VerifiedAccount(
+                    serviceType = "tumblr",
+                    serviceLabel = "Tumblr",
+                    url = URI("https://ddoe.tumblr.com"),
+                    serviceIcon = URI("https://example.com/icon.svg"),
+                ),
+                VerifiedAccount(
+                    serviceType = "wordpress",
+                    serviceLabel = "WordPress",
+                    url = URI("https://ddoe.wordpress.com"),
+                    serviceIcon = URI("https://example.com/icon.svg"),
+                ),
+            ),
         ),
     )
 }
