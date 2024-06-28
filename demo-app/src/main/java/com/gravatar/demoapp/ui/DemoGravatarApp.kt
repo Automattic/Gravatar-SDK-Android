@@ -186,7 +186,7 @@ private fun ProfileComponents(profileState: ComponentState<Profile>?, theme: The
         val defaultModifier = Modifier
             .background(gravatarTheme.colorScheme.surfaceContainer)
             .fillMaxWidth()
-            .padding(24.dp)
+            .padding(start = 24.dp, bottom = 10.dp, end = 24.dp, top = 21.dp)
 
         GravatarTheme {
             Surface {
