@@ -28,6 +28,11 @@ class ProfileTest : RoborazziTest() {
     fun profileLight() = gravatarScreenshotTest { Profile(ComponentState.Loaded(completeProfile)) }
 
     @Test
+    fun profileWithEmptyDescription() = gravatarScreenshotTest {
+        Profile(ComponentState.Loaded(completeProfile.copy(description = "")))
+    }
+
+    @Test
     fun profileWithCustomComponents() = gravatarScreenshotTest {
         Profile(
             state = ComponentState.Loaded(completeProfile),
