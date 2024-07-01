@@ -79,14 +79,15 @@ public fun Profile(
                         Column(modifier = Modifier.padding(14.dp, 0.dp, 0.dp, 0.dp)) {
                             DisplayName(
                                 state,
+                                skeletonModifier = Modifier.fillMaxWidth(0.5f),
                                 textStyle = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                             )
-                            UserInfo(state)
+                            UserInfo(state, skeletonModifier = Modifier.fillMaxWidth(0.9f))
                         }
                     }
                     if (state.isAboutMeVisible()) {
                         Spacer(modifier = Modifier.height(16.dp))
-                        AboutMe(state)
+                        AboutMe(state, skeletonModifier = Modifier.fillMaxWidth(0.8f))
                     }
                     Spacer(modifier = Modifier.height(4.dp))
                     Row(
