@@ -1,7 +1,6 @@
 package com.gravatar.ui.components.atomic
 
 import android.content.res.Configuration
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -10,7 +9,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.gravatar.api.models.Profile
 import com.gravatar.extensions.emptyProfile
 import com.gravatar.ui.R
@@ -57,9 +55,32 @@ public fun Location(
         LocationDefaultContent(location, textStyle, contentModifier)
     },
 ) {
+    Location(state, modifier, skeletonModifier = Modifier, textStyle = textStyle, content = content)
+}
+
+/**
+ * [Location] is a composable that displays a user's location in text format or a loading skeleton.
+ * The user's location is displayed in a text format. If the location is too long, it will be truncated
+ *
+ * @param state The user's profile loading state
+ * @param modifier Composable modifier
+ * @param skeletonModifier Composable modifier for the loading skeleton component
+ * @param textStyle The style to apply to the default text content
+ * @param content Composable to display the user location
+ */
+@Composable
+public fun Location(
+    state: ComponentState<Profile>,
+    modifier: Modifier = Modifier,
+    skeletonModifier: Modifier = Modifier,
+    textStyle: TextStyle = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.outline),
+    content: @Composable ((String, Modifier) -> Unit) = { location, contentModifier ->
+        LocationDefaultContent(location, textStyle, contentModifier)
+    },
+) {
     when (state) {
         is ComponentState.Loading -> {
-            TextSkeletonEffect(textStyle = textStyle, modifier = Modifier.width(120.dp))
+            TextSkeletonEffect(textStyle = textStyle, modifier = skeletonModifier)
         }
 
         is ComponentState.Loaded -> {
