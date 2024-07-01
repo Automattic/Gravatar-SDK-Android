@@ -16,6 +16,11 @@ import com.google.gson.annotations.SerializedName
  * @param url The URL to the link.
  */
 
+@Deprecated(
+    "This class is deprecated and will be removed in a future release.",
+    replaceWith = ReplaceWith("com.gravatar.restapi.models.Link"),
+    level = DeprecationLevel.WARNING,
+)
 public data class Link(
     // The label for the link.
     @SerializedName("label")

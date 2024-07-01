@@ -16,6 +16,11 @@ import com.google.gson.annotations.SerializedName
  * @param address The wallet address for the crypto currency.
  */
 
+@Deprecated(
+    "This class is deprecated and will be removed in a future release.",
+    replaceWith = ReplaceWith("com.gravatar.restapi.models.CryptoWalletAddress"),
+    level = DeprecationLevel.WARNING,
+)
 public data class CryptoWalletAddress(
     // The label for the crypto currency.
     @SerializedName("label")
