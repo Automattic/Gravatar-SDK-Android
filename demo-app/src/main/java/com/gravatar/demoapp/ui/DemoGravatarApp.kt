@@ -56,7 +56,6 @@ import com.gravatar.AvatarQueryOptions
 import com.gravatar.AvatarUrl
 import com.gravatar.DefaultAvatarOption
 import com.gravatar.ImageRating
-import com.gravatar.api.models.Profile
 import com.gravatar.demoapp.BuildConfig
 import com.gravatar.demoapp.R
 import com.gravatar.demoapp.theme.GravatarDemoAppTheme
@@ -64,6 +63,7 @@ import com.gravatar.demoapp.ui.components.ExpandableSection
 import com.gravatar.demoapp.ui.components.GravatarEmailInput
 import com.gravatar.demoapp.ui.model.SettingsState
 import com.gravatar.demoapp.ui.utils.prettyPrint
+import com.gravatar.restapi.models.Profile
 import com.gravatar.services.ErrorType
 import com.gravatar.services.ProfileService
 import com.gravatar.services.Result
@@ -254,7 +254,7 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
                         scope.launch {
                             error = ""
                             profileState = ComponentState.Loading
-                            when (val result = profileService.fetch(Email(email))) {
+                            when (val result = profileService.retrieveCatching(Email(email))) {
                                 is Result.Success -> {
                                     result.value.let {
                                         profileState = ComponentState.Loaded(it)
