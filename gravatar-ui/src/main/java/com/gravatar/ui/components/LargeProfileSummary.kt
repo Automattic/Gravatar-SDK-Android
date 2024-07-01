@@ -72,13 +72,20 @@ public fun LargeProfileSummary(
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     avatar(state)
-                    DisplayName(state, modifier = Modifier.padding(top = 16.dp))
+                    DisplayName(
+                        state,
+                        modifier = Modifier.padding(top = 16.dp),
+                        skeletonModifier = Modifier
+                            .fillMaxWidth(0.6f)
+                            .padding(top = 12.dp),
+                    )
                     UserInfo(
                         state,
                         textStyle = MaterialTheme.typography.bodyMedium.copy(
                             color = MaterialTheme.colorScheme.outline,
                             textAlign = TextAlign.Center,
                         ),
+                        skeletonModifier = Modifier.fillMaxWidth(0.8f),
                     )
                     viewProfile(state)
                 }
