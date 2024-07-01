@@ -20,6 +20,11 @@ import com.google.gson.annotations.SerializedName
  * @param calendar The URL to the user's calendar.
  */
 
+@Deprecated(
+    "This class is deprecated and will be removed in a future release.",
+    replaceWith = ReplaceWith("com.gravatar.restapi.models.ProfileContactInfo"),
+    level = DeprecationLevel.WARNING,
+)
 public data class ProfileContactInfo(
     // The user's home phone number.
     @SerializedName("home_phone")
