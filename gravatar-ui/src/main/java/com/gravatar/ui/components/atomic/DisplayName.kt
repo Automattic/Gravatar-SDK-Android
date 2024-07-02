@@ -10,11 +10,35 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.gravatar.api.models.Profile
+import com.gravatar.restapi.models.Profile
 import com.gravatar.ui.R
 import com.gravatar.ui.TextSkeletonEffect
 import com.gravatar.ui.components.ComponentState
-import com.gravatar.ui.components.LoadingToLoadedStatePreview
+import com.gravatar.ui.components.LoadingToLoadedProfileStatePreview
+import com.gravatar.ui.extensions.toApi2ComponentStateProfile
+import com.gravatar.ui.extensions.toApi2Profile
+import com.gravatar.api.models.Profile as LegacyProfile
+
+/**
+ * [DisplayName] is a composable that displays the user's display name.
+ *
+ * @param profile The user's profile information
+ * @param modifier Composable modifier
+ * @param textStyle The style to apply to the text
+ */
+@Deprecated(
+    "This class is deprecated and will be removed in a future release.",
+    replaceWith = ReplaceWith("com.gravatar.ui.components.atomic.DisplayName"),
+    level = DeprecationLevel.WARNING,
+)
+@Composable
+public fun DisplayName(
+    profile: LegacyProfile,
+    modifier: Modifier = Modifier,
+    textStyle: TextStyle = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
+) {
+    DisplayName(profile = profile.toApi2Profile(), modifier = modifier, textStyle = textStyle)
+}
 
 /**
  * [DisplayName] is a composable that displays the user's display name.
@@ -44,13 +68,23 @@ private fun DisplayName(displayName: String, modifier: Modifier, textStyle: Text
  * @param modifier Composable modifier
  * @param textStyle The style to apply to the text
  */
+@Deprecated(
+    "This class is deprecated and will be removed in a future release.",
+    replaceWith = ReplaceWith("com.gravatar.ui.components.atomic.DisplayName"),
+    level = DeprecationLevel.WARNING,
+)
 @Composable
 public fun DisplayName(
-    state: ComponentState<Profile>,
+    state: ComponentState<LegacyProfile>,
     modifier: Modifier = Modifier,
     textStyle: TextStyle = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
 ) {
-    DisplayName(state = state, modifier = modifier, skeletonModifier = Modifier, textStyle = textStyle)
+    DisplayName(
+        state = state.toApi2ComponentStateProfile(),
+        modifier = modifier,
+        skeletonModifier = Modifier,
+        textStyle = textStyle,
+    )
 }
 
 /**
@@ -61,11 +95,12 @@ public fun DisplayName(
  * @param skeletonModifier Composable modifier for the loading skeleton component
  * @param textStyle The style to apply to the text
  */
+@JvmName("DisplayNameWithComponentState")
 @Composable
 public fun DisplayName(
     state: ComponentState<Profile>,
     modifier: Modifier = Modifier,
-    skeletonModifier: Modifier,
+    skeletonModifier: Modifier = Modifier,
     textStyle: TextStyle = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
 ) {
     when (state) {
@@ -93,5 +128,5 @@ public fun DisplayName(
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 public fun DisplayNamePreview() {
-    LoadingToLoadedStatePreview { DisplayName(it) }
+    LoadingToLoadedProfileStatePreview { DisplayName(it) }
 }

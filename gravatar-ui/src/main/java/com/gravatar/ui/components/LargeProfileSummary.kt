@@ -22,6 +22,7 @@ import com.gravatar.ui.components.atomic.Avatar
 import com.gravatar.ui.components.atomic.DisplayName
 import com.gravatar.ui.components.atomic.UserInfo
 import com.gravatar.ui.components.atomic.ViewProfileButton
+import com.gravatar.ui.extensions.toApi2ComponentStateProfile
 import java.net.URI
 
 /**
@@ -73,14 +74,14 @@ public fun LargeProfileSummary(
                 ) {
                     avatar(state)
                     DisplayName(
-                        state,
+                        state.toApi2ComponentStateProfile(),
                         modifier = Modifier.padding(top = 16.dp),
                         skeletonModifier = Modifier
                             .fillMaxWidth(0.6f)
                             .padding(top = 12.dp),
                     )
                     UserInfo(
-                        state,
+                        state.toApi2ComponentStateProfile(),
                         textStyle = MaterialTheme.typography.bodyMedium.copy(
                             color = MaterialTheme.colorScheme.outline,
                             textAlign = TextAlign.Center,

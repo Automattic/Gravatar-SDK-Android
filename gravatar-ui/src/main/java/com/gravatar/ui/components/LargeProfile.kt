@@ -25,6 +25,7 @@ import com.gravatar.ui.components.atomic.SocialIconRow
 import com.gravatar.ui.components.atomic.UserInfo
 import com.gravatar.ui.components.atomic.ViewProfileButton
 import com.gravatar.ui.components.atomic.offsetGravatarIcon
+import com.gravatar.ui.extensions.toApi2ComponentStateProfile
 import java.net.URI
 
 /**
@@ -74,16 +75,16 @@ public fun LargeProfile(
                 ) {
                     avatar(state)
                     DisplayName(
-                        state,
+                        state.toApi2ComponentStateProfile(),
                         modifier = Modifier.padding(top = 16.dp),
                         skeletonModifier = Modifier.fillMaxWidth(0.65f).padding(top = 12.dp),
                     )
                     UserInfo(
-                        state,
+                        state.toApi2ComponentStateProfile(),
                         skeletonModifier = Modifier.fillMaxWidth(0.9f).padding(top = 4.dp),
                     )
                     AboutMe(
-                        state,
+                        state.toApi2ComponentStateProfile(),
                         modifier = Modifier.padding(top = 8.dp),
                         skeletonModifier = Modifier.fillMaxWidth(0.9f).padding(top = 12.dp),
                     )
@@ -94,7 +95,11 @@ public fun LargeProfile(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        SocialIconRow(state, modifier = Modifier.offsetGravatarIcon(), maxIcons = 4)
+                        SocialIconRow(
+                            state.toApi2ComponentStateProfile(),
+                            modifier = Modifier.offsetGravatarIcon(),
+                            maxIcons = 4,
+                        )
                         viewProfile(state)
                     }
                 }

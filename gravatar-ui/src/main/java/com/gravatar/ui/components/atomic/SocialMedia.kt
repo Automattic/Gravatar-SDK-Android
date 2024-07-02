@@ -25,17 +25,20 @@ import coil.compose.AsyncImage
 import coil.decode.SvgDecoder
 import coil.request.ImageRequest
 import com.gravatar.GravatarConstants
-import com.gravatar.api.models.Profile
-import com.gravatar.api.models.VerifiedAccount
-import com.gravatar.extensions.emptyProfile
+import com.gravatar.extensions.defaultProfile
 import com.gravatar.extensions.profileUrl
+import com.gravatar.restapi.models.Profile
+import com.gravatar.restapi.models.VerifiedAccount
 import com.gravatar.ui.R
 import com.gravatar.ui.components.ComponentState
-import com.gravatar.ui.components.LoadingToLoadedStatePreview
+import com.gravatar.ui.components.LoadingToLoadedProfileStatePreview
+import com.gravatar.ui.extensions.toApi2ComponentStateProfile
+import com.gravatar.ui.extensions.toApi2Profile
 import com.gravatar.ui.skeletonEffect
 import java.net.MalformedURLException
 import java.net.URI
 import java.net.URL
+import com.gravatar.api.models.Profile as LegacyProfile
 
 /**
  * LocalIcon is a predefined list of social media icons that can be used in the SocialIcon composable.
@@ -183,6 +186,23 @@ public fun SocialIconRow(socialMedia: List<SocialMedia>, modifier: Modifier = Mo
  * @param modifier Composable modifier
  * @param maxIcons The maximum number of icons to display
  */
+@Deprecated(
+    "This class is deprecated and will be removed in a future release.",
+    replaceWith = ReplaceWith("com.gravatar.ui.components.atomic.SocialIconRow"),
+    level = DeprecationLevel.WARNING,
+)
+@Composable
+public fun SocialIconRow(profile: LegacyProfile, modifier: Modifier = Modifier, maxIcons: Int = 4) {
+    SocialIconRow(mediaList(profile.toApi2Profile()), modifier, maxIcons)
+}
+
+/**
+ * [SocialIconRow] is a composable that displays a row of clickable [SocialIcon].
+ *
+ * @param profile The user's profile information
+ * @param modifier Composable modifier
+ * @param maxIcons The maximum number of icons to display
+ */
 @Composable
 public fun SocialIconRow(profile: Profile, modifier: Modifier = Modifier, maxIcons: Int = 4) {
     SocialIconRow(mediaList(profile), modifier, maxIcons)
@@ -195,6 +215,24 @@ public fun SocialIconRow(profile: Profile, modifier: Modifier = Modifier, maxIco
  * @param modifier Composable modifier
  * @param maxIcons The maximum number of icons to display
  */
+@Deprecated(
+    "This class is deprecated and will be removed in a future release.",
+    replaceWith = ReplaceWith("com.gravatar.ui.components.atomic.SocialIconRow"),
+    level = DeprecationLevel.WARNING,
+)
+@Composable
+public fun SocialIconRow(state: ComponentState<LegacyProfile>, modifier: Modifier = Modifier, maxIcons: Int = 4) {
+    SocialIconRow(state = state.toApi2ComponentStateProfile(), modifier = modifier, maxIcons = maxIcons)
+}
+
+/**
+ * [SocialIconRow] is a composable that displays a row of clickable [SocialIcon].
+ *
+ * @param state The user's profile state
+ * @param modifier Composable modifier
+ * @param maxIcons The maximum number of icons to display
+ */
+@JvmName("SocialIconRowWithComponentState")
 @Composable
 public fun SocialIconRow(state: ComponentState<Profile>, modifier: Modifier = Modifier, maxIcons: Int = 4) {
     when (state) {
@@ -236,39 +274,39 @@ internal fun Modifier.offsetGravatarIcon(): Modifier = this.offset(x = (-5).dp)
 @Preview(showBackground = true)
 @Composable
 private fun SocialIconRowPreview() {
-    val userProfile = emptyProfile(
+    val userProfile = defaultProfile(
         hash = "",
         verifiedAccounts = listOf(
-            VerifiedAccount(
-                serviceType = "mastodon",
-                serviceLabel = "Mastodon",
-                url = URI("https://example.com"),
-                serviceIcon = URI("https://example.com/icon.svg"),
-            ),
-            VerifiedAccount(
-                serviceType = "tumblr",
-                serviceLabel = "Tumblr",
-                url = URI("https://example.com"),
-                serviceIcon = URI("https://example.com/icon.svg"),
-            ),
-            VerifiedAccount(
-                serviceType = "tiktok",
-                serviceLabel = "TikTok",
-                url = URI("https://example.com"),
-                serviceIcon = URI("https://example.com/icon.svg"),
-            ),
-            VerifiedAccount(
-                serviceType = "wordpress",
-                serviceLabel = "WordPress",
-                url = URI("https://example.com"),
-                serviceIcon = URI("https://example.com/icon.svg"),
-            ),
-            VerifiedAccount(
-                serviceType = "github",
-                serviceLabel = "GitHub",
-                url = URI("https://example.com"),
-                serviceIcon = URI("https://example.com/icon.svg"),
-            ),
+            VerifiedAccount {
+                serviceType = "mastodon"
+                serviceLabel = "Mastodon"
+                url = URI("https://example.com")
+                serviceIcon = URI("https://example.com/icon.svg")
+            },
+            VerifiedAccount {
+                serviceType = "tumblr"
+                serviceLabel = "Tumblr"
+                url = URI("https://example.com")
+                serviceIcon = URI("https://example.com/icon.svg")
+            },
+            VerifiedAccount {
+                serviceType = "tiktok"
+                serviceLabel = "TikTok"
+                url = URI("https://example.com")
+                serviceIcon = URI("https://example.com/icon.svg")
+            },
+            VerifiedAccount {
+                serviceType = "wordpress"
+                serviceLabel = "WordPress"
+                url = URI("https://example.com")
+                serviceIcon = URI("https://example.com/icon.svg")
+            },
+            VerifiedAccount {
+                serviceType = "github"
+                serviceLabel = "GitHub"
+                url = URI("https://example.com")
+                serviceIcon = URI("https://example.com/icon.svg")
+            },
         ),
     )
     SocialIconRow(userProfile, maxIcons = 5)
@@ -278,5 +316,5 @@ private fun SocialIconRowPreview() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun LocationStatePreview() {
-    LoadingToLoadedStatePreview { SocialIconRow(it) }
+    LoadingToLoadedProfileStatePreview { SocialIconRow(it) }
 }

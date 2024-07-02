@@ -29,6 +29,7 @@ import com.gravatar.ui.components.atomic.SocialIconRow
 import com.gravatar.ui.components.atomic.UserInfo
 import com.gravatar.ui.components.atomic.ViewProfileButton
 import com.gravatar.ui.components.atomic.offsetGravatarIcon
+import com.gravatar.ui.extensions.toApi2ComponentStateProfile
 import java.net.URI
 
 /**
@@ -79,16 +80,19 @@ public fun Profile(
                         avatar(state)
                         Column(modifier = Modifier.padding(14.dp, 0.dp, 0.dp, 0.dp)) {
                             DisplayName(
-                                state,
+                                state.toApi2ComponentStateProfile(),
                                 skeletonModifier = Modifier.fillMaxWidth(0.5f),
                                 textStyle = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                             )
-                            UserInfo(state, skeletonModifier = Modifier.fillMaxWidth(0.9f))
+                            UserInfo(
+                                state.toApi2ComponentStateProfile(),
+                                skeletonModifier = Modifier.fillMaxWidth(0.9f),
+                            )
                         }
                     }
                     if (state.isAboutMeVisible()) {
                         Spacer(modifier = Modifier.height(16.dp))
-                        AboutMe(state, skeletonModifier = Modifier.fillMaxWidth(0.8f))
+                        AboutMe(state.toApi2ComponentStateProfile(), skeletonModifier = Modifier.fillMaxWidth(0.8f))
                     }
                     Spacer(modifier = Modifier.height(4.dp))
                     Row(
@@ -96,7 +100,11 @@ public fun Profile(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        SocialIconRow(state, modifier = Modifier.offsetGravatarIcon(), maxIcons = 4)
+                        SocialIconRow(
+                            state.toApi2ComponentStateProfile(),
+                            modifier = Modifier.offsetGravatarIcon(),
+                            maxIcons = 4,
+                        )
                         viewProfile(state)
                     }
                 }

@@ -25,6 +25,7 @@ import com.gravatar.ui.components.atomic.Avatar
 import com.gravatar.ui.components.atomic.DisplayName
 import com.gravatar.ui.components.atomic.Location
 import com.gravatar.ui.components.atomic.ViewProfileButton
+import com.gravatar.ui.extensions.toApi2ComponentStateProfile
 
 /**
  * [ProfileSummary] is a composable that displays a mini profile card.
@@ -77,11 +78,14 @@ public fun ProfileSummary(
                         verticalArrangement = Arrangement.Center,
                     ) {
                         DisplayName(
-                            state,
+                            state.toApi2ComponentStateProfile(),
                             textStyle = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                             skeletonModifier = Modifier.fillMaxWidth(0.5f),
                         )
-                        Location(state = state, skeletonModifier = Modifier.fillMaxWidth(0.9f))
+                        Location(
+                            state = state.toApi2ComponentStateProfile(),
+                            skeletonModifier = Modifier.fillMaxWidth(0.9f),
+                        )
                         viewProfile(state)
                     }
                 }
