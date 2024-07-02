@@ -75,14 +75,17 @@ public final class com/gravatar/ui/components/ComponentState$Loading : com/grava
 }
 
 public final class com/gravatar/ui/components/ComponentStateKt {
+	public static final fun LoadingToLoadedProfileStatePreview (Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 	public static final fun LoadingToLoadedStatePreview (Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/gravatar/ui/components/ComposableSingletons$ComponentStateKt {
 	public static final field INSTANCE Lcom/gravatar/ui/components/ComposableSingletons$ComponentStateKt;
 	public static field lambda-1 Lkotlin/jvm/functions/Function3;
+	public static field lambda-2 Lkotlin/jvm/functions/Function3;
 	public fun <init> ()V
 	public final fun getLambda-1$gravatar_ui_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda-2$gravatar_ui_release ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class com/gravatar/ui/components/ComposableSingletons$LargeProfileKt {

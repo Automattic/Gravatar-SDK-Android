@@ -10,14 +10,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.gravatar.api.models.Profile
-import com.gravatar.api.models.VerifiedAccount
 import com.gravatar.extensions.emptyProfile
+import com.gravatar.restapi.models.Profile
+import com.gravatar.restapi.models.VerifiedAccount
 import com.gravatar.ui.GravatarTheme
 import com.gravatar.ui.components.ComponentState.Loaded
 import com.gravatar.ui.components.ComponentState.Loading
 import kotlinx.coroutines.delay
 import java.net.URI
+import com.gravatar.api.models.Profile as LegacyProfile
+import com.gravatar.api.models.VerifiedAccount as LegacyVerifiedAccount
 
 /**
  * [ComponentState] represents the state of a user profile loading.
@@ -45,8 +47,12 @@ public sealed class ComponentState<out T> {
 
 @Preview
 @Composable
-public fun LoadingToLoadedStatePreview(composable: @Composable (state: ComponentState<Profile>) -> Unit = {}) {
-    var state: ComponentState<Profile> by remember { mutableStateOf(Loading) }
+@Deprecated(
+    "This class is deprecated and will be removed in a future release.",
+    level = DeprecationLevel.WARNING,
+)
+public fun LoadingToLoadedStatePreview(composable: @Composable (state: ComponentState<LegacyProfile>) -> Unit = {}) {
+    var state: ComponentState<LegacyProfile> by remember { mutableStateOf(Loading) }
     LaunchedEffect(key1 = state) {
         delay(5000)
         state = Loaded(
@@ -58,32 +64,32 @@ public fun LoadingToLoadedStatePreview(composable: @Composable (state: Component
                 location = "Crac'h, France",
                 pronouns = "They/Them",
                 verifiedAccounts = listOf(
-                    VerifiedAccount(
+                    LegacyVerifiedAccount(
                         serviceType = "mastodon",
                         serviceLabel = "Mastodon",
                         url = URI("https://example.com"),
                         serviceIcon = URI("https://example.com/icon.svg"),
                     ),
-                    VerifiedAccount(
+                    LegacyVerifiedAccount(
                         serviceType = "tumblr",
                         serviceLabel = "Tumblr",
                         url = URI("https://example.com"),
                         serviceIcon = URI("https://example.com/icon.svg"),
                     ),
                     // Invalid url, should be ignored:
-                    VerifiedAccount(
+                    LegacyVerifiedAccount(
                         serviceType = "tiktok",
                         serviceLabel = "TikTok",
                         url = URI("https://example.com"),
                         serviceIcon = URI("https://example.com/icon.svg"),
                     ),
-                    VerifiedAccount(
+                    LegacyVerifiedAccount(
                         serviceType = "wordpress",
                         serviceLabel = "WordPress",
                         url = URI("https://example.com"),
                         serviceIcon = URI("https://example.com/icon.svg"),
                     ),
-                    VerifiedAccount(
+                    LegacyVerifiedAccount(
                         serviceType = "github",
                         serviceLabel = "GitHub",
                         url = URI("https://example.com"),
@@ -93,6 +99,65 @@ public fun LoadingToLoadedStatePreview(composable: @Composable (state: Component
                 description = "I'm a farmer, I love to code. I ride my bicycle to work. One apple a day keeps the " +
                     "doctor away. This about me description is quite long, this is good for testing.",
             ),
+        )
+    }
+    GravatarTheme {
+        Surface(Modifier.fillMaxWidth()) {
+            composable.invoke(state)
+        }
+    }
+}
+
+@Preview
+@Composable
+public fun LoadingToLoadedProfileStatePreview(composable: @Composable (state: ComponentState<Profile>) -> Unit = {}) {
+    var state: ComponentState<Profile> by remember { mutableStateOf(Loading) }
+    LaunchedEffect(key1 = state) {
+        delay(5000)
+        state = Loaded(
+            Profile {
+                hash = "4539566a0223b11d28fc47c864336fa27b8fe49b5f85180178c9e3813e910d6a"
+                displayName = "John Doe"
+                jobTitle = "Farmer"
+                company = "Farmers United"
+                location = "Crac'h, France"
+                pronouns = "They/Them"
+                verifiedAccounts = listOf(
+                    VerifiedAccount {
+                        serviceType = "mastodon"
+                        serviceLabel = "Mastodon"
+                        url = URI("https://example.com")
+                        serviceIcon = URI("https://example.com/icon.svg")
+                    },
+                    VerifiedAccount {
+                        serviceType = "tumblr"
+                        serviceLabel = "Tumblr"
+                        url = URI("https://example.com")
+                        serviceIcon = URI("https://example.com/icon.svg")
+                    },
+                    // Invalid url, should be ignored:
+                    VerifiedAccount {
+                        serviceType = "tiktok"
+                        serviceLabel = "TikTok"
+                        url = URI("https://example.com")
+                        serviceIcon = URI("https://example.com/icon.svg")
+                    },
+                    VerifiedAccount {
+                        serviceType = "wordpress"
+                        serviceLabel = "WordPress"
+                        url = URI("https://example.com")
+                        serviceIcon = URI("https://example.com/icon.svg")
+                    },
+                    VerifiedAccount {
+                        serviceType = "github"
+                        serviceLabel = "GitHub"
+                        url = URI("https://example.com")
+                        serviceIcon = URI("https://example.com/icon.svg")
+                    },
+                )
+                description = "I'm a farmer, I love to code. I ride my bicycle to work. One apple a day keeps the " +
+                    "doctor away. This about me description is quite long, this is good for testing."
+            },
         )
     }
     GravatarTheme {

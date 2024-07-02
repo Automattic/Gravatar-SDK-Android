@@ -282,12 +282,19 @@ public final class com/gravatar/api/models/VerifiedAccount {
 
 public final class com/gravatar/extensions/UserProfileExtensionsKt {
 	public static final fun avatarUrl (Lcom/gravatar/api/models/Profile;Lcom/gravatar/AvatarQueryOptions;)Lcom/gravatar/AvatarUrl;
+	public static final fun avatarUrl (Lcom/gravatar/restapi/models/Profile;Lcom/gravatar/AvatarQueryOptions;)Lcom/gravatar/AvatarUrl;
 	public static synthetic fun avatarUrl$default (Lcom/gravatar/api/models/Profile;Lcom/gravatar/AvatarQueryOptions;ILjava/lang/Object;)Lcom/gravatar/AvatarUrl;
+	public static synthetic fun avatarUrl$default (Lcom/gravatar/restapi/models/Profile;Lcom/gravatar/AvatarQueryOptions;ILjava/lang/Object;)Lcom/gravatar/AvatarUrl;
+	public static final fun defaultProfile (Ljava/lang/String;Ljava/lang/String;Ljava/net/URI;Ljava/net/URI;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Lcom/gravatar/restapi/models/ProfilePayments;Lcom/gravatar/restapi/models/ProfileContactInfo;Ljava/util/List;Ljava/lang/Integer;Ljava/time/Instant;Ljava/time/Instant;)Lcom/gravatar/restapi/models/Profile;
+	public static synthetic fun defaultProfile$default (Ljava/lang/String;Ljava/lang/String;Ljava/net/URI;Ljava/net/URI;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Lcom/gravatar/restapi/models/ProfilePayments;Lcom/gravatar/restapi/models/ProfileContactInfo;Ljava/util/List;Ljava/lang/Integer;Ljava/time/Instant;Ljava/time/Instant;ILjava/lang/Object;)Lcom/gravatar/restapi/models/Profile;
 	public static final fun emptyProfile (Ljava/lang/String;Ljava/lang/String;Ljava/net/URI;Ljava/net/URI;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Lcom/gravatar/api/models/ProfilePayments;Lcom/gravatar/api/models/ProfileContactInfo;Ljava/util/List;Ljava/lang/Integer;Ljava/time/Instant;Ljava/time/Instant;)Lcom/gravatar/api/models/Profile;
 	public static synthetic fun emptyProfile$default (Ljava/lang/String;Ljava/lang/String;Ljava/net/URI;Ljava/net/URI;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Lcom/gravatar/api/models/ProfilePayments;Lcom/gravatar/api/models/ProfileContactInfo;Ljava/util/List;Ljava/lang/Integer;Ljava/time/Instant;Ljava/time/Instant;ILjava/lang/Object;)Lcom/gravatar/api/models/Profile;
 	public static final fun formattedUserInfo (Lcom/gravatar/api/models/Profile;)Ljava/lang/String;
+	public static final fun formattedUserInfo (Lcom/gravatar/restapi/models/Profile;)Ljava/lang/String;
 	public static final fun hash (Lcom/gravatar/api/models/Profile;)Lcom/gravatar/types/Hash;
+	public static final fun hash (Lcom/gravatar/restapi/models/Profile;)Lcom/gravatar/types/Hash;
 	public static final fun profileUrl (Lcom/gravatar/api/models/Profile;)Lcom/gravatar/ProfileUrl;
+	public static final fun profileUrl (Lcom/gravatar/restapi/models/Profile;)Lcom/gravatar/ProfileUrl;
 }
 
 public final class com/gravatar/restapi/models/CryptoWalletAddress {
