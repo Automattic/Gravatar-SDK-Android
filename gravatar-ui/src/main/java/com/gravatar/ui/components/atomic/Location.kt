@@ -84,7 +84,9 @@ public fun Location(
         }
 
         is ComponentState.Loaded -> {
-            Location(state.loadedValue, modifier, textStyle, content)
+            if (state.loadedValue.location.isNotBlank()) {
+                Location(state.loadedValue, modifier, textStyle, content)
+            }
         }
 
         ComponentState.Empty -> {
