@@ -17,7 +17,7 @@ public class AvatarService(okHttpClient: OkHttpClient? = null) {
         const val LOG_TAG = "AvatarService"
     }
 
-    private val service = GravatarSdkDI.getGravatarApiV1Service(okHttpClient)
+    private val service = GravatarSdkDI.getGravatarV1Service(okHttpClient)
 
     /**
      * Uploads a Gravatar image for the given email address.

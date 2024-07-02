@@ -30,13 +30,13 @@ class AvatarServiceTest {
     fun `given a file, email and wordpressBearerToken when uploading avatar then Gravatar service is invoked`() =
         runTest {
             val mockResponse = mockk<Response<ResponseBody>>()
-            coEvery { containerRule.gravatarApiServiceMock.uploadImage(any(), any(), any()) } returns mockResponse
+            coEvery { containerRule.gravatarApiMock.uploadImage(any(), any(), any()) } returns mockResponse
             every { mockResponse.isSuccessful } returns true
 
             val uploadResponse = avatarService.upload(File("avatarFile"), Email("email"), "wordpressBearerToken")
 
             coVerify(exactly = 1) {
-                containerRule.gravatarApiServiceMock.uploadImage(
+                containerRule.gravatarApiMock.uploadImage(
                     "Bearer wordpressBearerToken",
                     withArg {
                         assertTrue(
@@ -61,7 +61,7 @@ class AvatarServiceTest {
             every { isSuccessful } returns false
             every { code() } returns 100
         }
-        coEvery { containerRule.gravatarApiServiceMock.uploadImage(any(), any(), any()) } returns mockResponse
+        coEvery { containerRule.gravatarApiMock.uploadImage(any(), any(), any()) } returns mockResponse
 
         val uploadResponse = avatarService.upload(File("avatarFile"), Email("email"), "wordpressBearerToken")
 
@@ -70,7 +70,7 @@ class AvatarServiceTest {
 
     @Test
     fun `given gravatar update when an Exception occurs then Gravatar returns an error`() = runTest {
-        coEvery { containerRule.gravatarApiServiceMock.uploadImage(any(), any(), any()) } throws Exception()
+        coEvery { containerRule.gravatarApiMock.uploadImage(any(), any(), any()) } throws Exception()
 
         val uploadResponse = avatarService.upload(File("avatarFile"), Email("email"), "wordpressBearerToken")
 
