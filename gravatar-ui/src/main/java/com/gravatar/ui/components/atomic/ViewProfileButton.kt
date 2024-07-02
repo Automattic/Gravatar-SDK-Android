@@ -161,7 +161,7 @@ public fun ViewProfileButton(
                 contentPadding = PaddingValues(start = 0.dp, end = 0.dp),
                 modifier = modifier,
             ) {
-                TextSkeletonEffect(textStyle = textStyle, modifier = Modifier.width(88.dp))
+                TextSkeletonEffect(textStyle = textStyle, modifier = Modifier.width(60.dp))
             }
         }
 

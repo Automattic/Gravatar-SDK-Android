@@ -67,7 +67,7 @@ internal fun TextSkeletonEffect(
     ) {
         Box(
             modifier = Modifier
-                .padding(skeletonVerticalPadding)
+                .padding(vertical = skeletonVerticalPadding)
                 .fillMaxSize()
                 .clip(skeletonShape)
                 .skeletonEffect(),

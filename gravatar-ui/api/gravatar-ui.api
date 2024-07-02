@@ -167,6 +167,7 @@ public final class com/gravatar/ui/components/ProfileSummaryKt {
 
 public final class com/gravatar/ui/components/atomic/AboutMeKt {
 	public static final fun AboutMe (Lcom/gravatar/api/models/Profile;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Lkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;II)V
+	public static final fun AboutMe (Lcom/gravatar/ui/components/ComponentState;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Lkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;II)V
 	public static final fun AboutMe (Lcom/gravatar/ui/components/ComponentState;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Lkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;II)V
 }
 
@@ -232,6 +233,7 @@ public final class com/gravatar/ui/components/atomic/ComposableSingletons$ViewPr
 
 public final class com/gravatar/ui/components/atomic/DisplayNameKt {
 	public static final fun DisplayName (Lcom/gravatar/api/models/Profile;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/runtime/Composer;II)V
+	public static final fun DisplayName (Lcom/gravatar/ui/components/ComponentState;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/runtime/Composer;II)V
 	public static final fun DisplayName (Lcom/gravatar/ui/components/ComponentState;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/runtime/Composer;II)V
 	public static final fun DisplayNamePreview (Landroidx/compose/runtime/Composer;I)V
 }
@@ -266,6 +268,7 @@ public final class com/gravatar/ui/components/atomic/LocalIcon$Companion {
 
 public final class com/gravatar/ui/components/atomic/LocationKt {
 	public static final fun Location (Lcom/gravatar/api/models/Profile;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Lkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;II)V
+	public static final fun Location (Lcom/gravatar/ui/components/ComponentState;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Lkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;II)V
 	public static final fun Location (Lcom/gravatar/ui/components/ComponentState;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Lkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;II)V
 }
 
@@ -288,6 +291,7 @@ public final class com/gravatar/ui/components/atomic/SocialMediaKt {
 
 public final class com/gravatar/ui/components/atomic/UserInfoKt {
 	public static final fun UserInfo (Lcom/gravatar/api/models/Profile;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Lkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;II)V
+	public static final fun UserInfo (Lcom/gravatar/ui/components/ComponentState;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Lkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;II)V
 	public static final fun UserInfo (Lcom/gravatar/ui/components/ComponentState;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Lkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;II)V
 }
 

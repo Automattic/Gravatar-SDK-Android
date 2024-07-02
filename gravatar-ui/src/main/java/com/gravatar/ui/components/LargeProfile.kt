@@ -72,9 +72,20 @@ public fun LargeProfile(
                     modifier = modifier,
                 ) {
                     avatar(state)
-                    DisplayName(state, modifier = Modifier.padding(top = 16.dp))
-                    UserInfo(state)
-                    AboutMe(state, modifier = Modifier.padding(top = 8.dp))
+                    DisplayName(
+                        state,
+                        modifier = Modifier.padding(top = 16.dp),
+                        skeletonModifier = Modifier.fillMaxWidth(0.65f).padding(top = 12.dp),
+                    )
+                    UserInfo(
+                        state,
+                        skeletonModifier = Modifier.fillMaxWidth(0.9f).padding(top = 4.dp),
+                    )
+                    AboutMe(
+                        state,
+                        modifier = Modifier.padding(top = 8.dp),
+                        skeletonModifier = Modifier.fillMaxWidth(0.9f).padding(top = 12.dp),
+                    )
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()

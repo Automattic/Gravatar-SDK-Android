@@ -4,9 +4,9 @@ import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -72,6 +72,7 @@ public fun ProfileSummary(
                         DisplayName(
                             state,
                             textStyle = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                            skeletonModifier = Modifier.fillMaxWidth(0.5f),
                         )
                         when (state) {
                             is ComponentState.Loaded -> {
@@ -81,7 +82,7 @@ public fun ProfileSummary(
                             }
 
                             ComponentState.Loading -> {
-                                Location(state, modifier.width(120.dp))
+                                Location(state = state, skeletonModifier = Modifier.fillMaxWidth(0.9f))
                             }
 
                             ComponentState.Empty -> {

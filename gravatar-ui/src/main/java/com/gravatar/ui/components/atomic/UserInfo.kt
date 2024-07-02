@@ -1,7 +1,6 @@
 package com.gravatar.ui.components.atomic
 
 import android.content.res.Configuration
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -60,9 +59,37 @@ public fun UserInfo(
         UserInfoDefaultContent(userInfo, textStyle, contentModifier)
     },
 ) {
+    UserInfo(state, modifier, skeletonModifier = Modifier, textStyle, content)
+}
+
+/**
+ * [UserInfo] is a composable that displays a user's information in a formatted way.
+ * The user's information includes their company, job title, pronunciation, pronouns, and current
+ * location when available.
+ *
+ * @param state The user's profile state
+ * @param modifier Composable modifier
+ * @param skeletonModifier Composable modifier for the loading skeleton component
+ * @param textStyle The style to apply to the default text content
+ * @param content Composable to display the formatted user information
+ */
+@Composable
+public fun UserInfo(
+    state: ComponentState<Profile>,
+    modifier: Modifier = Modifier,
+    skeletonModifier: Modifier = Modifier,
+    textStyle: TextStyle = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.outline),
+    content: @Composable ((String, Modifier) -> Unit) = { userInfo, contentModifier ->
+        UserInfoDefaultContent(userInfo, textStyle, contentModifier)
+    },
+) {
     when (state) {
         is ComponentState.Loading -> {
-            TextSkeletonEffect(textStyle = textStyle, modifier = Modifier.width(120.dp))
+            TextSkeletonEffect(
+                textStyle = textStyle,
+                modifier = skeletonModifier,
+                skeletonVerticalPadding = 4.dp,
+            )
         }
 
         is ComponentState.Loaded -> {

@@ -2,7 +2,10 @@ package com.gravatar.ui.components.atomic
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -60,9 +63,42 @@ public fun AboutMe(
         AboutMeDefaultContent(userInfo, textStyle, contentModifier)
     },
 ) {
+    AboutMe(state = state, modifier = modifier, skeletonModifier = Modifier, textStyle = textStyle, content = content)
+}
+
+/**
+ * [AboutMe] is a composable that displays a user's about me description.
+ *
+ * @param state The user's profile loading state
+ * @param modifier Composable modifier
+ * @param skeletonModifier Composable modifier for the loading skeleton component
+ * @param textStyle The style to apply to the default text content
+ * @param content Composable to display the user's about me description
+ */
+@Composable
+public fun AboutMe(
+    state: ComponentState<Profile>,
+    modifier: Modifier = Modifier,
+    skeletonModifier: Modifier = Modifier,
+    textStyle: TextStyle = MaterialTheme.typography.bodyMedium,
+    content: @Composable ((String, Modifier) -> Unit) = { userInfo, contentModifier ->
+        AboutMeDefaultContent(userInfo, textStyle, contentModifier)
+    },
+) {
     when (state) {
         is ComponentState.Loading -> {
-            TextSkeletonEffect(textStyle = textStyle)
+            Column(modifier = skeletonModifier) {
+                TextSkeletonEffect(
+                    textStyle = textStyle,
+                    modifier = Modifier.fillMaxWidth(),
+                    skeletonVerticalPadding = 4.dp,
+                )
+                TextSkeletonEffect(
+                    textStyle = textStyle,
+                    modifier = Modifier.fillMaxWidth(0.7f),
+                    skeletonVerticalPadding = 4.dp,
+                )
+            }
         }
 
         is ComponentState.Loaded -> {

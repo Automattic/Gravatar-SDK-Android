@@ -9,6 +9,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.gravatar.api.models.Profile
 import com.gravatar.ui.R
 import com.gravatar.ui.TextSkeletonEffect
@@ -49,9 +50,31 @@ public fun DisplayName(
     modifier: Modifier = Modifier,
     textStyle: TextStyle = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
 ) {
+    DisplayName(state = state, modifier = modifier, skeletonModifier = Modifier, textStyle = textStyle)
+}
+
+/**
+ * [DisplayName] is a composable that displays the user's display name or a loading skeleton.
+ *
+ * @param state The user's profile state
+ * @param modifier Composable modifier
+ * @param skeletonModifier Composable modifier for the loading skeleton component
+ * @param textStyle The style to apply to the text
+ */
+@Composable
+public fun DisplayName(
+    state: ComponentState<Profile>,
+    modifier: Modifier = Modifier,
+    skeletonModifier: Modifier,
+    textStyle: TextStyle = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
+) {
     when (state) {
         is ComponentState.Loading -> {
-            TextSkeletonEffect(textStyle = textStyle)
+            TextSkeletonEffect(
+                textStyle = textStyle,
+                modifier = skeletonModifier,
+                skeletonVerticalPadding = 4.dp,
+            )
         }
 
         is ComponentState.Loaded -> {
