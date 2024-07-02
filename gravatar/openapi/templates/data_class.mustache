@@ -44,6 +44,7 @@ import java.io.Serializable
 import {{roomModelPackage}}.{{classname}}RoomModel
 import {{packageName}}.infrastructure.ITransformForStorage
 {{/generateRoomModels}}
+import java.util.Objects
 
 /**
  * {{{description}}}
@@ -60,14 +61,14 @@ import {{packageName}}.infrastructure.ITransformForStorage
 @Deprecated(message = "This schema is deprecated.")
 {{/isDeprecated}}
 {{>additionalModelTypeAnnotations}}
-{{#nonPublicApi}}internal {{/nonPublicApi}}{{#discriminator}}interface{{/discriminator}}{{^discriminator}}public data class{{/discriminator}} {{classname}}{{^discriminator}} (
+{{#nonPublicApi}}internal {{/nonPublicApi}}{{#discriminator}}interface{{/discriminator}}{{^discriminator}}public class{{/discriminator}} {{classname}}{{^discriminator}} private constructor(
 
 {{#allVars}}
 {{#required}}{{>data_class_req_var}}{{/required}}{{^required}}{{>data_class_opt_var}}{{/required}}{{^-last}},{{/-last}}
 
 {{/allVars}}
-){{/discriminator}}{{#parent}}{{^serializableModel}}{{^parcelizeModels}} : {{{parent}}}{{#isMap}}(){{/isMap}}{{#isArray}}(){{/isArray}}{{/parcelizeModels}}{{/serializableModel}}{{/parent}}{{#parent}}{{#serializableModel}}{{^parcelizeModels}} : {{{parent}}}{{#isMap}}(){{/isMap}}{{#isArray}}(){{/isArray}}, Serializable{{/parcelizeModels}}{{/serializableModel}}{{/parent}}{{#parent}}{{^serializableModel}}{{#parcelizeModels}} : {{{parent}}}{{#isMap}}(){{/isMap}}{{#isArray}}(){{/isArray}}, Parcelable{{/parcelizeModels}}{{/serializableModel}}{{/parent}}{{#parent}}{{#serializableModel}}{{#parcelizeModels}} : {{{parent}}}{{#isMap}}(){{/isMap}}{{#isArray}}(){{/isArray}}, Serializable, Parcelable{{/parcelizeModels}}{{/serializableModel}}{{/parent}}{{^parent}}{{#serializableModel}}{{^parcelizeModels}} : Serializable{{/parcelizeModels}}{{/serializableModel}}{{/parent}}{{^parent}}{{^serializableModel}}{{#parcelizeModels}} : Parcelable{{/parcelizeModels}}{{/serializableModel}}{{/parent}}{{^parent}}{{#serializableModel}}{{#parcelizeModels}} : Serializable, Parcelable{{/parcelizeModels}}{{/serializableModel}}{{/parent}}{{#generateRoomModels}}{{#parent}}, {{/parent}}{{^discriminator}}{{^parent}}:{{/parent}} ITransformForStorage<{{classname}}RoomModel>{{/discriminator}}{{/generateRoomModels}}{{#vendorExtensions.x-has-data-class-body}} {
-{{/vendorExtensions.x-has-data-class-body}}
+){{/discriminator}}{{#parent}}{{^serializableModel}}{{^parcelizeModels}} : {{{parent}}}{{#isMap}}(){{/isMap}}{{#isArray}}(){{/isArray}}{{/parcelizeModels}}{{/serializableModel}}{{/parent}}{{#parent}}{{#serializableModel}}{{^parcelizeModels}} : {{{parent}}}{{#isMap}}(){{/isMap}}{{#isArray}}(){{/isArray}}, Serializable{{/parcelizeModels}}{{/serializableModel}}{{/parent}}{{#parent}}{{^serializableModel}}{{#parcelizeModels}} : {{{parent}}}{{#isMap}}(){{/isMap}}{{#isArray}}(){{/isArray}}, Parcelable{{/parcelizeModels}}{{/serializableModel}}{{/parent}}{{#parent}}{{#serializableModel}}{{#parcelizeModels}} : {{{parent}}}{{#isMap}}(){{/isMap}}{{#isArray}}(){{/isArray}}, Serializable, Parcelable{{/parcelizeModels}}{{/serializableModel}}{{/parent}}{{^parent}}{{#serializableModel}}{{^parcelizeModels}} : Serializable{{/parcelizeModels}}{{/serializableModel}}{{/parent}}{{^parent}}{{^serializableModel}}{{#parcelizeModels}} : Parcelable{{/parcelizeModels}}{{/serializableModel}}{{/parent}}{{^parent}}{{#serializableModel}}{{#parcelizeModels}} : Serializable, Parcelable{{/parcelizeModels}}{{/serializableModel}}{{/parent}}{{#generateRoomModels}}{{#parent}}, {{/parent}}{{^discriminator}}{{^parent}}:{{/parent}} ITransformForStorage<{{classname}}RoomModel>{{/discriminator}}{{/generateRoomModels}} {
+
 {{#generateRoomModels}}
     companion object { }
     {{^discriminator}}override fun toRoomModel(): {{classname}}RoomModel =
@@ -144,6 +145,34 @@ import {{packageName}}.infrastructure.ITransformForStorage
 {{/isEnum}}
 {{/vars}}
 {{/hasEnums}}
-{{#vendorExtensions.x-has-data-class-body}}
+
+{{^isEnum}}
+	override fun toString() : String = "{{#allVars}}{{className}}{{name}}=${{name}}{{^-last}}, {{/-last}}{{/allVars}}"
+	override fun equals(other: Any?) : Boolean = other is {{classname}}
+		{{#allVars}}&& {{name}} == other.{{name}}
+		{{/allVars}}
+    override fun hashCode(): Int = Objects.hash({{#allVars}}{{name}}{{^-last}},{{/-last}}{{/allVars}})
+
+	public class Builder {
+		{{#allVars}}
+			{{#description}}
+				/* {{{.}}} */
+			{{/description}}
+			@set:JvmSynthetic // Hide 'void' setter from Java
+			public var {{name}}: {{{dataType}}}? = null
+		{{/allVars}}
+
+		{{#allVars}}
+			public fun set{{nameInCamelCase}}({{name}}: {{{dataType}}}?): Builder = apply { this.{{name}} = {{name}} }
+		{{/allVars}}
+		public fun build(): {{classname}} = {{classname}}({{#allVars}}{{name}}{{#required}}!!{{/required}}{{^-last}},{{/-last}}{{/allVars}})
+	}
+{{/isEnum}}
 }
-{{/vendorExtensions.x-has-data-class-body}}
+
+{{^isEnum}}
+@JvmSynthetic // Hide from Java callers who should use Builder.
+public fun {{classname}}(initializer: {{classname}}.Builder.() -> Unit): {{classname}} {
+  return {{classname}}.Builder().apply(initializer).build()
+}
+{{/isEnum}}
