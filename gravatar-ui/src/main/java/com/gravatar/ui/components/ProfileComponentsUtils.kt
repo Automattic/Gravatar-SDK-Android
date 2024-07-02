@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import com.gravatar.GravatarConstants
-import com.gravatar.api.models.Profile
+import com.gravatar.restapi.models.Profile
 
 @Composable
 internal fun EmptyProfileClickableContainer(

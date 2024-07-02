@@ -14,9 +14,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.gravatar.api.models.Profile
-import com.gravatar.api.models.VerifiedAccount
-import com.gravatar.extensions.emptyProfile
+import com.gravatar.extensions.defaultProfile
+import com.gravatar.restapi.models.Profile
+import com.gravatar.restapi.models.VerifiedAccount
 import com.gravatar.ui.GravatarTheme
 import com.gravatar.ui.components.atomic.Avatar
 import com.gravatar.ui.components.atomic.DisplayName
@@ -24,6 +24,7 @@ import com.gravatar.ui.components.atomic.UserInfo
 import com.gravatar.ui.components.atomic.ViewProfileButton
 import com.gravatar.ui.extensions.toApi2ComponentStateProfile
 import java.net.URI
+import com.gravatar.api.models.Profile as LegacyProfile
 
 /**
  * [LargeProfileSummary] is a composable that displays a user's profile in a resumed way.
@@ -34,7 +35,7 @@ import java.net.URI
  */
 @Composable
 public fun LargeProfileSummary(profile: Profile, modifier: Modifier = Modifier) {
-    LargeProfileSummary(ComponentState.Loaded(profile), modifier)
+    LargeProfileSummary(state = ComponentState.Loaded(profile), modifier = modifier)
 }
 
 /**
@@ -46,6 +47,7 @@ public fun LargeProfileSummary(profile: Profile, modifier: Modifier = Modifier) 
  * @param avatar Composable to display the user avatar
  * @param viewProfile Composable to display the view profile button
  */
+@JvmName("LargeProfileWithComponentState")
 @Composable
 public fun LargeProfileSummary(
     state: ComponentState<Profile>,
@@ -59,8 +61,8 @@ public fun LargeProfileSummary(
     },
     viewProfile: @Composable ((state: ComponentState<Profile>) -> Unit) = { profileState ->
         ViewProfileButton(
-            profileState,
-            Modifier.padding(0.dp),
+            state = profileState,
+            modifier = Modifier.padding(0.dp),
             inlineContent = null,
         )
     },
@@ -74,14 +76,14 @@ public fun LargeProfileSummary(
                 ) {
                     avatar(state)
                     DisplayName(
-                        state.toApi2ComponentStateProfile(),
+                        state = state,
                         modifier = Modifier.padding(top = 16.dp),
                         skeletonModifier = Modifier
                             .fillMaxWidth(0.6f)
                             .padding(top = 12.dp),
                     )
                     UserInfo(
-                        state.toApi2ComponentStateProfile(),
+                        state = state,
                         textStyle = MaterialTheme.typography.bodyMedium.copy(
                             color = MaterialTheme.colorScheme.outline,
                             textAlign = TextAlign.Center,
@@ -95,12 +97,46 @@ public fun LargeProfileSummary(
     }
 }
 
+/**
+ * [LargeProfileSummary] is a composable that displays a user's profile in a resumed way.
+ * Given a [Profile], it displays a [LargeProfileSummary] using the other atomic components provided within the SDK.
+ *
+ * @param profile The user's profile information
+ * @param modifier Composable modifier
+ */
+@Deprecated(
+    "This class is deprecated and will be removed in a future release.",
+    replaceWith = ReplaceWith("com.gravatar.ui.components.LargeProfileSummary"),
+    level = DeprecationLevel.WARNING,
+)
+@Composable
+public fun LargeProfileSummary(profile: LegacyProfile, modifier: Modifier = Modifier) {
+    LargeProfileSummary(state = ComponentState.Loaded(profile), modifier = modifier)
+}
+
+/**
+ * [LargeProfileSummary] is a composable that displays a user's profile in a resumed way.
+ * Given a [ComponentState] for a [Profile], it displays a [LargeProfileSummary] in the appropriate state.
+ *
+ * @param state The user's profile state
+ * @param modifier Composable modifier
+ */
+@Deprecated(
+    "This class is deprecated and will be removed in a future release.",
+    replaceWith = ReplaceWith("com.gravatar.ui.components.LargeProfileSummary"),
+    level = DeprecationLevel.WARNING,
+)
+@Composable
+public fun LargeProfileSummary(state: ComponentState<LegacyProfile>, modifier: Modifier = Modifier) {
+    LargeProfileSummary(state = state.toApi2ComponentStateProfile(), modifier = modifier)
+}
+
 @Preview(showBackground = true)
 @Composable
 private fun LargeProfileSummaryPreview() {
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
         LargeProfileSummary(
-            emptyProfile(
+            defaultProfile(
                 hash = "1234567890",
                 displayName = "Dominique Doe",
                 jobTitle = "Farmer",
@@ -108,24 +144,24 @@ private fun LargeProfileSummaryPreview() {
                 location = "Crac'h, France",
                 pronouns = "They/Them",
                 verifiedAccounts = listOf(
-                    VerifiedAccount(
-                        serviceType = "mastodon",
-                        serviceLabel = "Mastodon",
-                        url = URI("https://mastodon.social/@ddoe"),
-                        serviceIcon = URI("https://example.com/icon.svg"),
-                    ),
-                    VerifiedAccount(
-                        serviceType = "tumblr",
-                        serviceLabel = "Tumblr",
-                        url = URI("https://ddoe.tumblr.com"),
-                        serviceIcon = URI("https://example.com/icon.svg"),
-                    ),
-                    VerifiedAccount(
-                        serviceType = "wordpress",
-                        serviceLabel = "WordPress",
-                        url = URI("https://ddoe.wordpress.com"),
-                        serviceIcon = URI("https://example.com/icon.svg"),
-                    ),
+                    VerifiedAccount {
+                        serviceType = "mastodon"
+                        serviceLabel = "Mastodon"
+                        url = URI("https://mastodon.social/@ddoe")
+                        serviceIcon = URI("https://example.com/icon.svg")
+                    },
+                    VerifiedAccount {
+                        serviceType = "tumblr"
+                        serviceLabel = "Tumblr"
+                        url = URI("https://ddoe.tumblr.com")
+                        serviceIcon = URI("https://example.com/icon.svg")
+                    },
+                    VerifiedAccount {
+                        serviceType = "wordpress"
+                        serviceLabel = "WordPress"
+                        url = URI("https://ddoe.wordpress.com")
+                        serviceIcon = URI("https://example.com/icon.svg")
+                    },
                 ),
                 description = "I'm a farmer, I love to code. I ride my bicycle to work. One apple a day keeps the " +
                     "doctor away. This about me description is quite long, this is good for testing.",
@@ -138,7 +174,7 @@ private fun LargeProfileSummaryPreview() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 public fun LargeProfileLoadingPreview() {
-    LoadingToLoadedStatePreview { LargeProfileSummary(it) }
+    LoadingToLoadedProfileStatePreview { LargeProfileSummary(it) }
 }
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
@@ -147,7 +183,7 @@ public fun LargeProfileLoadingPreview() {
 private fun ProfileEmptyPreview() {
     GravatarTheme {
         Surface {
-            LargeProfileSummary(ComponentState.Empty)
+            LargeProfileSummary(ComponentState.Empty as ComponentState<Profile>)
         }
     }
 }

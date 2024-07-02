@@ -18,9 +18,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.gravatar.api.models.Profile
-import com.gravatar.api.models.VerifiedAccount
-import com.gravatar.extensions.emptyProfile
+import com.gravatar.extensions.defaultProfile
+import com.gravatar.restapi.models.Profile
+import com.gravatar.restapi.models.VerifiedAccount
 import com.gravatar.ui.GravatarTheme
 import com.gravatar.ui.components.atomic.AboutMe
 import com.gravatar.ui.components.atomic.Avatar
@@ -31,6 +31,7 @@ import com.gravatar.ui.components.atomic.ViewProfileButton
 import com.gravatar.ui.components.atomic.offsetGravatarIcon
 import com.gravatar.ui.extensions.toApi2ComponentStateProfile
 import java.net.URI
+import com.gravatar.api.models.Profile as LegacyProfile
 
 /**
  * [Profile] is a composable that displays a user's profile card.
@@ -53,6 +54,7 @@ public fun Profile(profile: Profile, modifier: Modifier = Modifier) {
  * @param avatar Composable to display the user avatar
  * @param viewProfile Composable to display the view profile button
  */
+@JvmName("ProfileWithComponentState")
 @Composable
 public fun Profile(
     state: ComponentState<Profile>,
@@ -65,7 +67,7 @@ public fun Profile(
         )
     },
     viewProfile: @Composable ((state: ComponentState<Profile>) -> Unit) = { profileState ->
-        ViewProfileButton(state, Modifier.padding(0.dp))
+        ViewProfileButton(profileState, Modifier.padding(0.dp))
     },
 ) {
     GravatarTheme {
@@ -80,19 +82,19 @@ public fun Profile(
                         avatar(state)
                         Column(modifier = Modifier.padding(14.dp, 0.dp, 0.dp, 0.dp)) {
                             DisplayName(
-                                state.toApi2ComponentStateProfile(),
+                                state = state,
                                 skeletonModifier = Modifier.fillMaxWidth(0.5f),
                                 textStyle = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                             )
                             UserInfo(
-                                state.toApi2ComponentStateProfile(),
+                                state = state,
                                 skeletonModifier = Modifier.fillMaxWidth(0.9f),
                             )
                         }
                     }
                     if (state.isAboutMeVisible()) {
                         Spacer(modifier = Modifier.height(16.dp))
-                        AboutMe(state.toApi2ComponentStateProfile(), skeletonModifier = Modifier.fillMaxWidth(0.8f))
+                        AboutMe(state = state, skeletonModifier = Modifier.fillMaxWidth(0.8f))
                     }
                     Spacer(modifier = Modifier.height(4.dp))
                     Row(
@@ -101,7 +103,7 @@ public fun Profile(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         SocialIconRow(
-                            state.toApi2ComponentStateProfile(),
+                            state = state,
                             modifier = Modifier.offsetGravatarIcon(),
                             maxIcons = 4,
                         )
@@ -113,6 +115,40 @@ public fun Profile(
     }
 }
 
+/**
+ * [Profile] is a composable that displays a user's profile card.
+ * Given a [Profile], iit displays a profile UI component using the other atomic components provided within the SDK.
+ *
+ * @param profile The user's profile information
+ * @param modifier Composable modifier
+ */
+@Deprecated(
+    "This class is deprecated and will be removed in a future release.",
+    replaceWith = ReplaceWith("com.gravatar.ui.components.Profile"),
+    level = DeprecationLevel.WARNING,
+)
+@Composable
+public fun Profile(profile: LegacyProfile, modifier: Modifier = Modifier) {
+    Profile(state = ComponentState.Loaded(profile), modifier = modifier)
+}
+
+/**
+ * [Profile] is a composable that displays a user's profile card.
+ * Given a [ComponentState] for a [Profile], it displays a [Profile] in the appropriate state.
+ *
+ * @param state The user's profile state
+ * @param modifier Composable modifier
+ */
+@Deprecated(
+    "This class is deprecated and will be removed in a future release.",
+    replaceWith = ReplaceWith("com.gravatar.ui.components.Profile"),
+    level = DeprecationLevel.WARNING,
+)
+@Composable
+public fun Profile(state: ComponentState<LegacyProfile>, modifier: Modifier = Modifier) {
+    Profile(state = state.toApi2ComponentStateProfile(), modifier = modifier)
+}
+
 private fun ComponentState<Profile>.isAboutMeVisible(): Boolean =
     this is ComponentState.Loaded && loadedValue.description.isNotEmpty() || this is ComponentState.Loading
 
@@ -120,7 +156,7 @@ private fun ComponentState<Profile>.isAboutMeVisible(): Boolean =
 @Composable
 private fun ProfilePreview() {
     Profile(
-        emptyProfile(
+        defaultProfile(
             hash = "1234567890",
             displayName = "Dominique Doe",
             jobTitle = "Farmer",
@@ -128,24 +164,24 @@ private fun ProfilePreview() {
             location = "Crac'h, France",
             pronouns = "They/Them",
             verifiedAccounts = listOf(
-                VerifiedAccount(
-                    serviceType = "mastodon",
-                    serviceLabel = "Mastodon",
-                    url = URI("https://mastodon.social/@ddoe"),
-                    serviceIcon = URI("https://example.com/icon.svg"),
-                ),
-                VerifiedAccount(
-                    serviceType = "tumblr",
-                    serviceLabel = "Tumblr",
-                    url = URI("https://ddoe.tumblr.com"),
-                    serviceIcon = URI("https://example.com/icon.svg"),
-                ),
-                VerifiedAccount(
-                    serviceType = "wordpress",
-                    serviceLabel = "WordPress",
-                    url = URI("https://ddoe.wordpress.com"),
-                    serviceIcon = URI("https://example.com/icon.svg"),
-                ),
+                VerifiedAccount {
+                    serviceType = "mastodon"
+                    serviceLabel = "Mastodon"
+                    url = URI("https://mastodon.social/@ddoe")
+                    serviceIcon = URI("https://example.com/icon.svg")
+                },
+                VerifiedAccount {
+                    serviceType = "tumblr"
+                    serviceLabel = "Tumblr"
+                    url = URI("https://ddoe.tumblr.com")
+                    serviceIcon = URI("https://example.com/icon.svg")
+                },
+                VerifiedAccount {
+                    serviceType = "wordpress"
+                    serviceLabel = "WordPress"
+                    url = URI("https://ddoe.wordpress.com")
+                    serviceIcon = URI("https://example.com/icon.svg")
+                },
             ),
             description = "I'm a farmer, I love to code. I ride my bicycle to work. One apple a day keeps the " +
                 "doctor away. This about me description is quite long, this is good for testing.",
@@ -157,7 +193,7 @@ private fun ProfilePreview() {
 @Composable
 private fun ProfileEmptyDescriptionPreview() {
     Profile(
-        emptyProfile(
+        defaultProfile(
             hash = "1234567890",
             displayName = "Dominique Doe",
             jobTitle = "Farmer",
@@ -165,24 +201,24 @@ private fun ProfileEmptyDescriptionPreview() {
             location = "Crac'h, France",
             pronouns = "They/Them",
             verifiedAccounts = listOf(
-                VerifiedAccount(
-                    serviceType = "mastodon",
-                    serviceLabel = "Mastodon",
-                    url = URI("https://mastodon.social/@ddoe"),
-                    serviceIcon = URI("https://example.com/icon.svg"),
-                ),
-                VerifiedAccount(
-                    serviceType = "tumblr",
-                    serviceLabel = "Tumblr",
-                    url = URI("https://ddoe.tumblr.com"),
-                    serviceIcon = URI("https://example.com/icon.svg"),
-                ),
-                VerifiedAccount(
-                    serviceType = "wordpress",
-                    serviceLabel = "WordPress",
-                    url = URI("https://ddoe.wordpress.com"),
-                    serviceIcon = URI("https://example.com/icon.svg"),
-                ),
+                VerifiedAccount {
+                    serviceType = "mastodon"
+                    serviceLabel = "Mastodon"
+                    url = URI("https://mastodon.social/@ddoe")
+                    serviceIcon = URI("https://example.com/icon.svg")
+                },
+                VerifiedAccount {
+                    serviceType = "tumblr"
+                    serviceLabel = "Tumblr"
+                    url = URI("https://ddoe.tumblr.com")
+                    serviceIcon = URI("https://example.com/icon.svg")
+                },
+                VerifiedAccount {
+                    serviceType = "wordpress"
+                    serviceLabel = "WordPress"
+                    url = URI("https://ddoe.wordpress.com")
+                    serviceIcon = URI("https://example.com/icon.svg")
+                },
             ),
         ),
     )
@@ -192,7 +228,7 @@ private fun ProfileEmptyDescriptionPreview() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun ProfileLoadingPreview() {
-    LoadingToLoadedStatePreview { Profile(it) }
+    LoadingToLoadedProfileStatePreview { Profile(it) }
 }
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
@@ -201,7 +237,7 @@ private fun ProfileLoadingPreview() {
 private fun ProfileEmptyPreview() {
     GravatarTheme {
         Surface {
-            Profile(ComponentState.Empty)
+            Profile(ComponentState.Empty as ComponentState<Profile>)
         }
     }
 }
