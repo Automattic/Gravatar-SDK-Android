@@ -61,7 +61,7 @@ import java.util.Objects
 @Deprecated(message = "This schema is deprecated.")
 {{/isDeprecated}}
 {{>additionalModelTypeAnnotations}}
-{{#nonPublicApi}}internal {{/nonPublicApi}}{{#discriminator}}interface{{/discriminator}}{{^discriminator}}public class{{/discriminator}} {{classname}}{{^discriminator}} private constructor(
+{{#nonPublicApi}}internal {{/nonPublicApi}}{{#discriminator}}interface{{/discriminator}}{{^discriminator}}{{^nonPublicApi}}public {{/nonPublicApi}}class{{/discriminator}} {{classname}}{{^discriminator}} private constructor(
 
 {{#allVars}}
 {{#required}}{{>data_class_req_var}}{{/required}}{{^required}}{{>data_class_opt_var}}{{/required}}{{^-last}},{{/-last}}
