@@ -131,7 +131,7 @@ class ProfileServiceTests {
         }
         coEvery { containerRule.gravatarApiMock.getProfileById(username) } returns mockResponse
 
-        val loadProfileResponse = profileService.retrieveByUsername(username)
+        val loadProfileResponse = profileService.retrieveByUsernameCatching(username)
 
         coVerify(exactly = 1) { containerRule.gravatarApiMock.getProfileById(username) }
         assertTrue(loadProfileResponse is Result.Success)
@@ -147,7 +147,7 @@ class ProfileServiceTests {
             }
             coEvery { containerRule.gravatarApiMock.getProfileById(username) } returns mockResponse
 
-            val loadProfileResponse = profileService.retrieveByUsername(username)
+            val loadProfileResponse = profileService.retrieveByUsernameCatching(username)
 
             coVerify(exactly = 1) { containerRule.gravatarApiMock.getProfileById(username) }
             assertTrue((loadProfileResponse as Result.Failure).error == ErrorType.UNKNOWN)
@@ -162,7 +162,7 @@ class ProfileServiceTests {
             }
             coEvery { containerRule.gravatarApiMock.getProfileById(username) } returns mockResponse
 
-            val loadProfileResponse = profileService.retrieveByUsername(username)
+            val loadProfileResponse = profileService.retrieveByUsernameCatching(username)
 
             coVerify(exactly = 1) { containerRule.gravatarApiMock.getProfileById(username) }
             assertTrue((loadProfileResponse as Result.Failure).error == ErrorType.UNKNOWN)
@@ -173,7 +173,7 @@ class ProfileServiceTests {
         val username = "username"
         coEvery { containerRule.gravatarApiMock.getProfileById(username) } throws Exception()
 
-        val loadProfileResponse = profileService.retrieveByUsername(username)
+        val loadProfileResponse = profileService.retrieveByUsernameCatching(username)
 
         coVerify(exactly = 1) { containerRule.gravatarApiMock.getProfileById(username) }
         assertTrue((loadProfileResponse as Result.Failure).error == ErrorType.UNKNOWN)
@@ -190,7 +190,7 @@ class ProfileServiceTests {
             containerRule.gravatarApiMock.getProfileById(usernameHash.toString())
         } returns mockResponse
 
-        val loadProfileResponse = profileService.retrieve(usernameHash)
+        val loadProfileResponse = profileService.retrieveCatching(usernameHash)
 
         coVerify(exactly = 1) { containerRule.gravatarApiMock.getProfileById(usernameHash.toString()) }
         assertTrue(loadProfileResponse is Result.Success)
@@ -207,7 +207,7 @@ class ProfileServiceTests {
             containerRule.gravatarApiMock.getProfileById(usernameEmail.hash().toString())
         } returns mockResponse
 
-        val loadProfileResponse = profileService.retrieve(usernameEmail)
+        val loadProfileResponse = profileService.retrieveCatching(usernameEmail)
 
         coVerify(exactly = 1) { containerRule.gravatarApiMock.getProfileById(usernameEmail.hash().toString()) }
         assertTrue(loadProfileResponse is Result.Success)

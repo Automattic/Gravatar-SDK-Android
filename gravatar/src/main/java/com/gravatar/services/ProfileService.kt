@@ -103,7 +103,7 @@ public class ProfileService(okHttpClient: OkHttpClient? = null) {
      * @param hashOrUsername The hash or username to fetch the profile for
      * @return The fetched profile
      */
-    public suspend fun retrieve(hashOrUsername: String): Result<Profile, ErrorType> = runCatchingService {
+    public suspend fun retrieveCatching(hashOrUsername: String): Result<Profile, ErrorType> = runCatchingService {
         withContext(GravatarSdkDI.dispatcherIO) {
             val response = service.getProfileById(hashOrUsername)
             if (response.isSuccessful) {
@@ -130,8 +130,8 @@ public class ProfileService(okHttpClient: OkHttpClient? = null) {
      * @param email The email address to fetch the profile for
      * @return The fetched profiles
      */
-    public suspend fun retrieve(email: Email): Result<Profile, ErrorType> {
-        return retrieve(email.hash())
+    public suspend fun retrieveCatching(email: Email): Result<Profile, ErrorType> {
+        return retrieveCatching(email.hash())
     }
 
     /**
@@ -140,8 +140,8 @@ public class ProfileService(okHttpClient: OkHttpClient? = null) {
      * @param hash The hash to fetch the profile for
      * @return The fetched profiles
      */
-    public suspend fun retrieve(hash: Hash): Result<Profile, ErrorType> {
-        return retrieve(hash.toString())
+    public suspend fun retrieveCatching(hash: Hash): Result<Profile, ErrorType> {
+        return retrieveCatching(hash.toString())
     }
 
     /**
@@ -150,7 +150,7 @@ public class ProfileService(okHttpClient: OkHttpClient? = null) {
      * @param username The username to fetch the profile for
      * @return The fetched profiles
      */
-    public suspend fun retrieveByUsername(username: String): Result<Profile, ErrorType> {
-        return retrieve(username)
+    public suspend fun retrieveByUsernameCatching(username: String): Result<Profile, ErrorType> {
+        return retrieveCatching(username)
     }
 }
