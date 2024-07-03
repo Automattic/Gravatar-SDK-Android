@@ -28,6 +28,11 @@ class ProfileSummaryTest : RoborazziTest() {
     fun profileLight() = gravatarScreenshotTest { ProfileSummary(ComponentState.Loaded(completeProfile)) }
 
     @Test
+    fun profileWithoutLocation() = gravatarScreenshotTest {
+        ProfileSummary(ComponentState.Loaded(completeProfile.copy(location = "")))
+    }
+
+    @Test
     fun profileWithCustomComponents() = gravatarScreenshotTest {
         ProfileSummary(
             state = ComponentState.Loaded(completeProfile),

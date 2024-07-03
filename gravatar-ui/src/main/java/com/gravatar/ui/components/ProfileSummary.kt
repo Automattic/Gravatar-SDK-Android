@@ -2,6 +2,7 @@ package com.gravatar.ui.components
 
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,6 +12,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
@@ -68,27 +70,18 @@ public fun ProfileSummary(
             EmptyProfileClickableContainer(state) {
                 Row(modifier = modifier) {
                     avatar(state)
-                    Column(modifier = Modifier.padding(start = 14.dp)) {
+                    Column(
+                        modifier = Modifier
+                            .padding(start = 14.dp)
+                            .align(Alignment.CenterVertically),
+                        verticalArrangement = Arrangement.Center,
+                    ) {
                         DisplayName(
                             state,
                             textStyle = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                             skeletonModifier = Modifier.fillMaxWidth(0.5f),
                         )
-                        when (state) {
-                            is ComponentState.Loaded -> {
-                                if (state.loadedValue.location.isNotBlank()) {
-                                    Location(state)
-                                }
-                            }
-
-                            ComponentState.Loading -> {
-                                Location(state = state, skeletonModifier = Modifier.fillMaxWidth(0.9f))
-                            }
-
-                            ComponentState.Empty -> {
-                                Location(state)
-                            }
-                        }
+                        Location(state = state, skeletonModifier = Modifier.fillMaxWidth(0.9f))
                         viewProfile(state)
                     }
                 }
@@ -105,6 +98,17 @@ private fun ProfileSummaryPreview() {
             hash = "4539566a0223b11d28fc47c864336fa27b8fe49b5f85180178c9e3813e910d6a",
             displayName = "John Doe",
             location = "Crac'h, France",
+        ),
+    )
+}
+
+@Preview
+@Composable
+private fun ProfileSummaryWithoutLocationPreview() {
+    ProfileSummary(
+        emptyProfile(
+            hash = "4539566a0223b11d28fc47c864336fa27b8fe49b5f85180178c9e3813e910d6a",
+            displayName = "John Doe",
         ),
     )
 }
