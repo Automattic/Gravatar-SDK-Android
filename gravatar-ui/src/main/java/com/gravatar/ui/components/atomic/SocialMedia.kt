@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
@@ -184,7 +185,7 @@ public fun SocialIconRow(socialMedia: List<SocialMedia>, modifier: Modifier = Mo
  */
 @Composable
 public fun SocialIconRow(profile: Profile, modifier: Modifier = Modifier, maxIcons: Int = 4) {
-    SocialIconRow(mediaList(profile), modifier.offset((-5).dp), maxIcons)
+    SocialIconRow(mediaList(profile), modifier, maxIcons)
 }
 
 /**
@@ -198,7 +199,10 @@ public fun SocialIconRow(profile: Profile, modifier: Modifier = Modifier, maxIco
 public fun SocialIconRow(state: ComponentState<Profile>, modifier: Modifier = Modifier, maxIcons: Int = 4) {
     when (state) {
         is ComponentState.Loading -> {
-            Row(modifier = modifier, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+            Row(
+                modifier = modifier.padding(start = 5.dp),
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+            ) {
                 repeat(maxIcons) {
                     Box(
                         Modifier
@@ -226,6 +230,8 @@ public fun SocialIconRow(state: ComponentState<Profile>, modifier: Modifier = Mo
         }
     }
 }
+
+internal fun Modifier.offsetGravatarIcon(): Modifier = this.offset(x = (-5).dp)
 
 @Preview(showBackground = true)
 @Composable
