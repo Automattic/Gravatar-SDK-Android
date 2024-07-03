@@ -58,6 +58,11 @@ public class ProfileService(okHttpClient: OkHttpClient? = null) {
      * @param email The email address to fetch the profile for
      * @return The fetched profiles
      */
+    @Deprecated(
+        "This class is deprecated and will be removed in a future release.",
+        replaceWith = ReplaceWith("com.gravatar.services.ProfileService.retrieve"),
+        level = DeprecationLevel.WARNING,
+    )
     public suspend fun fetch(email: Email): Result<LegacyProfile, ErrorType> {
         return fetch(email.hash())
     }
@@ -68,6 +73,11 @@ public class ProfileService(okHttpClient: OkHttpClient? = null) {
      * @param hash The hash to fetch the profile for
      * @return The fetched profiles
      */
+    @Deprecated(
+        "This class is deprecated and will be removed in a future release.",
+        replaceWith = ReplaceWith("com.gravatar.services.ProfileService.retrieve"),
+        level = DeprecationLevel.WARNING,
+    )
     public suspend fun fetch(hash: Hash): Result<LegacyProfile, ErrorType> {
         return fetch(hash.toString())
     }
@@ -78,6 +88,11 @@ public class ProfileService(okHttpClient: OkHttpClient? = null) {
      * @param username The username to fetch the profile for
      * @return The fetched profiles
      */
+    @Deprecated(
+        "This class is deprecated and will be removed in a future release.",
+        replaceWith = ReplaceWith("com.gravatar.services.ProfileService.retrieveByUsername"),
+        level = DeprecationLevel.WARNING,
+    )
     public suspend fun fetchByUsername(username: String): Result<LegacyProfile, ErrorType> {
         return fetch(username)
     }
