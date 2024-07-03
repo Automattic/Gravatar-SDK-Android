@@ -25,7 +25,7 @@ public class Link private constructor(
     @SerializedName("url")
     public val url: java.net.URI,
 ) {
-    override fun toString(): String = "label=$label, url=$url"
+    override fun toString(): String = "Link(label=$label, url=$url)"
 
     override fun equals(other: Any?): Boolean = other is Link &&
         label == other.label &&

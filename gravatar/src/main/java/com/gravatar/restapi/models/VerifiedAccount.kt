@@ -33,7 +33,7 @@ public class VerifiedAccount private constructor(
     @SerializedName("url")
     public val url: java.net.URI,
 ) {
-    override fun toString(): String = "serviceType=$serviceType, serviceLabel=$serviceLabel, serviceIcon=$serviceIcon, url=$url"
+    override fun toString(): String = "VerifiedAccount(serviceType=$serviceType, serviceLabel=$serviceLabel, serviceIcon=$serviceIcon, url=$url)"
 
     override fun equals(other: Any?): Boolean = other is VerifiedAccount &&
         serviceType == other.serviceType &&

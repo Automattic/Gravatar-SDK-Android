@@ -91,7 +91,7 @@ public class Profile private constructor(
     @SerializedName("registration_date")
     public val registrationDate: java.time.Instant? = null,
 ) {
-    override fun toString(): String = "hash=$hash, displayName=$displayName, profileUrl=$profileUrl, avatarUrl=$avatarUrl, avatarAltText=$avatarAltText, location=$location, description=$description, jobTitle=$jobTitle, company=$company, verifiedAccounts=$verifiedAccounts, pronunciation=$pronunciation, pronouns=$pronouns, links=$links, payments=$payments, contactInfo=$contactInfo, gallery=$gallery, numberVerifiedAccounts=$numberVerifiedAccounts, lastProfileEdit=$lastProfileEdit, registrationDate=$registrationDate"
+    override fun toString(): String = "Profile(hash=$hash, displayName=$displayName, profileUrl=$profileUrl, avatarUrl=$avatarUrl, avatarAltText=$avatarAltText, location=$location, description=$description, jobTitle=$jobTitle, company=$company, verifiedAccounts=$verifiedAccounts, pronunciation=$pronunciation, pronouns=$pronouns, links=$links, payments=$payments, contactInfo=$contactInfo, gallery=$gallery, numberVerifiedAccounts=$numberVerifiedAccounts, lastProfileEdit=$lastProfileEdit, registrationDate=$registrationDate)"
 
     override fun equals(other: Any?): Boolean = other is Profile &&
         hash == other.hash &&

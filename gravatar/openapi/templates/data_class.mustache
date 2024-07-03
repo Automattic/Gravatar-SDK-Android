@@ -147,7 +147,7 @@ import java.util.Objects
 {{/hasEnums}}
 
 {{^isEnum}}
-	override fun toString() : String = "{{#allVars}}{{className}}{{name}}=${{name}}{{^-last}}, {{/-last}}{{/allVars}}"
+	override fun toString() : String = "{{classname}}({{#allVars}}{{className}}{{name}}=${{name}}{{^-last}}, {{/-last}}{{/allVars}})"
 	override fun equals(other: Any?) : Boolean = other is {{classname}}
 		{{#allVars}}&& {{name}} == other.{{name}}
 		{{/allVars}}

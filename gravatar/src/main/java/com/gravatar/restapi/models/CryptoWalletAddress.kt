@@ -25,7 +25,7 @@ public class CryptoWalletAddress private constructor(
     @SerializedName("address")
     public val address: kotlin.String,
 ) {
-    override fun toString(): String = "label=$label, address=$address"
+    override fun toString(): String = "CryptoWalletAddress(label=$label, address=$address)"
 
     override fun equals(other: Any?): Boolean = other is CryptoWalletAddress &&
         label == other.label &&

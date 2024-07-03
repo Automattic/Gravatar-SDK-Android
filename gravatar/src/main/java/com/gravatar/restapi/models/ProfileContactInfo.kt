@@ -41,7 +41,7 @@ public class ProfileContactInfo private constructor(
     @SerializedName("calendar")
     public val calendar: java.net.URI? = null,
 ) {
-    override fun toString(): String = "homePhone=$homePhone, workPhone=$workPhone, cellPhone=$cellPhone, email=$email, contactForm=$contactForm, calendar=$calendar"
+    override fun toString(): String = "ProfileContactInfo(homePhone=$homePhone, workPhone=$workPhone, cellPhone=$cellPhone, email=$email, contactForm=$contactForm, calendar=$calendar)"
 
     override fun equals(other: Any?): Boolean = other is ProfileContactInfo &&
         homePhone == other.homePhone &&

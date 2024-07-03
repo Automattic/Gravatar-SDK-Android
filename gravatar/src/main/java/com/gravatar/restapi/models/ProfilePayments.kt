@@ -25,7 +25,7 @@ public class ProfilePayments private constructor(
     @SerializedName("crypto_wallets")
     public val cryptoWallets: kotlin.collections.List<CryptoWalletAddress>,
 ) {
-    override fun toString(): String = "links=$links, cryptoWallets=$cryptoWallets"
+    override fun toString(): String = "ProfilePayments(links=$links, cryptoWallets=$cryptoWallets)"
 
     override fun equals(other: Any?): Boolean = other is ProfilePayments &&
         links == other.links &&

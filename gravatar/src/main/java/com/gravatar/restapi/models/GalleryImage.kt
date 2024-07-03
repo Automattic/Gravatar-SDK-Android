@@ -21,7 +21,7 @@ public class GalleryImage private constructor(
     @SerializedName("url")
     public val url: java.net.URI,
 ) {
-    override fun toString(): String = "url=$url"
+    override fun toString(): String = "GalleryImage(url=$url)"
 
     override fun equals(other: Any?): Boolean = other is GalleryImage &&
         url == other.url
