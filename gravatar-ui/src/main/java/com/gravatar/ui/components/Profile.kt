@@ -28,6 +28,7 @@ import com.gravatar.ui.components.atomic.DisplayName
 import com.gravatar.ui.components.atomic.SocialIconRow
 import com.gravatar.ui.components.atomic.UserInfo
 import com.gravatar.ui.components.atomic.ViewProfileButton
+import com.gravatar.ui.components.atomic.offsetGravatarIcon
 import java.net.URI
 
 /**
@@ -95,7 +96,7 @@ public fun Profile(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        SocialIconRow(state, maxIcons = 4)
+                        SocialIconRow(state, modifier = Modifier.offsetGravatarIcon(), maxIcons = 4)
                         viewProfile(state)
                     }
                 }

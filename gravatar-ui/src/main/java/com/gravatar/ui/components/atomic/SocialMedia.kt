@@ -2,9 +2,11 @@ package com.gravatar.ui.components.atomic
 
 import android.content.res.Configuration
 import androidx.annotation.DrawableRes
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -197,11 +199,13 @@ public fun SocialIconRow(profile: Profile, modifier: Modifier = Modifier, maxIco
 public fun SocialIconRow(state: ComponentState<Profile>, modifier: Modifier = Modifier, maxIcons: Int = 4) {
     when (state) {
         is ComponentState.Loading -> {
-            Row(modifier = modifier) {
+            Row(
+                modifier = modifier.padding(start = 5.dp),
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+            ) {
                 repeat(maxIcons) {
                     Box(
                         Modifier
-                            .padding(2.dp)
                             .size(28.dp)
                             .clip(CircleShape)
                             .skeletonEffect(),
@@ -226,6 +230,8 @@ public fun SocialIconRow(state: ComponentState<Profile>, modifier: Modifier = Mo
         }
     }
 }
+
+internal fun Modifier.offsetGravatarIcon(): Modifier = this.offset(x = (-5).dp)
 
 @Preview(showBackground = true)
 @Composable
