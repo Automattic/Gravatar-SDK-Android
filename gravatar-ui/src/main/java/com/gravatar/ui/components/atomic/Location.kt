@@ -28,32 +28,6 @@ import com.gravatar.api.models.Profile as LegacyProfile
  * @param textStyle The style to apply to the default text content
  * @param content Composable to display the user location
  */
-@Deprecated(
-    "This class is deprecated and will be removed in a future release.",
-    replaceWith = ReplaceWith("com.gravatar.ui.components.atomic.Location"),
-    level = DeprecationLevel.WARNING,
-)
-@Composable
-public fun Location(
-    profile: LegacyProfile,
-    modifier: Modifier = Modifier,
-    textStyle: TextStyle = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.outline),
-    content: @Composable ((String, Modifier) -> Unit) = { location, contentModifier ->
-        LocationDefaultContent(location, textStyle, contentModifier)
-    },
-) {
-    Location(profile = profile.toApi2Profile(), modifier = modifier, textStyle = textStyle, content = content)
-}
-
-/**
- * [Location] is a composable that displays a user's location in text format.
- * The user's location is displayed in a text format. If the location is too long, it will be truncated
- *
- * @param profile The user's profile information
- * @param modifier Composable modifier
- * @param textStyle The style to apply to the default text content
- * @param content Composable to display the user location
- */
 @Composable
 public fun Location(
     profile: Profile,
@@ -64,38 +38,6 @@ public fun Location(
     },
 ) {
     content(profile.location, modifier)
-}
-
-/**
- * [Location] is a composable that displays a user's location in text format or a loading skeleton.
- * The user's location is displayed in a text format. If the location is too long, it will be truncated
- *
- * @param state The user's profile loading state
- * @param modifier Composable modifier
- * @param textStyle The style to apply to the default text content
- * @param content Composable to display the user location
- */
-@Deprecated(
-    "This class is deprecated and will be removed in a future release.",
-    replaceWith = ReplaceWith("com.gravatar.ui.components.atomic.Location"),
-    level = DeprecationLevel.WARNING,
-)
-@Composable
-public fun Location(
-    state: ComponentState<LegacyProfile>,
-    modifier: Modifier = Modifier,
-    textStyle: TextStyle = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.outline),
-    content: @Composable ((String, Modifier) -> Unit) = { location, contentModifier ->
-        LocationDefaultContent(location, textStyle, contentModifier)
-    },
-) {
-    Location(
-        state.toApi2ComponentStateProfile(),
-        modifier,
-        skeletonModifier = Modifier,
-        textStyle = textStyle,
-        content = content,
-    )
 }
 
 /**
@@ -134,6 +76,64 @@ public fun Location(
             content.invoke(stringResource(id = R.string.empty_state_user_info), modifier)
         }
     }
+}
+
+/**
+ * [Location] is a composable that displays a user's location in text format.
+ * The user's location is displayed in a text format. If the location is too long, it will be truncated
+ *
+ * @param profile The user's profile information
+ * @param modifier Composable modifier
+ * @param textStyle The style to apply to the default text content
+ * @param content Composable to display the user location
+ */
+@Deprecated(
+    "This class is deprecated and will be removed in a future release.",
+    replaceWith = ReplaceWith("com.gravatar.ui.components.atomic.Location"),
+    level = DeprecationLevel.WARNING,
+)
+@Composable
+public fun Location(
+    profile: LegacyProfile,
+    modifier: Modifier = Modifier,
+    textStyle: TextStyle = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.outline),
+    content: @Composable ((String, Modifier) -> Unit) = { location, contentModifier ->
+        LocationDefaultContent(location, textStyle, contentModifier)
+    },
+) {
+    Location(profile = profile.toApi2Profile(), modifier = modifier, textStyle = textStyle, content = content)
+}
+
+/**
+ * [Location] is a composable that displays a user's location in text format or a loading skeleton.
+ * The user's location is displayed in a text format. If the location is too long, it will be truncated
+ *
+ * @param state The user's profile loading state
+ * @param modifier Composable modifier
+ * @param textStyle The style to apply to the default text content
+ * @param content Composable to display the user location
+ */
+@Deprecated(
+    "This class is deprecated and will be removed in a future release.",
+    replaceWith = ReplaceWith("com.gravatar.ui.components.atomic.Location"),
+    level = DeprecationLevel.WARNING,
+)
+@Composable
+public fun Location(
+    state: ComponentState<LegacyProfile>,
+    modifier: Modifier = Modifier,
+    textStyle: TextStyle = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.outline),
+    content: @Composable ((String, Modifier) -> Unit) = { location, contentModifier ->
+        LocationDefaultContent(location, textStyle, contentModifier)
+    },
+) {
+    Location(
+        state.toApi2ComponentStateProfile(),
+        modifier,
+        skeletonModifier = Modifier,
+        textStyle = textStyle,
+        content = content,
+    )
 }
 
 @Composable

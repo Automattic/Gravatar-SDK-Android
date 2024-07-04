@@ -30,29 +30,6 @@ import com.gravatar.api.models.Profile as LegacyProfile
  * @param modifier Composable modifier
  * @param avatarQueryOptions Options to customize the avatar query
  */
-@Deprecated(
-    "This class is deprecated and will be removed in a future release.",
-    replaceWith = ReplaceWith("com.gravatar.ui.components.atomic.Avatar"),
-    level = DeprecationLevel.WARNING,
-)
-@Composable
-public fun Avatar(
-    profile: LegacyProfile,
-    size: Dp,
-    modifier: Modifier = Modifier,
-    avatarQueryOptions: AvatarQueryOptions? = null,
-) {
-    Avatar(profile = profile.toApi2Profile(), size = size, modifier = modifier, avatarQueryOptions = avatarQueryOptions)
-}
-
-/**
- * [Avatar] is a composable that displays a user's avatar.
- *
- * @param profile The user's profile information
- * @param size The size of the avatar
- * @param modifier Composable modifier
- * @param avatarQueryOptions Options to customize the avatar query
- */
 @Composable
 public fun Avatar(
     profile: Profile,
@@ -73,6 +50,52 @@ public fun Avatar(
     )
 }
 
+/**
+ * [Avatar] is a composable that displays a user's avatar.
+ *
+ * @param state
+ * @param size The size of the avatar
+ * @param modifier Composable modifier
+ * @param avatarQueryOptions Options to customize the avatar query
+ */
+@JvmName("AvatarWithComponentState")
+@Composable
+public fun Avatar(
+    state: ComponentState<Profile>,
+    size: Dp,
+    modifier: Modifier = Modifier,
+    avatarQueryOptions: AvatarQueryOptions? = null,
+) {
+    when (state) {
+        is ComponentState.Loading -> {
+            Box(
+                modifier = modifier
+                    .size(size)
+                    .skeletonEffect(),
+            )
+        }
+
+        is ComponentState.Loaded -> {
+            Avatar(
+                profile = state.loadedValue,
+                size = size,
+                modifier = modifier,
+                avatarQueryOptions = avatarQueryOptions,
+            )
+        }
+
+        ComponentState.Empty -> Avatar(
+            model = if (isNightModeEnabled()) {
+                R.drawable.empty_profile_avatar_dark
+            } else {
+                R.drawable.empty_profile_avatar
+            },
+            size = size,
+            modifier = modifier,
+        )
+    }
+}
+
 @Composable
 private fun Avatar(model: Any?, size: Dp, modifier: Modifier) {
     AsyncImage(
@@ -80,6 +103,29 @@ private fun Avatar(model: Any?, size: Dp, modifier: Modifier) {
         contentDescription = "User profile image",
         modifier = modifier.size(size),
     )
+}
+
+/**
+ * [Avatar] is a composable that displays a user's avatar.
+ *
+ * @param profile The user's profile information
+ * @param size The size of the avatar
+ * @param modifier Composable modifier
+ * @param avatarQueryOptions Options to customize the avatar query
+ */
+@Deprecated(
+    "This class is deprecated and will be removed in a future release.",
+    replaceWith = ReplaceWith("com.gravatar.ui.components.atomic.Avatar"),
+    level = DeprecationLevel.WARNING,
+)
+@Composable
+public fun Avatar(
+    profile: LegacyProfile,
+    size: Dp,
+    modifier: Modifier = Modifier,
+    avatarQueryOptions: AvatarQueryOptions? = null,
+) {
+    Avatar(profile = profile.toApi2Profile(), size = size, modifier = modifier, avatarQueryOptions = avatarQueryOptions)
 }
 
 /**
@@ -114,52 +160,6 @@ public fun Avatar(
         is ComponentState.Loaded -> {
             Avatar(
                 profile = state.loadedValue.toApi2Profile(),
-                size = size,
-                modifier = modifier,
-                avatarQueryOptions = avatarQueryOptions,
-            )
-        }
-
-        ComponentState.Empty -> Avatar(
-            model = if (isNightModeEnabled()) {
-                R.drawable.empty_profile_avatar_dark
-            } else {
-                R.drawable.empty_profile_avatar
-            },
-            size = size,
-            modifier = modifier,
-        )
-    }
-}
-
-/**
- * [Avatar] is a composable that displays a user's avatar.
- *
- * @param state
- * @param size The size of the avatar
- * @param modifier Composable modifier
- * @param avatarQueryOptions Options to customize the avatar query
- */
-@JvmName("AvatarWithComponentState")
-@Composable
-public fun Avatar(
-    state: ComponentState<Profile>,
-    size: Dp,
-    modifier: Modifier = Modifier,
-    avatarQueryOptions: AvatarQueryOptions? = null,
-) {
-    when (state) {
-        is ComponentState.Loading -> {
-            Box(
-                modifier = modifier
-                    .size(size)
-                    .skeletonEffect(),
-            )
-        }
-
-        is ComponentState.Loaded -> {
-            Avatar(
-                profile = state.loadedValue,
                 size = size,
                 modifier = modifier,
                 avatarQueryOptions = avatarQueryOptions,

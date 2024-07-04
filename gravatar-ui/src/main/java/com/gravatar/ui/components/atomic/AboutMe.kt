@@ -36,31 +36,6 @@ import com.gravatar.api.models.Profile as LegacyProfile
  * @param textStyle The style to apply to the default text content
  * @param content Composable to display the user's about me description
  */
-@Deprecated(
-    "This class is deprecated and will be removed in a future release.",
-    replaceWith = ReplaceWith("com.gravatar.ui.components.atomic.AboutMe"),
-    level = DeprecationLevel.WARNING,
-)
-@Composable
-public fun AboutMe(
-    profile: LegacyProfile,
-    modifier: Modifier = Modifier,
-    textStyle: TextStyle = MaterialTheme.typography.bodyMedium,
-    content: @Composable ((String, Modifier) -> Unit) = { userInfo, contentModifier ->
-        AboutMeDefaultContent(userInfo, textStyle, contentModifier)
-    },
-) {
-    AboutMe(profile.toApi2Profile(), modifier, textStyle, content)
-}
-
-/**
- * [AboutMe] is a composable that displays a user's about me description.
- *
- * @param profile The user's profile information
- * @param modifier Composable modifier
- * @param textStyle The style to apply to the default text content
- * @param content Composable to display the user's about me description
- */
 @Composable
 public fun AboutMe(
     profile: Profile,
@@ -71,37 +46,6 @@ public fun AboutMe(
     },
 ) {
     content(profile.description, modifier)
-}
-
-/**
- * [AboutMe] is a composable that displays a user's about me description.
- *
- * @param state The user's profile loading state
- * @param modifier Composable modifier
- * @param textStyle The style to apply to the default text content
- * @param content Composable to display the user's about me description
- */
-@Deprecated(
-    "This class is deprecated and will be removed in a future release.",
-    replaceWith = ReplaceWith("com.gravatar.ui.components.atomic.AboutMe"),
-    level = DeprecationLevel.WARNING,
-)
-@Composable
-public fun AboutMe(
-    state: ComponentState<LegacyProfile>,
-    modifier: Modifier = Modifier,
-    textStyle: TextStyle = MaterialTheme.typography.bodyMedium,
-    content: @Composable ((String, Modifier) -> Unit) = { userInfo, contentModifier ->
-        AboutMeDefaultContent(userInfo, textStyle, contentModifier)
-    },
-) {
-    AboutMe(
-        state = state.toApi2ComponentStateProfile(),
-        modifier = modifier,
-        skeletonModifier = Modifier,
-        textStyle = textStyle,
-        content = content,
-    )
 }
 
 /**
@@ -155,6 +99,62 @@ public fun AboutMe(
     }
 }
 
+/**
+ * [AboutMe] is a composable that displays a user's about me description.
+ *
+ * @param profile The user's profile information
+ * @param modifier Composable modifier
+ * @param textStyle The style to apply to the default text content
+ * @param content Composable to display the user's about me description
+ */
+@Deprecated(
+    "This class is deprecated and will be removed in a future release.",
+    replaceWith = ReplaceWith("com.gravatar.ui.components.atomic.AboutMe"),
+    level = DeprecationLevel.WARNING,
+)
+@Composable
+public fun AboutMe(
+    profile: LegacyProfile,
+    modifier: Modifier = Modifier,
+    textStyle: TextStyle = MaterialTheme.typography.bodyMedium,
+    content: @Composable ((String, Modifier) -> Unit) = { userInfo, contentModifier ->
+        AboutMeDefaultContent(userInfo, textStyle, contentModifier)
+    },
+) {
+    AboutMe(profile.toApi2Profile(), modifier, textStyle, content)
+}
+
+/**
+ * [AboutMe] is a composable that displays a user's about me description.
+ *
+ * @param state The user's profile loading state
+ * @param modifier Composable modifier
+ * @param textStyle The style to apply to the default text content
+ * @param content Composable to display the user's about me description
+ */
+@Deprecated(
+    "This class is deprecated and will be removed in a future release.",
+    replaceWith = ReplaceWith("com.gravatar.ui.components.atomic.AboutMe"),
+    level = DeprecationLevel.WARNING,
+)
+@Composable
+public fun AboutMe(
+    state: ComponentState<LegacyProfile>,
+    modifier: Modifier = Modifier,
+    textStyle: TextStyle = MaterialTheme.typography.bodyMedium,
+    content: @Composable ((String, Modifier) -> Unit) = { userInfo, contentModifier ->
+        AboutMeDefaultContent(userInfo, textStyle, contentModifier)
+    },
+) {
+    AboutMe(
+        state = state.toApi2ComponentStateProfile(),
+        modifier = modifier,
+        skeletonModifier = Modifier,
+        textStyle = textStyle,
+        content = content,
+    )
+}
+
 @Composable
 private fun DashedBorder(modifier: Modifier = Modifier, content: @Composable () -> Unit) {
     val stroke = Stroke(
@@ -199,7 +199,7 @@ private fun AboutMePreview() {
 
 @Preview
 @Composable
-private fun AboutMeEmptyState() {
+private fun AboutMeEmptyStatePreview() {
     AboutMe(ComponentState.Empty as ComponentState<Profile>)
 }
 

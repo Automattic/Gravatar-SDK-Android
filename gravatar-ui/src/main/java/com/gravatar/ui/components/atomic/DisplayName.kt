@@ -26,27 +26,6 @@ import com.gravatar.api.models.Profile as LegacyProfile
  * @param modifier Composable modifier
  * @param textStyle The style to apply to the text
  */
-@Deprecated(
-    "This class is deprecated and will be removed in a future release.",
-    replaceWith = ReplaceWith("com.gravatar.ui.components.atomic.DisplayName"),
-    level = DeprecationLevel.WARNING,
-)
-@Composable
-public fun DisplayName(
-    profile: LegacyProfile,
-    modifier: Modifier = Modifier,
-    textStyle: TextStyle = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
-) {
-    DisplayName(profile = profile.toApi2Profile(), modifier = modifier, textStyle = textStyle)
-}
-
-/**
- * [DisplayName] is a composable that displays the user's display name.
- *
- * @param profile The user's profile information
- * @param modifier Composable modifier
- * @param textStyle The style to apply to the text
- */
 @Composable
 public fun DisplayName(
     profile: Profile,
@@ -54,37 +33,6 @@ public fun DisplayName(
     textStyle: TextStyle = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
 ) {
     DisplayName(profile.displayName, modifier, textStyle)
-}
-
-@Composable
-private fun DisplayName(displayName: String, modifier: Modifier, textStyle: TextStyle) {
-    Text(text = displayName, modifier = modifier, style = textStyle)
-}
-
-/**
- * [DisplayName] is a composable that displays the user's display name or a loading skeleton.
- *
- * @param state The user's profile state
- * @param modifier Composable modifier
- * @param textStyle The style to apply to the text
- */
-@Deprecated(
-    "This class is deprecated and will be removed in a future release.",
-    replaceWith = ReplaceWith("com.gravatar.ui.components.atomic.DisplayName"),
-    level = DeprecationLevel.WARNING,
-)
-@Composable
-public fun DisplayName(
-    state: ComponentState<LegacyProfile>,
-    modifier: Modifier = Modifier,
-    textStyle: TextStyle = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
-) {
-    DisplayName(
-        state = state.toApi2ComponentStateProfile(),
-        modifier = modifier,
-        skeletonModifier = Modifier,
-        textStyle = textStyle,
-    )
 }
 
 /**
@@ -122,6 +70,58 @@ public fun DisplayName(
             textStyle,
         )
     }
+}
+
+@Composable
+private fun DisplayName(displayName: String, modifier: Modifier, textStyle: TextStyle) {
+    Text(text = displayName, modifier = modifier, style = textStyle)
+}
+
+/**
+ * [DisplayName] is a composable that displays the user's display name.
+ *
+ * @param profile The user's profile information
+ * @param modifier Composable modifier
+ * @param textStyle The style to apply to the text
+ */
+@Deprecated(
+    "This class is deprecated and will be removed in a future release.",
+    replaceWith = ReplaceWith("com.gravatar.ui.components.atomic.DisplayName"),
+    level = DeprecationLevel.WARNING,
+)
+@Composable
+public fun DisplayName(
+    profile: LegacyProfile,
+    modifier: Modifier = Modifier,
+    textStyle: TextStyle = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
+) {
+    DisplayName(profile = profile.toApi2Profile(), modifier = modifier, textStyle = textStyle)
+}
+
+/**
+ * [DisplayName] is a composable that displays the user's display name or a loading skeleton.
+ *
+ * @param state The user's profile state
+ * @param modifier Composable modifier
+ * @param textStyle The style to apply to the text
+ */
+@Deprecated(
+    "This class is deprecated and will be removed in a future release.",
+    replaceWith = ReplaceWith("com.gravatar.ui.components.atomic.DisplayName"),
+    level = DeprecationLevel.WARNING,
+)
+@Composable
+public fun DisplayName(
+    state: ComponentState<LegacyProfile>,
+    modifier: Modifier = Modifier,
+    textStyle: TextStyle = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
+) {
+    DisplayName(
+        state = state.toApi2ComponentStateProfile(),
+        modifier = modifier,
+        skeletonModifier = Modifier,
+        textStyle = textStyle,
+    )
 }
 
 // TODO Make this preview internal in a future major release

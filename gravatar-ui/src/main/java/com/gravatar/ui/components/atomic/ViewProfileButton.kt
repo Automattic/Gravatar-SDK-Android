@@ -54,33 +54,6 @@ private fun defaultViewProfileButtonText(): String = stringResource(R.string.vie
  * It can be null if no content is needed.
  *
  */
-@Deprecated(
-    "This class is deprecated and will be removed in a future release.",
-    replaceWith = ReplaceWith("com.gravatar.ui.components.atomic.ViewProfileButton"),
-    level = DeprecationLevel.WARNING,
-)
-@Composable
-public fun ViewProfileButton(
-    profile: LegacyProfile,
-    modifier: Modifier = Modifier,
-    textStyle: TextStyle = MaterialTheme.typography.titleSmall.copy(color = MaterialTheme.colorScheme.onBackground),
-    buttonText: String = defaultViewProfileButtonText(),
-    inlineContent: @Composable ((String) -> Unit)? = { DefaultInlineContent(textStyle.color) },
-) {
-    ViewProfileButton(profile = profile.toApi2Profile(), modifier, textStyle, buttonText, inlineContent)
-}
-
-/**
- * ViewProfileButton is a composable that displays a button to view a user's profile.
- *
- * @param profile The user's profile information
- * @param modifier Composable modifier
- * @param textStyle The style to apply to the text
- * @param buttonText The text to display on the button
- * @param inlineContent The content to display inline with the text, by default it is an arrow icon.
- * It can be null if no content is needed.
- *
- */
 @Composable
 public fun ViewProfileButton(
     profile: Profile,
@@ -96,6 +69,101 @@ public fun ViewProfileButton(
         modifier,
         inlineContent,
     )
+}
+
+/**
+ * ViewProfileButton is a composable that displays a button to view a user's profile.
+ *
+ * @param profile The user's profile information
+ * @param modifier Composable modifier
+ * @param textStyle The style to apply to the text
+ * @param inlineContent The content to display inline with the text, by default it is an arrow icon.
+ * It can be null if no content is needed.
+ */
+@Composable
+public fun ViewProfileButton(
+    profile: Profile,
+    modifier: Modifier = Modifier,
+    textStyle: TextStyle = MaterialTheme.typography.titleSmall.copy(color = MaterialTheme.colorScheme.onBackground),
+    inlineContent: @Composable ((String) -> Unit)? = { DefaultInlineContent(textStyle.color) },
+) {
+    ViewProfileButton(
+        defaultViewProfileButtonText(),
+        profile.profileUrl().url.toString(),
+        textStyle,
+        modifier,
+        inlineContent,
+    )
+}
+
+/**
+ * [ViewProfileButton] is a composable that displays a button to view a user's profile or it's loading state.
+ *
+ * @param state The user's profile state
+ * @param modifier Composable modifier
+ * @param textStyle The style to apply to the text
+ * @param inlineContent The content to display inline with the text, by default it is an arrow icon.
+ * It can be null if no content is needed.
+ */
+@JvmName("ViewProfileButtonWithComponentState")
+@Composable
+public fun ViewProfileButton(
+    state: ComponentState<Profile>,
+    modifier: Modifier = Modifier,
+    textStyle: TextStyle = MaterialTheme.typography.titleSmall.copy(color = MaterialTheme.colorScheme.onBackground),
+    inlineContent: @Composable ((String) -> Unit)? = { DefaultInlineContent(textStyle.color) },
+) {
+    when (state) {
+        is ComponentState.Loading -> {
+            TextButton(
+                onClick = {},
+                contentPadding = PaddingValues(start = 0.dp, end = 0.dp),
+                modifier = modifier,
+            ) {
+                TextSkeletonEffect(textStyle = textStyle, modifier = Modifier.width(60.dp))
+            }
+        }
+
+        is ComponentState.Loaded -> {
+            ViewProfileButton(state.loadedValue, modifier, textStyle, inlineContent)
+        }
+
+        ComponentState.Empty -> {
+            ViewProfileButton(
+                buttonText = stringResource(id = R.string.empty_state_view_profile_button),
+                url = GravatarConstants.GRAVATAR_SIGN_IN_URL,
+                textStyle = textStyle,
+                inlineContent = inlineContent,
+            )
+        }
+    }
+}
+
+/**
+ * ViewProfileButton is a composable that displays a button to view a user's profile.
+ *
+ * @param profile The user's profile information
+ * @param modifier Composable modifier
+ * @param textStyle The style to apply to the text
+ * @param buttonText The text to display on the button
+ * @param inlineContent The content to display inline with the text, by default it is an arrow icon.
+ * It can be null if no content is needed.
+ *
+ */
+@Deprecated(
+    "This class is deprecated and will be removed in a future release.",
+    replaceWith = ReplaceWith("com.gravatar.ui.components.atomic.ViewProfileButton"),
+    level = DeprecationLevel.WARNING,
+)
+@Composable
+public fun ViewProfileButton(
+    profile: LegacyProfile,
+    modifier: Modifier = Modifier,
+    textStyle: TextStyle = MaterialTheme.typography.titleSmall.copy(color = MaterialTheme.colorScheme.onBackground),
+    buttonText: String = defaultViewProfileButtonText(),
+    inlineContent: @Composable ((String) -> Unit)? = { DefaultInlineContent(textStyle.color) },
+) {
+    ViewProfileButton(profile = profile.toApi2Profile(), modifier, textStyle, buttonText, inlineContent)
 }
 
 /**
@@ -123,28 +191,27 @@ public fun ViewProfileButton(
 }
 
 /**
- * ViewProfileButton is a composable that displays a button to view a user's profile.
+ * [ViewProfileButton] is a composable that displays a button to view a user's profile or it's loading state.
  *
- * @param profile The user's profile information
+ * @param state The user's profile state
  * @param modifier Composable modifier
  * @param textStyle The style to apply to the text
  * @param inlineContent The content to display inline with the text, by default it is an arrow icon.
  * It can be null if no content is needed.
  */
+@Deprecated(
+    "This class is deprecated and will be removed in a future release.",
+    replaceWith = ReplaceWith("com.gravatar.ui.components.atomic.ViewProfileButton"),
+    level = DeprecationLevel.WARNING,
+)
 @Composable
 public fun ViewProfileButton(
-    profile: Profile,
+    state: ComponentState<LegacyProfile>,
     modifier: Modifier = Modifier,
     textStyle: TextStyle = MaterialTheme.typography.titleSmall.copy(color = MaterialTheme.colorScheme.onBackground),
     inlineContent: @Composable ((String) -> Unit)? = { DefaultInlineContent(textStyle.color) },
 ) {
-    ViewProfileButton(
-        defaultViewProfileButtonText(),
-        profile.profileUrl().url.toString(),
-        textStyle,
-        modifier,
-        inlineContent,
-    )
+    ViewProfileButton(state = state.toApi2ComponentStateProfile(), modifier, textStyle, inlineContent)
 }
 
 @Composable
@@ -189,73 +256,6 @@ private fun ViewProfileButton(
         modifier = modifier,
     ) {
         Text(text, inlineContent = inlineContentMap, style = textStyle)
-    }
-}
-
-/**
- * [ViewProfileButton] is a composable that displays a button to view a user's profile or it's loading state.
- *
- * @param state The user's profile state
- * @param modifier Composable modifier
- * @param textStyle The style to apply to the text
- * @param inlineContent The content to display inline with the text, by default it is an arrow icon.
- * It can be null if no content is needed.
- */
-@Deprecated(
-    "This class is deprecated and will be removed in a future release.",
-    replaceWith = ReplaceWith("com.gravatar.ui.components.atomic.ViewProfileButton"),
-    level = DeprecationLevel.WARNING,
-)
-@Composable
-public fun ViewProfileButton(
-    state: ComponentState<LegacyProfile>,
-    modifier: Modifier = Modifier,
-    textStyle: TextStyle = MaterialTheme.typography.titleSmall.copy(color = MaterialTheme.colorScheme.onBackground),
-    inlineContent: @Composable ((String) -> Unit)? = { DefaultInlineContent(textStyle.color) },
-) {
-    ViewProfileButton(state = state.toApi2ComponentStateProfile(), modifier, textStyle, inlineContent)
-}
-
-/**
- * [ViewProfileButton] is a composable that displays a button to view a user's profile or it's loading state.
- *
- * @param state The user's profile state
- * @param modifier Composable modifier
- * @param textStyle The style to apply to the text
- * @param inlineContent The content to display inline with the text, by default it is an arrow icon.
- * It can be null if no content is needed.
- */
-@JvmName("ViewProfileButtonWithComponentState")
-@Composable
-public fun ViewProfileButton(
-    state: ComponentState<Profile>,
-    modifier: Modifier = Modifier,
-    textStyle: TextStyle = MaterialTheme.typography.titleSmall.copy(color = MaterialTheme.colorScheme.onBackground),
-    inlineContent: @Composable ((String) -> Unit)? = { DefaultInlineContent(textStyle.color) },
-) {
-    when (state) {
-        is ComponentState.Loading -> {
-            TextButton(
-                onClick = {},
-                contentPadding = PaddingValues(start = 0.dp, end = 0.dp),
-                modifier = modifier,
-            ) {
-                TextSkeletonEffect(textStyle = textStyle, modifier = Modifier.width(60.dp))
-            }
-        }
-
-        is ComponentState.Loaded -> {
-            ViewProfileButton(state.loadedValue, modifier, textStyle, inlineContent)
-        }
-
-        ComponentState.Empty -> {
-            ViewProfileButton(
-                buttonText = stringResource(id = R.string.empty_state_view_profile_button),
-                url = GravatarConstants.GRAVATAR_SIGN_IN_URL,
-                textStyle = textStyle,
-                inlineContent = inlineContent,
-            )
-        }
     }
 }
 
