@@ -117,7 +117,7 @@ public fun Profile(
 
 /**
  * [Profile] is a composable that displays a user's profile card.
- * Given a [Profile], iit displays a profile UI component using the other atomic components provided within the SDK.
+ * Given a [LegacyProfile], it displays a profile UI component using the atomic components provided within the SDK.
  *
  * @param profile The user's profile information
  * @param modifier Composable modifier
@@ -134,7 +134,7 @@ public fun Profile(profile: LegacyProfile, modifier: Modifier = Modifier) {
 
 /**
  * [Profile] is a composable that displays a user's profile card.
- * Given a [ComponentState] for a [Profile], it displays a [Profile] in the appropriate state.
+ * Given a [ComponentState] for a [LegacyProfile], it displays a [Profile] in the appropriate state.
  *
  * @param state The user's profile state
  * @param modifier Composable modifier

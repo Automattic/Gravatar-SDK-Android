@@ -99,7 +99,7 @@ public fun ProfileSummary(
 
 /**
  * [ProfileSummary] is a composable that displays a mini profile card.
- * Given a [Profile], it displays a profile summary card using the other atomic components provided within the SDK.
+ * Given a [LegacyProfile], it displays a profile summary card using the atomic components provided within the SDK.
  *
  * @param profile The user's profile information
  * @param modifier Composable modifier
@@ -116,7 +116,7 @@ public fun ProfileSummary(profile: LegacyProfile, modifier: Modifier = Modifier)
 
 /**
  * [ProfileSummary] is a composable that displays a mini profile card.
- * Given a [ComponentState] for a [Profile], it displays a profile summary card using the other atomic components.
+ * Given a [ComponentState] for a [LegacyProfile], it displays a profile summary card using the other atomic components.
  *
  * @param state The user's profile state
  * @param modifier Composable modifier

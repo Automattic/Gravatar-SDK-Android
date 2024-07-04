@@ -119,7 +119,7 @@ public fun LargeProfile(
 
 /**
  * [LargeProfile] is a composable that displays a user's profile card.
- * Given a [ComponentState], it displays a [LargeProfile] using the other atomic components provided within the SDK.
+ * Given a [ComponentState], it displays a [LegacyProfile] using the atomic components provided within the SDK.
  *
  * @param profile The user's profile information
  * @param modifier Composable modifier
@@ -136,7 +136,8 @@ public fun LargeProfile(profile: LegacyProfile, modifier: Modifier = Modifier) {
 
 /**
  * [LargeProfile] is a composable that displays a user's profile card.
- * Given a [ComponentState] for a [Profile], it displays a [LargeProfile] or the skeleton if it's in a loading state.
+ * Given a [ComponentState] for a [LegacyProfile], it displays a [LargeProfile] or the skeleton if it's
+ * in a loading state.
  *
  * @param state The user's profile state
  * @param modifier Composable modifier

@@ -99,7 +99,7 @@ public fun LargeProfileSummary(
 
 /**
  * [LargeProfileSummary] is a composable that displays a user's profile in a resumed way.
- * Given a [Profile], it displays a [LargeProfileSummary] using the other atomic components provided within the SDK.
+ * Given a [LegacyProfile], it displays a [LargeProfileSummary] using the atomic components provided within the SDK.
  *
  * @param profile The user's profile information
  * @param modifier Composable modifier
@@ -116,7 +116,7 @@ public fun LargeProfileSummary(profile: LegacyProfile, modifier: Modifier = Modi
 
 /**
  * [LargeProfileSummary] is a composable that displays a user's profile in a resumed way.
- * Given a [ComponentState] for a [Profile], it displays a [LargeProfileSummary] in the appropriate state.
+ * Given a [ComponentState] for a [LegacyProfile], it displays a [LargeProfileSummary] in the appropriate state.
  *
  * @param state The user's profile state
  * @param modifier Composable modifier
