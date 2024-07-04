@@ -86,10 +86,11 @@ public fun Profile(
                             UserInfo(state, skeletonModifier = Modifier.fillMaxWidth(0.9f))
                         }
                     }
-                    if (state.isAboutMeVisible()) {
-                        Spacer(modifier = Modifier.height(16.dp))
-                        AboutMe(state, skeletonModifier = Modifier.fillMaxWidth(0.8f))
-                    }
+                    AboutMe(
+                        state = state,
+                        modifier = Modifier.padding(top = 16.dp),
+                        skeletonModifier = Modifier.padding(top = 16.dp).fillMaxWidth(0.8f),
+                    )
                     Spacer(modifier = Modifier.height(4.dp))
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -104,9 +105,6 @@ public fun Profile(
         }
     }
 }
-
-private fun ComponentState<Profile>.isAboutMeVisible(): Boolean =
-    this is ComponentState.Loaded && loadedValue.description.isNotEmpty() || this is ComponentState.Loading
 
 @Preview
 @Composable
