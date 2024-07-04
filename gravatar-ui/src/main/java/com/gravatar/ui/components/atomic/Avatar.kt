@@ -53,7 +53,6 @@ public fun Avatar(
  * @param modifier Composable modifier
  * @param avatarQueryOptions Options to customize the avatar query
  */
-@JvmName("AvatarWithComponentState")
 @Composable
 public fun Avatar(
     profile: Profile,
