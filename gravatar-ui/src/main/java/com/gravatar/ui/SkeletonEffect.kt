@@ -53,7 +53,7 @@ internal fun TextSkeletonEffect(
     modifier: Modifier = Modifier,
     text: String = "",
     skeletonVerticalPadding: Dp = 2.dp,
-    skeletonShape: Shape = RoundedCornerShape(10.dp),
+    skeletonShape: Shape = RoundedCornerShape(50),
 ) {
     val textMeasurer = rememberTextMeasurer()
     val measure = textMeasurer.measure(
