@@ -48,7 +48,7 @@ public sealed class ComponentState<out T> {
 @Preview
 @Composable
 @Deprecated(
-    "This class is deprecated and will be removed in a future release.",
+    "This function is deprecated and will be removed in a future release.",
     level = DeprecationLevel.WARNING,
 )
 public fun LoadingToLoadedStatePreview(composable: @Composable (state: ComponentState<LegacyProfile>) -> Unit = {}) {
@@ -110,7 +110,7 @@ public fun LoadingToLoadedStatePreview(composable: @Composable (state: Component
 
 @Preview
 @Composable
-public fun LoadingToLoadedProfileStatePreview(composable: @Composable (state: ComponentState<Profile>) -> Unit = {}) {
+internal fun LoadingToLoadedProfileStatePreview(composable: @Composable (state: ComponentState<Profile>) -> Unit = {}) {
     var state: ComponentState<Profile> by remember { mutableStateOf(Loading) }
     LaunchedEffect(key1 = state) {
         delay(5000)

@@ -75,7 +75,6 @@ public final class com/gravatar/ui/components/ComponentState$Loading : com/grava
 }
 
 public final class com/gravatar/ui/components/ComponentStateKt {
-	public static final fun LoadingToLoadedProfileStatePreview (Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 	public static final fun LoadingToLoadedStatePreview (Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 }
 

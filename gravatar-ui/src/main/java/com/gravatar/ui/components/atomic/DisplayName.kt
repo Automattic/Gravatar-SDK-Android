@@ -124,6 +124,11 @@ public fun DisplayName(
     }
 }
 
+// TODO Make this preview internal in a future major release
+@Deprecated(
+    "This function is deprecated and will be removed in a future release.",
+    level = DeprecationLevel.WARNING,
+)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
