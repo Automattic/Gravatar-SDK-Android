@@ -5,6 +5,7 @@ import com.gravatar.extensions.emptyProfile
 import com.gravatar.restapi.models.Profile
 import com.gravatar.restapi.models.VerifiedAccount
 import java.net.URI
+import com.gravatar.api.models.VerifiedAccount as LegacyVerifiedAccount
 
 @Deprecated(
     "This class is deprecated and will be removed in a future release.",
@@ -18,25 +19,25 @@ internal val completeProfile = emptyProfile(
     location = "Crac'h, France",
     pronouns = "They/Them",
     verifiedAccounts = listOf(
-        com.gravatar.api.models.VerifiedAccount(
+        LegacyVerifiedAccount(
             serviceType = "mastodon",
             serviceLabel = "Mastodon",
             url = URI("https://example.com"),
             serviceIcon = URI("https://example.com/icon.svg"),
         ),
-        com.gravatar.api.models.VerifiedAccount(
+        LegacyVerifiedAccount(
             serviceType = "tumblr",
             serviceLabel = "Tumblr",
             url = URI("https://example.com"),
             serviceIcon = URI("https://example.com/icon.svg"),
         ),
-        com.gravatar.api.models.VerifiedAccount(
+        LegacyVerifiedAccount(
             serviceType = "wordpress",
             serviceLabel = "WordPress",
             url = URI("https://example.com"),
             serviceIcon = URI("https://example.com/icon.svg"),
         ),
-        com.gravatar.api.models.VerifiedAccount(
+        LegacyVerifiedAccount(
             serviceType = "github",
             serviceLabel = "GitHub",
             url = URI("https://example.com"),
