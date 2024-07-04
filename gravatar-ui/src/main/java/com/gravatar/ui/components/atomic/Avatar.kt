@@ -18,6 +18,7 @@ import com.gravatar.ui.R
 import com.gravatar.ui.components.ComponentState
 import com.gravatar.ui.components.LoadingToLoadedProfileStatePreview
 import com.gravatar.ui.components.isNightModeEnabled
+import com.gravatar.ui.extensions.toApi2ComponentStateProfile
 import com.gravatar.ui.extensions.toApi2Profile
 import com.gravatar.ui.skeletonEffect
 import com.gravatar.api.models.Profile as LegacyProfile
@@ -148,34 +149,12 @@ public fun Avatar(
     modifier: Modifier = Modifier,
     avatarQueryOptions: AvatarQueryOptions? = null,
 ) {
-    when (state) {
-        is ComponentState.Loading -> {
-            Box(
-                modifier = modifier
-                    .size(size)
-                    .skeletonEffect(),
-            )
-        }
-
-        is ComponentState.Loaded -> {
-            Avatar(
-                profile = state.loadedValue.toApi2Profile(),
-                size = size,
-                modifier = modifier,
-                avatarQueryOptions = avatarQueryOptions,
-            )
-        }
-
-        ComponentState.Empty -> Avatar(
-            model = if (isNightModeEnabled()) {
-                R.drawable.empty_profile_avatar_dark
-            } else {
-                R.drawable.empty_profile_avatar
-            },
-            size = size,
-            modifier = modifier,
-        )
-    }
+    Avatar(
+        state = state.toApi2ComponentStateProfile(),
+        size = size,
+        modifier = modifier,
+        avatarQueryOptions = avatarQueryOptions,
+    )
 }
 
 @Preview
