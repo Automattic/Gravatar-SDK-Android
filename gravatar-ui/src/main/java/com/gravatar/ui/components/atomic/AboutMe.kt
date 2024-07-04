@@ -102,7 +102,9 @@ public fun AboutMe(
         }
 
         is ComponentState.Loaded -> {
-            AboutMe(state.loadedValue, modifier, textStyle, content)
+            if (state.loadedValue.description.isNotBlank()) {
+                AboutMe(state.loadedValue, modifier, textStyle, content)
+            }
         }
 
         ComponentState.Empty -> {
