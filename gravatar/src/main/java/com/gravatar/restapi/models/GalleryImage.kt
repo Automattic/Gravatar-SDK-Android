@@ -14,28 +14,39 @@ import java.util.Objects
  * A gallery image a user has uploaded.
  *
  * @param url The URL to the image.
+ * @param altText The image alt text.
  */
 
 public class GalleryImage private constructor(
     // The URL to the image.
     @SerializedName("url")
     public val url: java.net.URI,
+    // The image alt text.
+    @SerializedName("alt_text")
+    public val altText: kotlin.String? = null,
 ) {
-    override fun toString(): String = "GalleryImage(url=$url)"
+    override fun toString(): String = "GalleryImage(url=$url, altText=$altText)"
 
     override fun equals(other: Any?): Boolean = other is GalleryImage &&
-        url == other.url
+        url == other.url &&
+        altText == other.altText
 
-    override fun hashCode(): Int = Objects.hash(url)
+    override fun hashCode(): Int = Objects.hash(url, altText)
 
     public class Builder {
         // The URL to the image.
         @set:JvmSynthetic // Hide 'void' setter from Java
         public var url: java.net.URI? = null
 
+        // The image alt text.
+        @set:JvmSynthetic // Hide 'void' setter from Java
+        public var altText: kotlin.String? = null
+
         public fun setUrl(url: java.net.URI?): Builder = apply { this.url = url }
 
-        public fun build(): GalleryImage = GalleryImage(url!!)
+        public fun setAltText(altText: kotlin.String?): Builder = apply { this.altText = altText }
+
+        public fun build(): GalleryImage = GalleryImage(url!!, altText)
     }
 }
 
