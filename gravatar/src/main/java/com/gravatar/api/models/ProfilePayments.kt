@@ -16,6 +16,11 @@ import com.google.gson.annotations.SerializedName
  * @param cryptoWallets A list of crypto currencies the user accepts.
  */
 
+@Deprecated(
+    "This class is deprecated and will be removed in a future release.",
+    replaceWith = ReplaceWith("com.gravatar.restapi.models.ProfilePayments"),
+    level = DeprecationLevel.WARNING,
+)
 public data class ProfilePayments(
     // A list of payment URLs the user has added to their profile.
     @SerializedName("links")

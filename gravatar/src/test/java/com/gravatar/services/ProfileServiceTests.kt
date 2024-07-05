@@ -1,7 +1,7 @@
 package com.gravatar.services
 
 import com.gravatar.GravatarSdkContainerRule
-import com.gravatar.api.models.Profile
+import com.gravatar.restapi.models.Profile
 import com.gravatar.types.Email
 import com.gravatar.types.Hash
 import io.mockk.coEvery
@@ -14,6 +14,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import retrofit2.Response
+import com.gravatar.api.models.Profile as LegacyProfile
 
 class ProfileServiceTests {
     @get:Rule
@@ -29,7 +30,7 @@ class ProfileServiceTests {
     @Test
     fun `given an username when loading its profile and data is returned then result is successful`() = runTest {
         val username = "username"
-        val mockResponse = mockk<Response<Profile>> {
+        val mockResponse = mockk<Response<LegacyProfile>> {
             every { isSuccessful } returns true
             every { body() } returns mockk()
         }
@@ -45,7 +46,7 @@ class ProfileServiceTests {
     fun `given an username when loading its profile but data is NOT returned then result is UNKNOWN failure`() =
         runTest {
             val username = "username"
-            val mockResponse = mockk<Response<Profile>> {
+            val mockResponse = mockk<Response<LegacyProfile>> {
                 every { isSuccessful } returns true
                 every { body() } returns null
             }
@@ -60,7 +61,7 @@ class ProfileServiceTests {
     @Test
     fun `given an username when loading its profile and response is NOT successful then result is failure`() = runTest {
         val username = "username"
-        val mockResponse = mockk<Response<Profile>> {
+        val mockResponse = mockk<Response<LegacyProfile>> {
             every { isSuccessful } returns false
         }
         coEvery { containerRule.gravatarApiServiceMock.getProfileById(username) } returns mockResponse
@@ -85,7 +86,7 @@ class ProfileServiceTests {
     @Test
     fun `given a hash when loading its profile and data is returned then result is successful`() = runTest {
         val usernameHash = Hash("username")
-        val mockResponse = mockk<Response<Profile>> {
+        val mockResponse = mockk<Response<LegacyProfile>> {
             every { isSuccessful } returns true
             every { body() } returns mockk()
         }
@@ -102,7 +103,7 @@ class ProfileServiceTests {
     @Test
     fun `given an email when loading its profile and data is returned then result is successful`() = runTest {
         val usernameEmail = Email("username@automattic.com")
-        val mockResponse = mockk<Response<Profile>> {
+        val mockResponse = mockk<Response<LegacyProfile>> {
             every { isSuccessful } returns true
             every { body() } returns mockk()
         }
@@ -113,6 +114,102 @@ class ProfileServiceTests {
         val loadProfileResponse = profileService.fetch(usernameEmail)
 
         coVerify(exactly = 1) { containerRule.gravatarApiServiceMock.getProfileById(usernameEmail.hash().toString()) }
+        assertTrue(loadProfileResponse is Result.Success)
+    }
+
+    /*
+     Same tests as before but using the "retrieve" method so using new models.
+     Previous tests should be removed when the deprecated code is removed
+     */
+
+    @Test
+    fun `given an username when retrieving its profile and data is returned then result is successful`() = runTest {
+        val username = "username"
+        val mockResponse = mockk<Response<Profile>> {
+            every { isSuccessful } returns true
+            every { body() } returns mockk()
+        }
+        coEvery { containerRule.gravatarApiMock.getProfileById(username) } returns mockResponse
+
+        val loadProfileResponse = profileService.retrieveByUsernameCatching(username)
+
+        coVerify(exactly = 1) { containerRule.gravatarApiMock.getProfileById(username) }
+        assertTrue(loadProfileResponse is Result.Success)
+    }
+
+    @Test
+    fun `given an username when retrieving its profile but data is NOT returned then result is UNKNOWN failure`() =
+        runTest {
+            val username = "username"
+            val mockResponse = mockk<Response<Profile>> {
+                every { isSuccessful } returns true
+                every { body() } returns null
+            }
+            coEvery { containerRule.gravatarApiMock.getProfileById(username) } returns mockResponse
+
+            val loadProfileResponse = profileService.retrieveByUsernameCatching(username)
+
+            coVerify(exactly = 1) { containerRule.gravatarApiMock.getProfileById(username) }
+            assertTrue((loadProfileResponse as Result.Failure).error == ErrorType.UNKNOWN)
+        }
+
+    @Test
+    fun `given an username when retrieving its profile and response is NOT successful then result is failure`() =
+        runTest {
+            val username = "username"
+            val mockResponse = mockk<Response<Profile>> {
+                every { isSuccessful } returns false
+            }
+            coEvery { containerRule.gravatarApiMock.getProfileById(username) } returns mockResponse
+
+            val loadProfileResponse = profileService.retrieveByUsernameCatching(username)
+
+            coVerify(exactly = 1) { containerRule.gravatarApiMock.getProfileById(username) }
+            assertTrue((loadProfileResponse as Result.Failure).error == ErrorType.UNKNOWN)
+        }
+
+    @Test
+    fun `given an username when retrieving its profile and an exception is thrown then result is failure`() = runTest {
+        val username = "username"
+        coEvery { containerRule.gravatarApiMock.getProfileById(username) } throws Exception()
+
+        val loadProfileResponse = profileService.retrieveByUsernameCatching(username)
+
+        coVerify(exactly = 1) { containerRule.gravatarApiMock.getProfileById(username) }
+        assertTrue((loadProfileResponse as Result.Failure).error == ErrorType.UNKNOWN)
+    }
+
+    @Test
+    fun `given a hash when retrieving its profile and data is returned then result is successful`() = runTest {
+        val usernameHash = Hash("username")
+        val mockResponse = mockk<Response<Profile>> {
+            every { isSuccessful } returns true
+            every { body() } returns mockk()
+        }
+        coEvery {
+            containerRule.gravatarApiMock.getProfileById(usernameHash.toString())
+        } returns mockResponse
+
+        val loadProfileResponse = profileService.retrieveCatching(usernameHash)
+
+        coVerify(exactly = 1) { containerRule.gravatarApiMock.getProfileById(usernameHash.toString()) }
+        assertTrue(loadProfileResponse is Result.Success)
+    }
+
+    @Test
+    fun `given an email when retrieving its profile and data is returned then result is successful`() = runTest {
+        val usernameEmail = Email("username@automattic.com")
+        val mockResponse = mockk<Response<Profile>> {
+            every { isSuccessful } returns true
+            every { body() } returns mockk()
+        }
+        coEvery {
+            containerRule.gravatarApiMock.getProfileById(usernameEmail.hash().toString())
+        } returns mockResponse
+
+        val loadProfileResponse = profileService.retrieveCatching(usernameEmail)
+
+        coVerify(exactly = 1) { containerRule.gravatarApiMock.getProfileById(usernameEmail.hash().toString()) }
         assertTrue(loadProfileResponse is Result.Success)
     }
 }

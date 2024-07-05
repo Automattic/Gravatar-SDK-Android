@@ -33,6 +33,11 @@ import com.google.gson.annotations.SerializedName
  * @param registrationDate The date the user registered their account. This is only provided in authenticated API requests.
  */
 
+@Deprecated(
+    "This class is deprecated and will be removed in a future release.",
+    replaceWith = ReplaceWith("com.gravatar.restapi.models.Profile"),
+    level = DeprecationLevel.WARNING,
+)
 public data class Profile(
     // The SHA256 hash of the user's primary email address.
     @SerializedName("hash")
