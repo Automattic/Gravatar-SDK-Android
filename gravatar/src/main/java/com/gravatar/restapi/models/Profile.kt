@@ -26,6 +26,7 @@ import java.util.Objects
  * @param pronunciation The phonetic pronunciation of the user's name.
  * @param pronouns The pronouns the user uses.
  * @param links A list of links the user has added to their profile. This is only provided in authenticated API requests.
+ * @param interests A list of interests the user has added to their profile. This is only provided in authenticated API requests.
  * @param payments
  * @param contactInfo
  * @param gallery Additional images a user has uploaded. This is only provided in authenticated API requests.
@@ -74,6 +75,9 @@ public class Profile private constructor(
     // A list of links the user has added to their profile. This is only provided in authenticated API requests.
     @SerializedName("links")
     public val links: kotlin.collections.List<Link>? = null,
+    // A list of interests the user has added to their profile. This is only provided in authenticated API requests.
+    @SerializedName("interests")
+    public val interests: kotlin.collections.List<Interest>? = null,
     @SerializedName("payments")
     public val payments: ProfilePayments? = null,
     @SerializedName("contact_info")
@@ -91,7 +95,7 @@ public class Profile private constructor(
     @SerializedName("registration_date")
     public val registrationDate: java.time.Instant? = null,
 ) {
-    override fun toString(): String = "Profile(hash=$hash, displayName=$displayName, profileUrl=$profileUrl, avatarUrl=$avatarUrl, avatarAltText=$avatarAltText, location=$location, description=$description, jobTitle=$jobTitle, company=$company, verifiedAccounts=$verifiedAccounts, pronunciation=$pronunciation, pronouns=$pronouns, links=$links, payments=$payments, contactInfo=$contactInfo, gallery=$gallery, numberVerifiedAccounts=$numberVerifiedAccounts, lastProfileEdit=$lastProfileEdit, registrationDate=$registrationDate)"
+    override fun toString(): String = "Profile(hash=$hash, displayName=$displayName, profileUrl=$profileUrl, avatarUrl=$avatarUrl, avatarAltText=$avatarAltText, location=$location, description=$description, jobTitle=$jobTitle, company=$company, verifiedAccounts=$verifiedAccounts, pronunciation=$pronunciation, pronouns=$pronouns, links=$links, interests=$interests, payments=$payments, contactInfo=$contactInfo, gallery=$gallery, numberVerifiedAccounts=$numberVerifiedAccounts, lastProfileEdit=$lastProfileEdit, registrationDate=$registrationDate)"
 
     override fun equals(other: Any?): Boolean = other is Profile &&
         hash == other.hash &&
@@ -107,6 +111,7 @@ public class Profile private constructor(
         pronunciation == other.pronunciation &&
         pronouns == other.pronouns &&
         links == other.links &&
+        interests == other.interests &&
         payments == other.payments &&
         contactInfo == other.contactInfo &&
         gallery == other.gallery &&
@@ -114,7 +119,7 @@ public class Profile private constructor(
         lastProfileEdit == other.lastProfileEdit &&
         registrationDate == other.registrationDate
 
-    override fun hashCode(): Int = Objects.hash(hash, displayName, profileUrl, avatarUrl, avatarAltText, location, description, jobTitle, company, verifiedAccounts, pronunciation, pronouns, links, payments, contactInfo, gallery, numberVerifiedAccounts, lastProfileEdit, registrationDate)
+    override fun hashCode(): Int = Objects.hash(hash, displayName, profileUrl, avatarUrl, avatarAltText, location, description, jobTitle, company, verifiedAccounts, pronunciation, pronouns, links, interests, payments, contactInfo, gallery, numberVerifiedAccounts, lastProfileEdit, registrationDate)
 
     public class Builder {
         // The SHA256 hash of the user's primary email address.
@@ -169,6 +174,10 @@ public class Profile private constructor(
         @set:JvmSynthetic // Hide 'void' setter from Java
         public var links: kotlin.collections.List<Link>? = null
 
+        // A list of interests the user has added to their profile. This is only provided in authenticated API requests.
+        @set:JvmSynthetic // Hide 'void' setter from Java
+        public var interests: kotlin.collections.List<Interest>? = null
+
         @set:JvmSynthetic // Hide 'void' setter from Java
         public var payments: ProfilePayments? = null
 
@@ -217,6 +226,8 @@ public class Profile private constructor(
 
         public fun setLinks(links: kotlin.collections.List<Link>?): Builder = apply { this.links = links }
 
+        public fun setInterests(interests: kotlin.collections.List<Interest>?): Builder = apply { this.interests = interests }
+
         public fun setPayments(payments: ProfilePayments?): Builder = apply { this.payments = payments }
 
         public fun setContactInfo(contactInfo: ProfileContactInfo?): Builder = apply { this.contactInfo = contactInfo }
@@ -229,7 +240,7 @@ public class Profile private constructor(
 
         public fun setRegistrationDate(registrationDate: java.time.Instant?): Builder = apply { this.registrationDate = registrationDate }
 
-        public fun build(): Profile = Profile(hash!!, displayName!!, profileUrl!!, avatarUrl!!, avatarAltText!!, location!!, description!!, jobTitle!!, company!!, verifiedAccounts!!, pronunciation!!, pronouns!!, links, payments, contactInfo, gallery, numberVerifiedAccounts, lastProfileEdit, registrationDate)
+        public fun build(): Profile = Profile(hash!!, displayName!!, profileUrl!!, avatarUrl!!, avatarAltText!!, location!!, description!!, jobTitle!!, company!!, verifiedAccounts!!, pronunciation!!, pronouns!!, links, interests, payments, contactInfo, gallery, numberVerifiedAccounts, lastProfileEdit, registrationDate)
     }
 }
 
