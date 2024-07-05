@@ -108,7 +108,7 @@ project.afterEvaluate {
 openApiGenerate {
     generatorName = "kotlin"
     inputSpec = "${projectDir.path}/openapi/api-gravatar.json"
-    outputDir = "${buildDir.path}/openapi"
+    outputDir = "${layout.buildDirectory.asFile.get().absolutePath}/openapi"
 
     // Use the custom templates if they are present. If not, the generator will use the default ones
     templateDir.set("${projectDir.path}/openapi/templates")
@@ -119,7 +119,7 @@ openApiGenerate {
             "library" to "jvm-retrofit2",
             "serializationLibrary" to "gson",
             "groupId" to "com.gravatar",
-            "packageName" to "com.gravatar.api",
+            "packageName" to "com.gravatar.restapi",
             "useCoroutines" to "true",
         ),
     )
@@ -149,12 +149,14 @@ tasks.openApiGenerate {
     // Workaround for avoid the build error
     notCompatibleWithConfigurationCache("Incomplete support for configuration cache in OpenAPI Generator plugin.")
 
+    val buildPath = layout.buildDirectory.asFile.get().absolutePath
+
     // Move the generated code to the correct package and remove the generated folder
     doLast {
-        file("${projectDir.path}/src/main/java/com/gravatar/api").deleteRecursively()
-        file("${buildDir.path}/openapi/src/main/kotlin/com/gravatar/api")
-            .renameTo(file("${projectDir.path}/src/main/java/com/gravatar/api"))
-        file("${buildDir.path}/openapi").deleteRecursively()
+        file("${projectDir.path}/src/main/java/com/gravatar/restapi").deleteRecursively()
+        file("$buildPath/openapi/src/main/kotlin/com/gravatar/restapi")
+            .renameTo(file("${projectDir.path}/src/main/java/com/gravatar/restapi"))
+        file("$buildPath/openapi").deleteRecursively()
     }
 
     // Format the generated code
