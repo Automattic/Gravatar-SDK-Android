@@ -189,6 +189,41 @@ private fun LargeProfilePreview() {
     )
 }
 
+@Preview(showBackground = true)
+@Composable
+private fun LargeProfileWithoutDescriptionPreview() {
+    LargeProfile(
+        defaultProfile(
+            hash = "1234567890",
+            displayName = "Dominique Doe",
+            jobTitle = "Farmer",
+            company = "Farmers United",
+            location = "Crac'h, France",
+            pronouns = "They/Them",
+            verifiedAccounts = listOf(
+                VerifiedAccount {
+                    serviceType = "mastodon"
+                    serviceLabel = "Mastodon"
+                    serviceIcon = URI("https://example.com")
+                    url = URI("https://mastodon.social/@ddoe")
+                },
+                VerifiedAccount {
+                    serviceType = "tumblr"
+                    serviceLabel = "Tumblr"
+                    serviceIcon = URI("https://example.com")
+                    url = URI("https://ddoe.tumblr.com")
+                },
+                VerifiedAccount {
+                    serviceType = "wordpress"
+                    serviceLabel = "WordPress"
+                    serviceIcon = URI("https://example.com")
+                    url = URI("https://ddoe.wordpress.com")
+                },
+            ),
+        ),
+    )
+}
+
 // TODO Make this preview internal in a future major release
 @Deprecated(
     "This function is deprecated and will be removed in a future release.",
