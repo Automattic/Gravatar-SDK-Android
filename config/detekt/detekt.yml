@@ -9,12 +9,14 @@ complexity:
   LongParameterList:
     ignoreDefaultParameters: true
     ignoreAnnotated: ['Inject', 'Composable']
+    excludes: [ '**/restapi/models/**' ]
   LongMethod:
     ignoreAnnotated: ['Composable']
   TooManyFunctions:
     active: false
   CyclomaticComplexMethod:
     ignoreSimpleWhenEntries: true
+    excludes: [ '**/restapi/models/**' ]
 
 coroutines:
   GlobalCoroutineUsage:
@@ -43,7 +45,7 @@ style:
   MaxLineLength:
     active: true
     maxLineLength: 120
-    excludes: [ '**/api/**' ]
+    excludes: [ '**/api/**', '**/restapi/**' ]
     excludePackageStatements: true
     excludeImportStatements: true
     excludeCommentStatements: false
@@ -52,7 +54,7 @@ style:
 comments:
   UndocumentedPublicClass:
     active: true
-    excludes: [ '**/test/**', '**/androidTest/**', '**/demoapp/**' ]
+    excludes: [ '**/test/**', '**/androidTest/**', '**/demoapp/**', '**/restapi/models/**' ]
     searchInNestedClass: true
     searchInInnerClass: true
     searchInInnerObject: true
@@ -63,16 +65,16 @@ comments:
     # Ignore Jetpack Compose functions annotated with @Preview
     ignoreAnnotated:
       - 'Preview'
-    excludes: [ '**/test/**', '**/androidTest/**', '**/demoapp/**' ]
+    excludes: [ '**/test/**', '**/androidTest/**', '**/demoapp/**', '**/restapi/models/**' ]
     searchProtectedFunction: false
   UndocumentedPublicProperty:
     active: true
     # TODO - Remove the explicit exclusion of Email.kt once we implement the new REST API
-    excludes: [ '**/test/**', '**/androidTest/**', '**/demoapp/**', '**/models/Email.kt' ]
+    excludes: [ '**/test/**', '**/androidTest/**', '**/demoapp/**', '**/restapi/models/**' ]
     searchProtectedProperty: false
   OutdatedDocumentation:
     active: true
-    excludes: [ '**/test/**', '**/androidTest/**', '**/demoapp/**', '**/models/**' ]
+    excludes: [ '**/test/**', '**/androidTest/**', '**/demoapp/**', '**/api/models/**', '**/restapi/models/**' ]
     matchTypeParameters: true
     matchDeclarationsOrder: true
     allowParamOnConstructorProperties: false

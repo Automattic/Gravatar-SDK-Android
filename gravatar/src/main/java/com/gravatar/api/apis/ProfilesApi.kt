@@ -12,6 +12,11 @@ import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 
+@Deprecated(
+    "This class is deprecated and will be removed in a future release.",
+    replaceWith = ReplaceWith("com.gravatar.restapi.apis.ProfilesApi"),
+    level = DeprecationLevel.WARNING,
+)
 internal interface ProfilesApi {
     /**
      * Get profile by identifier

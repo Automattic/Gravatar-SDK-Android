@@ -9,6 +9,11 @@ import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
 
+@Deprecated(
+    "This class is deprecated and will be removed in a future release.",
+    replaceWith = ReplaceWith("com.gravatar.services.GravatarApi"),
+    level = DeprecationLevel.WARNING,
+)
 internal interface GravatarApiService : ProfilesApi {
     @Multipart
     @POST("upload-image")

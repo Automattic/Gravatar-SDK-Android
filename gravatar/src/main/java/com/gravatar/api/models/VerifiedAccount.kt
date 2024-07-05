@@ -18,6 +18,11 @@ import com.google.gson.annotations.SerializedName
  * @param url The URL to the user's profile on the service.
  */
 
+@Deprecated(
+    "This class is deprecated and will be removed in a future release.",
+    replaceWith = ReplaceWith("com.gravatar.restapi.models.VerifiedAccount"),
+    level = DeprecationLevel.WARNING,
+)
 public data class VerifiedAccount(
     // The type of the service.
     @SerializedName("service_type")

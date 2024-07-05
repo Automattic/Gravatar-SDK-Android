@@ -15,6 +15,11 @@ import com.google.gson.annotations.SerializedName
  * @param url The URL to the image.
  */
 
+@Deprecated(
+    "This class is deprecated and will be removed in a future release.",
+    replaceWith = ReplaceWith("com.gravatar.restapi.models.GalleryImage"),
+    level = DeprecationLevel.WARNING,
+)
 public data class GalleryImage(
     // The URL to the image.
     @SerializedName("url")

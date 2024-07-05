@@ -44,6 +44,26 @@
           }
         }
       },
+      "Interest": {
+        "type": "object",
+        "description": "An interest the user has added to their profile.",
+        "required": [
+          "id",
+          "name"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The unique identifier for the interest.",
+            "examples": [ 1 ]
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the interest.",
+            "examples": [ "Photography" ]
+          }
+        }
+      },
       "CryptoWalletAddress": {
         "type": "object",
         "description": "A crypto currency wallet address the user accepts.",
@@ -110,6 +130,11 @@
             "description": "The URL to the image.",
             "format": "uri",
             "examples": [ "https://0.gravatar.com/userimage/5/04bbd674f72c703f6335e2e7a00acc9a" ]
+          },
+          "alt_text": {
+            "type": "string",
+            "description": "The image alt text.",
+            "examples": [ "A beautiful sunset" ]
           }
         }
       },
@@ -202,6 +227,13 @@
               "$ref": "#/components/schemas/Link"
             }
           },
+          "interests": {
+            "type": "array",
+            "description": "A list of interests the user has added to their profile. This is only provided in authenticated API requests.",
+            "items": {
+              "$ref": "#/components/schemas/Interest"
+            }
+          },
           "payments": {
             "type": "object",
             "required": [
@@ -278,15 +310,19 @@
             "examples": [ 3 ]
           },
           "last_profile_edit": {
-            "type": "string",
+            "type": ["string", "null"],
+            "nullable": true,
             "description": "The date and time (UTC) the user last edited their profile. This is only provided in authenticated API requests.",
             "format": "date-time",
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$",
             "examples": [ "2021-10-01T12:00:00Z" ]
           },
           "registration_date": {
-            "type": "string",
+            "type": ["string", "null"],
+            "nullable": true,
             "description": "The date the user registered their account. This is only provided in authenticated API requests.",
             "format": "date-time",
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$",
             "examples": [ "2021-10-01T12:00:00Z" ]
           }
         }

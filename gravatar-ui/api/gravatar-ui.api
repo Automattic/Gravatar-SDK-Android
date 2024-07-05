@@ -81,8 +81,10 @@ public final class com/gravatar/ui/components/ComponentStateKt {
 public final class com/gravatar/ui/components/ComposableSingletons$ComponentStateKt {
 	public static final field INSTANCE Lcom/gravatar/ui/components/ComposableSingletons$ComponentStateKt;
 	public static field lambda-1 Lkotlin/jvm/functions/Function3;
+	public static field lambda-2 Lkotlin/jvm/functions/Function3;
 	public fun <init> ()V
 	public final fun getLambda-1$gravatar_ui_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda-2$gravatar_ui_release ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class com/gravatar/ui/components/ComposableSingletons$LargeProfileKt {
@@ -119,13 +121,15 @@ public final class com/gravatar/ui/components/ComposableSingletons$ProfileKt {
 	public static final field INSTANCE Lcom/gravatar/ui/components/ComposableSingletons$ProfileKt;
 	public static field lambda-1 Lkotlin/jvm/functions/Function3;
 	public static field lambda-2 Lkotlin/jvm/functions/Function3;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
+	public static field lambda-3 Lkotlin/jvm/functions/Function3;
 	public static field lambda-4 Lkotlin/jvm/functions/Function2;
+	public static field lambda-5 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
 	public final fun getLambda-1$gravatar_ui_release ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda-2$gravatar_ui_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-3$gravatar_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-3$gravatar_ui_release ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda-4$gravatar_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-5$gravatar_ui_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/gravatar/ui/components/ComposableSingletons$ProfileSummaryKt {
@@ -146,34 +150,45 @@ public final class com/gravatar/ui/components/ComposableSingletons$ProfileSummar
 public final class com/gravatar/ui/components/LargeProfileKt {
 	public static final fun DisplayNamePreview (Landroidx/compose/runtime/Composer;I)V
 	public static final fun LargeProfile (Lcom/gravatar/api/models/Profile;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
-	public static final fun LargeProfile (Lcom/gravatar/ui/components/ComponentState;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+	public static final fun LargeProfile (Lcom/gravatar/restapi/models/Profile;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+	public static final fun LargeProfile (Lcom/gravatar/ui/components/ComponentState;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+	public static final fun LargeProfileWithComponentState (Lcom/gravatar/ui/components/ComponentState;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/gravatar/ui/components/LargeProfileSummaryKt {
 	public static final fun LargeProfileLoadingPreview (Landroidx/compose/runtime/Composer;I)V
 	public static final fun LargeProfileSummary (Lcom/gravatar/api/models/Profile;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
-	public static final fun LargeProfileSummary (Lcom/gravatar/ui/components/ComponentState;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+	public static final fun LargeProfileSummary (Lcom/gravatar/restapi/models/Profile;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+	public static final fun LargeProfileSummary (Lcom/gravatar/ui/components/ComponentState;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+	public static final fun LargeProfileWithComponentState (Lcom/gravatar/ui/components/ComponentState;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/gravatar/ui/components/ProfileKt {
 	public static final fun Profile (Lcom/gravatar/api/models/Profile;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
-	public static final fun Profile (Lcom/gravatar/ui/components/ComponentState;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+	public static final fun Profile (Lcom/gravatar/restapi/models/Profile;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+	public static final fun Profile (Lcom/gravatar/ui/components/ComponentState;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+	public static final fun ProfileWithComponentState (Lcom/gravatar/ui/components/ComponentState;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/gravatar/ui/components/ProfileSummaryKt {
 	public static final fun ProfileSummary (Lcom/gravatar/api/models/Profile;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
-	public static final fun ProfileSummary (Lcom/gravatar/ui/components/ComponentState;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+	public static final fun ProfileSummary (Lcom/gravatar/restapi/models/Profile;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+	public static final fun ProfileSummary (Lcom/gravatar/ui/components/ComponentState;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+	public static final fun ProfileSummaryWithComponentState (Lcom/gravatar/ui/components/ComponentState;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/gravatar/ui/components/atomic/AboutMeKt {
 	public static final fun AboutMe (Lcom/gravatar/api/models/Profile;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Lkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;II)V
-	public static final fun AboutMe (Lcom/gravatar/ui/components/ComponentState;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Lkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;II)V
+	public static final fun AboutMe (Lcom/gravatar/restapi/models/Profile;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Lkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;II)V
 	public static final fun AboutMe (Lcom/gravatar/ui/components/ComponentState;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Lkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;II)V
+	public static final fun AboutMeWithComponentState (Lcom/gravatar/ui/components/ComponentState;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Lkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/gravatar/ui/components/atomic/AvatarKt {
 	public static final fun Avatar-DzVHIIc (Lcom/gravatar/api/models/Profile;FLandroidx/compose/ui/Modifier;Lcom/gravatar/AvatarQueryOptions;Landroidx/compose/runtime/Composer;II)V
+	public static final fun Avatar-DzVHIIc (Lcom/gravatar/restapi/models/Profile;FLandroidx/compose/ui/Modifier;Lcom/gravatar/AvatarQueryOptions;Landroidx/compose/runtime/Composer;II)V
 	public static final fun Avatar-DzVHIIc (Lcom/gravatar/ui/components/ComponentState;FLandroidx/compose/ui/Modifier;Lcom/gravatar/AvatarQueryOptions;Landroidx/compose/runtime/Composer;II)V
+	public static final fun AvatarWithComponentState (Lcom/gravatar/ui/components/ComponentState;FLandroidx/compose/ui/Modifier;Lcom/gravatar/AvatarQueryOptions;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/gravatar/ui/components/atomic/ComposableSingletons$AboutMeKt {
@@ -233,9 +248,10 @@ public final class com/gravatar/ui/components/atomic/ComposableSingletons$ViewPr
 
 public final class com/gravatar/ui/components/atomic/DisplayNameKt {
 	public static final fun DisplayName (Lcom/gravatar/api/models/Profile;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/runtime/Composer;II)V
-	public static final fun DisplayName (Lcom/gravatar/ui/components/ComponentState;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/runtime/Composer;II)V
+	public static final fun DisplayName (Lcom/gravatar/restapi/models/Profile;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/runtime/Composer;II)V
 	public static final fun DisplayName (Lcom/gravatar/ui/components/ComponentState;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/runtime/Composer;II)V
 	public static final fun DisplayNamePreview (Landroidx/compose/runtime/Composer;I)V
+	public static final fun DisplayNameWithComponentState (Lcom/gravatar/ui/components/ComponentState;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/gravatar/ui/components/atomic/LocalIcon : java/lang/Enum {
@@ -268,8 +284,9 @@ public final class com/gravatar/ui/components/atomic/LocalIcon$Companion {
 
 public final class com/gravatar/ui/components/atomic/LocationKt {
 	public static final fun Location (Lcom/gravatar/api/models/Profile;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Lkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;II)V
-	public static final fun Location (Lcom/gravatar/ui/components/ComponentState;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Lkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;II)V
+	public static final fun Location (Lcom/gravatar/restapi/models/Profile;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Lkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;II)V
 	public static final fun Location (Lcom/gravatar/ui/components/ComponentState;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Lkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;II)V
+	public static final fun LocationWithComponentState (Lcom/gravatar/ui/components/ComponentState;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Lkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/gravatar/ui/components/atomic/SocialMedia {
@@ -285,19 +302,25 @@ public final class com/gravatar/ui/components/atomic/SocialMedia {
 public final class com/gravatar/ui/components/atomic/SocialMediaKt {
 	public static final fun SocialIcon (Lcom/gravatar/ui/components/atomic/SocialMedia;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
 	public static final fun SocialIconRow (Lcom/gravatar/api/models/Profile;Landroidx/compose/ui/Modifier;ILandroidx/compose/runtime/Composer;II)V
+	public static final fun SocialIconRow (Lcom/gravatar/restapi/models/Profile;Landroidx/compose/ui/Modifier;ILandroidx/compose/runtime/Composer;II)V
 	public static final fun SocialIconRow (Lcom/gravatar/ui/components/ComponentState;Landroidx/compose/ui/Modifier;ILandroidx/compose/runtime/Composer;II)V
 	public static final fun SocialIconRow (Ljava/util/List;Landroidx/compose/ui/Modifier;ILandroidx/compose/runtime/Composer;II)V
+	public static final fun SocialIconRowWithComponentState (Lcom/gravatar/ui/components/ComponentState;Landroidx/compose/ui/Modifier;ILandroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/gravatar/ui/components/atomic/UserInfoKt {
 	public static final fun UserInfo (Lcom/gravatar/api/models/Profile;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Lkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;II)V
-	public static final fun UserInfo (Lcom/gravatar/ui/components/ComponentState;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Lkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;II)V
+	public static final fun UserInfo (Lcom/gravatar/restapi/models/Profile;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Lkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;II)V
 	public static final fun UserInfo (Lcom/gravatar/ui/components/ComponentState;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Lkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;II)V
+	public static final fun UserInfoWithComponentState (Lcom/gravatar/ui/components/ComponentState;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Lkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/gravatar/ui/components/atomic/ViewProfileButtonKt {
 	public static final fun ViewProfileButton (Lcom/gravatar/api/models/Profile;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Ljava/lang/String;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 	public static final fun ViewProfileButton (Lcom/gravatar/api/models/Profile;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+	public static final fun ViewProfileButton (Lcom/gravatar/restapi/models/Profile;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Ljava/lang/String;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+	public static final fun ViewProfileButton (Lcom/gravatar/restapi/models/Profile;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 	public static final fun ViewProfileButton (Lcom/gravatar/ui/components/ComponentState;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+	public static final fun ViewProfileButtonWithComponentState (Lcom/gravatar/ui/components/ComponentState;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 }
 

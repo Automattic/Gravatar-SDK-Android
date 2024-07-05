@@ -8,6 +8,7 @@ import com.gravatar.GravatarApiService
 import com.gravatar.GravatarConstants.GRAVATAR_API_BASE_URL_V1
 import com.gravatar.GravatarConstants.GRAVATAR_API_BASE_URL_V3
 import com.gravatar.services.AuthenticationInterceptor
+import com.gravatar.services.GravatarApi
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
@@ -48,10 +49,10 @@ internal class GravatarSdkContainer private constructor() {
      * @param okHttpClient The OkHttp client to use
      * @return The Gravatar API service
      */
-    fun getGravatarApiV1Service(okHttpClient: OkHttpClient? = null): GravatarApiService {
+    fun getGravatarV1Service(okHttpClient: OkHttpClient? = null): GravatarApi {
         return getRetrofitApiV1Builder().apply {
             okHttpClient?.let { client(it) }
-        }.build().create(GravatarApiService::class.java)
+        }.build().create(GravatarApi::class.java)
     }
 
     fun getGravatarApiV3Service(okHttpClient: OkHttpClient? = null): GravatarApiService {
@@ -59,5 +60,12 @@ internal class GravatarSdkContainer private constructor() {
             client((okHttpClient ?: OkHttpClient()).newBuilder().addInterceptor(AuthenticationInterceptor()).build())
         }.addConverterFactory(GsonConverterFactory.create(gson))
             .build().create(GravatarApiService::class.java)
+    }
+
+    fun getGravatarV3Service(okHttpClient: OkHttpClient? = null): GravatarApi {
+        return getRetrofitApiV3Builder().apply {
+            client((okHttpClient ?: OkHttpClient()).newBuilder().addInterceptor(AuthenticationInterceptor()).build())
+        }.addConverterFactory(GsonConverterFactory.create(gson))
+            .build().create(GravatarApi::class.java)
     }
 }

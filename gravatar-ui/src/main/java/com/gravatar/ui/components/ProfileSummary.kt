@@ -18,13 +18,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.gravatar.api.models.Profile
-import com.gravatar.extensions.emptyProfile
+import com.gravatar.extensions.defaultProfile
+import com.gravatar.restapi.models.Profile
 import com.gravatar.ui.GravatarTheme
 import com.gravatar.ui.components.atomic.Avatar
 import com.gravatar.ui.components.atomic.DisplayName
 import com.gravatar.ui.components.atomic.Location
 import com.gravatar.ui.components.atomic.ViewProfileButton
+import com.gravatar.ui.extensions.toApi2ComponentStateProfile
+import com.gravatar.ui.extensions.toApi2Profile
+import com.gravatar.api.models.Profile as LegacyProfile
 
 /**
  * [ProfileSummary] is a composable that displays a mini profile card.
@@ -47,6 +50,7 @@ public fun ProfileSummary(profile: Profile, modifier: Modifier = Modifier) {
  * @param avatar Composable to display the user avatar
  * @param viewProfile Composable to display the view profile button
  */
+@JvmName("ProfileSummaryWithComponentState")
 @Composable
 public fun ProfileSummary(
     state: ComponentState<Profile>,
@@ -60,7 +64,7 @@ public fun ProfileSummary(
     },
     viewProfile: @Composable ((state: ComponentState<Profile>) -> Unit) = { profileState ->
         ViewProfileButton(
-            profileState,
+            state = profileState,
             modifier = Modifier.height(32.dp),
         )
     },
@@ -77,11 +81,14 @@ public fun ProfileSummary(
                         verticalArrangement = Arrangement.Center,
                     ) {
                         DisplayName(
-                            state,
+                            state = state,
                             textStyle = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                             skeletonModifier = Modifier.fillMaxWidth(0.5f),
                         )
-                        Location(state = state, skeletonModifier = Modifier.fillMaxWidth(0.9f))
+                        Location(
+                            state = state,
+                            skeletonModifier = Modifier.fillMaxWidth(0.9f),
+                        )
                         viewProfile(state)
                     }
                 }
@@ -90,11 +97,45 @@ public fun ProfileSummary(
     }
 }
 
+/**
+ * [ProfileSummary] is a composable that displays a mini profile card.
+ * Given a [LegacyProfile], it displays a profile summary card using the atomic components provided within the SDK.
+ *
+ * @param profile The user's profile information
+ * @param modifier Composable modifier
+ */
+@Deprecated(
+    "This class is deprecated and will be removed in a future release.",
+    replaceWith = ReplaceWith("com.gravatar.ui.components.ProfileSummary"),
+    level = DeprecationLevel.WARNING,
+)
+@Composable
+public fun ProfileSummary(profile: LegacyProfile, modifier: Modifier = Modifier) {
+    ProfileSummary(state = ComponentState.Loaded(profile.toApi2Profile()), modifier = modifier)
+}
+
+/**
+ * [ProfileSummary] is a composable that displays a mini profile card.
+ * Given a [ComponentState] for a [LegacyProfile], it displays a profile summary card using the other atomic components.
+ *
+ * @param state The user's profile state
+ * @param modifier Composable modifier
+ */
+@Deprecated(
+    "This class is deprecated and will be removed in a future release.",
+    replaceWith = ReplaceWith("com.gravatar.ui.components.ProfileSummary"),
+    level = DeprecationLevel.WARNING,
+)
+@Composable
+public fun ProfileSummary(state: ComponentState<LegacyProfile>, modifier: Modifier = Modifier) {
+    ProfileSummary(state = state.toApi2ComponentStateProfile(), modifier = modifier)
+}
+
 @Preview
 @Composable
 private fun ProfileSummaryPreview() {
     ProfileSummary(
-        emptyProfile(
+        defaultProfile(
             hash = "4539566a0223b11d28fc47c864336fa27b8fe49b5f85180178c9e3813e910d6a",
             displayName = "John Doe",
             location = "Crac'h, France",
@@ -106,7 +147,7 @@ private fun ProfileSummaryPreview() {
 @Composable
 private fun ProfileSummaryWithoutLocationPreview() {
     ProfileSummary(
-        emptyProfile(
+        defaultProfile(
             hash = "4539566a0223b11d28fc47c864336fa27b8fe49b5f85180178c9e3813e910d6a",
             displayName = "John Doe",
         ),
@@ -117,7 +158,7 @@ private fun ProfileSummaryWithoutLocationPreview() {
 @Preview(uiMode = UI_MODE_NIGHT_YES)
 @Composable
 private fun ProfileSummaryLoadingPreview() {
-    LoadingToLoadedStatePreview { ProfileSummary(it) }
+    LoadingToLoadedProfileStatePreview { ProfileSummary(it) }
 }
 
 @Preview(uiMode = UI_MODE_NIGHT_NO)
@@ -126,7 +167,7 @@ private fun ProfileSummaryLoadingPreview() {
 private fun ProfileSummaryEmptyPreview() {
     GravatarTheme {
         Surface {
-            ProfileSummary(ComponentState.Empty)
+            ProfileSummary(ComponentState.Empty as ComponentState<Profile>)
         }
     }
 }
