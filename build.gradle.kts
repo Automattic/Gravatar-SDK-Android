@@ -59,7 +59,7 @@ apiValidation {
 }
 
 // Semantic versioning for release version
-val versionName = "1.0.0"
+val versionName = "1.1.0"
 
 tasks.dokkaHtmlMultiModule {
     notCompatibleWithConfigurationCache("https://github.com/Kotlin/dokka/issues/2231")
