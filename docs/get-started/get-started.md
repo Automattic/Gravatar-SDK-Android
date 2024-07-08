@@ -153,10 +153,6 @@ fun GravatarProfileSummary(emailAddress: String = "gravatar@automattic.com") {
 }
 ```
 
-Once you have integrated this component into your app, you should see:
-
-<img src="screenshot-simple-integration.png" alt="screenshot of the profile component" width="300"/>
-
 ### Add a Profile Component to your View-based App
 
 If you are using a View-based app, you can use the following code snippet to integrate the Gravatar profile in your app. This is an example of a very simple component that fetches a Gravatar profile and displays it in a `ProfileCard`.
