@@ -99,11 +99,12 @@ public class ProfileService(okHttpClient: OkHttpClient? = null) {
 
     /**
      * Fetches a Gravatar profile for the given hash or username.
+     * This method throws any exception that occurs during the execution.
      *
      * @param hashOrUsername The hash or username to fetch the profile for
      * @return The fetched profile
      */
-    public suspend fun retrieveCatching(hashOrUsername: String): Result<Profile, ErrorType> = runCatchingService {
+    public suspend fun retrieve(hashOrUsername: String): Result<Profile, ErrorType> =
         withContext(GravatarSdkDI.dispatcherIO) {
             val response = service.getProfileById(hashOrUsername)
             if (response.isSuccessful) {
@@ -122,35 +123,81 @@ public class ProfileService(okHttpClient: OkHttpClient? = null) {
                 Result.Failure(errorTypeFromHttpCode(response.code()))
             }
         }
+
+    /**
+     * Fetches a Gravatar profile for the given hash or username.
+     * This method will catch any exception that occurs during the execution and return it as a [Result.Failure].
+     *
+     * @param hashOrUsername The hash or username to fetch the profile for
+     * @return The fetched profile
+     */
+    public suspend fun retrieveCatching(hashOrUsername: String): Result<Profile, ErrorType> = runCatchingService {
+        retrieve(hashOrUsername)
     }
 
     /**
      * Fetches a Gravatar profile for the given email address.
+     * This method throws any exception that occurs during the execution.
      *
      * @param email The email address to fetch the profile for
      * @return The fetched profiles
      */
-    public suspend fun retrieveCatching(email: Email): Result<Profile, ErrorType> {
-        return retrieveCatching(email.hash())
+    public suspend fun retrieve(email: Email): Result<Profile, ErrorType> {
+        return retrieve(email.hash())
+    }
+
+    /**
+     * Fetches a Gravatar profile for the given email address.
+     * This method will catch any exception that occurs during the execution and return it as a [Result.Failure].
+     *
+     * @param email The email address to fetch the profile for
+     * @return The fetched profiles
+     */
+    public suspend fun retrieveCatching(email: Email): Result<Profile, ErrorType> = runCatchingService {
+        return retrieve(email.hash())
     }
 
     /**
      * Fetches a Gravatar profile for the given hash.
+     * This method throws any exception that occurs during the execution.
      *
      * @param hash The hash to fetch the profile for
      * @return The fetched profiles
      */
-    public suspend fun retrieveCatching(hash: Hash): Result<Profile, ErrorType> {
-        return retrieveCatching(hash.toString())
+    public suspend fun retrieve(hash: Hash): Result<Profile, ErrorType> {
+        return retrieve(hash.toString())
+    }
+
+    /**
+     * Fetches a Gravatar profile for the given hash.
+     * This method will catch any exception that occurs during the execution and return it as a [Result.Failure].
+     *
+     * @param hash The hash to fetch the profile for
+     * @return The fetched profiles
+     */
+    public suspend fun retrieveCatching(hash: Hash): Result<Profile, ErrorType> = runCatchingService {
+        return retrieve(hash)
     }
 
     /**
      * Fetches a Gravatar profile for the given username.
+     * This method throws any exception that occurs during the execution.
      *
      * @param username The username to fetch the profile for
      * @return The fetched profiles
      */
-    public suspend fun retrieveByUsernameCatching(username: String): Result<Profile, ErrorType> {
-        return retrieveCatching(username)
+    public suspend fun retrieveByUsername(username: String): Result<Profile, ErrorType> {
+        return retrieve(username)
+    }
+
+    /**
+     * Fetches a Gravatar profile for the given username.
+     * This method will catch any exception that occurs during the execution and return it as a [Result.Failure].
+     *
+     * @param username The username to fetch the profile for
+     * @return The fetched profiles
+     */
+    public suspend fun retrieveByUsernameCatching(username: String): Result<Profile, ErrorType> = runCatchingService {
+        retrieveByUsername(username)
     }
 }
