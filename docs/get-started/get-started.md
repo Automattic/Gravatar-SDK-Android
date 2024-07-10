@@ -103,6 +103,15 @@ Gravatar.initialize(BuildConfig.GRAVATAR_API_KEY)
 
 ## Usage
 
+### UI components
+
+The Gravatar SDK provides various different types of Profile cards to suit your needs. They vary in size and the number of information presented to the user.
+
+| Profile                                  | ProfileSummary                        | LargeProfile                        | LargeProfileSummary                         |
+|------------------------------------------|---------------------------------------|-------------------------------------|---------------------------------------------|
+| ![](/docs/images/profile_light_demo.png) | ![](/docs/images/profile_summary.png) | ![](/docs/images/large_profile.png) | ![](/docs/images/large_profile_summary.png) |
+
+
 ### Add a Profile Component to your Jetpack Compose App
 
 Then, you can use the following code snippet to integrate the Gravatar profile in your app. This is a very simple component that fetches a Gravatar profile and displays it in a `ProfileCard` composable.
@@ -143,10 +152,6 @@ fun GravatarProfileSummary(emailAddress: String = "gravatar@automattic.com") {
     ProfileSummary(profileState, modifier = Modifier.fillMaxWidth().padding(16.dp))
 }
 ```
-
-Once you have integrated this component into your app, you should see:
-
-<img src="screenshot-simple-integration.png" alt="screenshot of the profile component" width="300"/>
 
 ### Add a Profile Component to your View-based App
 
