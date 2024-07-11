@@ -610,6 +610,11 @@ public abstract interface class com/gravatar/services/GravatarListener {
 	public abstract fun onSuccess (Ljava/lang/Object;)V
 }
 
+public final class com/gravatar/services/HttpException : java/lang/RuntimeException {
+	public final fun getCode ()I
+	public fun getMessage ()Ljava/lang/String;
+}
+
 public final class com/gravatar/services/ProfileService {
 	public static final field LOG_TAG Ljava/lang/String;
 	public fun <init> ()V

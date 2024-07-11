@@ -267,4 +267,35 @@ class ProfileServiceTests {
 
         profileService.retrieve(usernameEmail)
     }
+
+    @Test(expected = IllegalStateException::class)
+    fun `given an email when retrieving its profile and the body is null then IllegalStateException is thrown`() =
+        runTest {
+            val usernameEmail = Email("username@automattic.com")
+            val mockResponse = mockk<Response<Profile>> {
+                every { isSuccessful } returns true
+                every { body() } returns null
+            }
+            coEvery {
+                containerRule.gravatarApiMock.getProfileById(usernameEmail.hash().toString())
+            } returns mockResponse
+
+            profileService.retrieve(usernameEmail)
+        }
+
+    @Test(expected = HttpException::class)
+    fun `given an email when retrieving its profile and a http error occurs then HttpException is thrown`() = runTest {
+        val usernameEmail = Email("username@automattic.com")
+        val mockResponse = mockk<Response<Profile>> {
+            every { isSuccessful } returns false
+            every { errorBody() } returns mockk(relaxed = true)
+            every { code() } returns 404
+            every { message() } returns "Not found"
+        }
+        coEvery {
+            containerRule.gravatarApiMock.getProfileById(usernameEmail.hash().toString())
+        } returns mockResponse
+
+        profileService.retrieve(usernameEmail)
+    }
 }

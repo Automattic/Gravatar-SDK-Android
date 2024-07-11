@@ -16,6 +16,7 @@ internal fun Throwable.errorType(): ErrorType {
     return when (this) {
         is SocketTimeoutException -> ErrorType.TIMEOUT
         is UnknownHostException -> ErrorType.NETWORK
+        is HttpException -> errorTypeFromHttpCode(code)
         else -> ErrorType.UNKNOWN
     }
 }
