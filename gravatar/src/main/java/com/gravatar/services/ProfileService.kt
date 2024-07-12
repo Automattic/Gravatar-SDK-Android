@@ -1,5 +1,6 @@
 package com.gravatar.services
 
+import com.gravatar.HttpResponseCode
 import com.gravatar.logger.Logger
 import com.gravatar.restapi.models.Profile
 import com.gravatar.types.Email
@@ -102,9 +103,9 @@ public class ProfileService(okHttpClient: OkHttpClient? = null) {
      * This method throws any exception that occurs during the execution.
      *
      * @param hashOrUsername The hash or username to fetch the profile for
-     * @return The fetched profile
+     * @return The fetched profile or null if profile not found
      */
-    public suspend fun retrieve(hashOrUsername: String): Profile = withContext(GravatarSdkDI.dispatcherIO) {
+    public suspend fun retrieve(hashOrUsername: String): Profile? = withContext(GravatarSdkDI.dispatcherIO) {
         val response = service.getProfileById(hashOrUsername)
         if (response.isSuccessful) {
             response.body() ?: error("Response body is null")
@@ -114,7 +115,11 @@ public class ProfileService(okHttpClient: OkHttpClient? = null) {
                 LOG_TAG,
                 "Network call unsuccessful trying to get Gravatar profile: ${response.code()}",
             )
-            throw HttpException(response)
+            if (response.code() == HttpResponseCode.HTTP_NOT_FOUND) {
+                return@withContext null
+            } else {
+                throw HttpException(response)
+            }
         }
     }
 
@@ -134,9 +139,9 @@ public class ProfileService(okHttpClient: OkHttpClient? = null) {
      * This method throws any exception that occurs during the execution.
      *
      * @param email The email address to fetch the profile for
-     * @return The fetched profiles
+     * @return The fetched profile or null if profile not found
      */
-    public suspend fun retrieve(email: Email): Profile {
+    public suspend fun retrieve(email: Email): Profile? {
         return retrieve(email.hash())
     }
 
@@ -156,9 +161,9 @@ public class ProfileService(okHttpClient: OkHttpClient? = null) {
      * This method throws any exception that occurs during the execution.
      *
      * @param hash The hash to fetch the profile for
-     * @return The fetched profiles
+     * @return The fetched profile or null if profile not found
      */
-    public suspend fun retrieve(hash: Hash): Profile {
+    public suspend fun retrieve(hash: Hash): Profile? {
         return retrieve(hash.toString())
     }
 
@@ -178,9 +183,9 @@ public class ProfileService(okHttpClient: OkHttpClient? = null) {
      * This method throws any exception that occurs during the execution.
      *
      * @param username The username to fetch the profile for
-     * @return The fetched profiles
+     * @return The fetched profile or null if profile not found
      */
-    public suspend fun retrieveByUsername(username: String): Profile {
+    public suspend fun retrieveByUsername(username: String): Profile? {
         return retrieve(username)
     }
 

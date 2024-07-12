@@ -8,6 +8,8 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
+import junit.framework.TestCase.assertEquals
+import junit.framework.TestCase.assertNull
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -239,6 +241,22 @@ class ProfileServiceTests {
         assertTrue((loadProfileResponse as Result.Failure).error == ErrorType.UNKNOWN)
     }
 
+    @Test
+    fun `given a username when retrieving its profile which is not found then failure with NOT_FOUND`() = runTest {
+        val username = "username"
+        val mockResponse = mockk<Response<Profile>> {
+            every { isSuccessful } returns false
+            every { errorBody() } returns mockk(relaxed = true)
+            every { code() } returns 404
+            every { message() } returns "Not found"
+        }
+        coEvery {
+            containerRule.gravatarApiMock.getProfileById(username)
+        } returns mockResponse
+
+        assertEquals(ErrorType.NOT_FOUND, (profileService.retrieveCatching(username) as Result.Failure).error)
+    }
+
     // Throwing Exception Version of the methods
     @Test(expected = TimeoutException::class)
     fun `given a username when retrieving its profile and a timeout occurs then exception is thrown`() = runTest {
@@ -289,13 +307,29 @@ class ProfileServiceTests {
         val mockResponse = mockk<Response<Profile>> {
             every { isSuccessful } returns false
             every { errorBody() } returns mockk(relaxed = true)
-            every { code() } returns 404
-            every { message() } returns "Not found"
+            every { code() } returns 401
+            every { message() } returns "Unauthorized"
         }
         coEvery {
             containerRule.gravatarApiMock.getProfileById(usernameEmail.hash().toString())
         } returns mockResponse
 
         profileService.retrieve(usernameEmail)
+    }
+
+    @Test
+    fun `given a username when retrieving its profile which is not found then null is returned`() = runTest {
+        val username = "username"
+        val mockResponse = mockk<Response<Profile>> {
+            every { isSuccessful } returns false
+            every { errorBody() } returns mockk(relaxed = true)
+            every { code() } returns 404
+            every { message() } returns "Not found"
+        }
+        coEvery {
+            containerRule.gravatarApiMock.getProfileById(username)
+        } returns mockResponse
+
+        assertNull(profileService.retrieve(username))
     }
 }

@@ -19,10 +19,15 @@ internal inline fun <T> runCatchingService(block: () -> Result<T, ErrorType>): R
     }
 }
 
-internal inline fun <T> runCatchingRequest(block: () -> T): Result<T, ErrorType> {
+internal inline fun <T> runCatchingRequest(block: () -> T?): Result<T, ErrorType> {
     @Suppress("TooGenericExceptionCaught")
     return try {
-        return Result.Success(block())
+        val result = block()
+        if (result != null) {
+            Result.Success(result)
+        } else {
+            Result.Failure(ErrorType.NOT_FOUND)
+        }
     } catch (cancellationException: CancellationException) {
         throw cancellationException
     } catch (ex: Exception) {
