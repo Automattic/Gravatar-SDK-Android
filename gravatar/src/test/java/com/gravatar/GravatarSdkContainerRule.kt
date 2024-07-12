@@ -1,6 +1,7 @@
 package com.gravatar
 
 import com.gravatar.di.container.GravatarSdkContainer
+import com.gravatar.logger.Logger
 import com.gravatar.services.GravatarApi
 import io.mockk.every
 import io.mockk.mockk
@@ -37,6 +38,11 @@ class GravatarSdkContainerRule : TestRule {
                 every { gravatarSdkContainerMock.getGravatarV1Service(any()) } returns gravatarApiMock
                 every { gravatarSdkContainerMock.getGravatarApiV3Service(any()) } returns gravatarApiServiceMock
                 every { gravatarSdkContainerMock.getGravatarV3Service(any()) } returns gravatarApiMock
+
+                mockkObject(Logger)
+                every { Logger.i(any(), any()) } returns 1
+                every { Logger.w(any(), any()) } returns 1
+                every { Logger.e(any(), any()) } returns 1
 
                 base.evaluate()
             }
