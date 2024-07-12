@@ -29,7 +29,7 @@ class ProfileServiceTests {
     }
 
     @Test
-    fun `given an username when loading its profile and data is returned then result is successful`() = runTest {
+    fun `given a username when loading its profile and data is returned then result is successful`() = runTest {
         val username = "username"
         val mockResponse = mockk<Response<LegacyProfile>> {
             every { isSuccessful } returns true
@@ -44,7 +44,7 @@ class ProfileServiceTests {
     }
 
     @Test
-    fun `given an username when loading its profile but data is NOT returned then result is UNKNOWN failure`() =
+    fun `given a username when loading its profile but data is NOT returned then result is UNKNOWN failure`() =
         runTest {
             val username = "username"
             val mockResponse = mockk<Response<LegacyProfile>> {
@@ -60,7 +60,7 @@ class ProfileServiceTests {
         }
 
     @Test
-    fun `given an username when loading its profile and response is NOT successful then result is failure`() = runTest {
+    fun `given a username when loading its profile and response is NOT successful then result is failure`() = runTest {
         val username = "username"
         val mockResponse = mockk<Response<LegacyProfile>> {
             every { isSuccessful } returns false
@@ -74,7 +74,7 @@ class ProfileServiceTests {
     }
 
     @Test
-    fun `given an username when loading its profile and an exception is thrown then result is failure`() = runTest {
+    fun `given a username when loading its profile and an exception is thrown then result is failure`() = runTest {
         val username = "username"
         coEvery { containerRule.gravatarApiServiceMock.getProfileById(username) } throws Exception()
 
@@ -125,7 +125,7 @@ class ProfileServiceTests {
 
     // Catching Version of the methods
     @Test
-    fun `given an username when retrieving its profile and data is returned then result is successful`() = runTest {
+    fun `given a username when retrieving its profile and data is returned then result is successful`() = runTest {
         val username = "username"
         val mockResponse = mockk<Response<Profile>> {
             every { isSuccessful } returns true
@@ -140,7 +140,7 @@ class ProfileServiceTests {
     }
 
     @Test
-    fun `given an username when retrieving its profile but data is NOT returned then result is UNKNOWN failure`() =
+    fun `given a username when retrieving its profile but data is NOT returned then result is UNKNOWN failure`() =
         runTest {
             val username = "username"
             val mockResponse = mockk<Response<Profile>> {
@@ -156,7 +156,7 @@ class ProfileServiceTests {
         }
 
     @Test
-    fun `given an username when retrieving its profile and response is NOT successful then result is failure`() =
+    fun `given a username when retrieving its profile and response is NOT successful then result is failure`() =
         runTest {
             val username = "username"
             val mockResponse = mockk<Response<Profile>> {
@@ -205,7 +205,7 @@ class ProfileServiceTests {
     }
 
     @Test
-    fun `given an username when retrieving its profile and an exception is thrown then result is failure`() = runTest {
+    fun `given a username when retrieving its profile and an exception is thrown then result is failure`() = runTest {
         val username = "username"
         coEvery { containerRule.gravatarApiMock.getProfileById(username) } throws Exception()
 
@@ -241,7 +241,7 @@ class ProfileServiceTests {
 
     // Throwing Exception Version of the methods
     @Test(expected = TimeoutException::class)
-    fun `given an username when retrieving its profile and a timeout occurs then exception is thrown`() = runTest {
+    fun `given a username when retrieving its profile and a timeout occurs then exception is thrown`() = runTest {
         val username = "username"
         coEvery { containerRule.gravatarApiMock.getProfileById(username) } throws TimeoutException()
 
