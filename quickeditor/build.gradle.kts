@@ -1,3 +1,5 @@
+import org.jetbrains.dokka.gradle.DokkaTaskPartial
+
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
@@ -39,6 +41,14 @@ android {
         autoCorrect = false
         buildUponDefaultConfig = true
         parallel = false
+    }
+
+    tasks.withType<DokkaTaskPartial>().configureEach {
+        dokkaSourceSets {
+            configureEach {
+                includes.from("QuickEditor.md")
+            }
+        }
     }
 }
 
