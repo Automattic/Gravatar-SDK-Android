@@ -50,6 +50,11 @@ android {
             }
         }
     }
+
+    // Explicit API mode
+    kotlin {
+        explicitApi()
+    }
 }
 
 dependencies {}
