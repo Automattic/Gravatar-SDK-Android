@@ -104,6 +104,7 @@ Detekt via a gradle command:
 ./gradlew detekt
 ./gradlew :gravatar:detekt
 ./gradlew :gravatar-ui:detekt
+./gradlew :quickeditor:detekt
 ./gradlew :app:detekt
 ```
 
