@@ -83,6 +83,7 @@ following commands:
 ./gradlew ktlintCheck
 ./gradlew :gravatar:ktlintCheck
 ./gradlew :gravatar-ui:ktlintCheck
+./gradlew :quickeditor:ktlintCheck
 ./gradlew :app:ktlintCheck
 ```
 
@@ -92,6 +93,7 @@ You can also try to let Ktlint fix the code style issues. Just use:
 ./gradlew ktlintFormat
 ./gradlew :gravatar:ktlintFormat
 ./gradlew :gravatar-ui:ktlintFormat
+./gradlew :quickeditor:ktlintFormat
 ./gradlew :app:ktlintFormat
 ```
 
