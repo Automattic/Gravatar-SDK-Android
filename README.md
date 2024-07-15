@@ -22,7 +22,7 @@ This project contains the source code for the Gravatar SDK library and a demo ap
 
 ### Gravatar SDK Architecture
 
-The SDK is still in its early stages, but we can identify two main modules:
+The SDK is still in its early stages, but we can identify the following modules:
 
 #### Gravatar (Core)
 
@@ -36,6 +36,10 @@ The core functionality of the Gravatar SDK library. It provides a set of classes
 A set of UI components to display the Gravatar images, profiles or information in general. Those components are implemented in Jetpack Compose and can contain logic to interact with the Gravatar API client.
 
 - [**Gravatar UI components**](gravatar-ui/src/main/java/com/gravatar/ui): A set of UI components to display the Gravatar images, profiles or information in general. Those components are implemented in Jetpack Compose and can contain logic to interact with the Gravatar API client.
+
+#### QuickEditor
+
+The QuickEditor module contains tools and UI components to quickly edit the Gravatar profile.
 
 ### Dependency Injection
 
@@ -83,6 +87,7 @@ following commands:
 ./gradlew ktlintCheck
 ./gradlew :gravatar:ktlintCheck
 ./gradlew :gravatar-ui:ktlintCheck
+./gradlew :quickeditor:ktlintCheck
 ./gradlew :app:ktlintCheck
 ```
 
@@ -92,6 +97,7 @@ You can also try to let Ktlint fix the code style issues. Just use:
 ./gradlew ktlintFormat
 ./gradlew :gravatar:ktlintFormat
 ./gradlew :gravatar-ui:ktlintFormat
+./gradlew :quickeditor:ktlintFormat
 ./gradlew :app:ktlintFormat
 ```
 
@@ -104,6 +110,7 @@ Detekt via a gradle command:
 ./gradlew detekt
 ./gradlew :gravatar:detekt
 ./gradlew :gravatar-ui:detekt
+./gradlew :quickeditor:detekt
 ./gradlew :app:detekt
 ```
 
