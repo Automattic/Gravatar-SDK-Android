@@ -51,7 +51,7 @@ apiValidation {
     /**
      * Sub-projects that are excluded from API validation
      */
-    ignoredProjects.addAll(listOf("demo-app"))
+    ignoredProjects.addAll(listOf("demo-app", "uitestutils"))
 }
 
 // Semantic versioning for release version
