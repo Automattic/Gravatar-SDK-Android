@@ -2,6 +2,9 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
 
+    // Ktlint
+    id("org.jlleitschuh.gradle.ktlint")
+
     // Detekt
     id("io.gitlab.arturbosch.detekt")
 }
