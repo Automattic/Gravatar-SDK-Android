@@ -22,7 +22,7 @@ This project contains the source code for the Gravatar SDK library and a demo ap
 
 ### Gravatar SDK Architecture
 
-The SDK is still in its early stages, but we can identify two main modules:
+The SDK is still in its early stages, but we can identify the following modules:
 
 #### Gravatar (Core)
 
@@ -36,6 +36,10 @@ The core functionality of the Gravatar SDK library. It provides a set of classes
 A set of UI components to display the Gravatar images, profiles or information in general. Those components are implemented in Jetpack Compose and can contain logic to interact with the Gravatar API client.
 
 - [**Gravatar UI components**](gravatar-ui/src/main/java/com/gravatar/ui): A set of UI components to display the Gravatar images, profiles or information in general. Those components are implemented in Jetpack Compose and can contain logic to interact with the Gravatar API client.
+
+#### QuickEditor
+
+The QuickEditor module contains tools and UI components to quickly edit the Gravatar profile.
 
 ### Dependency Injection
 
