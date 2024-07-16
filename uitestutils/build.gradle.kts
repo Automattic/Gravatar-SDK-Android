@@ -1,6 +1,7 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("org.jetbrains.kotlin.plugin.compose")
 
     // Ktlint
     id("org.jlleitschuh.gradle.ktlint")
@@ -14,7 +15,7 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        minSdk = 24
+        minSdk = 21
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -40,6 +41,26 @@ android {
         buildUponDefaultConfig = true
         parallel = false
     }
+    buildFeatures {
+        compose = true
+    }
 }
 
-dependencies {}
+dependencies {
+
+    // Jetpack Compose
+    implementation(platform(libs.compose.bom))
+    implementation(libs.compose.ui)
+    implementation(libs.compose.ui.tooling.preview)
+    implementation(libs.compose.material3)
+    implementation(libs.androidx.activity.compose)
+    debugImplementation(libs.androidx.compose.ui.tooling)
+
+    // Roborazzi
+    api(libs.robolectric)
+    implementation(libs.androidx.compose.junit)
+    debugImplementation(libs.androidx.compose.manifest)
+    implementation(libs.roborazzi)
+    implementation(libs.roborazzi.compose)
+    implementation(libs.roborazzi.junit.rule)
+}
