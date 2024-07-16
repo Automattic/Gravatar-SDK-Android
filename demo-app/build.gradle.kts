@@ -2,15 +2,13 @@ import java.io.FileInputStream
 import java.util.Properties
 
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-    id("org.jetbrains.kotlin.plugin.compose")
-
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.plugin.compose)
     // Ktlint
-    id("org.jlleitschuh.gradle.ktlint")
-
+    alias(libs.plugins.ktlint)
     // Detekt
-    id("io.gitlab.arturbosch.detekt")
+    alias(libs.plugins.detekt)
 }
 
 fun localProperties(): Properties {
@@ -91,30 +89,30 @@ android {
 }
 
 dependencies {
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
+    coreLibraryDesugaring(libs.desugarJdk)
 
     // Demo App dependencies
-    implementation("androidx.core:core-ktx:1.12.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.11.0")
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.android.material)
 
-    implementation(platform("androidx.compose:compose-bom:2024.03.00"))
-    implementation("androidx.activity:activity-compose:1.8.2")
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-graphics")
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.material3:material3")
-    implementation("androidx.compose.material:material-icons-extended")
-    implementation("io.coil-kt:coil-compose:2.5.0")
+    implementation(platform(libs.compose.bom))
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.compose.ui)
+    implementation(libs.compose.ui.graphics)
+    implementation(libs.compose.ui.tooling.preview)
+    implementation(libs.compose.material3)
+    implementation(libs.compose.material.icons)
+    implementation(libs.coil.compose)
     implementation(project(":gravatar"))
     implementation(project(":gravatar-ui"))
 
-    debugImplementation("androidx.compose.ui:ui-tooling:1.6.0")
+    debugImplementation(libs.androidx.compose.ui.tooling)
 
     // Unit Test dependencies
-    testImplementation("junit:junit:4.13.2")
+    testImplementation(libs.junit)
 
     // Android Test dependencies
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
 }

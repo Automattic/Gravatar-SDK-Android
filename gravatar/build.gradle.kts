@@ -1,20 +1,16 @@
 import org.jetbrains.dokka.gradle.DokkaTaskPartial
 
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
-
+    id(libs.plugins.android.library.get().pluginId)
+    alias(libs.plugins.kotlin.android)
     // Ktlint
-    id("org.jlleitschuh.gradle.ktlint")
-
+    alias(libs.plugins.ktlint)
     // Detekt
-    id("io.gitlab.arturbosch.detekt")
-
+    alias(libs.plugins.detekt)
     // Publish artifact to S3
-    id("com.automattic.android.publish-to-s3")
-
+    alias(libs.plugins.publish.to.s3)
     // OpenApi Generator
-    id("org.openapi.generator") version "7.4.0"
+    alias(libs.plugins.openapi.generator)
 }
 
 android {
@@ -74,21 +70,20 @@ android {
 }
 
 dependencies {
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
+    coreLibraryDesugaring(libs.desugarJdk)
 
-    api("com.squareup.okhttp3:okhttp:4.12.0")
-    val retrofitVersion = "2.11.0"
-    implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
-    implementation("com.squareup.retrofit2:converter-gson:$retrofitVersion")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    api(libs.okhttp)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.gson.converter)
+    implementation(libs.kotlinx.coroutines)
 
-    testImplementation("junit:junit:4.13.2")
-    testImplementation("io.mockk:mockk-android:1.13.9")
-    testImplementation("io.mockk:mockk-agent:1.13.9")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+    testImplementation(libs.junit)
+    testImplementation(libs.mockk.android)
+    testImplementation(libs.mockk.agent)
+    testImplementation(libs.kotlinx.coroutines.test)
 
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
 }
 
 project.afterEvaluate {

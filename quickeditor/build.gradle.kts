@@ -1,14 +1,12 @@
 import org.jetbrains.dokka.gradle.DokkaTaskPartial
 
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
-
+    id(libs.plugins.android.library.get().pluginId)
+    alias(libs.plugins.kotlin.android)
     // Ktlint
-    id("org.jlleitschuh.gradle.ktlint")
-
+    alias(libs.plugins.ktlint)
     // Detekt
-    id("io.gitlab.arturbosch.detekt")
+    alias(libs.plugins.detekt)
 }
 
 android {
