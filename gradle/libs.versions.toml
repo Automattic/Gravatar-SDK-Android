@@ -14,8 +14,6 @@ ktx = "1.13.1"
 desugarJdk = "2.0.4"
 junit = "4.13.2"
 mockk = "1.13.9"
-espresso = "3.5.1"
-androidXJunit = "1.1.5"
 appcompat = "1.6.1"
 material = "1.11.0"
 ucrop = "2.2.8"
@@ -52,8 +50,6 @@ coil-svg = { group = "io.coil-kt", name = "coil-svg", version.ref = "coil" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 mockk-android = { group = "io.mockk", name = "mockk-android", version.ref = "mockk" }
 mockk-agent = { group = "io.mockk", name = "mockk-agent", version.ref = "mockk" }
-androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso" }
-androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidXJunit" }
 robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
 roborazzi = { group = "io.github.takahirom.roborazzi", name = "roborazzi", version.ref = "roborazzi" }
 roborazzi-compose = { group = "io.github.takahirom.roborazzi", name = "roborazzi-compose", version.ref = "roborazzi" }
