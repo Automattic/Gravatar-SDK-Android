@@ -1,19 +1,16 @@
 import org.jetbrains.dokka.gradle.DokkaTaskPartial
 
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
-    id("org.jetbrains.kotlin.plugin.compose")
-    id("com.automattic.android.publish-to-s3")
-
+    id(libs.plugins.android.library.get().pluginId)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.plugin.compose)
+    alias(libs.plugins.publish.to.s3)
     // Ktlint
-    id("org.jlleitschuh.gradle.ktlint")
-
+    alias(libs.plugins.ktlint)
     // Detekt
-    id("io.gitlab.arturbosch.detekt")
-
+    alias(libs.plugins.detekt)
     // Roborazzi
-    id("io.github.takahirom.roborazzi")
+    alias(libs.plugins.roborazzi)
 }
 
 android {
@@ -90,36 +87,36 @@ android {
 }
 
 dependencies {
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
+    coreLibraryDesugaring(libs.desugarJdk)
 
-    implementation("androidx.core:core-ktx:1.12.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.11.0")
-    implementation("com.github.yalantis:ucrop:2.2.8")
-    implementation("io.coil-kt:coil-compose:2.5.0")
-    implementation("io.coil-kt:coil-svg:2.5.0")
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.android.material)
+    implementation(libs.ucrop)
+    implementation(libs.coil.compose)
+    implementation(libs.coil.svg)
     implementation(project(":gravatar"))
 
-    testImplementation("junit:junit:4.13.2")
+    testImplementation(libs.junit)
 
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
 
     // Jetpack Compose
-    implementation(platform("androidx.compose:compose-bom:2024.02.00"))
-    implementation("androidx.activity:activity-compose:1.8.2")
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.material3:material3")
-    debugImplementation("androidx.compose.ui:ui-tooling:1.6.2")
+    implementation(platform(libs.compose.bom))
+    implementation(libs.compose.ui)
+    implementation(libs.compose.ui.tooling.preview)
+    implementation(libs.compose.material3)
+    implementation(libs.androidx.activity.compose)
+    debugImplementation(libs.androidx.compose.ui.tooling)
 
     // Roborazzi
-    testImplementation("org.robolectric:robolectric:4.11.1")
-    testImplementation("androidx.compose.ui:ui-test-junit4:1.6.7")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.6.7")
-    testImplementation("io.github.takahirom.roborazzi:roborazzi:1.15.0")
-    testImplementation("io.github.takahirom.roborazzi:roborazzi-compose:1.15.0")
-    testImplementation("io.github.takahirom.roborazzi:roborazzi-junit-rule:1.15.0")
+    testImplementation(libs.robolectric)
+    testImplementation(libs.androidx.compose.junit)
+    debugImplementation(libs.androidx.compose.manifest)
+    testImplementation(libs.roborazzi)
+    testImplementation(libs.roborazzi.compose)
+    testImplementation(libs.roborazzi.junit.rule)
 }
 
 project.afterEvaluate {

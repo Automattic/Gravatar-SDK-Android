@@ -1,0 +1,74 @@
+[versions]
+androidGradlePlugin = "8.4.1"
+kotlin = "2.0.0"
+ktlint = "12.1.0"
+detekt = "1.23.4"
+roborazzi = "1.15.0"
+dokka = "1.9.20"
+binaryValidator = "0.15.0-Beta.2"
+publishToS3 = "0.10.0"
+openapi = "7.4.0"
+retrofit = "2.11.0"
+okhttp = "4.12.0"
+ktx = "1.12.0"
+desugarJdk = "2.0.4"
+junit = "4.13.2"
+mockk = "1.13.9"
+espresso = "3.5.1"
+androidXJunit = "1.1.5"
+appcompat = "1.6.1"
+material = "1.11.0"
+ucrop = "2.2.8"
+coil = "2.5.0"
+activityCompose = "1.8.2"
+robolectric = "4.11.1"
+composeUiTest = "1.6.7"
+kotlinCoroutines = "1.7.3"
+composeBom = "2024.03.00"
+
+[libraries]
+desugarJdk = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugarJdk" }
+kotlinx-coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinCoroutines" }
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinCoroutines" }
+android-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "ktx" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
+androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "composeUiTest" }
+androidx-compose-junit = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref = "composeUiTest" }
+androidx-compose-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest", version.ref = "composeUiTest" }
+compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+compose-ui = { module = "androidx.compose.ui:ui" }
+compose-ui-graphics = { module = "androidx.compose.ui:ui-graphics" }
+compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+compose-material3 = { module = "androidx.compose.material3:material3" }
+compose-material-icons = { module = "androidx.compose.material:material-icons-extended" }
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+retrofit-gson-converter = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+ucrop = { group = "com.github.yalantis", name = "ucrop", version.ref = "ucrop" }
+coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
+coil-svg = { group = "io.coil-kt", name = "coil-svg", version.ref = "coil" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+mockk-android = { group = "io.mockk", name = "mockk-android", version.ref = "mockk" }
+mockk-agent = { group = "io.mockk", name = "mockk-agent", version.ref = "mockk" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidXJunit" }
+robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
+roborazzi = { group = "io.github.takahirom.roborazzi", name = "roborazzi", version.ref = "roborazzi" }
+roborazzi-compose = { group = "io.github.takahirom.roborazzi", name = "roborazzi-compose", version.ref = "roborazzi" }
+roborazzi-junit-rule = { group = "io.github.takahirom.roborazzi", name = "roborazzi-junit-rule", version.ref = "roborazzi" }
+
+
+[plugins]
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-plugin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
+android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
+roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
+binary-compatibility-validator = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "binaryValidator" }
+publish-to-s3 = { id = "com.automattic.android.publish-to-s3", version.ref = "publishToS3" }
+openapi-generator = { id = "org.openapi.generator", version.ref = "openapi" }

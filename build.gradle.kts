@@ -5,22 +5,18 @@ import org.jetbrains.dokka.versioning.VersioningPlugin
 
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
-    id("com.android.application") version "8.4.1" apply false
-    id("org.jetbrains.kotlin.android") version "2.0.0" apply false
-    id("org.jetbrains.kotlin.plugin.compose") version "2.0.0" apply false
-
+    alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.kotlin.android) apply false
+    alias(libs.plugins.kotlin.plugin.compose) apply false
     // Ktlint
-    id("org.jlleitschuh.gradle.ktlint") version "12.1.0" apply false
-
+    alias(libs.plugins.ktlint) apply false
     // Detekt
-    id("io.gitlab.arturbosch.detekt") version "1.23.4" apply false
-
+    alias(libs.plugins.detekt) apply false
     // Dokka
-    id("org.jetbrains.dokka")
-
+    alias(libs.plugins.dokka)
     // Roborazzi
-    id("io.github.takahirom.roborazzi") version "1.15.0" apply false
-    id("org.jetbrains.kotlinx.binary-compatibility-validator") version "0.15.0-Beta.2"
+    alias(libs.plugins.roborazzi) apply false
+    alias(libs.plugins.binary.compatibility.validator)
 }
 
 buildscript {
