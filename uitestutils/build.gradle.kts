@@ -1,13 +1,12 @@
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
-    id("org.jetbrains.kotlin.plugin.compose")
+    id(libs.plugins.android.library.get().pluginId)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.plugin.compose)
 
     // Ktlint
-    id("org.jlleitschuh.gradle.ktlint")
-
+    alias(libs.plugins.ktlint)
     // Detekt
-    id("io.gitlab.arturbosch.detekt")
+    alias(libs.plugins.detekt)
 }
 
 android {
