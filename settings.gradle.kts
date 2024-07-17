@@ -33,5 +33,5 @@ rootProject.name = "gravatar"
 include(":gravatar")
 include(":demo-app")
 include(":gravatar-ui")
-include(":quickeditor")
+include(":gravatar-quickeditor")
 include(":uitestutils")
