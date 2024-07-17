@@ -76,9 +76,9 @@ android {
                 // -Pscreenshot to filter screenshot tests
                 it.useJUnit {
                     if (project.hasProperty("screenshot")) {
-                        includeCategories("com.gravatar.gravatar.ui.ScreenshotTests")
+                        includeCategories("com.gravatar.uitestutils.ScreenshotTests")
                     } else {
-                        excludeCategories("com.gravatar.gravatar.ui.ScreenshotTests")
+                        excludeCategories("com.gravatar.uitestutils.ScreenshotTests")
                     }
                 }
             }
@@ -98,6 +98,7 @@ dependencies {
     implementation(project(":gravatar"))
 
     testImplementation(libs.junit)
+    testImplementation(project(":uitestutils"))
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -109,14 +110,6 @@ dependencies {
     implementation(libs.compose.material3)
     implementation(libs.androidx.activity.compose)
     debugImplementation(libs.androidx.compose.ui.tooling)
-
-    // Roborazzi
-    testImplementation(libs.robolectric)
-    testImplementation(libs.androidx.compose.junit)
-    debugImplementation(libs.androidx.compose.manifest)
-    testImplementation(libs.roborazzi)
-    testImplementation(libs.roborazzi.compose)
-    testImplementation(libs.roborazzi.junit.rule)
 }
 
 project.afterEvaluate {

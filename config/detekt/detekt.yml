@@ -54,7 +54,7 @@ style:
 comments:
   UndocumentedPublicClass:
     active: true
-    excludes: [ '**/test/**', '**/androidTest/**', '**/demoapp/**', '**/restapi/models/**' ]
+    excludes: [ '**/test/**', '**/androidTest/**', '**/demoapp/**', '**/restapi/models/**', '**/uitestutils/**' ]
     searchInNestedClass: true
     searchInInnerClass: true
     searchInInnerObject: true
@@ -65,12 +65,12 @@ comments:
     # Ignore Jetpack Compose functions annotated with @Preview
     ignoreAnnotated:
       - 'Preview'
-    excludes: [ '**/test/**', '**/androidTest/**', '**/demoapp/**', '**/restapi/models/**' ]
+    excludes: [ '**/test/**', '**/androidTest/**', '**/demoapp/**', '**/restapi/models/**', '**/uitestutils/**' ]
     searchProtectedFunction: false
   UndocumentedPublicProperty:
     active: true
     # TODO - Remove the explicit exclusion of Email.kt once we implement the new REST API
-    excludes: [ '**/test/**', '**/androidTest/**', '**/demoapp/**', '**/restapi/models/**' ]
+    excludes: [ '**/test/**', '**/androidTest/**', '**/demoapp/**', '**/restapi/models/**', '**/uitestutils/**' ]
     searchProtectedProperty: false
   OutdatedDocumentation:
     active: true

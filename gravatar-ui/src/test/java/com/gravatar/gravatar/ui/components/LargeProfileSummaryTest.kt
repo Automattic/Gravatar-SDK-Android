@@ -3,13 +3,14 @@ package com.gravatar.gravatar.ui.components
 import androidx.compose.foundation.Image
 import androidx.compose.material3.Text
 import androidx.compose.ui.res.painterResource
-import com.gravatar.gravatar.ui.RoborazziTest
 import com.gravatar.gravatar.ui.completeProfile
+import com.gravatar.gravatar.ui.gravatarScreenshotTest
 import com.gravatar.restapi.models.Profile
 import com.gravatar.ui.R
 import com.gravatar.ui.components.ComponentState
 import com.gravatar.ui.components.LargeProfileSummary
 import com.gravatar.ui.gravatarTheme
+import com.gravatar.uitestutils.RoborazziTest
 import org.junit.Test
 import org.robolectric.annotation.Config
 import com.gravatar.api.models.Profile as LegacyProfile
