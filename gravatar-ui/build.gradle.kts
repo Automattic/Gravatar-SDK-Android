@@ -100,9 +100,6 @@ dependencies {
     testImplementation(libs.junit)
     testImplementation(project(":uitestutils"))
 
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-
     // Jetpack Compose
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.ui)

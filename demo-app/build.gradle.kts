@@ -111,8 +111,4 @@ dependencies {
 
     // Unit Test dependencies
     testImplementation(libs.junit)
-
-    // Android Test dependencies
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
 }

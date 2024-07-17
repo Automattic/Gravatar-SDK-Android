@@ -1,30 +1,28 @@
 [versions]
-androidGradlePlugin = "8.4.1"
+androidGradlePlugin = "8.5.1"
 kotlin = "2.0.0"
 ktlint = "12.1.0"
 detekt = "1.23.4"
-roborazzi = "1.15.0"
+roborazzi = "1.22.2"
 dokka = "1.9.20"
 binaryValidator = "0.15.0-Beta.2"
 publishToS3 = "0.10.0"
 openapi = "7.4.0"
 retrofit = "2.11.0"
 okhttp = "4.12.0"
-ktx = "1.12.0"
+ktx = "1.13.1"
 desugarJdk = "2.0.4"
 junit = "4.13.2"
 mockk = "1.13.9"
-espresso = "3.5.1"
-androidXJunit = "1.1.5"
-appcompat = "1.6.1"
-material = "1.11.0"
-ucrop = "2.2.8"
-coil = "2.5.0"
-activityCompose = "1.8.2"
+appcompat = "1.7.0"
+material = "1.12.0"
+ucrop = "2.2.9"
+coil = "2.6.0"
+activityCompose = "1.9.0"
 robolectric = "4.11.1"
-composeUiTest = "1.6.7"
+composeUiTest = "1.6.8"
 kotlinCoroutines = "1.7.3"
-composeBom = "2024.03.00"
+composeBom = "2024.06.00"
 
 [libraries]
 desugarJdk = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugarJdk" }
@@ -52,8 +50,6 @@ coil-svg = { group = "io.coil-kt", name = "coil-svg", version.ref = "coil" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 mockk-android = { group = "io.mockk", name = "mockk-android", version.ref = "mockk" }
 mockk-agent = { group = "io.mockk", name = "mockk-agent", version.ref = "mockk" }
-androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso" }
-androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidXJunit" }
 robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
 roborazzi = { group = "io.github.takahirom.roborazzi", name = "roborazzi", version.ref = "roborazzi" }
 roborazzi-compose = { group = "io.github.takahirom.roborazzi", name = "roborazzi-compose", version.ref = "roborazzi" }
