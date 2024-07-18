@@ -1,0 +1,16 @@
+package com.gravatar.quickeditor.ui
+
+import androidx.compose.material3.Surface
+import androidx.compose.runtime.Composable
+import com.gravatar.ui.GravatarTheme
+import com.gravatar.uitestutils.RoborazziTest
+
+internal fun RoborazziTest.gravatarScreenshotTest(composable: @Composable () -> Unit) {
+    screenshotTest {
+        GravatarTheme {
+            Surface {
+                composable()
+            }
+        }
+    }
+}
