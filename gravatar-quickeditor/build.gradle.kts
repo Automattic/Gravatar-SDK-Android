@@ -8,6 +8,8 @@ plugins {
     alias(libs.plugins.ktlint)
     // Detekt
     alias(libs.plugins.detekt)
+    // Roborazzi
+    alias(libs.plugins.roborazzi)
 }
 
 android {
@@ -16,7 +18,8 @@ android {
 
     defaultConfig {
         minSdk = 21
-
+        // targetSdkVersion has no effect for libraries. This is only used for the test APK
+        targetSdk = 34
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
@@ -46,6 +49,11 @@ android {
     buildFeatures {
         compose = true
     }
+    composeCompiler {
+        // Needed for Layout Inspector to be able to see all of the nodes in the component tree:
+        // https://issuetracker.google.com/issues/338842143
+        includeSourceInformation.set(true)
+    }
     tasks.withType<DokkaTaskPartial>().configureEach {
         dokkaSourceSets {
             configureEach {
@@ -58,6 +66,22 @@ android {
     kotlin {
         explicitApi()
     }
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+            all {
+                // -Pscreenshot to filter screenshot tests
+                it.useJUnit {
+                    if (project.hasProperty("screenshot")) {
+                        includeCategories("com.gravatar.uitestutils.ScreenshotTests")
+                    } else {
+                        excludeCategories("com.gravatar.uitestutils.ScreenshotTests")
+                    }
+                }
+            }
+        }
+    }
 }
 
 dependencies {
@@ -65,6 +89,9 @@ dependencies {
 
     implementation(libs.coil.compose)
     implementation(project(":gravatar-ui"))
+
+    testImplementation(libs.junit)
+    testImplementation(project(":uitestutils"))
 
     // Jetpack Compose
     implementation(platform(libs.compose.bom))
