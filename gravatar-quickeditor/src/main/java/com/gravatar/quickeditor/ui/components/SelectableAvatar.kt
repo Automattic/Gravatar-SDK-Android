@@ -1,6 +1,5 @@
 package com.gravatar.quickeditor.ui.components
 
-import android.util.Log
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.size
@@ -50,7 +49,7 @@ private fun SelectableAvatarNotSelectedPreview() {
     SelectableAvatar(
         "https://gravatar.com/avatar/fd2188b818f15e629f7b62896b5c6075?s=250",
         false,
-        { Log.i("SelectableAvatar", "Clicked") },
+        { },
         Modifier.size(150.dp),
     )
 }
@@ -61,7 +60,7 @@ private fun SelectableAvatarSelectedPreview() {
     SelectableAvatar(
         "https://gravatar.com/avatar/fd2188b818f15e629f7b62896b5c6075?s=250",
         true,
-        { Log.i("SelectableAvatar", "Clicked") },
+        { },
         Modifier.size(150.dp),
     )
 }
