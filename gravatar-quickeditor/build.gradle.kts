@@ -36,6 +36,15 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+    buildFeatures {
+        compose = true
+        viewBinding = true
+    }
+    composeCompiler {
+        // Needed for Layout Inspector to be able to see all of the nodes in the component tree:
+        // https://issuetracker.google.com/issues/338842143
+        includeSourceInformation.set(true)
+    }
     kotlinOptions {
         jvmTarget = "1.8"
     }
@@ -87,15 +96,24 @@ android {
 dependencies {
     coreLibraryDesugaring(libs.desugarJdk)
 
-    implementation(libs.coil.compose)
+    implementation(project(":gravatar"))
     implementation(project(":gravatar-ui"))
 
-    testImplementation(libs.junit)
-    testImplementation(project(":uitestutils"))
+    implementation(libs.androidx.browser)
+    implementation(libs.androidx.appcompat)
+
+    implementation(libs.coil.compose)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.gson.converter)
 
     // Jetpack Compose
     implementation(platform(libs.compose.bom))
-    implementation(libs.compose.material3)
+    implementation(libs.compose.ui)
     implementation(libs.compose.ui.tooling.preview)
+    implementation(libs.compose.material3)
+    implementation(libs.androidx.activity.compose)
     debugImplementation(libs.androidx.compose.ui.tooling)
+
+    testImplementation(libs.junit)
+    testImplementation(project(":uitestutils"))
 }
