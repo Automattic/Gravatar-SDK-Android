@@ -5,15 +5,15 @@ import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Shapes
 import androidx.compose.material3.Typography
-import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.staticCompositionLocalOf
+import com.gravatar.ui.theme.gravatarDarkColorScheme
+import com.gravatar.ui.theme.gravatarLightColorScheme
 
-private val DarkColorScheme = darkColorScheme()
+private val DarkColorScheme = gravatarDarkColorScheme()
 
-private val LightColorScheme = lightColorScheme()
+private val LightColorScheme = gravatarLightColorScheme()
 
 /**
  * [GravatarTheme] is a composable that wraps the content of the application with the Gravatar theme.
