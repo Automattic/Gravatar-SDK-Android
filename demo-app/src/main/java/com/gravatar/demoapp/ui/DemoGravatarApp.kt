@@ -160,7 +160,7 @@ private fun GravatarTabs(
         when (tabIndex) {
             0 -> AvatarTab(modifier, gravatarUrl, onGravatarUrlChanged, showSnackBar)
             1 -> ProfileTab(modifier, showSnackBar)
-            2 -> AvatarUpdateTab(showSnackBar, modifier)
+            2 -> AvatarUpdateTab(modifier)
         }
     }
 }

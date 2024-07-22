@@ -16,7 +16,6 @@
     <string name="text_display_name">Display Name: %1$s</string>
     <string name="text_url">Url: %1$s</string>
     <string name="button_load_gravatar">Load Gravatar</string>
-    <string name="wordpress_bearer_token_label">Wordpress Bearer Token</string>
     <string name="theme_label">Theme</string>
     <string name="update_avatar_button_label">Update Avatar</string>
     <string name="avatar_update_upload_success_toast">Upload success</string>
