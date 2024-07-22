@@ -35,9 +35,9 @@ import com.gravatar.demoapp.BuildConfig
 import com.gravatar.demoapp.R
 import com.gravatar.demoapp.ui.activity.QuickEditorTestActivity
 import com.gravatar.demoapp.ui.components.GravatarEmailInput
-import com.gravatar.quickeditor.ui.bottomsheet.ProfileQuickEditorBottomSheet
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorScope
+import com.gravatar.quickeditor.ui.editor.bottomsheet.GravatarQuickEditorBottomSheet
 import com.gravatar.quickeditor.ui.oauth.OAuthParams
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -72,7 +72,7 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
     }
     if (showBottomSheet) {
         val applicationName = stringResource(id = R.string.app_name)
-        ProfileQuickEditorBottomSheet(
+        GravatarQuickEditorBottomSheet(
             gravatarQuickEditorParams = GravatarQuickEditorParams {
                 appName = applicationName
                 oAuthParams = OAuthParams {

@@ -123,7 +123,6 @@ internal fun Context.findComponentActivity(): ComponentActivity? = when (this) {
     else -> null
 }
 
-
 // This will be extracted
 private suspend fun handleAuthorizationCode(code: String, clientId: String, clientSecret: String): String? {
     val retrofit = Retrofit.Builder()

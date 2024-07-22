@@ -15,7 +15,7 @@ import com.gravatar.quickeditor.ui.oauth.OAuthPage
 import com.gravatar.quickeditor.ui.oauth.OAuthParams
 
 @Composable
-internal fun ProfileQuickEditorPage(
+internal fun GravatarQuickEditorPage(
     gravatarQuickEditorParams: GravatarQuickEditorParams,
     onAuthError: () -> Unit = {},
 ) {
@@ -56,5 +56,5 @@ private fun ProfileQuickEditorPagePreview() {
         }
         scope = GravatarQuickEditorScope.AVATARS
     }
-    ProfileQuickEditorPage(gravatarQuickEditorParams = gravatarQuickEditorParams)
+    GravatarQuickEditorPage(gravatarQuickEditorParams = gravatarQuickEditorParams)
 }

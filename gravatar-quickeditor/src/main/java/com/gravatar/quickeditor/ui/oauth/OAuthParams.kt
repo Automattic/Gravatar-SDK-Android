@@ -14,7 +14,6 @@ public class OAuthParams private constructor(
     public val clientSecret: String,
     public val redirectUri: String,
 ) {
-
     override fun toString(): String =
         "OAuthParams(clientId=$clientId, clientSecret=$clientSecret, redirectUri=$redirectUri)"
 

@@ -13,8 +13,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.ComposeView
-import com.gravatar.quickeditor.ui.bottomsheet.ProfileQuickEditorBottomSheet
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
+import com.gravatar.quickeditor.ui.editor.bottomsheet.GravatarQuickEditorBottomSheet
 import kotlinx.coroutines.launch
 
 internal fun addQuickEditorToView(
@@ -25,7 +25,7 @@ internal fun addQuickEditorToView(
     viewGroup.addView(
         ComposeView(viewGroup.context).apply {
             setContent {
-                ProfileQuickEditorBottomSheetWrapper(
+                GravatarQuickEditorBottomSheetWrapper(
                     parent = viewGroup,
                     composeView = this,
                     gravatarQuickEditorParams = gravatarQuickEditorParams,
@@ -38,7 +38,7 @@ internal fun addQuickEditorToView(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun ProfileQuickEditorBottomSheetWrapper(
+private fun GravatarQuickEditorBottomSheetWrapper(
     parent: ViewGroup,
     composeView: ComposeView,
     gravatarQuickEditorParams: GravatarQuickEditorParams,
@@ -49,7 +49,7 @@ private fun ProfileQuickEditorBottomSheetWrapper(
 
     val modalBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
-    ProfileQuickEditorBottomSheet(
+    GravatarQuickEditorBottomSheet(
         gravatarQuickEditorParams = gravatarQuickEditorParams,
         onDismiss = onDismiss,
         modalBottomSheetState = modalBottomSheetState,

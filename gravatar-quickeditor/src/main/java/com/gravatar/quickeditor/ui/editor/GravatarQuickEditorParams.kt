@@ -15,7 +15,6 @@ public class GravatarQuickEditorParams private constructor(
     public val oAuthParams: OAuthParams,
     public val scope: GravatarQuickEditorScope,
 ) {
-
     override fun toString(): String =
         "ProfileQuickEditorParams(appName=$appName, oAuthParams=$oAuthParams, scope=$scope)"
 

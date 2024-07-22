@@ -1,4 +1,4 @@
-package com.gravatar.quickeditor.ui.bottomsheet
+package com.gravatar.quickeditor.ui.editor.bottomsheet
 
 import android.util.Log
 import androidx.compose.foundation.layout.Column
@@ -19,13 +19,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.gravatar.quickeditor.R
+import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorPage
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
-import com.gravatar.quickeditor.ui.editor.ProfileQuickEditorPage
 import com.gravatar.ui.GravatarTheme
 import kotlinx.coroutines.launch
 
 /**
- * ModalBottomSheet component for the Profile Quick Editor.
+ * ModalBottomSheet component for the Gravatar Quick Editor.
  *
  * The bottom sheet is configured to take 70% of the screen height and skips the partially expanded state.
  *
@@ -35,7 +35,7 @@ import kotlinx.coroutines.launch
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-public fun ProfileQuickEditorBottomSheet(
+public fun GravatarQuickEditorBottomSheet(
     gravatarQuickEditorParams: GravatarQuickEditorParams,
     onDismiss: () -> Unit,
     modalBottomSheetState: SheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
@@ -76,7 +76,7 @@ public fun ProfileQuickEditorBottomSheet(
                         }
                     },
                 )
-                ProfileQuickEditorPage(
+                GravatarQuickEditorPage(
                     gravatarQuickEditorParams = gravatarQuickEditorParams,
                     onAuthError = {
                         Log.d("QuickEditor", "Auth error")
