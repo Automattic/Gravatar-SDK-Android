@@ -36,7 +36,9 @@ steps:
   - label: "Screenshot tests"
     command: |
       echo "--- 🧪📸 Screenshot Testing"
-      ./gradlew :gravatar-ui:verifyRoborazziDebug -Pscreenshot
+      ./gradlew \
+      :gravatar-ui:verifyRoborazziDebug -Pscreenshot \
+      :gravatar-quickeditor:verifyRoborazziDebug -Pscreenshot
     artifact_paths:
       - "**/build/test-results/*/*.xml"
 
