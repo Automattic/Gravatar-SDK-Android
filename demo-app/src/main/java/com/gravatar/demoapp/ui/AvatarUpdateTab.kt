@@ -1,19 +1,15 @@
 package com.gravatar.demoapp.ui
 
-import android.content.Intent
-import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AccountCircle
-import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -33,9 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.gravatar.demoapp.BuildConfig
 import com.gravatar.demoapp.R
-import com.gravatar.demoapp.ui.activity.QuickEditorTestActivity
 import com.gravatar.demoapp.ui.components.GravatarEmailInput
-import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
 import com.gravatar.quickeditor.ui.editor.bottomsheet.GravatarQuickEditorBottomSheet
 import com.gravatar.quickeditor.ui.oauth.OAuthParams
 
@@ -60,30 +54,19 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
             },
             isUploading = false,
         )
-        Spacer(modifier = Modifier.height(20.dp))
-        Button(
-            onClick = {
-                context.startActivity(Intent(context, QuickEditorTestActivity::class.java))
-            },
-        ) {
-            Text(text = "Test with Activity without Compose")
-        }
     }
     if (showBottomSheet) {
         val applicationName = stringResource(id = R.string.app_name)
         GravatarQuickEditorBottomSheet(
-            gravatarQuickEditorParams = GravatarQuickEditorParams {
-                appName = applicationName
-                oAuthParams = OAuthParams {
-                    clientId = BuildConfig.DEMO_WORDPRESS_CLIENT_ID
-                    clientSecret = BuildConfig.DEMO_WORDPRESS_CLIENT_SECRET
-                    redirectUri = BuildConfig.DEMO_WORDPRESS_REDIRECT_URI
-                }
-                scope = GravatarQuickEditorScope.AVATARS
+            appName = applicationName,
+            oAuthParams = OAuthParams {
+                clientId = BuildConfig.DEMO_WORDPRESS_CLIENT_ID
+                clientSecret = BuildConfig.DEMO_WORDPRESS_CLIENT_SECRET
+                redirectUri = BuildConfig.DEMO_WORDPRESS_REDIRECT_URI
             },
-            onDismiss = {
+            onAvatarUpdateResult = {
+                Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()
                 showBottomSheet = false
-                Log.d("QuickEditorCompose", "onDismiss")
             },
         )
     }
