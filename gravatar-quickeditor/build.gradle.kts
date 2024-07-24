@@ -36,15 +36,6 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-    buildFeatures {
-        compose = true
-        viewBinding = true
-    }
-    composeCompiler {
-        // Needed for Layout Inspector to be able to see all of the nodes in the component tree:
-        // https://issuetracker.google.com/issues/338842143
-        includeSourceInformation.set(true)
-    }
     kotlinOptions {
         jvmTarget = "1.8"
     }
