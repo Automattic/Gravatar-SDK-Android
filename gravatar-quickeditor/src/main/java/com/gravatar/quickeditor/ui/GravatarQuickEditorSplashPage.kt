@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import com.gravatar.ui.GravatarTheme
@@ -13,9 +14,10 @@ import com.gravatar.ui.GravatarTheme
 @Composable
 internal fun GravatarQuickEditorSplashPage(onAuthorized: (Boolean) -> Unit) {
     val isAuthorized by rememberSaveable { mutableStateOf(false) }
+    val currentOnAuthorized by rememberUpdatedState(onAuthorized)
 
     LaunchedEffect(Unit) {
-        onAuthorized(isAuthorized)
+        currentOnAuthorized(isAuthorized)
     }
 
     GravatarTheme {
