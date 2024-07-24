@@ -100,7 +100,6 @@ dependencies {
     implementation(project(":gravatar-ui"))
 
     implementation(libs.androidx.browser)
-    implementation(libs.androidx.appcompat)
 
     implementation(libs.coil.compose)
     implementation(libs.retrofit)
