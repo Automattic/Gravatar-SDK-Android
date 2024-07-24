@@ -18,9 +18,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.unit.dp
 import com.gravatar.demoapp.BuildConfig
 import com.gravatar.demoapp.R
-import com.gravatar.quickeditor.GravatarQuickEditor
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
-import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorScope
 import com.gravatar.quickeditor.ui.oauth.OAuthParams
 import com.gravatar.restapi.models.Profile
 import com.gravatar.services.ProfileService

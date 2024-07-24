@@ -1,6 +1,5 @@
 package com.gravatar.quickeditor.ui.editor.bottomsheet
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -19,25 +18,30 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.gravatar.quickeditor.R
+import com.gravatar.quickeditor.ui.editor.AvatarUpdateResult
+import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorError
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorPage
-import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
+import com.gravatar.quickeditor.ui.oauth.OAuthParams
 import com.gravatar.ui.GravatarTheme
 import kotlinx.coroutines.launch
 
 /**
- * ModalBottomSheet component for the Gravatar Quick Editor.
+ * ModalBottomSheet component for the Gravatar Quick Editor that enables the user to
+ * modify their Avatar.
  *
  * The bottom sheet is configured to take 70% of the screen height and skips the partially expanded state.
  *
- * @param gravatarQuickEditorParams The Gravatar Quick Editor parameters.
- * @param onDismiss The callback for when the bottom sheet is dismissed.
+ * @param appName Name of the app that is launching the Quick Editor
+ * @param oAuthParams The OAuth parameters.
+ * @param onAvatarUpdateResult The callback for the avatar update result, check [AvatarUpdateResult].
  * @param modalBottomSheetState The state of the bottom sheet.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 public fun GravatarQuickEditorBottomSheet(
-    gravatarQuickEditorParams: GravatarQuickEditorParams,
-    onDismiss: () -> Unit,
+    appName: String,
+    oAuthParams: OAuthParams,
+    onAvatarUpdateResult: (AvatarUpdateResult) -> Unit,
     modalBottomSheetState: SheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -46,7 +50,7 @@ public fun GravatarQuickEditorBottomSheet(
         modifier = Modifier
             .fillMaxHeight(0.7f)
             .fillMaxWidth(),
-        onDismissRequest = onDismiss,
+        onDismissRequest = { onAvatarUpdateResult(AvatarUpdateResult.Dismissed) },
         sheetState = modalBottomSheetState,
         dragHandle = null,
     ) {
@@ -65,7 +69,7 @@ public fun GravatarQuickEditorBottomSheet(
                             onClick = {
                                 coroutineScope.launch {
                                     modalBottomSheetState.hide()
-                                    onDismiss()
+                                    onAvatarUpdateResult(AvatarUpdateResult.Dismissed)
                                 }
                             },
                         ) {
@@ -77,10 +81,16 @@ public fun GravatarQuickEditorBottomSheet(
                     },
                 )
                 GravatarQuickEditorPage(
-                    gravatarQuickEditorParams = gravatarQuickEditorParams,
+                    appName = appName,
+                    oAuthParams = oAuthParams,
                     onAuthError = {
-                        Log.d("QuickEditor", "Auth error")
-                        onDismiss()
+                        onAvatarUpdateResult(AvatarUpdateResult.Error(GravatarQuickEditorError.OauthFailed))
+                    },
+                    onAvatarSelected = {
+                        coroutineScope.launch {
+                            modalBottomSheetState.hide()
+                        }
+                        onAvatarUpdateResult(AvatarUpdateResult.Ok(it))
                     },
                 )
             }

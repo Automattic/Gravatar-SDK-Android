@@ -1,45 +1,58 @@
-public final class com/gravatar/quickeditor/GravatarQuickEditor {
+public abstract class com/gravatar/quickeditor/ui/editor/AvatarUpdateResult {
 	public static final field $stable I
-	public static final field INSTANCE Lcom/gravatar/quickeditor/GravatarQuickEditor;
-	public static final fun show (Landroid/app/Activity;Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorParams;Lkotlin/jvm/functions/Function0;)V
-	public static final fun show (Landroidx/fragment/app/Fragment;Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorParams;Lkotlin/jvm/functions/Function0;)V
 }
 
-public final class com/gravatar/quickeditor/ui/editor/GravatarQuickEditorParams {
+public final class com/gravatar/quickeditor/ui/editor/AvatarUpdateResult$Dismissed : com/gravatar/quickeditor/ui/editor/AvatarUpdateResult {
 	public static final field $stable I
-	public synthetic fun <init> (Ljava/lang/String;Lcom/gravatar/quickeditor/ui/oauth/OAuthParams;Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorScope;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public static final field INSTANCE Lcom/gravatar/quickeditor/ui/editor/AvatarUpdateResult$Dismissed;
 	public fun equals (Ljava/lang/Object;)Z
-	public final fun getAppName ()Ljava/lang/String;
-	public final fun getOAuthParams ()Lcom/gravatar/quickeditor/ui/oauth/OAuthParams;
-	public final fun getScope ()Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorScope;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/gravatar/quickeditor/ui/editor/GravatarQuickEditorParams$Builder {
+public final class com/gravatar/quickeditor/ui/editor/AvatarUpdateResult$Error : com/gravatar/quickeditor/ui/editor/AvatarUpdateResult {
 	public static final field $stable I
+	public fun <init> (Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorError;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getError ()Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorError;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/gravatar/quickeditor/ui/editor/AvatarUpdateResult$Ok : com/gravatar/quickeditor/ui/editor/AvatarUpdateResult {
+	public static final field $stable I
+	public fun <init> (Landroid/net/Uri;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAvatarUri ()Landroid/net/Uri;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/gravatar/quickeditor/ui/editor/ComposableSingletons$GravatarQuickEditorPageKt {
+	public static final field INSTANCE Lcom/gravatar/quickeditor/ui/editor/ComposableSingletons$GravatarQuickEditorPageKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function3;
 	public fun <init> ()V
-	public final fun appName (Ljava/lang/String;)Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorParams$Builder;
-	public final fun build ()Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorParams;
-	public final fun getAppName ()Ljava/lang/String;
-	public final fun getOAuthParams ()Lcom/gravatar/quickeditor/ui/oauth/OAuthParams;
-	public final fun getScope ()Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorScope;
-	public final fun oAuthParams (Lcom/gravatar/quickeditor/ui/oauth/OAuthParams;)Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorParams$Builder;
-	public final fun scope (Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorScope;)Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorParams$Builder;
-	public final synthetic fun setAppName (Ljava/lang/String;)V
-	public final synthetic fun setOAuthParams (Lcom/gravatar/quickeditor/ui/oauth/OAuthParams;)V
-	public final synthetic fun setScope (Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorScope;)V
+	public final fun getLambda-1$gravatar_quickeditor_release ()Lkotlin/jvm/functions/Function3;
 }
 
-public final class com/gravatar/quickeditor/ui/editor/GravatarQuickEditorParamsKt {
-	public static final synthetic fun GravatarQuickEditorParams (Lkotlin/jvm/functions/Function1;)Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorParams;
+public abstract class com/gravatar/quickeditor/ui/editor/GravatarQuickEditorError {
+	public static final field $stable I
 }
 
-public final class com/gravatar/quickeditor/ui/editor/GravatarQuickEditorScope : java/lang/Enum {
-	public static final field AVATARS Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorScope;
-	public static fun getEntries ()Lkotlin/enums/EnumEntries;
-	public static fun valueOf (Ljava/lang/String;)Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorScope;
-	public static fun values ()[Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorScope;
+public final class com/gravatar/quickeditor/ui/editor/GravatarQuickEditorError$InvalidToken : com/gravatar/quickeditor/ui/editor/GravatarQuickEditorError {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorError$InvalidToken;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/gravatar/quickeditor/ui/editor/GravatarQuickEditorError$OauthFailed : com/gravatar/quickeditor/ui/editor/GravatarQuickEditorError {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorError$OauthFailed;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
 }
 
 public final class com/gravatar/quickeditor/ui/editor/bottomsheet/ComposableSingletons$GravatarQuickEditorBottomSheetKt {
@@ -52,7 +65,7 @@ public final class com/gravatar/quickeditor/ui/editor/bottomsheet/ComposableSing
 }
 
 public final class com/gravatar/quickeditor/ui/editor/bottomsheet/GravatarQuickEditorBottomSheetKt {
-	public static final fun GravatarQuickEditorBottomSheet (Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorParams;Lkotlin/jvm/functions/Function0;Landroidx/compose/material3/SheetState;Landroidx/compose/runtime/Composer;II)V
+	public static final fun GravatarQuickEditorBottomSheet (Ljava/lang/String;Lcom/gravatar/quickeditor/ui/oauth/OAuthParams;Lkotlin/jvm/functions/Function1;Landroidx/compose/material3/SheetState;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/gravatar/quickeditor/ui/oauth/ComposableSingletons$OAuthPageKt {

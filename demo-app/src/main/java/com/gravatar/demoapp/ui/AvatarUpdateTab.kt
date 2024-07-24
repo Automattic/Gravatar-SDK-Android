@@ -36,7 +36,6 @@ import com.gravatar.demoapp.R
 import com.gravatar.demoapp.ui.activity.QuickEditorTestActivity
 import com.gravatar.demoapp.ui.components.GravatarEmailInput
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
-import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorScope
 import com.gravatar.quickeditor.ui.editor.bottomsheet.GravatarQuickEditorBottomSheet
 import com.gravatar.quickeditor.ui.oauth.OAuthParams
 

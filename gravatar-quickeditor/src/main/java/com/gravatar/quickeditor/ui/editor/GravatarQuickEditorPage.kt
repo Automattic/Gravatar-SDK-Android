@@ -1,9 +1,11 @@
 package com.gravatar.quickeditor.ui.editor
 
+import android.net.Uri
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -16,29 +18,34 @@ import com.gravatar.quickeditor.ui.oauth.OAuthParams
 
 @Composable
 internal fun GravatarQuickEditorPage(
-    gravatarQuickEditorParams: GravatarQuickEditorParams,
-    onAuthError: () -> Unit = {},
+    appName: String,
+    oAuthParams: OAuthParams,
+    onAvatarSelected: (Uri) -> Unit,
+    onAuthError: (GravatarQuickEditorError) -> Unit,
 ) {
     val isAuthorized = rememberSaveable { mutableStateOf(false) }
 
     Surface {
         if (!isAuthorized.value) {
             OAuthPage(
-                appName = gravatarQuickEditorParams.appName,
-                oauthParams = gravatarQuickEditorParams.oAuthParams,
+                appName = appName,
+                oauthParams = oAuthParams,
                 onAuthSuccess = { isAuthorized.value = true },
-                onAuthError = onAuthError,
+                onAuthError = { onAuthError(GravatarQuickEditorError.OauthFailed) },
             )
         } else {
-            when (gravatarQuickEditorParams.scope) {
-                GravatarQuickEditorScope.AVATARS ->
-                    Box(modifier = Modifier.fillMaxSize()) {
-                        Text(
-                            modifier = Modifier.align(Alignment.Center),
-                            textAlign = TextAlign.Center,
-                            text = "Insert the real avatar picker page here",
-                        )
-                    }
+            Box(modifier = Modifier.fillMaxSize()) {
+                TextButton(
+                    modifier = Modifier.align(Alignment.Center),
+                    onClick = {
+                        onAvatarSelected(Uri.EMPTY)
+                    },
+                ) {
+                    Text(
+                        textAlign = TextAlign.Center,
+                        text = "Insert the real avatar picker page here",
+                    )
+                }
             }
         }
     }
@@ -47,14 +54,16 @@ internal fun GravatarQuickEditorPage(
 @Preview
 @Composable
 private fun ProfileQuickEditorPagePreview() {
-    val gravatarQuickEditorParams = GravatarQuickEditorParams {
-        appName = "FancyMobileApp"
-        oAuthParams = OAuthParams {
-            clientSecret = "clientSecret"
-            clientId = "clientId"
-            redirectUri = "redirectUri"
-        }
-        scope = GravatarQuickEditorScope.AVATARS
+    val appName = "FancyMobileApp"
+    val oAuthParams = OAuthParams {
+        clientSecret = "clientSecret"
+        clientId = "clientId"
+        redirectUri = "redirectUri"
     }
-    GravatarQuickEditorPage(gravatarQuickEditorParams = gravatarQuickEditorParams)
+    GravatarQuickEditorPage(
+        appName = appName,
+        oAuthParams = oAuthParams,
+        onAvatarSelected = {},
+        onAuthError = {},
+    )
 }
