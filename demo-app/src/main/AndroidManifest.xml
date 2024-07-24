@@ -36,6 +36,23 @@
                     android:scheme="wp-oauth-test" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.activity.QuickEditorTestActivity"
+            android:launchMode="singleTask"
+            android:label="Old good Activity"
+            android:theme="@style/Theme.Gravatar"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="authorization-callback"
+                    android:scheme="wp-oauth-test" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

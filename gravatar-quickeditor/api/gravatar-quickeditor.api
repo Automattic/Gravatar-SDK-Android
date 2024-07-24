@@ -1,3 +1,10 @@
+public final class com/gravatar/quickeditor/GravatarQuickEditor {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/gravatar/quickeditor/GravatarQuickEditor;
+	public static final fun show (Landroid/app/Activity;Ljava/lang/String;Lcom/gravatar/quickeditor/ui/oauth/OAuthParams;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)V
+	public static final fun show (Landroidx/fragment/app/Fragment;Ljava/lang/String;Lcom/gravatar/quickeditor/ui/oauth/OAuthParams;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)V
+}
+
 public final class com/gravatar/quickeditor/ui/ComposableSingletons$GravatarQuickEditorSplashPageKt {
 	public static final field INSTANCE Lcom/gravatar/quickeditor/ui/ComposableSingletons$GravatarQuickEditorSplashPageKt;
 	public static field lambda-1 Lkotlin/jvm/functions/Function2;

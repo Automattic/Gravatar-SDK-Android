@@ -91,6 +91,7 @@ dependencies {
     implementation(project(":gravatar-ui"))
 
     implementation(libs.androidx.browser)
+    implementation(libs.androidx.appcompat)
     implementation(libs.androidx.viewmodel.compose)
     implementation(libs.androidx.navigation.compose)
 
