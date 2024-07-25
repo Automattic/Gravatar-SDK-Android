@@ -28,6 +28,7 @@ constraintlayout = "2.1.4"
 activity = "1.9.0"
 androidXLifecycle = "2.8.3"
 navigationCompose = "2.8.0-beta05"
+turbine = "1.1.0"
 
 [libraries]
 desugarJdk = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugarJdk" }
@@ -64,6 +65,7 @@ roborazzi-compose = { group = "io.github.takahirom.roborazzi", name = "roborazzi
 roborazzi-junit-rule = { group = "io.github.takahirom.roborazzi", name = "roborazzi-junit-rule", version.ref = "roborazzi" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
+turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 
 
 [plugins]

@@ -3,6 +3,7 @@ package com.gravatar.quickeditor.data.service
 import com.google.gson.GsonBuilder
 import com.gravatar.services.ErrorType
 import com.gravatar.services.Result
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
@@ -16,13 +17,14 @@ private val retrofit = Retrofit.Builder()
 
 internal class WordPressOAuthService(
     private val service: WordPressOAuthApi = retrofit.create(WordPressOAuthApi::class.java),
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) {
     suspend fun getAccessToken(
         code: String,
         clientId: String,
         clientSecret: String,
         redirectUri: String,
-    ): Result<String, ErrorType> = withContext(Dispatchers.IO) {
+    ): Result<String, ErrorType> = withContext(dispatcher) {
         @Suppress("TooGenericExceptionCaught", "SwallowedException")
         try {
             val response = service.getToken(
