@@ -17,6 +17,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.gravatar.quickeditor.ui.GravatarQuickEditorSplashPage
+import com.gravatar.quickeditor.ui.navigation.QuickEditorPage
 import com.gravatar.quickeditor.ui.oauth.OAuthPage
 import com.gravatar.quickeditor.ui.oauth.OAuthParams
 import com.gravatar.ui.GravatarTheme
@@ -43,28 +44,28 @@ internal fun GravatarQuickEditorPage(
 
     NavHost(
         navController,
-        startDestination = "entry",
+        startDestination = QuickEditorPage.SPLASH.name,
         enterTransition = { EnterTransition.None },
         exitTransition = { ExitTransition.None },
     ) {
-        composable("entry") {
+        composable(QuickEditorPage.SPLASH.name) {
             GravatarQuickEditorSplashPage { isAuthorized ->
                 if (isAuthorized) {
-                    navController.navigate("quickeditor")
+                    navController.navigate(QuickEditorPage.EDITOR.name)
                 } else {
-                    navController.navigate("oauth")
+                    navController.navigate(QuickEditorPage.OAUTH.name)
                 }
             }
         }
-        composable("oauth", enterTransition = { EnterTransition.None }) {
+        composable(QuickEditorPage.OAUTH.name, enterTransition = { EnterTransition.None }) {
             OAuthPage(
                 appName = appName,
                 oauthParams = oAuthParams,
-                onAuthSuccess = { navController.navigate("quickeditor") },
                 onAuthError = { onDismiss(GravatarQuickEditorDismissReason.OauthFailed) },
+                onAuthSuccess = { navController.navigate(QuickEditorPage.EDITOR.name) },
             )
         }
-        composable("quickeditor") {
+        composable(QuickEditorPage.EDITOR.name) {
             GravatarTheme {
                 Surface {
                     Box(modifier = Modifier.fillMaxSize()) {
