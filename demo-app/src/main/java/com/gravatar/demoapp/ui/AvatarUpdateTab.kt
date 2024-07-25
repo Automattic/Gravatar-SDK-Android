@@ -64,8 +64,11 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
                 clientSecret = BuildConfig.DEMO_WORDPRESS_CLIENT_SECRET
                 redirectUri = BuildConfig.DEMO_WORDPRESS_REDIRECT_URI
             },
-            onAvatarUpdateResult = {
+            onAvatarSelected = {
                 Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()
+            },
+            onDismiss = {
+                Toast.makeText(context, it?.toString() ?: "Dismissed", Toast.LENGTH_SHORT).show()
                 showBottomSheet = false
             },
         )

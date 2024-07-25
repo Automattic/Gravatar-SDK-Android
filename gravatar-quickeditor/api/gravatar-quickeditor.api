@@ -1,25 +1,4 @@
-public abstract class com/gravatar/quickeditor/ui/editor/AvatarUpdateResult {
-	public static final field $stable I
-}
-
-public final class com/gravatar/quickeditor/ui/editor/AvatarUpdateResult$Dismissed : com/gravatar/quickeditor/ui/editor/AvatarUpdateResult {
-	public static final field $stable I
-	public static final field INSTANCE Lcom/gravatar/quickeditor/ui/editor/AvatarUpdateResult$Dismissed;
-	public fun equals (Ljava/lang/Object;)Z
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class com/gravatar/quickeditor/ui/editor/AvatarUpdateResult$Error : com/gravatar/quickeditor/ui/editor/AvatarUpdateResult {
-	public static final field $stable I
-	public fun <init> (Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorError;)V
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getError ()Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorError;
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class com/gravatar/quickeditor/ui/editor/AvatarUpdateResult$Ok : com/gravatar/quickeditor/ui/editor/AvatarUpdateResult {
+public final class com/gravatar/quickeditor/ui/editor/AvatarUpdateResult {
 	public static final field $stable I
 	public fun <init> (Landroid/net/Uri;)V
 	public fun equals (Ljava/lang/Object;)Z
@@ -65,7 +44,7 @@ public final class com/gravatar/quickeditor/ui/editor/bottomsheet/ComposableSing
 }
 
 public final class com/gravatar/quickeditor/ui/editor/bottomsheet/GravatarQuickEditorBottomSheetKt {
-	public static final fun GravatarQuickEditorBottomSheet (Ljava/lang/String;Lcom/gravatar/quickeditor/ui/oauth/OAuthParams;Lkotlin/jvm/functions/Function1;Landroidx/compose/material3/SheetState;Landroidx/compose/runtime/Composer;II)V
+	public static final fun GravatarQuickEditorBottomSheet (Ljava/lang/String;Lcom/gravatar/quickeditor/ui/oauth/OAuthParams;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Landroidx/compose/material3/SheetState;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/gravatar/quickeditor/ui/oauth/ComposableSingletons$OAuthPageKt {

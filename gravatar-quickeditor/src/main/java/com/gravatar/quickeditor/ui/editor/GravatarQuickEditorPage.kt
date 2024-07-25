@@ -16,12 +16,23 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.gravatar.quickeditor.ui.oauth.OAuthPage
 import com.gravatar.quickeditor.ui.oauth.OAuthParams
 
+/**
+ * Raw composable component for the Quick Editor.
+ * This can be used to show the Quick Editor in Activity, Fragment or BottomSheet.
+ *
+ * @param appName Name of the app that is launching the Quick Editor
+ * @param oAuthParams The OAuth parameters.
+ * @param onAvatarSelected The callback for the avatar update result, check [AvatarUpdateResult].
+ *                       Can be invoked multiple times while the Quick Editor is open
+ * @param onDismiss The callback for the dismiss action.
+ *                  [GravatarQuickEditorError] will be non-null if the dismiss was caused by an error.
+ */
 @Composable
 internal fun GravatarQuickEditorPage(
     appName: String,
     oAuthParams: OAuthParams,
-    onAvatarSelected: (Uri) -> Unit,
-    onAuthError: (GravatarQuickEditorError) -> Unit,
+    onAvatarSelected: (AvatarUpdateResult) -> Unit,
+    onDismiss: (error: GravatarQuickEditorError?) -> Unit = {},
 ) {
     val isAuthorized = rememberSaveable { mutableStateOf(false) }
 
@@ -31,14 +42,14 @@ internal fun GravatarQuickEditorPage(
                 appName = appName,
                 oauthParams = oAuthParams,
                 onAuthSuccess = { isAuthorized.value = true },
-                onAuthError = { onAuthError(GravatarQuickEditorError.OauthFailed) },
+                onAuthError = { onDismiss(GravatarQuickEditorError.OauthFailed) },
             )
         } else {
             Box(modifier = Modifier.fillMaxSize()) {
                 TextButton(
                     modifier = Modifier.align(Alignment.Center),
                     onClick = {
-                        onAvatarSelected(Uri.EMPTY)
+                        onAvatarSelected(AvatarUpdateResult(Uri.EMPTY))
                     },
                 ) {
                     Text(
@@ -64,6 +75,6 @@ private fun ProfileQuickEditorPagePreview() {
         appName = appName,
         oAuthParams = oAuthParams,
         onAvatarSelected = {},
-        onAuthError = {},
+        onDismiss = {},
     )
 }

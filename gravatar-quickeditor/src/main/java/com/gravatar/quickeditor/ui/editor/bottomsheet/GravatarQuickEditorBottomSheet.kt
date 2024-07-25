@@ -33,7 +33,10 @@ import kotlinx.coroutines.launch
  *
  * @param appName Name of the app that is launching the Quick Editor
  * @param oAuthParams The OAuth parameters.
- * @param onAvatarUpdateResult The callback for the avatar update result, check [AvatarUpdateResult].
+ * @param onAvatarSelected The callback for the avatar update result, check [AvatarUpdateResult].
+ *                       Can be invoked multiple times while the Quick Editor is open.
+ * @param onDismiss The callback for the dismiss action.
+ *                  [GravatarQuickEditorError] will be non-null if the dismiss was caused by an error.
  * @param modalBottomSheetState The state of the bottom sheet.
  */
 @OptIn(ExperimentalMaterial3Api::class)
@@ -41,7 +44,8 @@ import kotlinx.coroutines.launch
 public fun GravatarQuickEditorBottomSheet(
     appName: String,
     oAuthParams: OAuthParams,
-    onAvatarUpdateResult: (AvatarUpdateResult) -> Unit,
+    onAvatarSelected: (AvatarUpdateResult) -> Unit,
+    onDismiss: (error: GravatarQuickEditorError?) -> Unit = {},
     modalBottomSheetState: SheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -50,7 +54,7 @@ public fun GravatarQuickEditorBottomSheet(
         modifier = Modifier
             .fillMaxHeight(0.7f)
             .fillMaxWidth(),
-        onDismissRequest = { onAvatarUpdateResult(AvatarUpdateResult.Dismissed) },
+        onDismissRequest = { onDismiss(null) },
         sheetState = modalBottomSheetState,
         dragHandle = null,
     ) {
@@ -69,7 +73,7 @@ public fun GravatarQuickEditorBottomSheet(
                             onClick = {
                                 coroutineScope.launch {
                                     modalBottomSheetState.hide()
-                                    onAvatarUpdateResult(AvatarUpdateResult.Dismissed)
+                                    onDismiss(null)
                                 }
                             },
                         ) {
@@ -83,14 +87,9 @@ public fun GravatarQuickEditorBottomSheet(
                 GravatarQuickEditorPage(
                     appName = appName,
                     oAuthParams = oAuthParams,
-                    onAuthError = {
-                        onAvatarUpdateResult(AvatarUpdateResult.Error(GravatarQuickEditorError.OauthFailed))
-                    },
+                    onDismiss = onDismiss,
                     onAvatarSelected = {
-                        coroutineScope.launch {
-                            modalBottomSheetState.hide()
-                        }
-                        onAvatarUpdateResult(AvatarUpdateResult.Ok(it))
+                        onAvatarSelected(it)
                     },
                 )
             }
