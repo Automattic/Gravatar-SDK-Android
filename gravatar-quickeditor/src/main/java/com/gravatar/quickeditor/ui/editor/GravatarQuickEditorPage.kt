@@ -32,7 +32,7 @@ internal fun GravatarQuickEditorPage(
     appName: String,
     oAuthParams: OAuthParams,
     onAvatarSelected: (AvatarUpdateResult) -> Unit,
-    onDismiss: (error: GravatarQuickEditorError?) -> Unit = {},
+    onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit = {},
 ) {
     val isAuthorized = rememberSaveable { mutableStateOf(false) }
 
@@ -42,7 +42,7 @@ internal fun GravatarQuickEditorPage(
                 appName = appName,
                 oauthParams = oAuthParams,
                 onAuthSuccess = { isAuthorized.value = true },
-                onAuthError = { onDismiss(GravatarQuickEditorError.OauthFailed) },
+                onAuthError = { onDismiss(GravatarQuickEditorDismissReason.OauthFailed) },
             )
         } else {
             Box(modifier = Modifier.fillMaxSize()) {

@@ -68,7 +68,7 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
                 Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()
             },
             onDismiss = {
-                Toast.makeText(context, it?.toString() ?: "Dismissed", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()
                 showBottomSheet = false
             },
         )

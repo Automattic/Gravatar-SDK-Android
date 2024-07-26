@@ -14,21 +14,29 @@ public final class com/gravatar/quickeditor/ui/editor/ComposableSingletons$Grava
 	public final fun getLambda-1$gravatar_quickeditor_release ()Lkotlin/jvm/functions/Function3;
 }
 
-public abstract class com/gravatar/quickeditor/ui/editor/GravatarQuickEditorError {
+public abstract class com/gravatar/quickeditor/ui/editor/GravatarQuickEditorDismissReason {
 	public static final field $stable I
 }
 
-public final class com/gravatar/quickeditor/ui/editor/GravatarQuickEditorError$InvalidToken : com/gravatar/quickeditor/ui/editor/GravatarQuickEditorError {
+public final class com/gravatar/quickeditor/ui/editor/GravatarQuickEditorDismissReason$Finished : com/gravatar/quickeditor/ui/editor/GravatarQuickEditorDismissReason {
 	public static final field $stable I
-	public static final field INSTANCE Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorError$InvalidToken;
+	public static final field INSTANCE Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorDismissReason$Finished;
 	public fun equals (Ljava/lang/Object;)Z
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/gravatar/quickeditor/ui/editor/GravatarQuickEditorError$OauthFailed : com/gravatar/quickeditor/ui/editor/GravatarQuickEditorError {
+public final class com/gravatar/quickeditor/ui/editor/GravatarQuickEditorDismissReason$InvalidToken : com/gravatar/quickeditor/ui/editor/GravatarQuickEditorDismissReason {
 	public static final field $stable I
-	public static final field INSTANCE Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorError$OauthFailed;
+	public static final field INSTANCE Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorDismissReason$InvalidToken;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/gravatar/quickeditor/ui/editor/GravatarQuickEditorDismissReason$OauthFailed : com/gravatar/quickeditor/ui/editor/GravatarQuickEditorDismissReason {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorDismissReason$OauthFailed;
 	public fun equals (Ljava/lang/Object;)Z
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;

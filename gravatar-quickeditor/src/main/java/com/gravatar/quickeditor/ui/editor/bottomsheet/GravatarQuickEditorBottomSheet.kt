@@ -19,7 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.gravatar.quickeditor.R
 import com.gravatar.quickeditor.ui.editor.AvatarUpdateResult
-import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorError
+import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorDismissReason
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorPage
 import com.gravatar.quickeditor.ui.oauth.OAuthParams
 import com.gravatar.ui.GravatarTheme
@@ -45,7 +45,7 @@ public fun GravatarQuickEditorBottomSheet(
     appName: String,
     oAuthParams: OAuthParams,
     onAvatarSelected: (AvatarUpdateResult) -> Unit,
-    onDismiss: (error: GravatarQuickEditorError?) -> Unit = {},
+    onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit = {},
     modalBottomSheetState: SheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -54,7 +54,7 @@ public fun GravatarQuickEditorBottomSheet(
         modifier = Modifier
             .fillMaxHeight(0.7f)
             .fillMaxWidth(),
-        onDismissRequest = { onDismiss(null) },
+        onDismissRequest = { onDismiss(GravatarQuickEditorDismissReason.Finished) },
         sheetState = modalBottomSheetState,
         dragHandle = null,
     ) {
@@ -73,7 +73,7 @@ public fun GravatarQuickEditorBottomSheet(
                             onClick = {
                                 coroutineScope.launch {
                                     modalBottomSheetState.hide()
-                                    onDismiss(null)
+                                    onDismiss(GravatarQuickEditorDismissReason.Finished)
                                 }
                             },
                         ) {
