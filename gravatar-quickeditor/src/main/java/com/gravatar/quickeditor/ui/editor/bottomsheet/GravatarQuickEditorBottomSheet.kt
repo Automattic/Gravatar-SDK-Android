@@ -88,9 +88,7 @@ public fun GravatarQuickEditorBottomSheet(
                     appName = appName,
                     oAuthParams = oAuthParams,
                     onDismiss = onDismiss,
-                    onAvatarSelected = {
-                        onAvatarSelected(it)
-                    },
+                    onAvatarSelected = onAvatarSelected,
                 )
             }
         }
