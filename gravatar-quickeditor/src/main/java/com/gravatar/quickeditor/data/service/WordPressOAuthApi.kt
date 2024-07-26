@@ -10,10 +10,10 @@ internal interface WordPressOAuthApi {
     @POST("/oauth2/token")
     @FormUrlEncoded
     suspend fun getToken(
-        @Field("client_id") clientId: String?,
-        @Field("redirect_uri") redirectUri: String?,
-        @Field("client_secret") clientSecret: String?,
-        @Field("code") user: String?,
-        @Field("grant_type") grantType: String?,
+        @Field("client_id") clientId: String,
+        @Field("redirect_uri") redirectUri: String,
+        @Field("client_secret") clientSecret: String,
+        @Field("code") user: String,
+        @Field("grant_type") grantType: String,
     ): Response<WordPressOAuthToken>
 }
