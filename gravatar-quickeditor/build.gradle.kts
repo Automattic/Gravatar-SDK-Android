@@ -87,15 +87,23 @@ android {
 dependencies {
     coreLibraryDesugaring(libs.desugarJdk)
 
-    implementation(libs.coil.compose)
+    implementation(project(":gravatar"))
     implementation(project(":gravatar-ui"))
 
-    testImplementation(libs.junit)
-    testImplementation(project(":uitestutils"))
+    implementation(libs.androidx.browser)
+
+    implementation(libs.coil.compose)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.gson.converter)
 
     // Jetpack Compose
     implementation(platform(libs.compose.bom))
-    implementation(libs.compose.material3)
+    implementation(libs.compose.ui)
     implementation(libs.compose.ui.tooling.preview)
+    implementation(libs.compose.material3)
+    implementation(libs.androidx.activity.compose)
     debugImplementation(libs.androidx.compose.ui.tooling)
+
+    testImplementation(libs.junit)
+    testImplementation(project(":uitestutils"))
 }

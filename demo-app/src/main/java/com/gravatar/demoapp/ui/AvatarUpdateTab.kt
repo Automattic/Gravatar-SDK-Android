@@ -1,6 +1,8 @@
 package com.gravatar.demoapp.ui
 
+import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,6 +11,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AccountCircle
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -27,17 +30,15 @@ import androidx.compose.ui.unit.dp
 import com.gravatar.demoapp.BuildConfig
 import com.gravatar.demoapp.R
 import com.gravatar.demoapp.ui.components.GravatarEmailInput
-import com.gravatar.demoapp.ui.components.GravatarPasswordInput
-import com.gravatar.services.ErrorType
-import com.gravatar.ui.GravatarImagePickerWrapper
-import com.gravatar.ui.GravatarImagePickerWrapperListener
+import com.gravatar.quickeditor.ui.editor.bottomsheet.GravatarQuickEditorBottomSheet
+import com.gravatar.quickeditor.ui.oauth.OAuthParams
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AvatarUpdateTab(showSnackBar: (String?, Throwable?) -> Unit, modifier: Modifier = Modifier) {
+fun AvatarUpdateTab(modifier: Modifier = Modifier) {
     var email by remember { mutableStateOf(BuildConfig.DEMO_EMAIL) }
-    var wordpressBearerToken by remember { mutableStateOf(BuildConfig.DEMO_WORDPRESS_BEARER_TOKEN) }
-    var wordpressBearerTokenVisible by rememberSaveable { mutableStateOf(false) }
-    var isUploading by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+    var showBottomSheet by rememberSaveable { mutableStateOf(false) }
 
     Column(
         modifier = modifier
@@ -46,45 +47,37 @@ fun AvatarUpdateTab(showSnackBar: (String?, Throwable?) -> Unit, modifier: Modif
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        val context = LocalContext.current
         GravatarEmailInput(email = email, onValueChange = { email = it }, Modifier.fillMaxWidth())
-        GravatarPasswordInput(
-            password = wordpressBearerToken,
-            passwordIsVisible = wordpressBearerTokenVisible,
-            onValueChange = { wordpressBearerToken = it },
-            onVisibilityChange = { wordpressBearerTokenVisible = it },
-            label = { Text(stringResource(R.string.wordpress_bearer_token_label)) },
-            modifier = Modifier
-                .padding(top = 16.dp)
-                .fillMaxWidth(),
-        )
-        GravatarImagePickerWrapper(
-            { UpdateAvatarComposable(isUploading) },
-            email,
-            wordpressBearerToken,
-            object : GravatarImagePickerWrapperListener {
-                override fun onAvatarUploadStarted() {
-                    isUploading = true
-                }
-
-                override fun onSuccess(response: Unit) {
-                    isUploading = false
-                    showSnackBar(context.getString(R.string.avatar_update_upload_success_toast), null)
-                }
-
-                override fun onError(errorType: ErrorType) {
-                    isUploading = false
-                    showSnackBar(context.getString(R.string.avatar_update_upload_failed_toast, errorType), null)
-                }
+        UpdateAvatarComposable(
+            modifier = Modifier.clickable {
+                showBottomSheet = true
             },
-            modifier = Modifier.padding(top = 16.dp),
+            isUploading = false,
+        )
+    }
+    if (showBottomSheet) {
+        val applicationName = stringResource(id = R.string.app_name)
+        GravatarQuickEditorBottomSheet(
+            appName = applicationName,
+            oAuthParams = OAuthParams {
+                clientId = BuildConfig.DEMO_WORDPRESS_CLIENT_ID
+                clientSecret = BuildConfig.DEMO_WORDPRESS_CLIENT_SECRET
+                redirectUri = BuildConfig.DEMO_WORDPRESS_REDIRECT_URI
+            },
+            onAvatarSelected = {
+                Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()
+            },
+            onDismiss = {
+                Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()
+                showBottomSheet = false
+            },
         )
     }
 }
 
 @Composable
-private fun UpdateAvatarComposable(isUploading: Boolean) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+private fun UpdateAvatarComposable(isUploading: Boolean, modifier: Modifier = Modifier) {
+    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         if (isUploading) {
             CircularProgressIndicator()
         } else {
@@ -108,4 +101,4 @@ private fun UpdateAvatarLoadingComposablePreview() = UpdateAvatarComposable(true
 
 @Preview
 @Composable
-private fun AvatarUpdateTabPreview() = AvatarUpdateTab(showSnackBar = { _, _ -> })
+private fun AvatarUpdateTabPreview() = AvatarUpdateTab()

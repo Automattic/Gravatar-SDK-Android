@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="gravatar">Gravatar</string>
     <string name="selectable_avatar_content_description">Avatar Image</string>
+    <string name="bottom_sheet_done">Done</string>
 </resources>

@@ -42,13 +42,23 @@ android {
             )
             buildConfigField(
                 "String",
-                "DEMO_WORDPRESS_BEARER_TOKEN",
-                "\"${properties["demo-app.wordPressBearerToken"]?.toString() ?: ""}\"",
+                "DEMO_GRAVATAR_API_KEY",
+                properties["demo-app.gravatar.api.key"]?.let { "\"$it\"" } ?: "null",
             )
             buildConfigField(
                 "String",
-                "DEMO_GRAVATAR_API_KEY",
-                properties["demo-app.gravatar.api.key"]?.let { "\"$it\"" } ?: "null",
+                "DEMO_WORDPRESS_CLIENT_ID",
+                "\"${properties["demo-app.wordpress.oauth.clientId"]?.toString() ?: ""}\"",
+            )
+            buildConfigField(
+                "String",
+                "DEMO_WORDPRESS_CLIENT_SECRET",
+                "\"${properties["demo-app.wordpress.oauth.clientSecret"]?.toString() ?: ""}\"",
+            )
+            buildConfigField(
+                "String",
+                "DEMO_WORDPRESS_REDIRECT_URI",
+                "\"${properties["demo-app.wordpress.oauth.redirectUri"]?.toString() ?: ""}\"",
             )
         }
     }
@@ -104,8 +114,11 @@ dependencies {
     implementation(libs.compose.material3)
     implementation(libs.compose.material.icons)
     implementation(libs.coil.compose)
+    implementation(libs.androidx.activity)
+    implementation(libs.androidx.constraintlayout)
     implementation(project(":gravatar"))
     implementation(project(":gravatar-ui"))
+    implementation(project(":gravatar-quickeditor"))
 
     debugImplementation(libs.androidx.compose.ui.tooling)
 
