@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
+import com.gravatar.quickeditor.QuickEditorContainer
 import com.gravatar.quickeditor.data.service.WordPressOAuthService
 import com.gravatar.services.Result
 import kotlinx.coroutines.channels.Channel
@@ -58,10 +59,8 @@ internal class OAuthViewModel(
         val Factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
-                val wordPressOAuthService = WordPressOAuthService()
-
                 return OAuthViewModel(
-                    wordPressOAuthService,
+                    QuickEditorContainer.instance.wordPressOAuthService,
                 ) as T
             }
         }

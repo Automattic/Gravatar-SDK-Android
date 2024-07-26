@@ -1,23 +1,14 @@
 package com.gravatar.quickeditor.data.service
 
-import com.google.gson.GsonBuilder
 import com.gravatar.services.ErrorType
 import com.gravatar.services.Result
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import kotlin.coroutines.cancellation.CancellationException
 
-private val retrofit = Retrofit.Builder()
-    .baseUrl("https://public-api.wordpress.com")
-    .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
-    .build()
-
 internal class WordPressOAuthService(
-    private val service: WordPressOAuthApi = retrofit.create(WordPressOAuthApi::class.java),
-    private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
+    private val wordPressOAuthApi: WordPressOAuthApi,
+    private val dispatcher: CoroutineDispatcher,
 ) {
     suspend fun getAccessToken(
         code: String,
@@ -27,7 +18,7 @@ internal class WordPressOAuthService(
     ): Result<String, ErrorType> = withContext(dispatcher) {
         @Suppress("TooGenericExceptionCaught", "SwallowedException")
         try {
-            val response = service.getToken(
+            val response = wordPressOAuthApi.getToken(
                 clientId,
                 redirectUri,
                 clientSecret,
