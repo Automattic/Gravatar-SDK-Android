@@ -91,6 +91,8 @@ dependencies {
     implementation(project(":gravatar-ui"))
 
     implementation(libs.androidx.browser)
+    implementation(libs.androidx.viewmodel.compose)
+    implementation(libs.androidx.navigation.compose)
 
     implementation(libs.coil.compose)
     implementation(libs.retrofit)
@@ -105,5 +107,8 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
 
     testImplementation(libs.junit)
+    testImplementation(libs.mockk.android)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.turbine)
     testImplementation(project(":uitestutils"))
 }
