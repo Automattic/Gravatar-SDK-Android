@@ -2,32 +2,27 @@ package com.gravatar.quickeditor.ui.oauth
 
 import app.cash.turbine.test
 import com.gravatar.quickeditor.data.service.WordPressOAuthService
+import com.gravatar.quickeditor.ui.CoroutineTestRule
 import com.gravatar.services.ErrorType
 import com.gravatar.services.Result
 import io.mockk.coEvery
 import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.TestDispatcher
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class OAuthViewModelTest {
+    @get:Rule
+    var containerRule = CoroutineTestRule()
+
     private val wordPressOAuthService = mockk<WordPressOAuthService>()
 
-    private lateinit var dispatcher: TestDispatcher
     private lateinit var viewModel: OAuthViewModel
 
     @Before
     fun setup() {
-        dispatcher = StandardTestDispatcher()
-        Dispatchers.setMain(dispatcher)
-
         viewModel = OAuthViewModel(wordPressOAuthService)
     }
 
