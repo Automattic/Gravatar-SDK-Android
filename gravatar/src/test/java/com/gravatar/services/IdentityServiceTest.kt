@@ -84,4 +84,64 @@ class IdentityServiceTest {
 
             assertEquals(ErrorType.SERVER, (response as Result.Failure).error)
         }
+
+    @Test
+    fun `given a hash and an avatarId when setting avatar then Gravatar service is invoked`() = runTest {
+        val hash = "hash"
+        val avatarId = "avatarId"
+        val mockResponse = mockk<Response<Unit>>(relaxed = true) {
+            every { isSuccessful } returns true
+        }
+
+        coEvery { containerRule.gravatarApiMock.setIdentityAvatar(hash, any()) } returns mockResponse
+
+        identityService.setAvatar(hash, avatarId, oauthToken)
+    }
+
+    @Test(expected = HttpException::class)
+    fun `given a hash and an avatarId when setting an avatar and an error occurs then an exception is thrown`() =
+        runTest {
+            val hash = "hash"
+            val avatarId = "avatarId"
+            val mockResponse = mockk<Response<Unit>>(relaxed = true) {
+                every { isSuccessful } returns false
+                every { code() } returns 500
+            }
+
+            coEvery { containerRule.gravatarApiMock.setIdentityAvatar(hash, any()) } returns mockResponse
+
+            identityService.setAvatar(hash, avatarId, oauthToken)
+        }
+
+    @Test
+    fun `given a hash and an avatarId when setAvatarCatching then Gravatar service is invoked`() = runTest {
+        val hash = "hash"
+        val avatarId = "avatarId"
+        val mockResponse = mockk<Response<Unit>>(relaxed = true) {
+            every { isSuccessful } returns true
+        }
+
+        coEvery { containerRule.gravatarApiMock.setIdentityAvatar(hash, any()) } returns mockResponse
+
+        val response = identityService.setAvatarCatching(hash, avatarId, oauthToken)
+
+        assertEquals(Unit, (response as Result.Success).value)
+    }
+
+    @Test
+    fun `given a hash and an avatarId when setAvatarCatching and an error occurs then a Result Failure is returned`() =
+        runTest {
+            val hash = "hash"
+            val avatarId = "avatarId"
+            val mockResponse = mockk<Response<Unit>>(relaxed = true) {
+                every { isSuccessful } returns false
+                every { code() } returns 500
+            }
+
+            coEvery { containerRule.gravatarApiMock.setIdentityAvatar(hash, any()) } returns mockResponse
+
+            val response = identityService.setAvatarCatching(hash, avatarId, oauthToken)
+
+            assertEquals(ErrorType.SERVER, (response as Result.Failure).error)
+        }
 }
