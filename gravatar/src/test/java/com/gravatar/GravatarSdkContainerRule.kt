@@ -38,6 +38,7 @@ class GravatarSdkContainerRule : TestRule {
                 every { gravatarSdkContainerMock.getGravatarV1Service(any()) } returns gravatarApiMock
                 every { gravatarSdkContainerMock.getGravatarApiV3Service(any()) } returns gravatarApiServiceMock
                 every { gravatarSdkContainerMock.getGravatarV3Service(any()) } returns gravatarApiMock
+                every { gravatarSdkContainerMock.getGravatarV3Service(any(), any()) } returns gravatarApiMock
 
                 mockkObject(Logger)
                 every { Logger.i(any(), any()) } returns 1
