@@ -747,6 +747,14 @@ public final class com/gravatar/services/HttpException : java/lang/RuntimeExcept
 	public fun getMessage ()Ljava/lang/String;
 }
 
+public final class com/gravatar/services/IdentityService {
+	public static final field LOG_TAG Ljava/lang/String;
+	public fun <init> (Lokhttp3/OkHttpClient;Ljava/lang/String;)V
+	public synthetic fun <init> (Lokhttp3/OkHttpClient;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun retrieve (Ljava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun retrieveCatching (Ljava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
 public final class com/gravatar/services/ProfileService {
 	public static final field LOG_TAG Ljava/lang/String;
 	public fun <init> ()V
