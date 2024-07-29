@@ -5,7 +5,7 @@ import okhttp3.Request
 import okhttp3.Response
 import com.gravatar.di.container.GravatarSdkContainer.Companion.instance as GravatarSdkDI
 
-internal class AuthenticationInterceptor : Interceptor {
+internal class AuthenticationInterceptor(private val oauthToken: String? = null) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         return chain.proceed(
             chain.request().newBuilder()
@@ -15,6 +15,8 @@ internal class AuthenticationInterceptor : Interceptor {
     }
 
     private fun Request.Builder.addAuthorizationHeaderIfPresent(): Request.Builder {
-        return GravatarSdkDI.apiKey?.let { addHeader("Authorization", "Bearer $it") } ?: this
+        return oauthToken?.let { addHeader(it) } ?: GravatarSdkDI.apiKey?.let { addHeader(it) } ?: this
     }
+
+    private fun Request.Builder.addHeader(bearer: String) = addHeader("Authorization", "Bearer $bearer")
 }
