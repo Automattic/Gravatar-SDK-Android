@@ -60,7 +60,7 @@ internal class OAuthViewModel(
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
                 return OAuthViewModel(
-                    QuickEditorContainer.instance.wordPressOAuthService,
+                    wordPressOAuthService = QuickEditorContainer.getInstance().wordPressOAuthService,
                 ) as T
             }
         }

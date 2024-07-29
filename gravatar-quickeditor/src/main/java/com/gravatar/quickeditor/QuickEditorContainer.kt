@@ -1,16 +1,33 @@
 package com.gravatar.quickeditor
 
+import android.annotation.SuppressLint
+import android.content.Context
+import androidx.datastore.preferences.preferencesDataStore
 import com.google.gson.GsonBuilder
 import com.gravatar.quickeditor.data.service.WordPressOAuthApi
 import com.gravatar.quickeditor.data.service.WordPressOAuthService
+import com.gravatar.quickeditor.data.storage.TokenStorage
 import kotlinx.coroutines.Dispatchers
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-internal class QuickEditorContainer private constructor() {
+internal class QuickEditorContainer private constructor(
+    private val context: Context,
+) {
     companion object {
-        val instance: QuickEditorContainer by lazy {
-            QuickEditorContainer()
+        @SuppressLint("StaticFieldLeak")
+        private lateinit var instance: QuickEditorContainer
+
+        fun init(context: Context): QuickEditorContainer {
+            instance = QuickEditorContainer(context)
+            return instance
+        }
+
+        fun getInstance(): QuickEditorContainer {
+            check(::instance.isInitialized) {
+                "QuickEditorContainer is not initialized. Call init() first."
+            }
+            return instance
         }
     }
 
