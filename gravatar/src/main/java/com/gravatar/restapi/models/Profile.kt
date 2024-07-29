@@ -25,6 +25,11 @@ import java.util.Objects
  * @param verifiedAccounts A list of verified accounts the user has added to their profile. This is limited to a max of 4 in unauthenticated requests.
  * @param pronunciation The phonetic pronunciation of the user's name.
  * @param pronouns The pronouns the user uses.
+ * @param timezone The timezone the user has. This is only provided in authenticated API requests.
+ * @param languages The languages the user knows. This is only provided in authenticated API requests.
+ * @param firstName User's first name. This is only provided in authenticated API requests.
+ * @param lastName User's last name. This is only provided in authenticated API requests.
+ * @param isOrganization Whether user is an organization. This is only provided in authenticated API requests.
  * @param links A list of links the user has added to their profile. This is only provided in authenticated API requests.
  * @param interests A list of interests the user has added to their profile. This is only provided in authenticated API requests.
  * @param payments
@@ -72,6 +77,21 @@ public class Profile private constructor(
     // The pronouns the user uses.
     @SerializedName("pronouns")
     public val pronouns: kotlin.String,
+    // The timezone the user has. This is only provided in authenticated API requests.
+    @SerializedName("timezone")
+    public val timezone: kotlin.String? = null,
+    // The languages the user knows. This is only provided in authenticated API requests.
+    @SerializedName("languages")
+    public val languages: kotlin.collections.List<kotlin.String>? = null,
+    // User's first name. This is only provided in authenticated API requests.
+    @SerializedName("first_name")
+    public val firstName: kotlin.String? = null,
+    // User's last name. This is only provided in authenticated API requests.
+    @SerializedName("last_name")
+    public val lastName: kotlin.String? = null,
+    // Whether user is an organization. This is only provided in authenticated API requests.
+    @SerializedName("is_organization")
+    public val isOrganization: kotlin.Boolean? = null,
     // A list of links the user has added to their profile. This is only provided in authenticated API requests.
     @SerializedName("links")
     public val links: kotlin.collections.List<Link>? = null,
@@ -95,7 +115,7 @@ public class Profile private constructor(
     @SerializedName("registration_date")
     public val registrationDate: java.time.Instant? = null,
 ) {
-    override fun toString(): String = "Profile(hash=$hash, displayName=$displayName, profileUrl=$profileUrl, avatarUrl=$avatarUrl, avatarAltText=$avatarAltText, location=$location, description=$description, jobTitle=$jobTitle, company=$company, verifiedAccounts=$verifiedAccounts, pronunciation=$pronunciation, pronouns=$pronouns, links=$links, interests=$interests, payments=$payments, contactInfo=$contactInfo, gallery=$gallery, numberVerifiedAccounts=$numberVerifiedAccounts, lastProfileEdit=$lastProfileEdit, registrationDate=$registrationDate)"
+    override fun toString(): String = "Profile(hash=$hash, displayName=$displayName, profileUrl=$profileUrl, avatarUrl=$avatarUrl, avatarAltText=$avatarAltText, location=$location, description=$description, jobTitle=$jobTitle, company=$company, verifiedAccounts=$verifiedAccounts, pronunciation=$pronunciation, pronouns=$pronouns, timezone=$timezone, languages=$languages, firstName=$firstName, lastName=$lastName, isOrganization=$isOrganization, links=$links, interests=$interests, payments=$payments, contactInfo=$contactInfo, gallery=$gallery, numberVerifiedAccounts=$numberVerifiedAccounts, lastProfileEdit=$lastProfileEdit, registrationDate=$registrationDate)"
 
     override fun equals(other: Any?): Boolean = other is Profile &&
         hash == other.hash &&
@@ -110,6 +130,11 @@ public class Profile private constructor(
         verifiedAccounts == other.verifiedAccounts &&
         pronunciation == other.pronunciation &&
         pronouns == other.pronouns &&
+        timezone == other.timezone &&
+        languages == other.languages &&
+        firstName == other.firstName &&
+        lastName == other.lastName &&
+        isOrganization == other.isOrganization &&
         links == other.links &&
         interests == other.interests &&
         payments == other.payments &&
@@ -119,7 +144,7 @@ public class Profile private constructor(
         lastProfileEdit == other.lastProfileEdit &&
         registrationDate == other.registrationDate
 
-    override fun hashCode(): Int = Objects.hash(hash, displayName, profileUrl, avatarUrl, avatarAltText, location, description, jobTitle, company, verifiedAccounts, pronunciation, pronouns, links, interests, payments, contactInfo, gallery, numberVerifiedAccounts, lastProfileEdit, registrationDate)
+    override fun hashCode(): Int = Objects.hash(hash, displayName, profileUrl, avatarUrl, avatarAltText, location, description, jobTitle, company, verifiedAccounts, pronunciation, pronouns, timezone, languages, firstName, lastName, isOrganization, links, interests, payments, contactInfo, gallery, numberVerifiedAccounts, lastProfileEdit, registrationDate)
 
     public class Builder {
         // The SHA256 hash of the user's primary email address.
@@ -169,6 +194,26 @@ public class Profile private constructor(
         // The pronouns the user uses.
         @set:JvmSynthetic // Hide 'void' setter from Java
         public var pronouns: kotlin.String? = null
+
+        // The timezone the user has. This is only provided in authenticated API requests.
+        @set:JvmSynthetic // Hide 'void' setter from Java
+        public var timezone: kotlin.String? = null
+
+        // The languages the user knows. This is only provided in authenticated API requests.
+        @set:JvmSynthetic // Hide 'void' setter from Java
+        public var languages: kotlin.collections.List<kotlin.String>? = null
+
+        // User's first name. This is only provided in authenticated API requests.
+        @set:JvmSynthetic // Hide 'void' setter from Java
+        public var firstName: kotlin.String? = null
+
+        // User's last name. This is only provided in authenticated API requests.
+        @set:JvmSynthetic // Hide 'void' setter from Java
+        public var lastName: kotlin.String? = null
+
+        // Whether user is an organization. This is only provided in authenticated API requests.
+        @set:JvmSynthetic // Hide 'void' setter from Java
+        public var isOrganization: kotlin.Boolean? = null
 
         // A list of links the user has added to their profile. This is only provided in authenticated API requests.
         @set:JvmSynthetic // Hide 'void' setter from Java
@@ -224,6 +269,16 @@ public class Profile private constructor(
 
         public fun setPronouns(pronouns: kotlin.String?): Builder = apply { this.pronouns = pronouns }
 
+        public fun setTimezone(timezone: kotlin.String?): Builder = apply { this.timezone = timezone }
+
+        public fun setLanguages(languages: kotlin.collections.List<kotlin.String>?): Builder = apply { this.languages = languages }
+
+        public fun setFirstName(firstName: kotlin.String?): Builder = apply { this.firstName = firstName }
+
+        public fun setLastName(lastName: kotlin.String?): Builder = apply { this.lastName = lastName }
+
+        public fun setIsOrganization(isOrganization: kotlin.Boolean?): Builder = apply { this.isOrganization = isOrganization }
+
         public fun setLinks(links: kotlin.collections.List<Link>?): Builder = apply { this.links = links }
 
         public fun setInterests(interests: kotlin.collections.List<Interest>?): Builder = apply { this.interests = interests }
@@ -240,7 +295,7 @@ public class Profile private constructor(
 
         public fun setRegistrationDate(registrationDate: java.time.Instant?): Builder = apply { this.registrationDate = registrationDate }
 
-        public fun build(): Profile = Profile(hash!!, displayName!!, profileUrl!!, avatarUrl!!, avatarAltText!!, location!!, description!!, jobTitle!!, company!!, verifiedAccounts!!, pronunciation!!, pronouns!!, links, interests, payments, contactInfo, gallery, numberVerifiedAccounts, lastProfileEdit, registrationDate)
+        public fun build(): Profile = Profile(hash!!, displayName!!, profileUrl!!, avatarUrl!!, avatarAltText!!, location!!, description!!, jobTitle!!, company!!, verifiedAccounts!!, pronunciation!!, pronouns!!, timezone, languages, firstName, lastName, isOrganization, links, interests, payments, contactInfo, gallery, numberVerifiedAccounts, lastProfileEdit, registrationDate)
     }
 }
 

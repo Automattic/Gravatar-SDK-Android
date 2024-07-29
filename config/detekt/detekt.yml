@@ -25,6 +25,9 @@ coroutines:
 naming:
   FunctionNaming:
     ignoreAnnotated: ['Composable']
+  FunctionParameterNaming:
+    active: true
+    excludes: [ '**/restapi/**' ]
 
 style:
   DataClassShouldBeImmutable:
