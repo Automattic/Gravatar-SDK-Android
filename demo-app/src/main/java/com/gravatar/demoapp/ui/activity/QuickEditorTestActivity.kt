@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.gravatar.demoapp.BuildConfig
 import com.gravatar.demoapp.R
 import com.gravatar.quickeditor.GravatarQuickEditor
+import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
 import com.gravatar.quickeditor.ui.oauth.OAuthParams
 import com.gravatar.restapi.models.Profile
 import com.gravatar.services.ProfileService
@@ -46,8 +47,10 @@ class QuickEditorTestActivity : AppCompatActivity() {
         btnUpdateAvatar.setOnClickListener {
             GravatarQuickEditor.show(
                 activity = this,
-                appName = getString(R.string.app_name),
-                email = BuildConfig.DEMO_EMAIL,
+                gravatarQuickEditorParams = GravatarQuickEditorParams {
+                    appName = getString(R.string.app_name)
+                    email = BuildConfig.DEMO_EMAIL
+                },
                 oAuthParams = OAuthParams {
                     clientId = BuildConfig.DEMO_WORDPRESS_CLIENT_ID
                     clientSecret = BuildConfig.DEMO_WORDPRESS_CLIENT_SECRET

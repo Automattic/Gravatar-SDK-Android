@@ -38,6 +38,7 @@ import com.gravatar.demoapp.R
 import com.gravatar.demoapp.ui.activity.QuickEditorTestActivity
 import com.gravatar.demoapp.ui.components.GravatarEmailInput
 import com.gravatar.quickeditor.GravatarQuickEditor
+import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
 import com.gravatar.quickeditor.ui.editor.bottomsheet.GravatarQuickEditorBottomSheet
 import com.gravatar.quickeditor.ui.oauth.OAuthParams
 import kotlinx.coroutines.launch
@@ -45,10 +46,10 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AvatarUpdateTab(modifier: Modifier = Modifier) {
-    var email by remember { mutableStateOf(BuildConfig.DEMO_EMAIL) }
+    var userEmail by remember { mutableStateOf(BuildConfig.DEMO_EMAIL) }
     val context = LocalContext.current
     var showBottomSheet by rememberSaveable { mutableStateOf(false) }
-    var scope = rememberCoroutineScope()
+    val scope = rememberCoroutineScope()
 
     Box(
         modifier = Modifier
@@ -61,7 +62,7 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            GravatarEmailInput(email = email, onValueChange = { email = it }, Modifier.fillMaxWidth())
+            GravatarEmailInput(email = userEmail, onValueChange = { userEmail = it }, Modifier.fillMaxWidth())
             UpdateAvatarComposable(
                 modifier = Modifier.clickable {
                     showBottomSheet = true
@@ -84,7 +85,7 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
                 .padding(bottom = 20.dp),
             onClick = {
                 scope.launch {
-                    GravatarQuickEditor.logout(email)
+                    GravatarQuickEditor.logout(userEmail)
                     Toast.makeText(context, "Logged out", Toast.LENGTH_SHORT).show()
                 }
             },
@@ -95,8 +96,10 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
     if (showBottomSheet) {
         val applicationName = stringResource(id = R.string.app_name)
         GravatarQuickEditorBottomSheet(
-            appName = applicationName,
-            email = email,
+            gravatarQuickEditorParams = GravatarQuickEditorParams {
+                appName = applicationName
+                email = userEmail
+            },
             oAuthParams = OAuthParams {
                 clientId = BuildConfig.DEMO_WORDPRESS_CLIENT_ID
                 clientSecret = BuildConfig.DEMO_WORDPRESS_CLIENT_SECRET
