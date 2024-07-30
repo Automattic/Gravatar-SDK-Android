@@ -47,6 +47,7 @@ class QuickEditorTestActivity : AppCompatActivity() {
             GravatarQuickEditor.show(
                 activity = this,
                 appName = getString(R.string.app_name),
+                email = BuildConfig.DEMO_EMAIL,
                 oAuthParams = OAuthParams {
                     clientId = BuildConfig.DEMO_WORDPRESS_CLIENT_ID
                     clientSecret = BuildConfig.DEMO_WORDPRESS_CLIENT_SECRET
