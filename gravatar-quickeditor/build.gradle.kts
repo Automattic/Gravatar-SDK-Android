@@ -4,6 +4,7 @@ plugins {
     id(libs.plugins.android.library.get().pluginId)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.plugin.compose)
+    alias(libs.plugins.publish.to.s3)
     // Ktlint
     alias(libs.plugins.ktlint)
     // Detekt
@@ -115,4 +116,18 @@ dependencies {
     testImplementation(libs.turbine)
     testImplementation(libs.robolectric)
     testImplementation(project(":uitestutils"))
+}
+
+project.afterEvaluate {
+    publishing {
+        publications {
+            create<MavenPublication>("maven") {
+                from(components["release"])
+
+                groupId = "com.gravatar"
+                artifactId = "gravatar-quickeditor"
+                // version is set by `publish-to-s3` plugin
+            }
+        }
+    }
 }

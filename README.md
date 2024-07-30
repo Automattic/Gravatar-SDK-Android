@@ -185,6 +185,8 @@ dependencies {
     implementation ("com.gravatar:gravatar:<version>")
     // OR
     implementation ("com.gravatar:gravatar-ui:<version>")
+    // OR
+    implementation ("com.gravatar:gravatar-quickeditor:<version>")
 }
 ```
 
