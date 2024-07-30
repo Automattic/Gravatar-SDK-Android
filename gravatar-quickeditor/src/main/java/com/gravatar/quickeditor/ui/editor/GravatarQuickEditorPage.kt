@@ -16,10 +16,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.gravatar.quickeditor.ui.GravatarQuickEditorSplashPage
 import com.gravatar.quickeditor.ui.navigation.QuickEditorPage
 import com.gravatar.quickeditor.ui.oauth.OAuthPage
 import com.gravatar.quickeditor.ui.oauth.OAuthParams
+import com.gravatar.quickeditor.ui.splash.SplashPage
 import com.gravatar.ui.GravatarTheme
 
 /**
@@ -49,7 +49,7 @@ internal fun GravatarQuickEditorPage(
         exitTransition = { ExitTransition.None },
     ) {
         composable(QuickEditorPage.SPLASH.name) {
-            GravatarQuickEditorSplashPage { isAuthorized ->
+            SplashPage(email = email) { isAuthorized ->
                 if (isAuthorized) {
                     navController.navigate(QuickEditorPage.EDITOR.name)
                 } else {
