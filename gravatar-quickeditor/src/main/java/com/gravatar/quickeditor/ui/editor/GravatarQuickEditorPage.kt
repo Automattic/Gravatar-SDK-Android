@@ -26,7 +26,7 @@ import com.gravatar.ui.GravatarTheme
  * Raw composable component for the Quick Editor.
  * This can be used to show the Quick Editor in Activity, Fragment or BottomSheet.
  *
- * @param appName Name of the app that is launching the Quick Editor
+ * @param gravatarQuickEditorParams The Quick Editor parameters.
  * @param oAuthParams The OAuth parameters.
  * @param onAvatarSelected The callback for the avatar update result, check [AvatarUpdateResult].
  *                       Can be invoked multiple times while the Quick Editor is open
@@ -35,7 +35,7 @@ import com.gravatar.ui.GravatarTheme
  */
 @Composable
 internal fun GravatarQuickEditorPage(
-    appName: String,
+    gravatarQuickEditorParams: GravatarQuickEditorParams,
     oAuthParams: OAuthParams,
     onAvatarSelected: (AvatarUpdateResult) -> Unit,
     onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit = {},
@@ -49,7 +49,7 @@ internal fun GravatarQuickEditorPage(
         exitTransition = { ExitTransition.None },
     ) {
         composable(QuickEditorPage.SPLASH.name) {
-            SplashPage(email = email) { isAuthorized ->
+            SplashPage(email = gravatarQuickEditorParams.email) { isAuthorized ->
                 if (isAuthorized) {
                     navController.navigate(QuickEditorPage.EDITOR.name)
                 } else {
@@ -59,8 +59,9 @@ internal fun GravatarQuickEditorPage(
         }
         composable(QuickEditorPage.OAUTH.name, enterTransition = { EnterTransition.None }) {
             OAuthPage(
-                appName = appName,
-                oauthParams = oAuthParams,
+                appName = gravatarQuickEditorParams.appName,
+                oAuthParams = oAuthParams,
+                email = gravatarQuickEditorParams.email,
                 onAuthError = { onDismiss(GravatarQuickEditorDismissReason.OauthFailed) },
                 onAuthSuccess = { navController.navigate(QuickEditorPage.EDITOR.name) },
             )
@@ -90,14 +91,17 @@ internal fun GravatarQuickEditorPage(
 @Preview
 @Composable
 private fun ProfileQuickEditorPagePreview() {
-    val appName = "FancyMobileApp"
     val oAuthParams = OAuthParams {
         clientSecret = "clientSecret"
         clientId = "clientId"
         redirectUri = "redirectUri"
     }
+    val gravatarQuickEditorParams = GravatarQuickEditorParams {
+        appName = "FancyMobileApp"
+        email = "email"
+    }
     GravatarQuickEditorPage(
-        appName = appName,
+        gravatarQuickEditorParams = gravatarQuickEditorParams,
         oAuthParams = oAuthParams,
         onAvatarSelected = {},
         onDismiss = {},
