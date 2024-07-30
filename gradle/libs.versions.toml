@@ -29,6 +29,7 @@ activity = "1.9.0"
 androidXLifecycle = "2.8.3"
 navigationCompose = "2.8.0-beta05"
 turbine = "1.1.0"
+dataStore = "1.1.1"
 startup = "1.1.1"
 
 [libraries]
@@ -47,6 +48,7 @@ androidx-compose-manifest = { group = "androidx.compose.ui", name = "ui-test-man
 androidx-browser = { group = "androidx.browser", name = "browser", version.ref = "browser" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
+androidx-datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "dataStore" }
 androidx-startup = { group = "androidx.startup", name = "startup-runtime", version.ref = "startup" }
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 compose-ui = { module = "androidx.compose.ui:ui" }

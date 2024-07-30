@@ -94,6 +94,8 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.viewmodel.compose)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.datastore.preferences)
+    implementation(libs.androidx.startup)
 
     implementation(libs.coil.compose)
     implementation(libs.retrofit)
@@ -111,5 +113,6 @@ dependencies {
     testImplementation(libs.mockk.android)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.turbine)
+    testImplementation(libs.robolectric)
     testImplementation(project(":uitestutils"))
 }

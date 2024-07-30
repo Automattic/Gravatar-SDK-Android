@@ -31,6 +31,12 @@ internal class QuickEditorContainer private constructor(
         }
     }
 
+    private val Context.dataStore by preferencesDataStore(name = "quick-editor-preferences")
+
+    val tokenStorage: TokenStorage by lazy {
+        TokenStorage(dataStore = context.dataStore, dispatcher = Dispatchers.IO)
+    }
+
     val wordPressOAuthService: WordPressOAuthService by lazy {
         WordPressOAuthService(
             wordPressOAuthApi = getWordpressOAuthApi(),
