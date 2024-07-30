@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.gravatar.quickeditor.QuickEditorContainer
 import com.gravatar.quickeditor.data.service.WordPressOAuthService
+import com.gravatar.quickeditor.data.storage.TokenStorage
 import com.gravatar.services.Result
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,6 +18,7 @@ import kotlinx.coroutines.launch
 
 internal class OAuthViewModel(
     private val wordPressOAuthService: WordPressOAuthService,
+    private val tokenStorage: TokenStorage,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(OAuthUiState())
     val uiState: StateFlow<OAuthUiState> = _uiState.asStateFlow()
@@ -30,19 +32,19 @@ internal class OAuthViewModel(
         }
     }
 
-    fun fetchAccessToken(code: String, clientId: String, clientSecret: String, redirectUri: String) {
+    fun fetchAccessToken(code: String, oAuthParams: OAuthParams, email: String) {
         viewModelScope.launch {
             _uiState.update { currentState -> currentState.copy(isAuthorizing = true) }
             val result = wordPressOAuthService.getAccessToken(
                 code = code,
-                clientId = clientId,
-                clientSecret = clientSecret,
-                redirectUri = redirectUri,
+                clientId = oAuthParams.clientId,
+                clientSecret = oAuthParams.clientSecret,
+                redirectUri = oAuthParams.redirectUri,
             )
 
             when (result) {
                 is Result.Success -> {
-                    // todo: Save access token
+                    tokenStorage.storeToken(email, result.value)
                     _uiState.update { currentState -> currentState.copy(isAuthorizing = false) }
                     _actions.send(OAuthAction.AuthorizationSuccess)
                 }
@@ -61,6 +63,7 @@ internal class OAuthViewModel(
             override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
                 return OAuthViewModel(
                     wordPressOAuthService = QuickEditorContainer.getInstance().wordPressOAuthService,
+                    tokenStorage = QuickEditorContainer.getInstance().tokenStorage,
                 ) as T
             }
         }

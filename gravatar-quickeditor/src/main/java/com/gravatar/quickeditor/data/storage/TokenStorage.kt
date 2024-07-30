@@ -13,7 +13,7 @@ internal class TokenStorage(
     private val dataStore: DataStore<Preferences>,
     private val dispatcher: CoroutineDispatcher,
 ) {
-    suspend fun storeToken(key: String, token: String) = withContext(dispatcher) {
+    suspend fun storeToken(key: String, token: String): Unit = withContext(dispatcher) {
         dataStore.edit { preferences ->
             preferences[stringPreferencesKey(key)] = token
         }
@@ -28,7 +28,7 @@ internal class TokenStorage(
         }
     }
 
-    suspend fun deleteToken(key: String) = withContext(dispatcher) {
+    suspend fun deleteToken(key: String): Unit = withContext(dispatcher) {
         dataStore.edit { preferences ->
             preferences.remove(stringPreferencesKey(key))
         }
