@@ -30,6 +30,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.gravatar.types.Email
 import com.gravatar.ui.GravatarTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -37,7 +38,8 @@ import kotlinx.coroutines.withContext
 @Composable
 internal fun OAuthPage(
     appName: String,
-    oauthParams: OAuthParams,
+    email: Email,
+    oAuthParams: OAuthParams,
     onAuthSuccess: () -> Unit,
     onAuthError: () -> Unit,
     modifier: Modifier = Modifier,
@@ -55,7 +57,7 @@ internal fun OAuthPage(
                     when (action) {
                         OAuthAction.AuthorizationSuccess -> onAuthSuccess()
                         OAuthAction.AuthorizationFailure -> onAuthError()
-                        OAuthAction.StartOAuth -> launchCustomTab(context, oauthParams)
+                        OAuthAction.StartOAuth -> launchCustomTab(context, oAuthParams)
                     }
                 }
             }
@@ -69,9 +71,8 @@ internal fun OAuthPage(
                 if (code != null) {
                     viewModel.fetchAccessToken(
                         code = code,
-                        clientId = oauthParams.clientId,
-                        clientSecret = oauthParams.clientSecret,
-                        redirectUri = oauthParams.redirectUri,
+                        oAuthParams = oAuthParams,
+                        email = email,
                     )
                 } else {
                     onAuthError()
@@ -105,7 +106,7 @@ internal fun OAuthPage(
                                 .align(Alignment.CenterHorizontally)
                                 .padding(top = 8.dp),
                             onClick = {
-                                launchCustomTab(context, oauthParams)
+                                launchCustomTab(context, oAuthParams)
                             },
                         ) {
                             Text(text = "Authorize")
@@ -138,11 +139,12 @@ private fun OAuthPagePreview() {
     GravatarTheme {
         OAuthPage(
             appName = "Third-party app",
-            oauthParams = OAuthParams {
+            oAuthParams = OAuthParams {
                 clientId = "client_id"
                 clientSecret = "client_secret"
                 redirectUri = "redirect_uri"
             },
+            email = Email("email"),
             onAuthSuccess = { },
             onAuthError = { },
         )

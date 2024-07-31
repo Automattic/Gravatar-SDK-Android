@@ -21,6 +21,7 @@ import com.gravatar.quickeditor.R
 import com.gravatar.quickeditor.ui.editor.AvatarUpdateResult
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorDismissReason
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorPage
+import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
 import com.gravatar.quickeditor.ui.oauth.OAuthParams
 import com.gravatar.ui.GravatarTheme
 import kotlinx.coroutines.launch
@@ -31,7 +32,7 @@ import kotlinx.coroutines.launch
  *
  * The bottom sheet is configured to take 70% of the screen height and skips the partially expanded state.
  *
- * @param appName Name of the app that is launching the Quick Editor
+ * @param gravatarQuickEditorParams The Quick Editor parameters.
  * @param oAuthParams The OAuth parameters.
  * @param onAvatarSelected The callback for the avatar update result, check [AvatarUpdateResult].
  *                       Can be invoked multiple times while the Quick Editor is open.
@@ -42,7 +43,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 public fun GravatarQuickEditorBottomSheet(
-    appName: String,
+    gravatarQuickEditorParams: GravatarQuickEditorParams,
     oAuthParams: OAuthParams,
     onAvatarSelected: (AvatarUpdateResult) -> Unit,
     onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit = {},
@@ -85,7 +86,7 @@ public fun GravatarQuickEditorBottomSheet(
                     },
                 )
                 GravatarQuickEditorPage(
-                    appName = appName,
+                    gravatarQuickEditorParams = gravatarQuickEditorParams,
                     oAuthParams = oAuthParams,
                     onDismiss = onDismiss,
                     onAvatarSelected = onAvatarSelected,

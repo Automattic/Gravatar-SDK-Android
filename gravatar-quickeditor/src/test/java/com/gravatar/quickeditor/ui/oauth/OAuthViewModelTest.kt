@@ -2,12 +2,17 @@ package com.gravatar.quickeditor.ui.oauth
 
 import app.cash.turbine.test
 import com.gravatar.quickeditor.data.service.WordPressOAuthService
+import com.gravatar.quickeditor.data.storage.TokenStorage
 import com.gravatar.quickeditor.ui.CoroutineTestRule
 import com.gravatar.services.ErrorType
 import com.gravatar.services.Result
+import com.gravatar.types.Email
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
@@ -18,12 +23,14 @@ class OAuthViewModelTest {
     var containerRule = CoroutineTestRule()
 
     private val wordPressOAuthService = mockk<WordPressOAuthService>()
+    private val tokenStorage = mockk<TokenStorage>()
 
     private lateinit var viewModel: OAuthViewModel
 
     @Before
     fun setup() {
-        viewModel = OAuthViewModel(wordPressOAuthService)
+        coEvery { tokenStorage.storeToken(any(), any()) } returns Unit
+        viewModel = OAuthViewModel(wordPressOAuthService, tokenStorage)
     }
 
     @Test
@@ -46,8 +53,15 @@ class OAuthViewModelTest {
 
         viewModel.uiState.test {
             assertEquals(OAuthUiState(isAuthorizing = false), awaitItem())
-
-            viewModel.fetchAccessToken("code", "client_id", "client_secret", "redirect_uri")
+            viewModel.fetchAccessToken(
+                "code",
+                OAuthParams {
+                    clientId = "client_id"
+                    clientSecret = "client_secret"
+                    redirectUri = "redirect_uri"
+                },
+                Email("email"),
+            )
             assertEquals(OAuthUiState(isAuthorizing = true), awaitItem())
 
             assertEquals(OAuthUiState(isAuthorizing = false), awaitItem())
@@ -67,7 +81,15 @@ class OAuthViewModelTest {
 
         viewModel.actions.test {
             skipItems(1) // skipping the StartOAuth action
-            viewModel.fetchAccessToken("code", "client_id", "client_secret", "redirect_uri")
+            viewModel.fetchAccessToken(
+                "code",
+                OAuthParams {
+                    clientId = "client_id"
+                    clientSecret = "client_secret"
+                    redirectUri = "redirect_uri"
+                },
+                Email("email"),
+            )
             assertEquals(OAuthAction.AuthorizationFailure, awaitItem())
         }
     }
@@ -85,8 +107,44 @@ class OAuthViewModelTest {
 
         viewModel.actions.test {
             skipItems(1) // skipping the StartOAuth action
-            viewModel.fetchAccessToken("code", "client_id", "client_secret", "redirect_uri")
+            viewModel.fetchAccessToken(
+                "code",
+                OAuthParams {
+                    clientId = "client_id"
+                    clientSecret = "client_secret"
+                    redirectUri = "redirect_uri"
+                },
+                Email("email"),
+            )
             assertEquals(OAuthAction.AuthorizationSuccess, awaitItem())
         }
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `given oAuth params when fetching token successful then token saved`() = runTest {
+        val token = "access_token"
+        val email = "email"
+        coEvery {
+            wordPressOAuthService.getAccessToken(
+                any(),
+                any(),
+                any(),
+                any(),
+            )
+        } returns Result.Success(token)
+
+        viewModel.fetchAccessToken(
+            "code",
+            OAuthParams {
+                clientId = "client_id"
+                clientSecret = "client_secret"
+                redirectUri = "redirect_uri"
+            },
+            Email(email),
+        )
+        advanceUntilIdle()
+
+        coVerify { tokenStorage.storeToken(any(), any()) }
     }
 }

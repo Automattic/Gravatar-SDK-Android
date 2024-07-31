@@ -15,13 +15,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.ComposeView
 import com.gravatar.quickeditor.ui.editor.AvatarUpdateResult
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorDismissReason
+import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
 import com.gravatar.quickeditor.ui.editor.bottomsheet.GravatarQuickEditorBottomSheet
 import com.gravatar.quickeditor.ui.oauth.OAuthParams
 import kotlinx.coroutines.launch
 
 internal fun addQuickEditorToView(
     viewGroup: ViewGroup,
-    appName: String,
+    gravatarQuickEditorParams: GravatarQuickEditorParams,
     oAuthParams: OAuthParams,
     onAvatarUpdateResult: (AvatarUpdateResult) -> Unit,
     onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit,
@@ -32,7 +33,7 @@ internal fun addQuickEditorToView(
                 GravatarQuickEditorBottomSheetWrapper(
                     parent = viewGroup,
                     composeView = this,
-                    appName = appName,
+                    gravatarQuickEditorParams = gravatarQuickEditorParams,
                     oAuthParams = oAuthParams,
                     onAvatarUpdateResult = onAvatarUpdateResult,
                     onDismiss = onDismiss,
@@ -47,7 +48,7 @@ internal fun addQuickEditorToView(
 private fun GravatarQuickEditorBottomSheetWrapper(
     parent: ViewGroup,
     composeView: ComposeView,
-    appName: String,
+    gravatarQuickEditorParams: GravatarQuickEditorParams,
     oAuthParams: OAuthParams,
     onAvatarUpdateResult: (AvatarUpdateResult) -> Unit,
     onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit,
@@ -58,7 +59,7 @@ private fun GravatarQuickEditorBottomSheetWrapper(
     val modalBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     GravatarQuickEditorBottomSheet(
-        appName = appName,
+        gravatarQuickEditorParams = gravatarQuickEditorParams,
         oAuthParams = oAuthParams,
         onAvatarSelected = onAvatarUpdateResult,
         onDismiss = onDismiss,

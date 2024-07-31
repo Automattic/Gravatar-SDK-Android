@@ -1,17 +1,9 @@
 public final class com/gravatar/quickeditor/GravatarQuickEditor {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/gravatar/quickeditor/GravatarQuickEditor;
-	public static final fun show (Landroid/app/Activity;Ljava/lang/String;Lcom/gravatar/quickeditor/ui/oauth/OAuthParams;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)V
-	public static final fun show (Landroidx/fragment/app/Fragment;Ljava/lang/String;Lcom/gravatar/quickeditor/ui/oauth/OAuthParams;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)V
-}
-
-public final class com/gravatar/quickeditor/ui/ComposableSingletons$GravatarQuickEditorSplashPageKt {
-	public static final field INSTANCE Lcom/gravatar/quickeditor/ui/ComposableSingletons$GravatarQuickEditorSplashPageKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public fun <init> ()V
-	public final fun getLambda-1$gravatar_quickeditor_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$gravatar_quickeditor_release ()Lkotlin/jvm/functions/Function2;
+	public final fun logout (Lcom/gravatar/types/Email;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun show (Landroid/app/Activity;Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorParams;Lcom/gravatar/quickeditor/ui/oauth/OAuthParams;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)V
+	public static final fun show (Landroidx/fragment/app/Fragment;Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorParams;Lcom/gravatar/quickeditor/ui/oauth/OAuthParams;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)V
 }
 
 public final class com/gravatar/quickeditor/ui/editor/AvatarUpdateResult {
@@ -58,6 +50,32 @@ public final class com/gravatar/quickeditor/ui/editor/GravatarQuickEditorDismiss
 	public fun toString ()Ljava/lang/String;
 }
 
+public final class com/gravatar/quickeditor/ui/editor/GravatarQuickEditorParams {
+	public static final field $stable I
+	public synthetic fun <init> (Ljava/lang/String;Lcom/gravatar/types/Email;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAppName ()Ljava/lang/String;
+	public final fun getEmail ()Lcom/gravatar/types/Email;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/gravatar/quickeditor/ui/editor/GravatarQuickEditorParams$Builder {
+	public static final field $stable I
+	public fun <init> ()V
+	public final fun build ()Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorParams;
+	public final fun getAppName ()Ljava/lang/String;
+	public final fun getEmail ()Lcom/gravatar/types/Email;
+	public final fun setAppName (Ljava/lang/String;)Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorParams$Builder;
+	public final synthetic fun setAppName (Ljava/lang/String;)V
+	public final fun setEmail (Lcom/gravatar/types/Email;)Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorParams$Builder;
+	public final synthetic fun setEmail (Lcom/gravatar/types/Email;)V
+}
+
+public final class com/gravatar/quickeditor/ui/editor/GravatarQuickEditorParamsKt {
+	public static final synthetic fun GravatarQuickEditorParams (Lkotlin/jvm/functions/Function1;)Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorParams;
+}
+
 public final class com/gravatar/quickeditor/ui/editor/bottomsheet/ComposableSingletons$GravatarQuickEditorBottomSheetKt {
 	public static final field INSTANCE Lcom/gravatar/quickeditor/ui/editor/bottomsheet/ComposableSingletons$GravatarQuickEditorBottomSheetKt;
 	public static field lambda-1 Lkotlin/jvm/functions/Function2;
@@ -68,7 +86,7 @@ public final class com/gravatar/quickeditor/ui/editor/bottomsheet/ComposableSing
 }
 
 public final class com/gravatar/quickeditor/ui/editor/bottomsheet/GravatarQuickEditorBottomSheetKt {
-	public static final fun GravatarQuickEditorBottomSheet (Ljava/lang/String;Lcom/gravatar/quickeditor/ui/oauth/OAuthParams;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Landroidx/compose/material3/SheetState;Landroidx/compose/runtime/Composer;II)V
+	public static final fun GravatarQuickEditorBottomSheet (Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorParams;Lcom/gravatar/quickeditor/ui/oauth/OAuthParams;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Landroidx/compose/material3/SheetState;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/gravatar/quickeditor/ui/oauth/ComposableSingletons$OAuthPageKt {
@@ -108,5 +126,14 @@ public final class com/gravatar/quickeditor/ui/oauth/OAuthParams$Builder {
 
 public final class com/gravatar/quickeditor/ui/oauth/OAuthParamsKt {
 	public static final synthetic fun OAuthParams (Lkotlin/jvm/functions/Function1;)Lcom/gravatar/quickeditor/ui/oauth/OAuthParams;
+}
+
+public final class com/gravatar/quickeditor/ui/splash/ComposableSingletons$SplashPageKt {
+	public static final field INSTANCE Lcom/gravatar/quickeditor/ui/splash/ComposableSingletons$SplashPageKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public static field lambda-2 Lkotlin/jvm/functions/Function2;
+	public fun <init> ()V
+	public final fun getLambda-1$gravatar_quickeditor_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-2$gravatar_quickeditor_release ()Lkotlin/jvm/functions/Function2;
 }
 
