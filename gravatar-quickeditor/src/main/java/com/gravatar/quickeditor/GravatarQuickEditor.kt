@@ -8,6 +8,7 @@ import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorDismissReason
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
 import com.gravatar.quickeditor.ui.editor.extensions.addQuickEditorToView
 import com.gravatar.quickeditor.ui.oauth.OAuthParams
+import com.gravatar.types.Email
 
 /**
  * Singleton object that provides easy to use functions to interact with the Gravatar Quick Editor.
@@ -68,7 +69,7 @@ public object GravatarQuickEditor {
      *
      * @param email The email of the user.
      */
-    public suspend fun logout(email: String) {
-        QuickEditorContainer.getInstance().tokenStorage.deleteToken(email)
+    public suspend fun logout(email: Email) {
+        QuickEditorContainer.getInstance().tokenStorage.deleteToken(email.toString())
     }
 }

@@ -49,7 +49,7 @@ class QuickEditorTestActivity : AppCompatActivity() {
                 activity = this,
                 gravatarQuickEditorParams = GravatarQuickEditorParams {
                     appName = getString(R.string.app_name)
-                    email = BuildConfig.DEMO_EMAIL
+                    email = Email(BuildConfig.DEMO_EMAIL)
                 },
                 oAuthParams = OAuthParams {
                     clientId = BuildConfig.DEMO_WORDPRESS_CLIENT_ID

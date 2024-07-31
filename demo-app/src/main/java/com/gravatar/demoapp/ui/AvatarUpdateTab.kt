@@ -41,6 +41,7 @@ import com.gravatar.quickeditor.GravatarQuickEditor
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
 import com.gravatar.quickeditor.ui.editor.bottomsheet.GravatarQuickEditorBottomSheet
 import com.gravatar.quickeditor.ui.oauth.OAuthParams
+import com.gravatar.types.Email
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -85,7 +86,7 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
                 .padding(bottom = 20.dp),
             onClick = {
                 scope.launch {
-                    GravatarQuickEditor.logout(userEmail)
+                    GravatarQuickEditor.logout(Email(userEmail))
                     Toast.makeText(context, "Logged out", Toast.LENGTH_SHORT).show()
                 }
             },
@@ -98,7 +99,7 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
         GravatarQuickEditorBottomSheet(
             gravatarQuickEditorParams = GravatarQuickEditorParams {
                 appName = applicationName
-                email = userEmail
+                email = Email(userEmail)
             },
             oAuthParams = OAuthParams {
                 clientId = BuildConfig.DEMO_WORDPRESS_CLIENT_ID

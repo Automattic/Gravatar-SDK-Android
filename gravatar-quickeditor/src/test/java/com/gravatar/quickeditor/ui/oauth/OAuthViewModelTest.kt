@@ -6,6 +6,7 @@ import com.gravatar.quickeditor.data.storage.TokenStorage
 import com.gravatar.quickeditor.ui.CoroutineTestRule
 import com.gravatar.services.ErrorType
 import com.gravatar.services.Result
+import com.gravatar.types.Email
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -59,7 +60,7 @@ class OAuthViewModelTest {
                     clientSecret = "client_secret"
                     redirectUri = "redirect_uri"
                 },
-                "email",
+                Email("email"),
             )
             assertEquals(OAuthUiState(isAuthorizing = true), awaitItem())
 
@@ -87,7 +88,7 @@ class OAuthViewModelTest {
                     clientSecret = "client_secret"
                     redirectUri = "redirect_uri"
                 },
-                "email",
+                Email("email"),
             )
             assertEquals(OAuthAction.AuthorizationFailure, awaitItem())
         }
@@ -113,7 +114,7 @@ class OAuthViewModelTest {
                     clientSecret = "client_secret"
                     redirectUri = "redirect_uri"
                 },
-                "email",
+                Email("email"),
             )
             assertEquals(OAuthAction.AuthorizationSuccess, awaitItem())
         }
@@ -140,7 +141,7 @@ class OAuthViewModelTest {
                 clientSecret = "client_secret"
                 redirectUri = "redirect_uri"
             },
-            email,
+            Email(email),
         )
         advanceUntilIdle()
 

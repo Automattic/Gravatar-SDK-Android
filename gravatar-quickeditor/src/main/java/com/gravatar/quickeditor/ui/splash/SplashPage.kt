@@ -11,13 +11,14 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.gravatar.types.Email
 import com.gravatar.ui.GravatarTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 @Composable
 internal fun SplashPage(
-    email: String,
+    email: Email,
     viewModel: SplashViewModel = viewModel(factory = SplashViewModelFactory(email)),
     onAuthorized: (Boolean) -> Unit,
 ) {

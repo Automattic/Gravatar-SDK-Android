@@ -20,6 +20,7 @@ import com.gravatar.quickeditor.ui.navigation.QuickEditorPage
 import com.gravatar.quickeditor.ui.oauth.OAuthPage
 import com.gravatar.quickeditor.ui.oauth.OAuthParams
 import com.gravatar.quickeditor.ui.splash.SplashPage
+import com.gravatar.types.Email
 import com.gravatar.ui.GravatarTheme
 
 /**
@@ -98,7 +99,7 @@ private fun ProfileQuickEditorPagePreview() {
     }
     val gravatarQuickEditorParams = GravatarQuickEditorParams {
         appName = "FancyMobileApp"
-        email = "email"
+        email = Email("email")
     }
     GravatarQuickEditorPage(
         gravatarQuickEditorParams = gravatarQuickEditorParams,

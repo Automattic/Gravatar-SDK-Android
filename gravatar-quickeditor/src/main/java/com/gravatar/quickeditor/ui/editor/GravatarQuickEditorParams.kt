@@ -1,5 +1,6 @@
 package com.gravatar.quickeditor.ui.editor
 
+import com.gravatar.types.Email
 import java.util.Objects
 
 /**
@@ -10,7 +11,7 @@ import java.util.Objects
  */
 public class GravatarQuickEditorParams private constructor(
     public val appName: String,
-    public val email: String,
+    public val email: Email,
 ) {
     override fun toString(): String = "GravatarQuickEditorParams(appName='$appName', email='$email')"
 
@@ -36,7 +37,7 @@ public class GravatarQuickEditorParams private constructor(
          * The email of the user
          */
         @set:JvmSynthetic // Hide 'void' setter from Java
-        public var email: String? = null
+        public var email: Email? = null
 
         /**
          * Sets the appName
@@ -46,7 +47,7 @@ public class GravatarQuickEditorParams private constructor(
         /**
          * Sets the email
          */
-        public fun setEmail(email: String): Builder = apply { this.email = email }
+        public fun setEmail(email: Email): Builder = apply { this.email = email }
 
         /**
          * Builds the GravatarQuickEditorParams object

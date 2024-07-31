@@ -8,6 +8,7 @@ import com.gravatar.quickeditor.QuickEditorContainer
 import com.gravatar.quickeditor.data.service.WordPressOAuthService
 import com.gravatar.quickeditor.data.storage.TokenStorage
 import com.gravatar.services.Result
+import com.gravatar.types.Email
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -32,7 +33,7 @@ internal class OAuthViewModel(
         }
     }
 
-    fun fetchAccessToken(code: String, oAuthParams: OAuthParams, email: String) {
+    fun fetchAccessToken(code: String, oAuthParams: OAuthParams, email: Email) {
         viewModelScope.launch {
             _uiState.update { currentState -> currentState.copy(isAuthorizing = true) }
             val result = wordPressOAuthService.getAccessToken(
@@ -44,7 +45,7 @@ internal class OAuthViewModel(
 
             when (result) {
                 is Result.Success -> {
-                    tokenStorage.storeToken(email, result.value)
+                    tokenStorage.storeToken(email.toString(), result.value)
                     _uiState.update { currentState -> currentState.copy(isAuthorizing = false) }
                     _actions.send(OAuthAction.AuthorizationSuccess)
                 }

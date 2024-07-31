@@ -30,6 +30,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.gravatar.types.Email
 import com.gravatar.ui.GravatarTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -37,7 +38,7 @@ import kotlinx.coroutines.withContext
 @Composable
 internal fun OAuthPage(
     appName: String,
-    email: String,
+    email: Email,
     oAuthParams: OAuthParams,
     onAuthSuccess: () -> Unit,
     onAuthError: () -> Unit,
@@ -143,7 +144,7 @@ private fun OAuthPagePreview() {
                 clientSecret = "client_secret"
                 redirectUri = "redirect_uri"
             },
-            email = "email",
+            email = Email("email"),
             onAuthSuccess = { },
             onAuthError = { },
         )

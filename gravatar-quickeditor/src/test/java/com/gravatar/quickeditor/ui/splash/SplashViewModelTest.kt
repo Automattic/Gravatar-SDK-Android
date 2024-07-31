@@ -3,6 +3,7 @@ package com.gravatar.quickeditor.ui.splash
 import app.cash.turbine.test
 import com.gravatar.quickeditor.data.storage.TokenStorage
 import com.gravatar.quickeditor.ui.CoroutineTestRule
+import com.gravatar.types.Email
 import io.mockk.coEvery
 import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
@@ -21,11 +22,11 @@ class SplashViewModelTest {
 
     private lateinit var viewModel: SplashViewModel
 
-    private val email = "testEmail"
+    private val email = Email("testEmail")
 
     @Test
     fun `given view model initialization when token present then ShowQuickEditor sent`() = runTest {
-        coEvery { tokenStorage.getToken(email) } returns "token"
+        coEvery { tokenStorage.getToken(email.toString()) } returns "token"
 
         viewModel = SplashViewModel(email, tokenStorage)
 
@@ -36,7 +37,7 @@ class SplashViewModelTest {
 
     @Test
     fun `given view model initialization when token null then ShowOAuth sent`() = runTest {
-        coEvery { tokenStorage.getToken(email) } returns null
+        coEvery { tokenStorage.getToken(email.toString()) } returns null
 
         viewModel = SplashViewModel(email, tokenStorage)
 

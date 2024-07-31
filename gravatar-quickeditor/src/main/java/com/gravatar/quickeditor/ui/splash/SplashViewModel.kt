@@ -6,12 +6,13 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.gravatar.quickeditor.QuickEditorContainer
 import com.gravatar.quickeditor.data.storage.TokenStorage
+import com.gravatar.types.Email
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 internal class SplashViewModel(
-    email: String,
+    email: Email,
     private val tokenStorage: TokenStorage,
 ) : ViewModel() {
     private val _actions = Channel<SplashAction>(Channel.BUFFERED)
@@ -19,7 +20,7 @@ internal class SplashViewModel(
 
     init {
         viewModelScope.launch {
-            if (tokenStorage.getToken(email) != null) {
+            if (tokenStorage.getToken(email.toString()) != null) {
                 _actions.send(SplashAction.ShowQuickEditor)
             } else {
                 _actions.send(SplashAction.ShowOAuth)
@@ -29,7 +30,7 @@ internal class SplashViewModel(
 }
 
 internal class SplashViewModelFactory(
-    private val email: String,
+    private val email: Email,
 ) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
