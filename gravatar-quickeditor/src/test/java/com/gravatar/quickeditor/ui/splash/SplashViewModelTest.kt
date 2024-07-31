@@ -26,7 +26,7 @@ class SplashViewModelTest {
 
     @Test
     fun `given view model initialization when token present then ShowQuickEditor sent`() = runTest {
-        coEvery { tokenStorage.getToken(email.toString()) } returns "token"
+        coEvery { tokenStorage.getToken(email.hash().toString()) } returns "token"
 
         viewModel = SplashViewModel(email, tokenStorage)
 
@@ -37,7 +37,7 @@ class SplashViewModelTest {
 
     @Test
     fun `given view model initialization when token null then ShowOAuth sent`() = runTest {
-        coEvery { tokenStorage.getToken(email.toString()) } returns null
+        coEvery { tokenStorage.getToken(email.hash().toString()) } returns null
 
         viewModel = SplashViewModel(email, tokenStorage)
 

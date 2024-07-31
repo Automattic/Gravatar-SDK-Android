@@ -20,7 +20,7 @@ internal class SplashViewModel(
 
     init {
         viewModelScope.launch {
-            if (tokenStorage.getToken(email.toString()) != null) {
+            if (tokenStorage.getToken(email.hash().toString()) != null) {
                 _actions.send(SplashAction.ShowQuickEditor)
             } else {
                 _actions.send(SplashAction.ShowOAuth)

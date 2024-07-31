@@ -70,6 +70,6 @@ public object GravatarQuickEditor {
      * @param email The email of the user.
      */
     public suspend fun logout(email: Email) {
-        QuickEditorContainer.getInstance().tokenStorage.deleteToken(email.toString())
+        QuickEditorContainer.getInstance().tokenStorage.deleteToken(email.hash().toString())
     }
 }
