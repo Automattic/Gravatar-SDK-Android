@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.startup.Initializer
 import com.gravatar.quickeditor.QuickEditorContainer
 
-internal class QuickEditorInitializer : Initializer<QuickEditorContainer> {
+internal class QuickEditorContainerInitializer : Initializer<QuickEditorContainer> {
     override fun create(context: Context): QuickEditorContainer {
         return QuickEditorContainer.init(context)
     }

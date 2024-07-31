@@ -11,7 +11,7 @@
             android:exported="false"
             tools:node="merge">
             <meta-data
-                android:name="com.gravatar.quickeditor.initializer.QuickEditorInitializer"
+                android:name="com.gravatar.quickeditor.initializer.QuickEditorContainerInitializer"
                 android:value="androidx.startup" />
         </provider>
     </application>
