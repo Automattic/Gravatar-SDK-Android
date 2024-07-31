@@ -10,7 +10,7 @@ import com.gravatar.di.container.GravatarSdkContainer.Companion.instance as Grav
 /**
  * Service for managing Gravatar identities.
  */
-public class IdentityService(private val okHttpClient: OkHttpClient? = null, oauthToken: String) {
+public class IdentityService(private val okHttpClient: OkHttpClient? = null) {
     private companion object {
         const val LOG_TAG = "IdentityService"
     }

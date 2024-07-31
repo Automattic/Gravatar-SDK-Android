@@ -21,7 +21,7 @@ class IdentityServiceTest {
 
     @Before
     fun setUp() {
-        identityService = IdentityService(oauthToken = "oauthToken")
+        identityService = IdentityService()
     }
 
     @Test
