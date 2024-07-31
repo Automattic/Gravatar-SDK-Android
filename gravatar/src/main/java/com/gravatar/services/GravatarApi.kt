@@ -1,5 +1,7 @@
 package com.gravatar.services
 
+import com.gravatar.restapi.apis.AvatarsApi
+import com.gravatar.restapi.apis.IdentitiesApi
 import com.gravatar.restapi.apis.ProfilesApi
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
@@ -9,7 +11,7 @@ import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
 
-internal interface GravatarApi : ProfilesApi {
+internal interface GravatarApi : ProfilesApi, AvatarsApi, IdentitiesApi {
     @Multipart
     @POST("upload-image")
     suspend fun uploadImage(

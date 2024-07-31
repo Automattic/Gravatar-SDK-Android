@@ -55,6 +55,7 @@ internal class GravatarSdkContainer private constructor() {
         }.build().create(GravatarApi::class.java)
     }
 
+    @Deprecated("Use getGravatarV3Service instead", level = DeprecationLevel.WARNING)
     fun getGravatarApiV3Service(okHttpClient: OkHttpClient? = null): GravatarApiService {
         return getRetrofitApiV3Builder().apply {
             client((okHttpClient ?: OkHttpClient()).newBuilder().addInterceptor(AuthenticationInterceptor()).build())
@@ -62,9 +63,13 @@ internal class GravatarSdkContainer private constructor() {
             .build().create(GravatarApiService::class.java)
     }
 
-    fun getGravatarV3Service(okHttpClient: OkHttpClient? = null): GravatarApi {
+    fun getGravatarV3Service(okHttpClient: OkHttpClient? = null, oauthToken: String? = null): GravatarApi {
         return getRetrofitApiV3Builder().apply {
-            client((okHttpClient ?: OkHttpClient()).newBuilder().addInterceptor(AuthenticationInterceptor()).build())
+            client(
+                (okHttpClient ?: OkHttpClient()).newBuilder().addInterceptor(
+                    AuthenticationInterceptor(oauthToken),
+                ).build(),
+            )
         }.addConverterFactory(GsonConverterFactory.create(gson))
             .build().create(GravatarApi::class.java)
     }
