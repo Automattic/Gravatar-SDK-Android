@@ -3,4 +3,6 @@
     <string name="gravatar">Gravatar</string>
     <string name="selectable_avatar_content_description">Avatar Image</string>
     <string name="bottom_sheet_done">Done</string>
+    <string name="avatar_picker_title">Avatars</string>
+    <string name="avatar_picker_description">Choose or upload your favorite avatar images and connect them to your email address.</string>
 </resources>
