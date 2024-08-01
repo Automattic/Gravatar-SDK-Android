@@ -2,7 +2,9 @@ package com.gravatar.quickeditor
 
 import android.annotation.SuppressLint
 import android.content.Context
-import androidx.datastore.preferences.preferencesDataStore
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
+import androidx.datastore.preferences.core.Preferences
 import com.google.gson.GsonBuilder
 import com.gravatar.quickeditor.data.FileUtils
 import com.gravatar.quickeditor.data.repository.AvatarRepository
@@ -12,6 +14,8 @@ import com.gravatar.quickeditor.data.storage.TokenStorage
 import com.gravatar.services.AvatarService
 import com.gravatar.services.IdentityService
 import com.gravatar.services.ProfileService
+import com.gravatar.quickeditor.data.datastore.createEncryptedFileWithFallbackReset
+import io.github.osipxd.security.crypto.createEncrypted
 import kotlinx.coroutines.Dispatchers
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -36,10 +40,12 @@ internal class QuickEditorContainer private constructor(
         }
     }
 
-    private val Context.dataStore by preferencesDataStore(name = "quick-editor-preferences")
+    private val dataStore: DataStore<Preferences> = PreferenceDataStoreFactory.createEncrypted {
+        context.createEncryptedFileWithFallbackReset(name = "quick-editor-preferences")
+    }
 
     val tokenStorage: TokenStorage by lazy {
-        TokenStorage(dataStore = context.dataStore, dispatcher = Dispatchers.IO)
+        TokenStorage(dataStore = dataStore, dispatcher = Dispatchers.IO)
     }
 
     val wordPressOAuthService: WordPressOAuthService by lazy {
