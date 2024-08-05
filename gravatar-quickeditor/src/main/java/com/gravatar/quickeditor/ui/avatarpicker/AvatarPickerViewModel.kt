@@ -20,7 +20,7 @@ internal class AvatarPickerViewModel(
     private val avatarService: AvatarService,
     private val tokenStorage: TokenStorage,
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow(AvatarPickerUiState())
+    private val _uiState = MutableStateFlow(AvatarPickerUiState(email = email))
     val uiState: StateFlow<AvatarPickerUiState> = _uiState.asStateFlow()
 
     init {
@@ -32,14 +32,19 @@ internal class AvatarPickerViewModel(
             val token = tokenStorage.getToken(email.hash().toString())
             // Handle token not found
             token?.let {
+                _uiState.update { it.copy(isLoading = true) }
                 when (val result = avatarService.retrieveCatching(token)) {
                     is Result.Success -> {
-                        _uiState.update { currentState -> currentState.copy(avatars = result.value, error = false) }
+                        _uiState.update { currentState ->
+                            currentState.copy(avatars = result.value, error = false, isLoading = false)
+                        }
                     }
 
                     is Result.Failure -> {
                         // Handle error properly
-                        _uiState.update { currentState -> currentState.copy(avatars = emptyList(), error = true) }
+                        _uiState.update { currentState ->
+                            currentState.copy(avatars = null, error = true, isLoading = false)
+                        }
                     }
                 }
             }

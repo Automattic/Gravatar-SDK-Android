@@ -28,34 +28,46 @@ class AvatarPickerViewModelTest {
     private lateinit var viewModel: AvatarPickerViewModel
 
     private val email = Email("testEmail")
+    private val token = "token"
 
     @Test
     fun `given view model initialization when token present and avatars request succeed then uiState is updated`() =
         runTest {
             val avatars = listOf(mockk<Avatar>())
 
-            coEvery { tokenStorage.getToken(email.hash().toString()) } returns "token"
-            coEvery { avatarService.retrieveCatching("token") } returns Result.Success(avatars)
+            coEvery { tokenStorage.getToken(email.hash().toString()) } returns token
+            coEvery { avatarService.retrieveCatching(token) } returns Result.Success(avatars)
 
             viewModel = AvatarPickerViewModel(email, avatarService, tokenStorage)
 
             viewModel.uiState.test {
-                assertEquals(AvatarPickerUiState(avatars = emptyList(), error = false), awaitItem())
-                assertEquals(AvatarPickerUiState(avatars = avatars, error = false), awaitItem())
+                assertEquals(AvatarPickerUiState(email = email), awaitItem())
+                assertEquals(
+                    AvatarPickerUiState(email = email, isLoading = true),
+                    awaitItem(),
+                )
+                assertEquals(AvatarPickerUiState(email = email, avatars = avatars, error = false), awaitItem())
             }
         }
 
     @Test
     fun `given view model initialization when token present and avatars request fails then uiState is updated`() =
         runTest {
-            coEvery { tokenStorage.getToken(email.hash().toString()) } returns "token"
-            coEvery { avatarService.retrieveCatching("token") } returns Result.Failure(ErrorType.UNKNOWN)
+            coEvery { tokenStorage.getToken(email.hash().toString()) } returns token
+            coEvery { avatarService.retrieveCatching(token) } returns Result.Failure(ErrorType.UNKNOWN)
 
             viewModel = AvatarPickerViewModel(email, avatarService, tokenStorage)
 
             viewModel.uiState.test {
-                assertEquals(AvatarPickerUiState(avatars = emptyList(), error = false), awaitItem())
-                assertEquals(AvatarPickerUiState(avatars = emptyList(), error = true), awaitItem())
+                assertEquals(AvatarPickerUiState(email = email), awaitItem())
+                assertEquals(
+                    AvatarPickerUiState(email = email, isLoading = true),
+                    awaitItem(),
+                )
+                assertEquals(
+                    AvatarPickerUiState(email = email, error = true),
+                    awaitItem(),
+                )
             }
         }
 }

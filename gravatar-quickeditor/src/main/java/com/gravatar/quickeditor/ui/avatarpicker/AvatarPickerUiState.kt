@@ -5,6 +5,7 @@ import com.gravatar.types.Email
 
 internal data class AvatarPickerUiState(
     val email: Email,
-    val avatars: List<Avatar> = emptyList(),
+    val avatars: List<Avatar>? = null,
+    val isLoading: Boolean = false,
     val error: Boolean = false,
 )
