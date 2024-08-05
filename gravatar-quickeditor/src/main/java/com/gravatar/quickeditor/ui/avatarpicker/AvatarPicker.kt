@@ -35,6 +35,7 @@ import com.gravatar.quickeditor.ui.editor.bottomsheet.DEFAULT_PAGE_HEIGHT
 import com.gravatar.restapi.models.Avatar
 import com.gravatar.types.Email
 import com.gravatar.ui.GravatarTheme
+import java.time.Instant
 
 @Composable
 internal fun AvatarPicker(
@@ -48,7 +49,7 @@ internal fun AvatarPicker(
 }
 
 @Composable
-private fun AvatarPicker(uiState: AvatarPickerUiState, onAvatarSelected: (AvatarUpdateResult) -> Unit) {
+internal fun AvatarPicker(uiState: AvatarPickerUiState, onAvatarSelected: (AvatarUpdateResult) -> Unit) {
     GravatarTheme {
         Surface(Modifier.fillMaxWidth()) {
             when {
@@ -127,6 +128,7 @@ private fun AvatarPickerPreview() {
                     rating = "G"
                     altText = "alt"
                     isCropped = true
+                    updatedDate = Instant.now()
                 },
             ),
         ),
@@ -161,6 +163,7 @@ private fun AvatarSectionPreview() {
                     rating = "G"
                     altText = "alt"
                     isCropped = true
+                    updatedDate = Instant.now()
                 },
             ),
         )
