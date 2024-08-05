@@ -8,7 +8,8 @@ import androidx.activity.ComponentActivity
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -30,6 +31,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.gravatar.quickeditor.ui.editor.bottomsheet.DEFAULT_PAGE_HEIGHT
 import com.gravatar.types.Email
 import com.gravatar.ui.GravatarTheme
 import kotlinx.coroutines.Dispatchers
@@ -87,7 +89,7 @@ internal fun OAuthPage(
 
     GravatarTheme {
         Surface {
-            Box(modifier = modifier.fillMaxSize()) {
+            Box(modifier = modifier.fillMaxWidth().height(DEFAULT_PAGE_HEIGHT)) {
                 if (uiState.isAuthorizing) {
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                 } else {

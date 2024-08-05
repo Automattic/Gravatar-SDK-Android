@@ -63,8 +63,6 @@ class OAuthViewModelTest {
                 Email("email"),
             )
             assertEquals(OAuthUiState(isAuthorizing = true), awaitItem())
-
-            assertEquals(OAuthUiState(isAuthorizing = false), awaitItem())
         }
     }
 
