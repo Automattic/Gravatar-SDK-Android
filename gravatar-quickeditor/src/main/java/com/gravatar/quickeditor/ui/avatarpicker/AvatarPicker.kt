@@ -40,23 +40,39 @@ internal fun AvatarPicker(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
+    AvatarPicker(uiState = uiState, onAvatarSelected = onAvatarSelected)
+}
+
+@Composable
+private fun AvatarPicker(uiState: AvatarPickerUiState, onAvatarSelected: (AvatarUpdateResult) -> Unit) {
     GravatarTheme {
         Surface(Modifier.fillMaxWidth()) {
             if (uiState.error) {
                 Text(text = "There was an error loading avatars", textAlign = TextAlign.Center)
             } else {
-                AvatarsSection(uiState.avatars, onAvatarSelected)
+                AvatarsSection(
+                    uiState.avatars,
+                    onAvatarSelected,
+                    Modifier.padding(horizontal = 16.dp, vertical = 24.dp),
+                )
             }
         }
     }
 }
 
 @Composable
-private fun AvatarsSection(avatars: List<Avatar>, onAvatarSelected: (AvatarUpdateResult) -> Unit) {
+private fun AvatarsSection(
+    avatars: List<Avatar>,
+    onAvatarSelected: (AvatarUpdateResult) -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Box(
-        modifier = Modifier
-            .padding(16.dp)
-            .border(width = 2.dp, color = MaterialTheme.colorScheme.surfaceDim, shape = RoundedCornerShape(8.dp))
+        modifier = modifier
+            .border(
+                width = 1.dp,
+                color = MaterialTheme.colorScheme.surfaceContainerHighest,
+                shape = RoundedCornerShape(8.dp),
+            )
             .padding(16.dp),
     ) {
         Column {
@@ -87,15 +103,45 @@ private fun AvatarsSection(avatars: List<Avatar>, onAvatarSelected: (AvatarUpdat
 }
 
 @Composable
-@Preview
+@Preview(showBackground = true)
+private fun AvatarPickerPreview() {
+    AvatarPicker(
+        uiState = AvatarPickerUiState(
+            email = Email("henry.a.wallace@example.com"),
+            avatars = listOf(
+                Avatar {
+                    imageUrl = "/image/url"
+                    format = 0
+                    imageId = "1"
+                    rating = "G"
+                    altText = "alt"
+                    isCropped = true
+                },
+            ),
+        ),
+        onAvatarSelected = { },
+    )
+}
+
+@Composable
+@Preview(showBackground = true)
 private fun AvatarSectionPreview() {
     GravatarTheme {
         AvatarsSection(
-            avatars = emptyList(),
             onAvatarSelected = { },
+            avatars = listOf(
+                Avatar {
+                    imageUrl = "/image/url"
+                    format = 0
+                    imageId = "1"
+                    rating = "G"
+                    altText = "alt"
+                    isCropped = true
+                },
+            ),
         )
     }
 }
 
 private val Avatar.fullUrl: String
-    get() = "https://www.gravatar.com$imageUrl"
+    get() = "https://www.gravatar.com$imageUrl?size=200"
