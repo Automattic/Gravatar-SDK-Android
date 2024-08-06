@@ -4,6 +4,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -24,17 +25,22 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.gravatar.extensions.defaultProfile
 import com.gravatar.quickeditor.R
+import com.gravatar.quickeditor.ui.components.EmailLabel
+import com.gravatar.quickeditor.ui.components.ProfileCard
 import com.gravatar.quickeditor.ui.components.SelectableAvatar
 import com.gravatar.quickeditor.ui.editor.AvatarUpdateResult
 import com.gravatar.quickeditor.ui.editor.bottomsheet.DEFAULT_PAGE_HEIGHT
 import com.gravatar.restapi.models.Avatar
 import com.gravatar.types.Email
 import com.gravatar.ui.GravatarTheme
+import com.gravatar.ui.components.ComponentState
 import java.time.Instant
 
 @Composable
@@ -52,21 +58,36 @@ internal fun AvatarPicker(
 internal fun AvatarPicker(uiState: AvatarPickerUiState, onAvatarSelected: (AvatarUpdateResult) -> Unit) {
     GravatarTheme {
         Surface(Modifier.fillMaxWidth()) {
-            when {
-                uiState.isLoading -> Box(
+            Column {
+                EmailLabel(
+                    email = uiState.email,
                     modifier = Modifier
-                        .height(DEFAULT_PAGE_HEIGHT)
-                        .fillMaxWidth(),
-                ) {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-                }
-
-                uiState.error -> Text(text = "There was an error loading avatars", textAlign = TextAlign.Center)
-                uiState.avatars != null -> AvatarsSection(
-                    uiState.avatars,
-                    onAvatarSelected,
-                    Modifier.padding(horizontal = 16.dp, vertical = 24.dp),
+                        .fillMaxWidth()
+                        .padding(bottom = 10.dp),
                 )
+                ProfileCard(
+                    profile = uiState.profile,
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                )
+                Spacer(modifier = Modifier.height(24.dp))
+                when {
+                    uiState.isLoading -> Box(
+                        modifier = Modifier
+                            .height(DEFAULT_PAGE_HEIGHT)
+                            .fillMaxWidth(),
+                    ) {
+                        CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                    }
+
+                    uiState.error -> Text(text = "There was an error loading avatars", textAlign = TextAlign.Center)
+                    uiState.avatars != null ->
+                        AvatarsSection(
+                            uiState.avatars,
+                            onAvatarSelected,
+                            Modifier.padding(horizontal = 16.dp),
+                        )
+                }
+                Spacer(modifier = Modifier.height(24.dp))
             }
         }
     }
@@ -115,11 +136,18 @@ private fun AvatarsSection(
 }
 
 @Composable
-@Preview(showBackground = true)
+@PreviewLightDark
 private fun AvatarPickerPreview() {
     AvatarPicker(
         uiState = AvatarPickerUiState(
             email = Email("henry.a.wallace@example.com"),
+            profile = ComponentState.Loaded(
+                defaultProfile(
+                    hash = "tetet",
+                    displayName = "Henry Wallace",
+                    location = "London, UK",
+                ),
+            ),
             avatars = listOf(
                 Avatar {
                     imageUrl = "/image/url"
@@ -137,11 +165,12 @@ private fun AvatarPickerPreview() {
 }
 
 @Composable
-@Preview(showBackground = true)
+@PreviewLightDark
 private fun AvatarPickerLoadingPreview() {
     AvatarPicker(
         uiState = AvatarPickerUiState(
             email = Email("henry.a.wallace@example.com"),
+            profile = ComponentState.Loading,
             isLoading = true,
             avatars = emptyList(),
         ),
