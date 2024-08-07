@@ -5,8 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.gravatar.quickeditor.QuickEditorContainer
-import com.gravatar.quickeditor.data.storage.TokenStorage
-import com.gravatar.services.AvatarService
+import com.gravatar.quickeditor.data.repository.AvatarRepository
 import com.gravatar.services.ProfileService
 import com.gravatar.services.Result
 import com.gravatar.types.Email
@@ -19,9 +18,8 @@ import kotlinx.coroutines.launch
 
 internal class AvatarPickerViewModel(
     email: Email,
-    private val avatarService: AvatarService,
     private val profileService: ProfileService,
-    private val tokenStorage: TokenStorage,
+    private val avatarRepository: AvatarRepository,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(AvatarPickerUiState(email = email))
     val uiState: StateFlow<AvatarPickerUiState> = _uiState.asStateFlow()
@@ -40,6 +38,7 @@ internal class AvatarPickerViewModel(
                         currentState.copy(profile = ComponentState.Loaded(result.value))
                     }
                 }
+
                 is Result.Failure -> {
                     _uiState.update { currentState ->
                         currentState.copy(profile = null)
@@ -51,22 +50,17 @@ internal class AvatarPickerViewModel(
 
     private fun fetchAvatars(email: Email) {
         viewModelScope.launch {
-            val token = tokenStorage.getToken(email.hash().toString())
-            // Handle token not found
-            token?.let {
-                _uiState.update { it.copy(isLoading = true) }
-                when (val result = avatarService.retrieveCatching(token)) {
-                    is Result.Success -> {
-                        _uiState.update { currentState ->
-                            currentState.copy(avatars = result.value, error = false, isLoading = false)
-                        }
+            _uiState.update { currentState -> currentState.copy(isLoading = true) }
+            when (val result = avatarRepository.getAvatars(email)) {
+                is Result.Success -> {
+                    _uiState.update { currentState ->
+                        currentState.copy(identityAvatars = result.value, isLoading = false, error = false)
                     }
+                }
 
-                    is Result.Failure -> {
-                        // Handle error properly
-                        _uiState.update { currentState ->
-                            currentState.copy(avatars = null, error = true, isLoading = false)
-                        }
+                is Result.Failure -> {
+                    _uiState.update { currentState ->
+                        currentState.copy(identityAvatars = null, isLoading = false, error = true)
                     }
                 }
             }
@@ -81,9 +75,8 @@ internal class AvatarPickerViewModelFactory(
     override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
         return AvatarPickerViewModel(
             email = email,
-            avatarService = QuickEditorContainer.getInstance().avatarService,
             profileService = QuickEditorContainer.getInstance().profileService,
-            tokenStorage = QuickEditorContainer.getInstance().tokenStorage,
+            avatarRepository = QuickEditorContainer.getInstance().avatarRepository,
         ) as T
     }
 }

@@ -2,10 +2,11 @@ package com.gravatar.quickeditor.ui.avatarpicker
 
 import app.cash.turbine.test
 import com.gravatar.extensions.defaultProfile
-import com.gravatar.quickeditor.data.storage.TokenStorage
+import com.gravatar.quickeditor.data.models.QuickEditorError
+import com.gravatar.quickeditor.data.repository.AvatarRepository
+import com.gravatar.quickeditor.data.repository.IdentityAvatars
 import com.gravatar.quickeditor.ui.CoroutineTestRule
 import com.gravatar.restapi.models.Avatar
-import com.gravatar.services.AvatarService
 import com.gravatar.services.ErrorType
 import com.gravatar.services.ProfileService
 import com.gravatar.services.Result
@@ -19,6 +20,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import java.time.Instant
 
 class AvatarPickerViewModelTest {
     private val testDispatcher = StandardTestDispatcher()
@@ -26,69 +28,70 @@ class AvatarPickerViewModelTest {
     @get:Rule
     var coroutineTestRule = CoroutineTestRule(testDispatcher)
 
-    private val tokenStorage = mockk<TokenStorage>()
-    private val avatarService = mockk<AvatarService>()
     private val profileService = mockk<ProfileService>()
+    private val avatarRepository = mockk<AvatarRepository>()
 
     private lateinit var viewModel: AvatarPickerViewModel
 
     private val email = Email("testEmail")
-    private val token = "token"
     private val profile = defaultProfile(hash = "hash", displayName = "Display name")
-    private val avatars = listOf(mockk<Avatar>())
+    private val avatars = listOf(createAvatar("1"), createAvatar("2"))
+    private val identityAvatars = IdentityAvatars(avatars, "1")
 
     @Before
     fun setup() {
         coEvery { profileService.retrieveCatching(email) } returns Result.Failure(ErrorType.UNKNOWN)
-        coEvery { tokenStorage.getToken(email.hash().toString()) } returns token
-        coEvery { avatarService.retrieveCatching(token) } returns Result.Success(avatars)
+        coEvery { avatarRepository.getAvatars(email) } returns Result.Success(identityAvatars)
     }
 
     @Test
-    fun `given view model initialization when token present and avatars request succeed then uiState is updated`() =
-        runTest {
-            viewModel = AvatarPickerViewModel(email, avatarService, profileService, tokenStorage)
+    fun `given view model initialization when avatars request succeed then uiState is updated`() = runTest {
+        viewModel = initViewModel()
 
-            viewModel.uiState.test {
-                assertEquals(AvatarPickerUiState(email = email), awaitItem())
-                assertEquals(
-                    AvatarPickerUiState(email = email, isLoading = true, profile = null),
-                    awaitItem(),
-                )
-                assertEquals(
-                    AvatarPickerUiState(email = email, avatars = avatars, error = false, profile = null),
-                    awaitItem(),
-                )
-                skipItems(2) // skipping profile loading states
-            }
+        viewModel.uiState.test {
+            assertEquals(AvatarPickerUiState(email = email), awaitItem())
+            assertEquals(
+                AvatarPickerUiState(email = email, isLoading = true, profile = null),
+                awaitItem(),
+            )
+            assertEquals(
+                AvatarPickerUiState(
+                    email = email,
+                    identityAvatars = identityAvatars,
+                    error = false,
+                    profile = null,
+                ),
+                awaitItem(),
+            )
+            skipItems(2) // skipping profile loading states
         }
+    }
 
     @Test
-    fun `given view model initialization when token present and avatars request fails then uiState is updated`() =
-        runTest {
-            coEvery { avatarService.retrieveCatching(token) } returns Result.Failure(ErrorType.UNKNOWN)
+    fun `given view model initialization when avatars request fails then uiState is updated`() = runTest {
+        coEvery { avatarRepository.getAvatars(email) } returns Result.Failure(QuickEditorError.Unknown)
 
-            viewModel = AvatarPickerViewModel(email, avatarService, profileService, tokenStorage)
+        viewModel = initViewModel()
 
-            viewModel.uiState.test {
-                assertEquals(AvatarPickerUiState(email = email), awaitItem())
-                assertEquals(
-                    AvatarPickerUiState(email = email, isLoading = true),
-                    awaitItem(),
-                )
-                assertEquals(
-                    AvatarPickerUiState(email = email, error = true),
-                    awaitItem(),
-                )
-                skipItems(2) // skipping profile loading states
-            }
+        viewModel.uiState.test {
+            assertEquals(AvatarPickerUiState(email = email), awaitItem())
+            assertEquals(
+                AvatarPickerUiState(email = email, isLoading = true),
+                awaitItem(),
+            )
+            assertEquals(
+                AvatarPickerUiState(email = email, error = true),
+                awaitItem(),
+            )
+            skipItems(2) // skipping profile loading states
         }
+    }
 
     @Test
     fun `given view model initialization when fetch profile successful then uiState is updated`() = runTest {
         coEvery { profileService.retrieveCatching(email) } returns Result.Success(profile)
 
-        viewModel = AvatarPickerViewModel(email, avatarService, profileService, tokenStorage)
+        viewModel = initViewModel()
 
         viewModel.uiState.test {
             assertEquals(AvatarPickerUiState(email = email), awaitItem())
@@ -96,7 +99,7 @@ class AvatarPickerViewModelTest {
             assertEquals(
                 AvatarPickerUiState(
                     email = email,
-                    avatars = avatars,
+                    identityAvatars = identityAvatars,
                     error = false,
                     profile = ComponentState.Loading,
                 ),
@@ -105,7 +108,7 @@ class AvatarPickerViewModelTest {
             assertEquals(
                 AvatarPickerUiState(
                     email = email,
-                    avatars = avatars,
+                    identityAvatars = identityAvatars,
                     error = false,
                     profile = ComponentState.Loaded(profile),
                 ),
@@ -116,7 +119,7 @@ class AvatarPickerViewModelTest {
 
     @Test
     fun `given view model initialization when fetch profile error then uiState is updated`() = runTest {
-        viewModel = AvatarPickerViewModel(email, avatarService, profileService, tokenStorage)
+        viewModel = initViewModel()
 
         viewModel.uiState.test {
             assertEquals(AvatarPickerUiState(email = email), awaitItem())
@@ -124,7 +127,7 @@ class AvatarPickerViewModelTest {
             assertEquals(
                 AvatarPickerUiState(
                     email = email,
-                    avatars = avatars,
+                    identityAvatars = identityAvatars,
                     error = false,
                     profile = ComponentState.Loading,
                 ),
@@ -133,12 +136,24 @@ class AvatarPickerViewModelTest {
             assertEquals(
                 AvatarPickerUiState(
                     email = email,
-                    avatars = avatars,
+                    identityAvatars = identityAvatars,
                     error = false,
                     profile = null,
                 ),
                 awaitItem(),
             )
         }
+    }
+
+    private fun initViewModel() = AvatarPickerViewModel(email, profileService, avatarRepository)
+
+    private fun createAvatar(id: String) = Avatar {
+        imageUrl = "/image/url"
+        format = 0
+        imageId = id
+        rating = "G"
+        altText = "alt"
+        isCropped = true
+        updatedDate = Instant.now()
     }
 }

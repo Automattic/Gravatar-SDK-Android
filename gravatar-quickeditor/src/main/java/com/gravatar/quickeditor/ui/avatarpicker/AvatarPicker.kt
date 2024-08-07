@@ -32,6 +32,7 @@ import androidx.core.net.toUri
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.gravatar.extensions.defaultProfile
 import com.gravatar.quickeditor.R
+import com.gravatar.quickeditor.data.repository.IdentityAvatars
 import com.gravatar.quickeditor.ui.components.EmailLabel
 import com.gravatar.quickeditor.ui.components.ProfileCard
 import com.gravatar.quickeditor.ui.components.SelectableAvatar
@@ -95,7 +96,7 @@ internal fun AvatarPicker(uiState: AvatarPickerUiState, onAvatarSelected: (Avata
 
 @Composable
 private fun AvatarsSection(
-    avatars: List<Avatar>,
+    avatars: List<AvatarUi>,
     onAvatarSelected: (AvatarUpdateResult) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -122,13 +123,17 @@ private fun AvatarsSection(
             )
 
             LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.padding(top = 24.dp)) {
-                items(items = avatars) { avatar ->
-                    SelectableAvatar(
-                        imageUrl = avatar.fullUrl,
-                        isSelected = false,
-                        onAvatarClicked = { onAvatarSelected(AvatarUpdateResult(avatar.fullUrl.toUri())) },
-                        modifier = Modifier.size(96.dp),
-                    )
+                items(items = avatars, key = { it.avatarId }) { avatarModel ->
+                    when (avatarModel) {
+                        is AvatarUi.Uploaded -> SelectableAvatar(
+                            imageUrl = avatarModel.avatar.fullUrl,
+                            isSelected = avatarModel.isSelected,
+                            onAvatarClicked = {
+                                onAvatarSelected(AvatarUpdateResult(avatarModel.avatar.fullUrl.toUri()))
+                            },
+                            modifier = Modifier.size(96.dp),
+                        )
+                    }
                 }
             }
         }
@@ -148,16 +153,19 @@ private fun AvatarPickerPreview() {
                     location = "London, UK",
                 ),
             ),
-            avatars = listOf(
-                Avatar {
-                    imageUrl = "/image/url"
-                    format = 0
-                    imageId = "1"
-                    rating = "G"
-                    altText = "alt"
-                    isCropped = true
-                    updatedDate = Instant.now()
-                },
+            identityAvatars = IdentityAvatars(
+                avatars = listOf(
+                    Avatar {
+                        imageUrl = "/image/url"
+                        format = 0
+                        imageId = "1"
+                        rating = "G"
+                        altText = "alt"
+                        isCropped = true
+                        updatedDate = Instant.now()
+                    },
+                ),
+                selectedAvatarId = "1",
             ),
         ),
         onAvatarSelected = { },
@@ -172,7 +180,7 @@ private fun AvatarPickerLoadingPreview() {
             email = Email("henry.a.wallace@example.com"),
             profile = ComponentState.Loading,
             isLoading = true,
-            avatars = emptyList(),
+            identityAvatars = null,
         ),
         onAvatarSelected = { },
     )
@@ -185,15 +193,18 @@ private fun AvatarSectionPreview() {
         AvatarsSection(
             onAvatarSelected = { },
             avatars = listOf(
-                Avatar {
-                    imageUrl = "/image/url"
-                    format = 0
-                    imageId = "1"
-                    rating = "G"
-                    altText = "alt"
-                    isCropped = true
-                    updatedDate = Instant.now()
-                },
+                AvatarUi.Uploaded(
+                    avatar = Avatar {
+                        imageUrl = "/image/url"
+                        format = 0
+                        imageId = "1"
+                        rating = "G"
+                        altText = "alt"
+                        isCropped = true
+                        updatedDate = Instant.now()
+                    },
+                    isSelected = true,
+                ),
             ),
         )
     }
