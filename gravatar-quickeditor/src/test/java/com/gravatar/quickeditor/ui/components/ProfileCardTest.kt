@@ -1,7 +1,6 @@
 package com.gravatar.quickeditor.ui.components
 
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.gravatar.extensions.defaultProfile
@@ -21,23 +20,19 @@ class ProfileCardTest : RoborazziTest() {
     @Test
     fun profileCardLightMode() {
         gravatarScreenshotTest {
-            Surface {
-                ProfileCard(
-                    profile = ComponentState.Loaded(profile),
-                    modifier = Modifier.padding(20.dp),
-                )
-            }
+            ProfileCard(
+                profile = ComponentState.Loaded(profile),
+                modifier = Modifier.padding(20.dp),
+            )
         }
     }
 
     @Test
     @Config(qualifiers = "+night")
     fun profileCardDarkMode() = gravatarScreenshotTest {
-        Surface {
-            ProfileCard(
-                profile = ComponentState.Loaded(profile),
-                modifier = Modifier.padding(20.dp),
-            )
-        }
+        ProfileCard(
+            profile = ComponentState.Loaded(profile),
+            modifier = Modifier.padding(20.dp),
+        )
     }
 }
