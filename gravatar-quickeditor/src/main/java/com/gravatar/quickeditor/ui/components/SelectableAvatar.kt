@@ -22,7 +22,7 @@ internal fun SelectableAvatar(
     onAvatarClicked: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val cornerRadius = 7.dp
+    val cornerRadius = 8.dp
     GravatarTheme {
         AsyncImage(
             model = imageUrl,
@@ -31,9 +31,9 @@ internal fun SelectableAvatar(
                 .clip(RoundedCornerShape(cornerRadius))
                 .then(
                     if (isSelected) {
-                        Modifier.border(7.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(cornerRadius))
+                        Modifier.border(4.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(cornerRadius))
                     } else {
-                        Modifier.border(2.dp, MaterialTheme.colorScheme.surfaceDim, RoundedCornerShape(cornerRadius))
+                        Modifier.border(1.dp, MaterialTheme.colorScheme.surfaceDim, RoundedCornerShape(cornerRadius))
                     },
                 )
                 .clickable {
