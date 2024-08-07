@@ -54,4 +54,6 @@ dependencies {
     implementation(libs.roborazzi)
     implementation(libs.roborazzi.compose)
     implementation(libs.roborazzi.junit.rule)
+    implementation(libs.coil.test)
+    implementation(libs.coil.compose)
 }
