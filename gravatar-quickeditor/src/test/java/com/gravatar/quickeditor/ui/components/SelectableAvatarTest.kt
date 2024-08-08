@@ -12,7 +12,8 @@ class SelectableAvatarTest : RoborazziTest() {
     fun selectableAvatarSelected() = gravatarScreenshotTest {
         SelectableAvatar(
             "https://fakeavatarurl.com/hash",
-            true,
+            isSelected = true,
+            isLoading = false,
             {},
             Modifier.size(150.dp),
         )
@@ -22,7 +23,19 @@ class SelectableAvatarTest : RoborazziTest() {
     fun selectableAvatarNotSelected() = gravatarScreenshotTest {
         SelectableAvatar(
             "https://fakeavatarurl.com/hash",
-            false,
+            isSelected = false,
+            isLoading = false,
+            {},
+            Modifier.size(150.dp),
+        )
+    }
+
+    @Test
+    fun selectableAvatarLoading() = gravatarScreenshotTest {
+        SelectableAvatar(
+            "https://fakeavatarurl.com/hash",
+            isSelected = true,
+            isLoading = true,
             {},
             Modifier.size(150.dp),
         )
