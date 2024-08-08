@@ -28,7 +28,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.net.toUri
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.gravatar.extensions.defaultProfile
 import com.gravatar.quickeditor.R
@@ -52,11 +51,14 @@ internal fun AvatarPicker(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    AvatarPicker(uiState = uiState, onAvatarSelected = onAvatarSelected)
+    AvatarPicker(
+        uiState = uiState,
+        onAvatarSelected = viewModel::selectAvatar,
+    )
 }
 
 @Composable
-internal fun AvatarPicker(uiState: AvatarPickerUiState, onAvatarSelected: (AvatarUpdateResult) -> Unit) {
+internal fun AvatarPicker(uiState: AvatarPickerUiState, onAvatarSelected: (Avatar) -> Unit) {
     GravatarTheme {
         Surface(Modifier.fillMaxWidth()) {
             Column {
@@ -97,7 +99,7 @@ internal fun AvatarPicker(uiState: AvatarPickerUiState, onAvatarSelected: (Avata
 @Composable
 private fun AvatarsSection(
     avatars: List<AvatarUi>,
-    onAvatarSelected: (AvatarUpdateResult) -> Unit,
+    onAvatarSelected: (Avatar) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -128,8 +130,9 @@ private fun AvatarsSection(
                         is AvatarUi.Uploaded -> SelectableAvatar(
                             imageUrl = avatarModel.avatar.fullUrl,
                             isSelected = avatarModel.isSelected,
+                            isLoading = avatarModel.isLoading,
                             onAvatarClicked = {
-                                onAvatarSelected(AvatarUpdateResult(avatarModel.avatar.fullUrl.toUri()))
+                                onAvatarSelected(avatarModel.avatar)
                             },
                             modifier = Modifier.size(96.dp),
                         )
@@ -204,6 +207,7 @@ private fun AvatarSectionPreview() {
                         updatedDate = Instant.now()
                     },
                     isSelected = true,
+                    isLoading = false,
                 ),
             ),
         )

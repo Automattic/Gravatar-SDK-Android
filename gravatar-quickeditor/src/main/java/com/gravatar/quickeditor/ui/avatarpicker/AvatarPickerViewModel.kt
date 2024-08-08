@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.gravatar.quickeditor.QuickEditorContainer
 import com.gravatar.quickeditor.data.repository.AvatarRepository
+import com.gravatar.restapi.models.Avatar
 import com.gravatar.services.ProfileService
 import com.gravatar.services.Result
 import com.gravatar.types.Email
@@ -17,7 +18,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 internal class AvatarPickerViewModel(
-    email: Email,
+    private val email: Email,
     private val profileService: ProfileService,
     private val avatarRepository: AvatarRepository,
 ) : ViewModel() {
@@ -27,6 +28,29 @@ internal class AvatarPickerViewModel(
     init {
         fetchAvatars(email)
         fetchProfile(email)
+    }
+
+    public fun selectAvatar(avatar: Avatar) {
+        viewModelScope.launch {
+            val avatarId = avatar.imageId
+            _uiState.update { currentState ->
+                currentState.copy(selectingAvatarId = avatarId)
+            }
+            when (avatarRepository.selectAvatar(email, avatarId)) {
+                is Result.Success -> _uiState.update { currentState ->
+                    currentState.copy(
+                        identityAvatars = currentState.identityAvatars?.copy(selectedAvatarId = avatarId),
+                        selectingAvatarId = null,
+                    )
+                }
+                is Result.Failure -> {
+                    _uiState.update { currentState ->
+                        currentState.copy(selectingAvatarId = null)
+                    }
+                    // display error snack
+                }
+            }
+        }
     }
 
     private fun fetchProfile(email: Email) {

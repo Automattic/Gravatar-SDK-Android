@@ -15,7 +15,9 @@ import com.gravatar.ui.components.ComponentState
 import io.mockk.coEvery
 import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
@@ -139,6 +141,78 @@ class AvatarPickerViewModelTest {
                     identityAvatars = identityAvatars,
                     error = false,
                     profile = null,
+                ),
+                awaitItem(),
+            )
+        }
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `given avatar when selected successful then uiState is updated`() = runTest {
+        coEvery { profileService.retrieveCatching(email) } returns Result.Success(profile)
+        coEvery { avatarRepository.selectAvatar(any(), any()) } returns Result.Success(Unit)
+
+        viewModel = initViewModel()
+
+        advanceUntilIdle()
+
+        viewModel.uiState.test {
+            expectMostRecentItem()
+            viewModel.selectAvatar(avatars.first())
+            assertEquals(
+                AvatarPickerUiState(
+                    email = email,
+                    identityAvatars = identityAvatars,
+                    error = false,
+                    profile = ComponentState.Loaded(profile),
+                    selectingAvatarId = avatars.first().imageId,
+                ),
+                awaitItem(),
+            )
+            assertEquals(
+                AvatarPickerUiState(
+                    email = email,
+                    identityAvatars = identityAvatars.copy(selectedAvatarId = avatars.first().imageId),
+                    error = false,
+                    profile = ComponentState.Loaded(profile),
+                    selectingAvatarId = null,
+                ),
+                awaitItem(),
+            )
+        }
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `given avatar when selected failure then uiState is updated`() = runTest {
+        coEvery { profileService.retrieveCatching(email) } returns Result.Success(profile)
+        coEvery { avatarRepository.selectAvatar(any(), any()) } returns Result.Failure(QuickEditorError.Server)
+
+        viewModel = initViewModel()
+
+        advanceUntilIdle()
+
+        viewModel.uiState.test {
+            expectMostRecentItem()
+            viewModel.selectAvatar(avatars.first())
+            assertEquals(
+                AvatarPickerUiState(
+                    email = email,
+                    identityAvatars = identityAvatars,
+                    error = false,
+                    profile = ComponentState.Loaded(profile),
+                    selectingAvatarId = avatars.first().imageId,
+                ),
+                awaitItem(),
+            )
+            assertEquals(
+                AvatarPickerUiState(
+                    email = email,
+                    identityAvatars = identityAvatars,
+                    error = false,
+                    profile = ComponentState.Loaded(profile),
+                    selectingAvatarId = null,
                 ),
                 awaitItem(),
             )

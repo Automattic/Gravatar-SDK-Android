@@ -34,6 +34,16 @@ internal class AvatarRepository(
         } ?: Result.Failure(QuickEditorError.TokenNotFound)
     }
 
+    suspend fun selectAvatar(email: Email, avatarId: String): Result<Unit, QuickEditorError> = withContext(dispatcher) {
+        val token = tokenStorage.getToken(email.hash().toString())
+        token?.let {
+            when (identityService.setAvatarCatching(email.hash().toString(), avatarId, token)) {
+                is Result.Success -> Result.Success(Unit)
+                is Result.Failure -> Result.Failure(QuickEditorError.Server)
+            }
+        } ?: Result.Failure(QuickEditorError.TokenNotFound)
+    }
+
     private suspend fun getAvatarsAsync(token: String): Deferred<List<Avatar>> = coroutineScope {
         async { avatarService.retrieve(token) }
     }
