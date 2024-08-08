@@ -37,24 +37,26 @@ internal class AvatarPickerViewModel(
     public fun selectAvatar(avatar: Avatar) {
         viewModelScope.launch {
             val avatarId = avatar.imageId
-            _uiState.update { currentState ->
-                currentState.copy(selectingAvatarId = avatarId)
-            }
-            when (avatarRepository.selectAvatar(email, avatarId)) {
-                is Result.Success -> {
-                    _uiState.update { currentState ->
-                        currentState.copy(
-                            identityAvatars = currentState.identityAvatars?.copy(selectedAvatarId = avatarId),
-                            selectingAvatarId = null,
-                        )
-                    }
-                    _actions.send(AvatarPickerAction.AvatarSelected(avatar))
+            if (_uiState.value.identityAvatars?.selectedAvatarId != avatarId) {
+                _uiState.update { currentState ->
+                    currentState.copy(selectingAvatarId = avatarId)
                 }
-                is Result.Failure -> {
-                    _uiState.update { currentState ->
-                        currentState.copy(selectingAvatarId = null)
+                when (avatarRepository.selectAvatar(email, avatarId)) {
+                    is Result.Success -> {
+                        _uiState.update { currentState ->
+                            currentState.copy(
+                                identityAvatars = currentState.identityAvatars?.copy(selectedAvatarId = avatarId),
+                                selectingAvatarId = null,
+                            )
+                        }
+                        _actions.send(AvatarPickerAction.AvatarSelected(avatar))
                     }
-                    // display error snack
+                    is Result.Failure -> {
+                        _uiState.update { currentState ->
+                            currentState.copy(selectingAvatarId = null)
+                        }
+                        // display error snack
+                    }
                 }
             }
         }

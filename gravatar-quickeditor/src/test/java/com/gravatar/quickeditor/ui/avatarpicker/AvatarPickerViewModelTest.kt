@@ -159,21 +159,21 @@ class AvatarPickerViewModelTest {
 
         viewModel.uiState.test {
             expectMostRecentItem()
-            viewModel.selectAvatar(avatars.first())
+            viewModel.selectAvatar(avatars.last())
             assertEquals(
                 AvatarPickerUiState(
                     email = email,
                     identityAvatars = identityAvatars,
                     error = false,
                     profile = ComponentState.Loaded(profile),
-                    selectingAvatarId = avatars.first().imageId,
+                    selectingAvatarId = avatars.last().imageId,
                 ),
                 awaitItem(),
             )
             assertEquals(
                 AvatarPickerUiState(
                     email = email,
-                    identityAvatars = identityAvatars.copy(selectedAvatarId = avatars.first().imageId),
+                    identityAvatars = identityAvatars.copy(selectedAvatarId = avatars.last().imageId),
                     error = false,
                     profile = ComponentState.Loaded(profile),
                     selectingAvatarId = null,
@@ -182,7 +182,7 @@ class AvatarPickerViewModelTest {
             )
         }
         viewModel.actions.test {
-            assertEquals(AvatarPickerAction.AvatarSelected(avatars.first()), awaitItem())
+            assertEquals(AvatarPickerAction.AvatarSelected(avatars.last()), awaitItem())
         }
     }
 
@@ -198,14 +198,14 @@ class AvatarPickerViewModelTest {
 
         viewModel.uiState.test {
             expectMostRecentItem()
-            viewModel.selectAvatar(avatars.first())
+            viewModel.selectAvatar(avatars.last())
             assertEquals(
                 AvatarPickerUiState(
                     email = email,
                     identityAvatars = identityAvatars,
                     error = false,
                     profile = ComponentState.Loaded(profile),
-                    selectingAvatarId = avatars.first().imageId,
+                    selectingAvatarId = avatars.last().imageId,
                 ),
                 awaitItem(),
             )
@@ -219,6 +219,26 @@ class AvatarPickerViewModelTest {
                 ),
                 awaitItem(),
             )
+        }
+        viewModel.actions.test {
+            expectNoEvents()
+        }
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `given avatar when reselected then nothing happens`() = runTest {
+        coEvery { profileService.retrieveCatching(email) } returns Result.Success(profile)
+        coEvery { avatarRepository.selectAvatar(any(), any()) } returns Result.Success(Unit)
+
+        viewModel = initViewModel()
+
+        advanceUntilIdle()
+
+        viewModel.uiState.test {
+            expectMostRecentItem()
+            viewModel.selectAvatar(avatars.first())
+            expectNoEvents()
         }
         viewModel.actions.test {
             expectNoEvents()
