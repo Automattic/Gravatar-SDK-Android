@@ -16,17 +16,19 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -34,6 +36,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.gravatar.extensions.defaultProfile
 import com.gravatar.quickeditor.R
@@ -47,6 +53,8 @@ import com.gravatar.restapi.models.Avatar
 import com.gravatar.types.Email
 import com.gravatar.ui.GravatarTheme
 import com.gravatar.ui.components.ComponentState
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.time.Instant
 
 @Composable
@@ -56,8 +64,28 @@ internal fun AvatarPicker(
     viewModel: AvatarPickerViewModel = viewModel(factory = AvatarPickerViewModelFactory(email)),
 ) {
     val snackState = remember { SnackbarHostState() }
-    val scope = rememberCoroutineScope()
+    val lifecycle = LocalLifecycleOwner.current.lifecycle
+    val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsState()
+
+    LaunchedEffect(Unit) {
+        withContext(Dispatchers.Main.immediate) {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.actions.collect { action ->
+                    when (action) {
+                        is AvatarPickerAction.AvatarSelected -> {
+                            onAvatarSelected(AvatarUpdateResult(action.avatar.fullUrl.toUri()))
+                            snackState.showSnackbar(
+                                message = context.getString(R.string.avatar_selected_confirmation),
+                                actionLabel = context.getString(R.string.avatar_selected_confirmation_action),
+                                duration = SnackbarDuration.Long,
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     GravatarTheme {
         Box(modifier = Modifier.wrapContentSize()) {

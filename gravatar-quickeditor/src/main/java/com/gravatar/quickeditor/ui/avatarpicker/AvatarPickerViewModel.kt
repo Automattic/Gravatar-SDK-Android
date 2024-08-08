@@ -11,9 +11,11 @@ import com.gravatar.services.ProfileService
 import com.gravatar.services.Result
 import com.gravatar.types.Email
 import com.gravatar.ui.components.ComponentState
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -24,6 +26,8 @@ internal class AvatarPickerViewModel(
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(AvatarPickerUiState(email = email))
     val uiState: StateFlow<AvatarPickerUiState> = _uiState.asStateFlow()
+    private val _actions = Channel<AvatarPickerAction>(Channel.BUFFERED)
+    val actions = _actions.receiveAsFlow()
 
     init {
         fetchAvatars(email)
@@ -37,11 +41,14 @@ internal class AvatarPickerViewModel(
                 currentState.copy(selectingAvatarId = avatarId)
             }
             when (avatarRepository.selectAvatar(email, avatarId)) {
-                is Result.Success -> _uiState.update { currentState ->
-                    currentState.copy(
-                        identityAvatars = currentState.identityAvatars?.copy(selectedAvatarId = avatarId),
-                        selectingAvatarId = null,
-                    )
+                is Result.Success -> {
+                    _uiState.update { currentState ->
+                        currentState.copy(
+                            identityAvatars = currentState.identityAvatars?.copy(selectedAvatarId = avatarId),
+                            selectingAvatarId = null,
+                        )
+                    }
+                    _actions.send(AvatarPickerAction.AvatarSelected(avatar))
                 }
                 is Result.Failure -> {
                     _uiState.update { currentState ->
