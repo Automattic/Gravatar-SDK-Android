@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AccountCircle
 import androidx.compose.material3.Button
@@ -29,10 +30,12 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.gravatar.demoapp.BuildConfig
 import com.gravatar.demoapp.R
 import com.gravatar.demoapp.ui.activity.QuickEditorTestActivity
@@ -51,6 +54,7 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
     val context = LocalContext.current
     var showBottomSheet by rememberSaveable { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
+    var avatarUrl: String? by remember { mutableStateOf(null) }
 
     Box(
         modifier = Modifier
@@ -69,6 +73,7 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
                     showBottomSheet = true
                 },
                 isUploading = false,
+                avatarUrl = avatarUrl,
             )
             Spacer(modifier = Modifier.height(20.dp))
             Button(
@@ -106,8 +111,8 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
                 clientSecret = BuildConfig.DEMO_WORDPRESS_CLIENT_SECRET
                 redirectUri = BuildConfig.DEMO_WORDPRESS_REDIRECT_URI
             },
-            onAvatarSelected = {
-                Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()
+            onAvatarSelected = { result ->
+                avatarUrl = result.avatarUri.toString()
             },
             onDismiss = {
                 Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()
@@ -118,16 +123,24 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun UpdateAvatarComposable(isUploading: Boolean, modifier: Modifier = Modifier) {
+private fun UpdateAvatarComposable(isUploading: Boolean, avatarUrl: String?, modifier: Modifier = Modifier) {
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         if (isUploading) {
             CircularProgressIndicator()
         } else {
-            Icon(
-                Icons.Rounded.AccountCircle,
-                contentDescription = "",
-                modifier = Modifier.size(128.dp),
-            )
+            if (avatarUrl != null) {
+                AsyncImage(
+                    model = avatarUrl,
+                    contentDescription = "Avatar Image",
+                    modifier = Modifier.size(128.dp).padding(8.dp).clip(CircleShape),
+                )
+            } else {
+                Icon(
+                    Icons.Rounded.AccountCircle,
+                    contentDescription = "",
+                    modifier = Modifier.size(128.dp),
+                )
+            }
             Text(text = stringResource(R.string.update_avatar_button_label))
         }
     }
@@ -135,11 +148,11 @@ private fun UpdateAvatarComposable(isUploading: Boolean, modifier: Modifier = Mo
 
 @Preview
 @Composable
-private fun UpdateAvatarComposablePreview() = UpdateAvatarComposable(false)
+private fun UpdateAvatarComposablePreview() = UpdateAvatarComposable(false, null)
 
 @Preview
 @Composable
-private fun UpdateAvatarLoadingComposablePreview() = UpdateAvatarComposable(true)
+private fun UpdateAvatarLoadingComposablePreview() = UpdateAvatarComposable(true, null)
 
 @Preview
 @Composable
