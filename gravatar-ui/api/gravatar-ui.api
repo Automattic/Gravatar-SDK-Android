@@ -189,6 +189,7 @@ public final class com/gravatar/ui/components/atomic/AvatarKt {
 	public static final fun Avatar-DzVHIIc (Lcom/gravatar/restapi/models/Profile;FLandroidx/compose/ui/Modifier;Lcom/gravatar/AvatarQueryOptions;Landroidx/compose/runtime/Composer;II)V
 	public static final fun Avatar-DzVHIIc (Lcom/gravatar/ui/components/ComponentState;FLandroidx/compose/ui/Modifier;Lcom/gravatar/AvatarQueryOptions;Landroidx/compose/runtime/Composer;II)V
 	public static final fun AvatarWithComponentState (Lcom/gravatar/ui/components/ComponentState;FLandroidx/compose/ui/Modifier;Lcom/gravatar/AvatarQueryOptions;Landroidx/compose/runtime/Composer;II)V
+	public static final fun AvatarWithURLComponentState (Lcom/gravatar/ui/components/ComponentState;FLandroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/gravatar/ui/components/atomic/ComposableSingletons$AboutMeKt {
