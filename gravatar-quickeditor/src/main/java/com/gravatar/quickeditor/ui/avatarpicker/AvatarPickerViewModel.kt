@@ -7,6 +7,7 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import com.gravatar.quickeditor.QuickEditorContainer
 import com.gravatar.quickeditor.data.repository.AvatarRepository
 import com.gravatar.restapi.models.Avatar
+import com.gravatar.restapi.models.Profile
 import com.gravatar.services.ProfileService
 import com.gravatar.services.Result
 import com.gravatar.types.Email
@@ -18,6 +19,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.net.URI
 
 internal class AvatarPickerViewModel(
     private val email: Email,
@@ -47,10 +49,12 @@ internal class AvatarPickerViewModel(
                             currentState.copy(
                                 identityAvatars = currentState.identityAvatars?.copy(selectedAvatarId = avatarId),
                                 selectingAvatarId = null,
+                                profile = currentState.profile?.copy { copyAvatar(avatar) },
                             )
                         }
                         _actions.send(AvatarPickerAction.AvatarSelected(avatar))
                     }
+
                     is Result.Failure -> {
                         _uiState.update { currentState ->
                             currentState.copy(selectingAvatarId = null)
@@ -112,4 +116,42 @@ internal class AvatarPickerViewModelFactory(
             avatarRepository = QuickEditorContainer.getInstance().avatarRepository,
         ) as T
     }
+}
+
+private fun Profile.copyAvatar(avatar: Avatar): Profile {
+    return Profile {
+        hash = this@copyAvatar.hash
+        displayName = this@copyAvatar.displayName
+        profileUrl = this@copyAvatar.profileUrl
+        avatarUrl = URI.create(avatar.fullUrl)
+        avatarAltText = avatar.altText
+        location = this@copyAvatar.location
+        description = this@copyAvatar.description
+        jobTitle = this@copyAvatar.jobTitle
+        description = this@copyAvatar.description
+        jobTitle = this@copyAvatar.jobTitle
+        company = this@copyAvatar.company
+        verifiedAccounts = this@copyAvatar.verifiedAccounts
+        pronunciation = this@copyAvatar.pronunciation
+        pronouns = this@copyAvatar.pronouns
+        timezone = this@copyAvatar.timezone
+        languages = this@copyAvatar.languages
+        firstName = this@copyAvatar.firstName
+        lastName = this@copyAvatar.lastName
+        isOrganization = this@copyAvatar.isOrganization
+        links = this@copyAvatar.links
+        interests = this@copyAvatar.interests
+        payments = this@copyAvatar.payments
+        contactInfo = this@copyAvatar.contactInfo
+        gallery = this@copyAvatar.gallery
+        numberVerifiedAccounts = this@copyAvatar.numberVerifiedAccounts
+        lastProfileEdit = this@copyAvatar.lastProfileEdit
+        registrationDate = this@copyAvatar.registrationDate
+    }
+}
+
+private fun <T> ComponentState<T>.copy(transform: T.() -> T): ComponentState<T> = when (this) {
+    is ComponentState.Loaded -> ComponentState.Loaded(loadedValue.transform())
+    is ComponentState.Loading -> this
+    is ComponentState.Empty -> this
 }
