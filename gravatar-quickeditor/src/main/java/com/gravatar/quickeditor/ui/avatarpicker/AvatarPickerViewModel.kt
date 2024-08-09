@@ -118,7 +118,7 @@ internal class AvatarPickerViewModelFactory(
     }
 }
 
-private fun Profile.copyAvatar(avatar: Avatar): Profile {
+internal fun Profile.copyAvatar(avatar: Avatar): Profile {
     return Profile {
         hash = this@copyAvatar.hash
         displayName = this@copyAvatar.displayName
