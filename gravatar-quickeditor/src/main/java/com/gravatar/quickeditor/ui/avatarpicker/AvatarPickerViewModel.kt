@@ -1,10 +1,12 @@
 package com.gravatar.quickeditor.ui.avatarpicker
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.gravatar.quickeditor.QuickEditorContainer
+import com.gravatar.quickeditor.data.FileUtils
 import com.gravatar.quickeditor.data.repository.AvatarRepository
 import com.gravatar.restapi.models.Avatar
 import com.gravatar.restapi.models.Profile
@@ -25,6 +27,7 @@ internal class AvatarPickerViewModel(
     private val email: Email,
     private val profileService: ProfileService,
     private val avatarRepository: AvatarRepository,
+    private val fileUtils: FileUtils,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(AvatarPickerUiState(email = email))
     val uiState: StateFlow<AvatarPickerUiState> = _uiState.asStateFlow()
@@ -32,11 +35,11 @@ internal class AvatarPickerViewModel(
     val actions = _actions.receiveAsFlow()
 
     init {
-        fetchAvatars(email)
-        fetchProfile(email)
+        fetchAvatars()
+        fetchProfile()
     }
 
-    public fun selectAvatar(avatar: Avatar) {
+    fun selectAvatar(avatar: Avatar) {
         viewModelScope.launch {
             val avatarId = avatar.imageId
             if (_uiState.value.identityAvatars?.selectedAvatarId != avatarId) {
@@ -66,7 +69,37 @@ internal class AvatarPickerViewModel(
         }
     }
 
-    private fun fetchProfile(email: Email) {
+    fun localImageSelected(imageUri: Uri) {
+        viewModelScope.launch {
+            _actions.send(AvatarPickerAction.LaunchImageCropper(imageUri, fileUtils.createTempFile()))
+        }
+    }
+
+    fun uploadAvatar(uri: Uri) {
+        viewModelScope.launch {
+            _uiState.update { currentState ->
+                currentState.copy(uploadingAvatar = uri, scrollToIndex = 0)
+            }
+            when (avatarRepository.uploadAvatar(email, uri)) {
+                is Result.Success -> {
+                    fileUtils.deleteFile(uri)
+                    fetchAvatars(showLoading = false, scrollToSelected = false)
+                    _uiState.update { currentState ->
+                        currentState.copy(uploadingAvatar = null)
+                    }
+                }
+
+                is Result.Failure -> {
+                    fileUtils.deleteFile(uri) // Once we have better UI for errors we will keep the file for retries
+                    _uiState.update { currentState ->
+                        currentState.copy(uploadingAvatar = null)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun fetchProfile() {
         viewModelScope.launch {
             _uiState.update { currentState -> currentState.copy(profile = ComponentState.Loading) }
             when (val result = profileService.retrieveCatching(email)) {
@@ -85,20 +118,38 @@ internal class AvatarPickerViewModel(
         }
     }
 
-    private fun fetchAvatars(email: Email) {
+    private fun fetchAvatars() {
         viewModelScope.launch {
-            _uiState.update { currentState -> currentState.copy(isLoading = true) }
-            when (val result = avatarRepository.getAvatars(email)) {
-                is Result.Success -> {
-                    _uiState.update { currentState ->
-                        currentState.copy(identityAvatars = result.value, isLoading = false, error = false)
-                    }
-                }
+            fetchAvatars(showLoading = true)
+        }
+    }
 
-                is Result.Failure -> {
-                    _uiState.update { currentState ->
-                        currentState.copy(identityAvatars = null, isLoading = false, error = true)
-                    }
+    private suspend fun fetchAvatars(showLoading: Boolean = true, scrollToSelected: Boolean = true) {
+        if (showLoading) {
+            _uiState.update { currentState -> currentState.copy(isLoading = true) }
+        }
+        when (val result = avatarRepository.getAvatars(email)) {
+            is Result.Success -> {
+                _uiState.update { currentState ->
+                    val identityAvatars = result.value
+                    currentState.copy(
+                        identityAvatars = identityAvatars,
+                        scrollToIndex = if (scrollToSelected && identityAvatars.avatars.isNotEmpty()) {
+                            identityAvatars.avatars.indexOfFirst {
+                                it.imageId == identityAvatars.selectedAvatarId
+                            }.coerceAtLeast(0)
+                        } else {
+                            null
+                        },
+                        isLoading = false,
+                        error = false,
+                    )
+                }
+            }
+
+            is Result.Failure -> {
+                _uiState.update { currentState ->
+                    currentState.copy(identityAvatars = null, isLoading = false, error = true)
                 }
             }
         }
@@ -114,6 +165,7 @@ internal class AvatarPickerViewModelFactory(
             email = email,
             profileService = QuickEditorContainer.getInstance().profileService,
             avatarRepository = QuickEditorContainer.getInstance().avatarRepository,
+            fileUtils = QuickEditorContainer.getInstance().fileUtils,
         ) as T
     }
 }

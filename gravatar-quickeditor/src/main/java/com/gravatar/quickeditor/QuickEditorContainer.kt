@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import androidx.datastore.preferences.preferencesDataStore
 import com.google.gson.GsonBuilder
+import com.gravatar.quickeditor.data.FileUtils
 import com.gravatar.quickeditor.data.repository.AvatarRepository
 import com.gravatar.quickeditor.data.service.WordPressOAuthApi
 import com.gravatar.quickeditor.data.service.WordPressOAuthService
@@ -58,6 +59,10 @@ internal class QuickEditorContainer private constructor(
 
     private val identityService: IdentityService by lazy {
         IdentityService()
+    }
+
+    val fileUtils: FileUtils by lazy {
+        FileUtils(context)
     }
 
     val avatarRepository: AvatarRepository by lazy {

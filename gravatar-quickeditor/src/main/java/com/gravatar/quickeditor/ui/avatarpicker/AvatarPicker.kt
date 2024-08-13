@@ -1,15 +1,18 @@
 package com.gravatar.quickeditor.ui.avatarpicker
 
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
+import android.content.Context
+import android.content.Intent
+import android.graphics.Color
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -47,8 +50,11 @@ import com.gravatar.restapi.models.Avatar
 import com.gravatar.types.Email
 import com.gravatar.ui.GravatarTheme
 import com.gravatar.ui.components.ComponentState
+import com.yalantis.ucrop.UCrop
+import com.yalantis.ucrop.UCropActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.io.File
 import java.time.Instant
 
 @Composable
@@ -61,6 +67,14 @@ internal fun AvatarPicker(
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsState()
+
+    val uCropLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        it.data?.let { intentData ->
+            UCrop.getOutput(intentData)?.let { croppedImageUri ->
+                viewModel.uploadAvatar(croppedImageUri)
+            }
+        }
+    }
 
     LaunchedEffect(Unit) {
         withContext(Dispatchers.Main.immediate) {
@@ -75,6 +89,10 @@ internal fun AvatarPicker(
                                 duration = SnackbarDuration.Long,
                             )
                         }
+
+                        is AvatarPickerAction.LaunchImageCropper -> {
+                            uCropLauncher.launchAvatarCrop(action.imageUri, action.tempFile, context)
+                        }
                     }
                 }
             }
@@ -86,6 +104,7 @@ internal fun AvatarPicker(
             AvatarPicker(
                 uiState = uiState,
                 onAvatarSelected = viewModel::selectAvatar,
+                onLocalImageSelected = viewModel::localImageSelected,
             )
             SnackbarHost(
                 modifier = Modifier
@@ -103,7 +122,11 @@ internal fun AvatarPicker(
 }
 
 @Composable
-internal fun AvatarPicker(uiState: AvatarPickerUiState, onAvatarSelected: (Avatar) -> Unit) {
+internal fun AvatarPicker(
+    uiState: AvatarPickerUiState,
+    onAvatarSelected: (Avatar) -> Unit,
+    onLocalImageSelected: (Uri) -> Unit,
+) {
     Surface(Modifier.fillMaxWidth()) {
         Column {
             EmailLabel(
@@ -127,10 +150,11 @@ internal fun AvatarPicker(uiState: AvatarPickerUiState, onAvatarSelected: (Avata
                 }
 
                 uiState.error -> Text(text = "There was an error loading avatars", textAlign = TextAlign.Center)
-                uiState.avatars != null ->
+                uiState.avatarsSectionUiState != null ->
                     AvatarsSection(
-                        uiState.avatars,
+                        uiState.avatarsSectionUiState,
                         onAvatarSelected,
+                        onLocalImageSelected,
                         Modifier.padding(horizontal = 16.dp),
                     )
             }
@@ -188,6 +212,7 @@ private fun AvatarPickerPreview() {
                 ),
             ),
             onAvatarSelected = { },
+            onLocalImageSelected = { },
         )
     }
 }
