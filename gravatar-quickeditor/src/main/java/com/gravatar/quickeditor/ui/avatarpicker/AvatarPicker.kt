@@ -11,10 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Snackbar
@@ -27,23 +23,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -52,10 +38,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.gravatar.extensions.defaultProfile
 import com.gravatar.quickeditor.R
 import com.gravatar.quickeditor.data.repository.IdentityAvatars
+import com.gravatar.quickeditor.ui.components.AvatarsSection
 import com.gravatar.quickeditor.ui.components.EmailLabel
-import com.gravatar.quickeditor.ui.components.MediaPickerPopup
 import com.gravatar.quickeditor.ui.components.ProfileCard
-import com.gravatar.quickeditor.ui.components.SelectableAvatar
 import com.gravatar.quickeditor.ui.editor.AvatarUpdateResult
 import com.gravatar.quickeditor.ui.editor.bottomsheet.DEFAULT_PAGE_HEIGHT
 import com.gravatar.restapi.models.Avatar
@@ -154,75 +139,23 @@ internal fun AvatarPicker(uiState: AvatarPickerUiState, onAvatarSelected: (Avata
     }
 }
 
-@Composable
-private fun AvatarsSection(
-    avatars: List<AvatarUi>,
-    onAvatarSelected: (Avatar) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    var popupVisible by rememberSaveable { mutableStateOf(false) }
-    var popupYOffset by rememberSaveable { mutableIntStateOf(0) }
-    Box(
-        modifier = modifier
-            .border(
-                width = 1.dp,
-                color = MaterialTheme.colorScheme.surfaceContainerHighest,
-                shape = RoundedCornerShape(8.dp),
-            )
-            .padding(16.dp),
-    ) {
-        Column {
-            Text(
-                text = stringResource(id = R.string.avatar_picker_title),
-                fontSize = 22.sp,
-                fontWeight = FontWeight.Bold,
-            )
-            Text(
-                text = stringResource(R.string.avatar_picker_description),
-                fontSize = 15.sp,
-                color = MaterialTheme.colorScheme.tertiary,
-                modifier = Modifier.padding(top = 4.dp),
-            )
+private const val UCROP_COMPRESSION_QUALITY = 100
 
-            LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.padding(vertical = 24.dp)) {
-                items(items = avatars, key = { it.avatarId }) { avatarModel ->
-                    when (avatarModel) {
-                        is AvatarUi.Uploaded -> SelectableAvatar(
-                            imageUrl = avatarModel.avatar.fullUrl,
-                            isSelected = avatarModel.isSelected,
-                            isLoading = avatarModel.isLoading,
-                            onAvatarClicked = {
-                                onAvatarSelected(avatarModel.avatar)
-                            },
-                            modifier = Modifier.size(96.dp),
-                        )
-                    }
-                }
-            }
-            Button(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .onPlaced { layoutCoordinates -> popupYOffset = layoutCoordinates.size.height },
-                onClick = { popupVisible = true },
-                shape = RoundedCornerShape(4.dp),
-                contentPadding = PaddingValues(14.dp),
-            ) {
-                Text(
-                    text = stringResource(R.string.avatar_picker_upload_image),
-                    style = MaterialTheme.typography.titleMedium,
-                )
-            }
-        }
-        if (popupVisible) {
-            MediaPickerPopup(
-                alignment = Alignment.BottomCenter,
-                onDismissRequest = { popupVisible = false },
-                offset = IntOffset(0, -popupYOffset - 30),
-                onChoosePhotoClick = { popupVisible = false },
-                onTakePhotoClick = { popupVisible = false },
-            )
-        }
+private fun ActivityResultLauncher<Intent>.launchAvatarCrop(image: Uri, tempFile: File, context: Context) {
+    val options = UCrop.Options().apply {
+        setToolbarColor(Color.BLACK)
+        setStatusBarColor(Color.BLACK)
+        setToolbarWidgetColor(Color.WHITE)
+        setAllowedGestures(UCropActivity.SCALE, UCropActivity.ROTATE, UCropActivity.NONE)
+        setCompressionQuality(UCROP_COMPRESSION_QUALITY)
+        setCircleDimmedLayer(true)
     }
+    launch(
+        UCrop.of(image, Uri.fromFile(tempFile))
+            .withAspectRatio(1f, 1f)
+            .withOptions(options)
+            .getIntent(context),
+    )
 }
 
 @Composable
@@ -271,31 +204,7 @@ private fun AvatarPickerLoadingPreview() {
                 identityAvatars = null,
             ),
             onAvatarSelected = { },
-        )
-    }
-}
-
-@Composable
-@Preview(showBackground = true)
-private fun AvatarSectionPreview() {
-    GravatarTheme {
-        AvatarsSection(
-            onAvatarSelected = { },
-            avatars = listOf(
-                AvatarUi.Uploaded(
-                    avatar = Avatar {
-                        imageUrl = "/image/url"
-                        format = 0
-                        imageId = "1"
-                        rating = "G"
-                        altText = "alt"
-                        isCropped = true
-                        updatedDate = Instant.now()
-                    },
-                    isSelected = true,
-                    isLoading = false,
-                ),
-            ),
+            onLocalImageSelected = { },
         )
     }
 }
