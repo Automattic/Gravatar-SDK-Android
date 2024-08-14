@@ -8,6 +8,7 @@ import com.gravatar.GravatarApiService
 import com.gravatar.GravatarConstants.GRAVATAR_API_BASE_URL_V1
 import com.gravatar.GravatarConstants.GRAVATAR_API_BASE_URL_V3
 import com.gravatar.services.AuthenticationInterceptor
+import com.gravatar.services.AvatarUploadTimeoutInterceptor
 import com.gravatar.services.GravatarApi
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -65,12 +66,14 @@ internal class GravatarSdkContainer private constructor() {
 
     fun getGravatarV3Service(okHttpClient: OkHttpClient? = null, oauthToken: String? = null): GravatarApi {
         return getRetrofitApiV3Builder().apply {
-            client(
-                (okHttpClient ?: OkHttpClient()).newBuilder().addInterceptor(
-                    AuthenticationInterceptor(oauthToken),
-                ).build(),
-            )
+            client(okHttpClient ?: buildOkHttpClient(oauthToken))
         }.addConverterFactory(GsonConverterFactory.create(gson))
             .build().create(GravatarApi::class.java)
     }
+
+    private fun buildOkHttpClient(oauthToken: String?) = OkHttpClient()
+        .newBuilder()
+        .addInterceptor(AuthenticationInterceptor(oauthToken))
+        .addInterceptor(AvatarUploadTimeoutInterceptor())
+        .build()
 }
