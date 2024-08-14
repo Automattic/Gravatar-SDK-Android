@@ -53,6 +53,15 @@
                     android:scheme="wp-oauth-test" />
             </intent-filter>
         </activity>
+        <provider
+            android:name=".DemoFileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:grantUriPermissions="true"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths" />
+        </provider>
     </application>
 
 </manifest>
