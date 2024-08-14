@@ -29,12 +29,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onPlaced
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.gravatar.quickeditor.QuickEditorFileProvider
 import com.gravatar.quickeditor.R
 import com.gravatar.quickeditor.ui.avatarpicker.AvatarUi
 import com.gravatar.quickeditor.ui.avatarpicker.AvatarsSectionUiState
@@ -50,12 +52,19 @@ internal fun AvatarsSection(
     onLocalImageSelected: (Uri) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val context = LocalContext.current
     var popupVisible by rememberSaveable { mutableStateOf(false) }
     var popupYOffset by rememberSaveable { mutableIntStateOf(0) }
+    var photoImageUri by rememberSaveable { mutableStateOf<Uri?>(null) }
     val listState = rememberLazyListState()
 
     val pickMedia = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
         uri?.let { onLocalImageSelected(it) }
+    }
+
+    val takePhoto = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+        val takenPictureUri = photoImageUri
+        if (success && takenPictureUri != null) onLocalImageSelected(takenPictureUri)
     }
 
     LaunchedEffect(state.scrollToIndex) {
@@ -133,7 +142,12 @@ internal fun AvatarsSection(
                     popupVisible = false
                     pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
                 },
-                onTakePhotoClick = { popupVisible = false },
+                onTakePhotoClick = {
+                    popupVisible = false
+                    val imageUri = QuickEditorFileProvider.getTempCameraImageUri(context)
+                    photoImageUri = imageUri
+                    takePhoto.launch(imageUri)
+                },
             )
         }
     }
