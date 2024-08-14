@@ -7,8 +7,10 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import com.gravatar.quickeditor.QuickEditorContainer
 import com.gravatar.quickeditor.data.storage.TokenStorage
 import com.gravatar.services.AvatarService
+import com.gravatar.services.ProfileService
 import com.gravatar.services.Result
 import com.gravatar.types.Email
+import com.gravatar.ui.components.ComponentState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,6 +20,7 @@ import kotlinx.coroutines.launch
 internal class AvatarPickerViewModel(
     email: Email,
     private val avatarService: AvatarService,
+    private val profileService: ProfileService,
     private val tokenStorage: TokenStorage,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(AvatarPickerUiState(email = email))
@@ -25,6 +28,25 @@ internal class AvatarPickerViewModel(
 
     init {
         fetchAvatars(email)
+        fetchProfile(email)
+    }
+
+    private fun fetchProfile(email: Email) {
+        viewModelScope.launch {
+            _uiState.update { currentState -> currentState.copy(profile = ComponentState.Loading) }
+            when (val result = profileService.retrieveCatching(email)) {
+                is Result.Success -> {
+                    _uiState.update { currentState ->
+                        currentState.copy(profile = ComponentState.Loaded(result.value))
+                    }
+                }
+                is Result.Failure -> {
+                    _uiState.update { currentState ->
+                        currentState.copy(profile = null)
+                    }
+                }
+            }
+        }
     }
 
     private fun fetchAvatars(email: Email) {
@@ -60,6 +82,7 @@ internal class AvatarPickerViewModelFactory(
         return AvatarPickerViewModel(
             email = email,
             avatarService = QuickEditorContainer.getInstance().avatarService,
+            profileService = QuickEditorContainer.getInstance().profileService,
             tokenStorage = QuickEditorContainer.getInstance().tokenStorage,
         ) as T
     }

@@ -41,7 +41,7 @@ style:
   UnusedImports:
     active: true
   UnusedPrivateMember:
-    ignoreAnnotated: ['Preview']
+    ignoreAnnotated: ['Preview', 'PreviewLightDark']
   WildcardImport:
     active: true
     excludeImports: []

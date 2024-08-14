@@ -80,6 +80,7 @@ android {
                         excludeCategories("com.gravatar.uitestutils.ScreenshotTests")
                     }
                 }
+                it.systemProperties["robolectric.pixelCopyRenderMode"] = "hardware"
             }
         }
     }
