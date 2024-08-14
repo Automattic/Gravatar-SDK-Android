@@ -46,13 +46,12 @@ internal class OAuthViewModel(
             when (result) {
                 is Result.Success -> {
                     tokenStorage.storeToken(email.hash().toString(), result.value)
-                    _uiState.update { currentState -> currentState.copy(isAuthorizing = false) }
                     _actions.send(OAuthAction.AuthorizationSuccess)
                 }
 
                 is Result.Failure -> {
-                    _uiState.update { currentState -> currentState.copy(isAuthorizing = false) }
                     _actions.send(OAuthAction.AuthorizationFailure)
+                    _uiState.update { currentState -> currentState.copy(isAuthorizing = false) }
                 }
             }
         }

@@ -1,27 +1,18 @@
 package com.gravatar.quickeditor.ui.editor
 
-import android.net.Uri
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.gravatar.quickeditor.ui.avatarpicker.AvatarPicker
 import com.gravatar.quickeditor.ui.navigation.QuickEditorPage
 import com.gravatar.quickeditor.ui.oauth.OAuthPage
 import com.gravatar.quickeditor.ui.oauth.OAuthParams
 import com.gravatar.quickeditor.ui.splash.SplashPage
 import com.gravatar.types.Email
-import com.gravatar.ui.GravatarTheme
 
 /**
  * Raw composable component for the Quick Editor.
@@ -68,23 +59,7 @@ internal fun GravatarQuickEditorPage(
             )
         }
         composable(QuickEditorPage.EDITOR.name) {
-            GravatarTheme {
-                Surface {
-                    Box(modifier = Modifier.fillMaxSize()) {
-                        TextButton(
-                            modifier = Modifier.align(Alignment.Center),
-                            onClick = {
-                                onAvatarSelected(AvatarUpdateResult(Uri.EMPTY))
-                            },
-                        ) {
-                            Text(
-                                textAlign = TextAlign.Center,
-                                text = "Insert the real avatar picker page here",
-                            )
-                        }
-                    }
-                }
-            }
+            AvatarPicker(gravatarQuickEditorParams.email, onAvatarSelected)
         }
     }
 }

@@ -1,6 +1,6 @@
 package com.gravatar.quickeditor.ui.splash
 
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -11,6 +11,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.gravatar.quickeditor.ui.editor.bottomsheet.DEFAULT_PAGE_HEIGHT
 import com.gravatar.types.Email
 import com.gravatar.ui.GravatarTheme
 import kotlinx.coroutines.Dispatchers
@@ -39,6 +40,6 @@ internal fun SplashPage(
     }
 
     GravatarTheme {
-        Surface(modifier = Modifier.fillMaxSize()) {}
+        Surface(modifier = Modifier.height(DEFAULT_PAGE_HEIGHT)) {}
     }
 }

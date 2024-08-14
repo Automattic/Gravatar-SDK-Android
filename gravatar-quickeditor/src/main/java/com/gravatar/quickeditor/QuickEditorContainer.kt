@@ -7,6 +7,7 @@ import com.google.gson.GsonBuilder
 import com.gravatar.quickeditor.data.service.WordPressOAuthApi
 import com.gravatar.quickeditor.data.service.WordPressOAuthService
 import com.gravatar.quickeditor.data.storage.TokenStorage
+import com.gravatar.services.AvatarService
 import kotlinx.coroutines.Dispatchers
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -42,6 +43,10 @@ internal class QuickEditorContainer private constructor(
             wordPressOAuthApi = getWordpressOAuthApi(),
             dispatcher = Dispatchers.IO,
         )
+    }
+
+    val avatarService: AvatarService by lazy {
+        AvatarService()
     }
 
     private fun getWordpressOAuthApi(): WordPressOAuthApi {
