@@ -1,7 +1,11 @@
 package com.gravatar.quickeditor.ui.avatarpicker
 
+import android.content.Context
+import android.content.Intent
 import android.net.Uri
+import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -79,32 +83,7 @@ internal fun AvatarPicker(
         withContext(Dispatchers.Main.immediate) {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.actions.collect { action ->
-                    when (action) {
-                        is AvatarPickerAction.AvatarSelected -> {
-                            onAvatarSelected(AvatarUpdateResult(action.avatar.fullUrl.toUri()))
-                            snackState.showQESnackbar(
-                                message = context.getString(R.string.avatar_selected_confirmation),
-                                withDismissAction = true,
-                            )
-                        }
-
-                        is AvatarPickerAction.LaunchImageCropper -> {
-                            cropperLauncher.launch(uCropLauncher, action.imageUri, action.tempFile, context)
-                        }
-
-                        is AvatarPickerAction.AvatarUploadFailed -> {
-                            val result = snackState.showQESnackbar(
-                                message = context.getString(R.string.avatar_upload_error),
-                                actionLabel = context.getString(R.string.avatar_upload_error_action),
-                                snackbarType = SnackbarType.Error,
-                                withDismissAction = true,
-                            )
-                            when (result) {
-                                SnackbarResult.Dismissed -> Unit
-                                SnackbarResult.ActionPerformed -> viewModel.uploadAvatar(action.imageUri)
-                            }
-                        }
-                    }
+                    action.handle(cropperLauncher, onAvatarSelected, snackState, context, uCropLauncher, viewModel)
                 }
             }
         }
@@ -170,6 +149,51 @@ internal fun AvatarPicker(
                     )
             }
             Spacer(modifier = Modifier.height(24.dp))
+        }
+    }
+}
+
+@Suppress("LongParameterList")
+private suspend fun AvatarPickerAction.handle(
+    cropperLauncher: CropperLauncher,
+    onAvatarSelected: (AvatarUpdateResult) -> Unit,
+    snackState: SnackbarHostState,
+    context: Context,
+    uCropLauncher: ManagedActivityResultLauncher<Intent, ActivityResult>,
+    viewModel: AvatarPickerViewModel,
+) {
+    when (this) {
+        is AvatarPickerAction.AvatarSelected -> {
+            onAvatarSelected(AvatarUpdateResult(avatar.fullUrl.toUri()))
+            snackState.showQESnackbar(
+                message = context.getString(R.string.avatar_selected_confirmation),
+                withDismissAction = true,
+            )
+        }
+
+        is AvatarPickerAction.LaunchImageCropper -> {
+            cropperLauncher.launch(uCropLauncher, imageUri, tempFile, context)
+        }
+
+        is AvatarPickerAction.AvatarUploadFailed -> {
+            val result = snackState.showQESnackbar(
+                message = context.getString(R.string.avatar_upload_error),
+                actionLabel = context.getString(R.string.avatar_upload_error_action),
+                snackbarType = SnackbarType.Error,
+                withDismissAction = true,
+            )
+            when (result) {
+                SnackbarResult.Dismissed -> Unit
+                SnackbarResult.ActionPerformed -> viewModel.uploadAvatar(imageUri)
+            }
+        }
+
+        AvatarPickerAction.AvatarSelectionFailed -> {
+            snackState.showQESnackbar(
+                message = context.getString(R.string.avatar_selection_error),
+                withDismissAction = true,
+                snackbarType = SnackbarType.Error,
+            )
         }
     }
 }

@@ -62,7 +62,7 @@ internal class AvatarPickerViewModel(
                         _uiState.update { currentState ->
                             currentState.copy(selectingAvatarId = null)
                         }
-                        // display error snack
+                        _actions.send(AvatarPickerAction.AvatarSelectionFailed)
                     }
                 }
             }

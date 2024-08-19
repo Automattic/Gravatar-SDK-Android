@@ -239,7 +239,7 @@ class AvatarPickerViewModelTest {
             )
         }
         viewModel.actions.test {
-            expectNoEvents()
+            assertEquals(AvatarPickerAction.AvatarSelectionFailed, awaitItem())
         }
     }
 

@@ -14,4 +14,5 @@
     <string name="avatar_picker_take_photo">Take Photo</string>
     <string name="photo_library_icon_description">Photo library</string>
     <string name="capture_photo_icon_description">Capture Photo</string>
+    <string name="avatar_selection_error">Ooops, there was an error selecting the avatar.</string>
 </resources>
