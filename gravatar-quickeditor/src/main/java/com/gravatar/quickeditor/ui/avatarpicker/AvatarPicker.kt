@@ -14,6 +14,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -89,6 +90,19 @@ internal fun AvatarPicker(
 
                         is AvatarPickerAction.LaunchImageCropper -> {
                             cropperLauncher.launch(uCropLauncher, action.imageUri, action.tempFile, context)
+                        }
+
+                        is AvatarPickerAction.AvatarUploadFailed -> {
+                            val result = snackState.showQESnackbar(
+                                message = context.getString(R.string.avatar_upload_error),
+                                actionLabel = context.getString(R.string.avatar_upload_error_action),
+                                snackbarType = SnackbarType.Error,
+                                withDismissAction = true,
+                            )
+                            when (result) {
+                                SnackbarResult.Dismissed -> Unit
+                                SnackbarResult.ActionPerformed -> viewModel.uploadAvatar(action.imageUri)
+                            }
                         }
                     }
                 }

@@ -368,7 +368,9 @@ class AvatarPickerViewModelTest {
                 awaitItem(),
             )
         }
-        verify { fileUtils.deleteFile(uri) }
+        viewModel.actions.test {
+            assertEquals(AvatarPickerAction.AvatarUploadFailed(uri), awaitItem())
+        }
     }
 
     private fun initViewModel() = AvatarPickerViewModel(email, profileService, avatarRepository, fileUtils)

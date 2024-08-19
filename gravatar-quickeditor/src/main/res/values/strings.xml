@@ -7,7 +7,8 @@
     <string name="avatar_picker_title_empty_state">Let’s setup your avatar</string>
     <string name="avatar_picker_description">Choose or upload your favorite avatar images and connect them to your email address.</string>
     <string name="avatar_selected_confirmation">Avatar updated! May take a few minutes to appear everywhere.</string>
-    <string name="avatar_selected_confirmation_action">Got it</string>
+    <string name="avatar_upload_error">Ooops, there was an error uploading the image.</string>
+    <string name="avatar_upload_error_action">Retry</string>
     <string name="avatar_picker_upload_image">Upload image</string>
     <string name="avatar_picker_choose_a_photo">Choose a Photo</string>
     <string name="avatar_picker_take_photo">Take Photo</string>
