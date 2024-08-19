@@ -13,10 +13,6 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Snackbar
-import androidx.compose.material3.SnackbarDuration
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -46,6 +42,9 @@ import com.gravatar.quickeditor.ui.copperlauncher.CropperLauncher
 import com.gravatar.quickeditor.ui.copperlauncher.UCropCropperLauncher
 import com.gravatar.quickeditor.ui.editor.AvatarUpdateResult
 import com.gravatar.quickeditor.ui.editor.bottomsheet.DEFAULT_PAGE_HEIGHT
+import com.gravatar.quickeditor.ui.extensions.QESnackbarHost
+import com.gravatar.quickeditor.ui.extensions.SnackbarType
+import com.gravatar.quickeditor.ui.extensions.showQESnackbar
 import com.gravatar.restapi.models.Avatar
 import com.gravatar.types.Email
 import com.gravatar.ui.GravatarTheme
@@ -82,10 +81,9 @@ internal fun AvatarPicker(
                     when (action) {
                         is AvatarPickerAction.AvatarSelected -> {
                             onAvatarSelected(AvatarUpdateResult(action.avatar.fullUrl.toUri()))
-                            snackState.showSnackbar(
+                            snackState.showQESnackbar(
                                 message = context.getString(R.string.avatar_selected_confirmation),
-                                actionLabel = context.getString(R.string.avatar_selected_confirmation_action),
-                                duration = SnackbarDuration.Long,
+                                withDismissAction = true,
                             )
                         }
 
@@ -105,17 +103,11 @@ internal fun AvatarPicker(
                 onAvatarSelected = viewModel::selectAvatar,
                 onLocalImageSelected = viewModel::localImageSelected,
             )
-            SnackbarHost(
+            QESnackbarHost(
                 modifier = Modifier
-                    .align(Alignment.BottomStart)
-                    .padding(20.dp),
+                    .align(Alignment.BottomStart),
                 hostState = snackState,
-            ) { snackbarData ->
-                Snackbar(
-                    actionColor = MaterialTheme.colorScheme.inverseOnSurface,
-                    snackbarData = snackbarData,
-                )
-            }
+            )
         }
     }
 }
