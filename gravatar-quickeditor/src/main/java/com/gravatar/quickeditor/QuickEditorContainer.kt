@@ -4,10 +4,12 @@ import android.annotation.SuppressLint
 import android.content.Context
 import androidx.datastore.preferences.preferencesDataStore
 import com.google.gson.GsonBuilder
+import com.gravatar.quickeditor.data.repository.AvatarRepository
 import com.gravatar.quickeditor.data.service.WordPressOAuthApi
 import com.gravatar.quickeditor.data.service.WordPressOAuthService
 import com.gravatar.quickeditor.data.storage.TokenStorage
 import com.gravatar.services.AvatarService
+import com.gravatar.services.IdentityService
 import com.gravatar.services.ProfileService
 import kotlinx.coroutines.Dispatchers
 import retrofit2.Retrofit
@@ -46,12 +48,25 @@ internal class QuickEditorContainer private constructor(
         )
     }
 
-    val avatarService: AvatarService by lazy {
+    private val avatarService: AvatarService by lazy {
         AvatarService()
     }
 
     val profileService: ProfileService by lazy {
         ProfileService()
+    }
+
+    private val identityService: IdentityService by lazy {
+        IdentityService()
+    }
+
+    val avatarRepository: AvatarRepository by lazy {
+        AvatarRepository(
+            avatarService = avatarService,
+            identityService = identityService,
+            tokenStorage = tokenStorage,
+            dispatcher = Dispatchers.IO,
+        )
     }
 
     private fun getWordpressOAuthApi(): WordPressOAuthApi {
