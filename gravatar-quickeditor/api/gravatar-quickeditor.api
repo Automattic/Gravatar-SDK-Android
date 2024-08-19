@@ -8,13 +8,11 @@ public final class com/gravatar/quickeditor/GravatarQuickEditor {
 
 public final class com/gravatar/quickeditor/ui/avatarpicker/ComposableSingletons$AvatarPickerKt {
 	public static final field INSTANCE Lcom/gravatar/quickeditor/ui/avatarpicker/ComposableSingletons$AvatarPickerKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function3;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
 	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$gravatar_quickeditor_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda-1$gravatar_quickeditor_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-2$gravatar_quickeditor_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$gravatar_quickeditor_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/gravatar/quickeditor/ui/components/ComposableSingletons$AvatarsSectionKt {
@@ -148,6 +146,13 @@ public final class com/gravatar/quickeditor/ui/editor/bottomsheet/ComposableSing
 
 public final class com/gravatar/quickeditor/ui/editor/bottomsheet/GravatarQuickEditorBottomSheetKt {
 	public static final fun GravatarQuickEditorBottomSheet (Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorParams;Lcom/gravatar/quickeditor/ui/oauth/OAuthParams;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Landroidx/compose/material3/SheetState;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/gravatar/quickeditor/ui/extensions/ComposableSingletons$QESnackbarKt {
+	public static final field INSTANCE Lcom/gravatar/quickeditor/ui/extensions/ComposableSingletons$QESnackbarKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function3;
+	public fun <init> ()V
+	public final fun getLambda-1$gravatar_quickeditor_release ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class com/gravatar/quickeditor/ui/oauth/ComposableSingletons$OAuthPageKt {
