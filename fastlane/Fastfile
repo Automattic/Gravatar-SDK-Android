@@ -28,9 +28,7 @@ SUPPORTED_LOCALES = [
   { glotpress: 'zh-tw', android: 'zh-rTW' }
 ].freeze
 
-
 platform :android do
-
   # Download the latest app translations from GlotPress and update the strings.xml files accordingly.
   #
   lane :download_translations do
