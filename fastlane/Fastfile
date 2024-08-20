@@ -1,0 +1,49 @@
+# frozen_string_literal: true
+
+default_platform(:android)
+
+UI.user_error!('Please run fastlane via `bundle exec`') unless FastlaneCore::Helper.bundler?
+
+RES_UI_DIR_PATH = File.join('gravatar-ui', 'src', 'main', 'res')
+RES_QUICK_EDITOR_DIR_PATH = File.join('gravatar-quickeditor', 'src', 'main', 'res')
+GLOTPRESS_UI_STRINGS_PROJECT_URL = 'https://translate.wordpress.com/projects/gravatar/gravatar-android-sdk/gravatar-ui/'
+GLOTPRESS_QUICK_EDITOR_STRINGS_PROJECT_URL = 'https://translate.wordpress.com/projects/gravatar/gravatar-android-sdk/gravatar-quick-editor/'
+
+SUPPORTED_LOCALES = [
+  { glotpress: 'ar',    android: 'ar'     },
+  { glotpress: 'de',    android: 'de'     },
+  { glotpress: 'es',    android: 'es'     },
+  { glotpress: 'fr',    android: 'fr'     },
+  { glotpress: 'he',    android: 'he'     },
+  { glotpress: 'id',    android: 'id'     },
+  { glotpress: 'it',    android: 'it'     },
+  { glotpress: 'ja',    android: 'ja'     },
+  { glotpress: 'ko',    android: 'ko'     },
+  { glotpress: 'nl',    android: 'nl'     },
+  { glotpress: 'pt-br', android: 'pt-rBR' },
+  { glotpress: 'ru',    android: 'ru'     },
+  { glotpress: 'sv',    android: 'sv'     },
+  { glotpress: 'tr',    android: 'tr'     },
+  { glotpress: 'zh-cn', android: 'zh-rCN' },
+  { glotpress: 'zh-tw', android: 'zh-rTW' }
+].freeze
+
+
+platform :android do
+
+  # Download the latest app translations from GlotPress and update the strings.xml files accordingly.
+  #
+  lane :download_translations do
+    android_download_translations(
+      res_dir: RES_UI_DIR_PATH,
+      glotpress_url: GLOTPRESS_UI_STRINGS_PROJECT_URL,
+      locales: SUPPORTED_LOCALES
+    )
+
+    android_download_translations(
+      res_dir: RES_QUICK_EDITOR_DIR_PATH,
+      glotpress_url: GLOTPRESS_QUICK_EDITOR_STRINGS_PROJECT_URL,
+      locales: SUPPORTED_LOCALES
+    )
+  end
+end
