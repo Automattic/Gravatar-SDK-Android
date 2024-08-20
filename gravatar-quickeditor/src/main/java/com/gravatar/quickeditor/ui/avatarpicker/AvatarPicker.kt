@@ -1,11 +1,7 @@
 package com.gravatar.quickeditor.ui.avatarpicker
 
-import android.content.Context
-import android.content.Intent
-import android.graphics.Color
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -44,6 +40,8 @@ import com.gravatar.quickeditor.data.repository.IdentityAvatars
 import com.gravatar.quickeditor.ui.components.AvatarsSection
 import com.gravatar.quickeditor.ui.components.EmailLabel
 import com.gravatar.quickeditor.ui.components.ProfileCard
+import com.gravatar.quickeditor.ui.copperlauncher.CropperLauncher
+import com.gravatar.quickeditor.ui.copperlauncher.UCropCropperLauncher
 import com.gravatar.quickeditor.ui.editor.AvatarUpdateResult
 import com.gravatar.quickeditor.ui.editor.bottomsheet.DEFAULT_PAGE_HEIGHT
 import com.gravatar.restapi.models.Avatar
@@ -51,10 +49,8 @@ import com.gravatar.types.Email
 import com.gravatar.ui.GravatarTheme
 import com.gravatar.ui.components.ComponentState
 import com.yalantis.ucrop.UCrop
-import com.yalantis.ucrop.UCropActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.io.File
 import java.time.Instant
 
 @Composable
@@ -62,6 +58,7 @@ internal fun AvatarPicker(
     email: Email,
     onAvatarSelected: (AvatarUpdateResult) -> Unit,
     viewModel: AvatarPickerViewModel = viewModel(factory = AvatarPickerViewModelFactory(email)),
+    cropperLauncher: CropperLauncher = UCropCropperLauncher(),
 ) {
     val snackState = remember { SnackbarHostState() }
     val lifecycle = LocalLifecycleOwner.current.lifecycle
@@ -91,7 +88,7 @@ internal fun AvatarPicker(
                         }
 
                         is AvatarPickerAction.LaunchImageCropper -> {
-                            uCropLauncher.launchAvatarCrop(action.imageUri, action.tempFile, context)
+                            cropperLauncher.launch(uCropLauncher, action.imageUri, action.tempFile, context)
                         }
                     }
                 }
@@ -161,25 +158,6 @@ internal fun AvatarPicker(
             Spacer(modifier = Modifier.height(24.dp))
         }
     }
-}
-
-private const val UCROP_COMPRESSION_QUALITY = 100
-
-private fun ActivityResultLauncher<Intent>.launchAvatarCrop(image: Uri, tempFile: File, context: Context) {
-    val options = UCrop.Options().apply {
-        setToolbarColor(Color.BLACK)
-        setStatusBarColor(Color.BLACK)
-        setToolbarWidgetColor(Color.WHITE)
-        setAllowedGestures(UCropActivity.SCALE, UCropActivity.ROTATE, UCropActivity.NONE)
-        setCompressionQuality(UCROP_COMPRESSION_QUALITY)
-        setCircleDimmedLayer(true)
-    }
-    launch(
-        UCrop.of(image, Uri.fromFile(tempFile))
-            .withAspectRatio(1f, 1f)
-            .withOptions(options)
-            .getIntent(context),
-    )
 }
 
 @Composable
