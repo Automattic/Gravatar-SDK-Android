@@ -267,5 +267,5 @@ private fun AvatarSectionPreview() {
     }
 }
 
-private val Avatar.fullUrl: String
+internal val Avatar.fullUrl: String
     get() = "https://www.gravatar.com$imageUrl?size=200"

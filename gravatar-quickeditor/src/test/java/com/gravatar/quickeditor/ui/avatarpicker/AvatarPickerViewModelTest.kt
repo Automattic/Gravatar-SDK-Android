@@ -175,7 +175,7 @@ class AvatarPickerViewModelTest {
                     email = email,
                     identityAvatars = identityAvatars.copy(selectedAvatarId = avatars.last().imageId),
                     error = false,
-                    profile = ComponentState.Loaded(profile),
+                    profile = ComponentState.Loaded(profile.copyAvatar(avatars.last())),
                     selectingAvatarId = null,
                 ),
                 awaitItem(),

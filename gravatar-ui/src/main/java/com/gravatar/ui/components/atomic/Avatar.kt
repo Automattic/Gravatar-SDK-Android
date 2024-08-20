@@ -68,13 +68,7 @@ public fun Avatar(
     avatarQueryOptions: AvatarQueryOptions? = null,
 ) {
     when (state) {
-        is ComponentState.Loading -> {
-            Box(
-                modifier = modifier
-                    .size(size)
-                    .skeletonEffect(),
-            )
-        }
+        is ComponentState.Loading -> SkeletonAvatar(size = size, modifier = modifier)
 
         is ComponentState.Loaded -> {
             Avatar(
@@ -85,16 +79,55 @@ public fun Avatar(
             )
         }
 
-        ComponentState.Empty -> Avatar(
-            model = if (isNightModeEnabled()) {
-                R.drawable.empty_profile_avatar_dark
-            } else {
-                R.drawable.empty_profile_avatar
-            },
-            size = size,
-            modifier = modifier,
-        )
+        ComponentState.Empty -> EmptyAvatar(size = size, modifier = modifier)
     }
+}
+
+/**
+ * [Avatar] is a composable that displays a user's avatar given the avatar URL.
+ *
+ * @param state Avatar URL wrapped in ComponentState
+ * @param size The size of the avatar
+ * @param modifier Composable modifier
+ */
+@JvmName("AvatarWithURLComponentState")
+@Composable
+public fun Avatar(state: ComponentState<String>, size: Dp, modifier: Modifier = Modifier) {
+    when (state) {
+        is ComponentState.Loading -> SkeletonAvatar(size = size, modifier = modifier)
+
+        is ComponentState.Loaded -> {
+            Avatar(
+                model = state.loadedValue,
+                size = size,
+                modifier = modifier,
+            )
+        }
+
+        ComponentState.Empty -> EmptyAvatar(size = size, modifier = modifier)
+    }
+}
+
+@Composable
+private fun SkeletonAvatar(size: Dp, modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier
+            .size(size)
+            .skeletonEffect(),
+    )
+}
+
+@Composable
+private fun EmptyAvatar(size: Dp, modifier: Modifier = Modifier) {
+    Avatar(
+        model = if (isNightModeEnabled()) {
+            R.drawable.empty_profile_avatar_dark
+        } else {
+            R.drawable.empty_profile_avatar
+        },
+        size = size,
+        modifier = modifier,
+    )
 }
 
 @Composable
