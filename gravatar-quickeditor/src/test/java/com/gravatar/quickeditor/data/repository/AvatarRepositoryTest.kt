@@ -6,6 +6,7 @@ import com.gravatar.quickeditor.ui.CoroutineTestRule
 import com.gravatar.restapi.models.Avatar
 import com.gravatar.restapi.models.Identity
 import com.gravatar.services.AvatarService
+import com.gravatar.services.ErrorType
 import com.gravatar.services.IdentityService
 import com.gravatar.services.Result
 import com.gravatar.types.Email
@@ -89,6 +90,35 @@ class AvatarRepositoryTest {
             Result.Success<IdentityAvatars, QuickEditorError>(IdentityAvatars(listOf(avatar), imageId)),
             result,
         )
+    }
+
+    @Test
+    fun `given email stored when token not found then TokenNotFound result`() = runTest {
+        coEvery { tokenStorage.getToken(any()) } returns null
+
+        val result = avatarRepository.selectAvatar(email, "avatarId")
+
+        assertEquals(Result.Failure<String, QuickEditorError>(QuickEditorError.TokenNotFound), result)
+    }
+
+    @Test
+    fun `given token stored when avatar selected fails then Failure result`() = runTest {
+        coEvery { tokenStorage.getToken(any()) } returns "token"
+        coEvery { identityService.setAvatarCatching(any(), any(), any()) } returns Result.Failure(ErrorType.UNKNOWN)
+
+        val result = avatarRepository.selectAvatar(email, "avatarId")
+
+        assertEquals(Result.Failure<String, QuickEditorError>(QuickEditorError.Server), result)
+    }
+
+    @Test
+    fun `given token stored when avatar selected succeeds then Success result`() = runTest {
+        coEvery { tokenStorage.getToken(any()) } returns "token"
+        coEvery { identityService.setAvatarCatching(any(), any(), any()) } returns Result.Success(Unit)
+
+        val result = avatarRepository.selectAvatar(email, "avatarId")
+
+        assertEquals(Result.Success<Unit, QuickEditorError>(Unit), result)
     }
 
     private fun createAvatar(id: String) = Avatar {

@@ -11,20 +11,26 @@ internal data class AvatarPickerUiState(
     val isLoading: Boolean = false,
     val error: Boolean = false,
     val profile: ComponentState<Profile>? = null,
-    private val identityAvatars: IdentityAvatars? = null,
+    val identityAvatars: IdentityAvatars? = null,
+    val selectingAvatarId: String? = null,
 ) {
     val avatars: List<AvatarUi>? = identityAvatars?.mapToUiModel()
-}
 
-private fun IdentityAvatars.mapToUiModel(): List<AvatarUi.Uploaded> {
-    return this.avatars.map { avatar ->
-        AvatarUi.Uploaded(
-            avatar = avatar,
-            isSelected = avatar.imageId == selectedAvatarId,
-        )
+    private fun IdentityAvatars.mapToUiModel(): List<AvatarUi.Uploaded> {
+        return this.avatars.map { avatar ->
+            AvatarUi.Uploaded(
+                avatar = avatar,
+                isSelected = avatar.imageId == (selectingAvatarId ?: selectedAvatarId),
+                isLoading = avatar.imageId == selectingAvatarId,
+            )
+        }
     }
 }
 
 internal sealed class AvatarUi(val avatarId: String) {
-    data class Uploaded(val avatar: Avatar, val isSelected: Boolean) : AvatarUi(avatar.imageId)
+    data class Uploaded(
+        val avatar: Avatar,
+        val isSelected: Boolean,
+        val isLoading: Boolean,
+    ) : AvatarUi(avatar.imageId)
 }
