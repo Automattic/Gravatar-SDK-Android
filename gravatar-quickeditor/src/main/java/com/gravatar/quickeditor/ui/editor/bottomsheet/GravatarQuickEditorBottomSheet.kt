@@ -22,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.gravatar.quickeditor.R
+import com.gravatar.quickeditor.ui.components.QEDragHandle
 import com.gravatar.quickeditor.ui.editor.AvatarUpdateResult
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorDismissReason
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorPage
@@ -63,8 +64,7 @@ public fun GravatarQuickEditorBottomSheet(
                 .heightIn(min = DEFAULT_PAGE_HEIGHT, max = screenHeightDp.dp * 0.9f),
             onDismissRequest = { onDismiss(GravatarQuickEditorDismissReason.Finished) },
             sheetState = modalBottomSheetState,
-            containerColor = MaterialTheme.colorScheme.background,
-            dragHandle = null,
+            dragHandle = { QEDragHandle() },
         ) {
             Surface {
                 Column(
