@@ -4,6 +4,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Snackbar
@@ -25,15 +27,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
@@ -45,6 +53,7 @@ import com.gravatar.extensions.defaultProfile
 import com.gravatar.quickeditor.R
 import com.gravatar.quickeditor.data.repository.IdentityAvatars
 import com.gravatar.quickeditor.ui.components.EmailLabel
+import com.gravatar.quickeditor.ui.components.MediaPickerPopup
 import com.gravatar.quickeditor.ui.components.ProfileCard
 import com.gravatar.quickeditor.ui.components.SelectableAvatar
 import com.gravatar.quickeditor.ui.editor.AvatarUpdateResult
@@ -151,6 +160,8 @@ private fun AvatarsSection(
     onAvatarSelected: (Avatar) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    var popupVisible by rememberSaveable { mutableStateOf(false) }
+    var popupYOffset by rememberSaveable { mutableIntStateOf(0) }
     Box(
         modifier = modifier
             .border(
@@ -173,7 +184,7 @@ private fun AvatarsSection(
                 modifier = Modifier.padding(top = 4.dp),
             )
 
-            LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.padding(top = 24.dp)) {
+            LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.padding(vertical = 24.dp)) {
                 items(items = avatars, key = { it.avatarId }) { avatarModel ->
                     when (avatarModel) {
                         is AvatarUi.Uploaded -> SelectableAvatar(
@@ -188,6 +199,28 @@ private fun AvatarsSection(
                     }
                 }
             }
+            Button(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .onPlaced { layoutCoordinates -> popupYOffset = layoutCoordinates.size.height },
+                onClick = { popupVisible = true },
+                shape = RoundedCornerShape(4.dp),
+                contentPadding = PaddingValues(14.dp),
+            ) {
+                Text(
+                    text = stringResource(R.string.avatar_picker_upload_image),
+                    style = MaterialTheme.typography.titleMedium,
+                )
+            }
+        }
+        if (popupVisible) {
+            MediaPickerPopup(
+                alignment = Alignment.BottomCenter,
+                onDismissRequest = { popupVisible = false },
+                offset = IntOffset(0, -popupYOffset - 30),
+                onChoosePhotoClick = { popupVisible = false },
+                onTakePhotoClick = { popupVisible = false },
+            )
         }
     }
 }
