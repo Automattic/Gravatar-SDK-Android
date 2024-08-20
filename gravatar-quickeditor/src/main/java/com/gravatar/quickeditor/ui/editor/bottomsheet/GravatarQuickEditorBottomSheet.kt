@@ -1,7 +1,6 @@
 package com.gravatar.quickeditor.ui.editor.bottomsheet
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -53,7 +52,6 @@ public fun GravatarQuickEditorBottomSheet(
     GravatarTheme {
         ModalBottomSheet(
             modifier = Modifier
-                .fillMaxWidth()
                 .heightIn(min = DEFAULT_PAGE_HEIGHT, max = screenHeightDp.dp * 0.9f),
             onDismissRequest = { onDismiss(GravatarQuickEditorDismissReason.Finished) },
             sheetState = modalBottomSheetState,
