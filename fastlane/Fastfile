@@ -1,0 +1,58 @@
+# frozen_string_literal: true
+
+default_platform(:android)
+
+UI.user_error!('Please run fastlane via `bundle exec`') unless FastlaneCore::Helper.bundler?
+
+GLOTPRESS_PROJECT_BASE_URL = 'https://translate.wordpress.com/projects/gravatar/gravatar-android-sdk'
+RESOURCES_TO_TRANSLATE = {
+  File.join('gravatar-ui', 'src', 'main', 'res') => "#{GLOTPRESS_PROJECT_BASE_URL}/gravatar-ui/",
+  File.join('gravatar-quickeditor', 'src', 'main', 'res') => "#{GLOTPRESS_PROJECT_BASE_URL}/gravatar-quick-editor/"
+}.freeze
+
+SUPPORTED_LOCALES = [
+  { glotpress: 'ar',    android: 'ar'     },
+  { glotpress: 'de',    android: 'de'     },
+  { glotpress: 'es',    android: 'es'     },
+  { glotpress: 'fr',    android: 'fr'     },
+  { glotpress: 'he',    android: 'he'     },
+  { glotpress: 'id',    android: 'id'     },
+  { glotpress: 'it',    android: 'it'     },
+  { glotpress: 'ja',    android: 'ja'     },
+  { glotpress: 'ko',    android: 'ko'     },
+  { glotpress: 'nl',    android: 'nl'     },
+  { glotpress: 'pt-br', android: 'pt-rBR' },
+  { glotpress: 'ru',    android: 'ru'     },
+  { glotpress: 'sv',    android: 'sv'     },
+  { glotpress: 'tr',    android: 'tr'     },
+  { glotpress: 'zh-cn', android: 'zh-rCN' },
+  { glotpress: 'zh-tw', android: 'zh-rTW' }
+].freeze
+
+platform :android do
+  # Download the latest app translations from GlotPress and update the strings.xml files accordingly.
+  #
+  # @example Running the lane
+  #          bundle exec fastlane download_translations skip_commit:true
+  #
+  lane :download_translations do |skip_commit: false|
+    RESOURCES_TO_TRANSLATE.each do |res_dir, gp_url|
+      android_download_translations(
+        res_dir: res_dir.to_s,
+        glotpress_url: gp_url,
+        locales: SUPPORTED_LOCALES,
+        skip_commit: true
+      )
+    end
+
+    next if skip_commit
+
+    strings_paths = RESOURCES_TO_TRANSLATE.keys.map(&:to_s)
+    git_add(path: strings_paths)
+    git_commit(
+      path: strings_paths,
+      message: 'Update translations',
+      allow_nothing_to_commit: true
+    )
+  end
+end

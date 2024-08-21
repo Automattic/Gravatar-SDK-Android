@@ -6,6 +6,11 @@
 *.iws
 .idea/
 
+# Fastlane
+fastlane/README.md
+fastlane/report.xml
+fastlane/.env
+
 .DS_Store
 /build
 /captures

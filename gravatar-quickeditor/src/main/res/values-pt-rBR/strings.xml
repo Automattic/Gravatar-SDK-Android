@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Translation-Revision-Date: 2024-08-20 18:39:50+0000
+Plural-Forms: nplurals=2; plural=(n > 1);
+Generator: GlotPress/2.4.0-alpha
+Language: pt_BR
+-->
+<resources>
+    <string name="capture_photo_icon_description">Capturar Foto</string>
+    <string name="photo_library_icon_description">Biblioteca de fotos</string>
+    <string name="avatar_picker_take_photo">Tirar Foto</string>
+    <string name="avatar_picker_choose_a_photo">Escolher uma Foto</string>
+    <string name="avatar_picker_upload_image">Subir imagem</string>
+    <string name="avatar_selected_confirmation_action">Entendi</string>
+    <string name="avatar_selected_confirmation">Avatar atualizado! Pode ser que demore alguns minutos até que ele apareça em todos os lugares.</string>
+    <string name="avatar_picker_description">Escolha ou suba suas imagens de avatar favoritas e conecte-as ao seu endereço de e-mail.</string>
+    <string name="avatar_picker_title">Avatares</string>
+    <string name="bottom_sheet_done">Concluído</string>
+    <string name="selectable_avatar_content_description">Imagem de Avatar</string>
+    <string name="gravatar">Gravatar</string>
+</resources>
