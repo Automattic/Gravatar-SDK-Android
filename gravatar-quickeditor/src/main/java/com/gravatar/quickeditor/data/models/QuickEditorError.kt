@@ -6,4 +6,6 @@ internal sealed class QuickEditorError {
     data object Unknown : QuickEditorError()
 
     data object Server : QuickEditorError()
+
+    data object AvatarUploadFailed : QuickEditorError()
 }

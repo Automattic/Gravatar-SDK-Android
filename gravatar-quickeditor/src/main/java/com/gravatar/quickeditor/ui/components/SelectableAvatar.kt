@@ -12,7 +12,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -20,7 +19,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.gravatar.quickeditor.R
-import com.gravatar.ui.GravatarTheme
 
 @Composable
 internal fun SelectableAvatar(
@@ -31,43 +29,43 @@ internal fun SelectableAvatar(
     modifier: Modifier = Modifier,
 ) {
     val cornerRadius = 8.dp
-    GravatarTheme {
-        Box(modifier = modifier) {
-            AsyncImage(
-                model = imageUrl,
-                contentDescription = stringResource(id = R.string.selectable_avatar_content_description),
-                modifier = Modifier
-                    .fillMaxSize()
-                    .clip(RoundedCornerShape(cornerRadius))
-                    .then(
-                        if (isSelected) {
-                            Modifier.border(4.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(cornerRadius))
-                        } else {
-                            Modifier.border(
-                                1.dp,
-                                MaterialTheme.colorScheme.surfaceDim,
-                                RoundedCornerShape(cornerRadius),
-                            )
-                        },
-                    )
-                    .clickable {
-                        onAvatarClicked()
+    Box(modifier = modifier) {
+        AsyncImage(
+            model = imageUrl,
+            contentDescription = stringResource(id = R.string.selectable_avatar_content_description),
+            modifier = Modifier
+                .fillMaxSize()
+                .clip(RoundedCornerShape(cornerRadius))
+                .then(
+                    if (isSelected) {
+                        Modifier.border(4.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(cornerRadius))
+                    } else {
+                        Modifier.border(
+                            1.dp,
+                            MaterialTheme.colorScheme.surfaceDim,
+                            RoundedCornerShape(cornerRadius),
+                        )
                     },
-            )
-            if (isLoading) {
-                Box(
-                    modifier = modifier
-                        .fillMaxSize()
-                        .background(
-                            color = Color.Black.copy(alpha = 0.3f),
-                            shape = RoundedCornerShape(cornerRadius),
-                        ),
-                ) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.align(Alignment.Center).size(20.dp),
-                        strokeWidth = 2.dp,
-                    )
-                }
+                )
+                .clickable {
+                    onAvatarClicked()
+                },
+        )
+        if (isLoading) {
+            Box(
+                modifier = modifier
+                    .fillMaxSize()
+                    .background(
+                        color = Color.Black.copy(alpha = 0.3f),
+                        shape = RoundedCornerShape(cornerRadius),
+                    ),
+            ) {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .size(20.dp),
+                    strokeWidth = 2.dp,
+                )
             }
         }
     }

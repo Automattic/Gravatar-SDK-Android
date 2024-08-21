@@ -1,5 +1,7 @@
 package com.gravatar.quickeditor.data.repository
 
+import android.net.Uri
+import androidx.core.net.toFile
 import com.gravatar.quickeditor.data.models.QuickEditorError
 import com.gravatar.quickeditor.data.storage.TokenStorage
 import com.gravatar.restapi.models.Avatar
@@ -44,6 +46,16 @@ internal class AvatarRepository(
         } ?: Result.Failure(QuickEditorError.TokenNotFound)
     }
 
+    suspend fun uploadAvatar(email: Email, avatarUri: Uri): Result<Unit, QuickEditorError> = withContext(dispatcher) {
+        val token = tokenStorage.getToken(email.hash().toString())
+        token?.let {
+            when (avatarService.uploadCatching(avatarUri.toFile(), token)) {
+                is Result.Success -> Result.Success(Unit)
+                is Result.Failure -> Result.Failure(QuickEditorError.AvatarUploadFailed)
+            }
+        } ?: Result.Failure(QuickEditorError.TokenNotFound)
+    }
+
     private suspend fun getAvatarsAsync(token: String): Deferred<List<Avatar>> = coroutineScope {
         async { avatarService.retrieve(token) }
     }
@@ -55,5 +67,5 @@ internal class AvatarRepository(
 
 internal data class IdentityAvatars(
     val avatars: List<Avatar>,
-    val selectedAvatarId: String,
+    val selectedAvatarId: String?,
 )
