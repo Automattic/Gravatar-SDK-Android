@@ -9,7 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.gravatar.ui.GravatarTheme
 
@@ -27,10 +27,11 @@ internal fun ErrorSection(
                 width = 1.dp,
                 color = MaterialTheme.colorScheme.surfaceContainerHighest,
                 shape = RoundedCornerShape(8.dp),
-            )
-            .padding(16.dp),
+            ),
     ) {
-        Column {
+        Column(
+            modifier = Modifier.padding(16.dp),
+        ) {
             QESectionTitle(title = title)
             QESectionMessage(message = message, modifier = Modifier.padding(top = 4.dp))
             QEButton(buttonText = buttonText, onClick = onButtonClick, modifier = Modifier.padding(top = 24.dp))
@@ -38,7 +39,7 @@ internal fun ErrorSection(
     }
 }
 
-@Preview
+@PreviewLightDark
 @Composable
 private fun ErrorSectionPreview() {
     GravatarTheme {
