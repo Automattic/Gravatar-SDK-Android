@@ -31,17 +31,32 @@ SUPPORTED_LOCALES = [
 platform :android do
   # Download the latest app translations from GlotPress and update the strings.xml files accordingly.
   #
-  lane :download_translations do
+  # @example Running the lane
+  #          bundle exec fastlane download_translations skip_commit:true
+  #
+  lane :download_translations do |skip_commit: false|
     android_download_translations(
       res_dir: RES_UI_DIR_PATH,
       glotpress_url: GLOTPRESS_UI_STRINGS_PROJECT_URL,
-      locales: SUPPORTED_LOCALES
+      locales: SUPPORTED_LOCALES,
+      skip_commit: true
     )
 
     android_download_translations(
       res_dir: RES_QUICK_EDITOR_DIR_PATH,
       glotpress_url: GLOTPRESS_QUICK_EDITOR_STRINGS_PROJECT_URL,
-      locales: SUPPORTED_LOCALES
+      locales: SUPPORTED_LOCALES,
+      skip_commit: true
+    )
+
+    next if skip_commit
+
+    strings_paths = [RES_UI_DIR_PATH, RES_QUICK_EDITOR_DIR_PATH]
+    git_add(path: strings_paths)
+    git_commit(
+      path: strings_paths,
+      message: 'Update translations',
+      allow_nothing_to_commit: true
     )
   end
 end
