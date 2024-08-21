@@ -15,4 +15,13 @@
     <string name="photo_library_icon_description">Photo library</string>
     <string name="capture_photo_icon_description">Capture Photo</string>
     <string name="avatar_selection_error">Ooops, there was an error selecting the avatar.</string>
+    <string name="avatar_picker_server_error_title">Ooops</string>
+    <string name="avatar_picker_server_error_message">Something went wrong and we couldn\'t connect to Gravatar servers.</string>
+    <string name="avatar_picker_unknown_error_message">Something went terribly wrong.</string>
+    <string name="avatar_picker_error_retry_cta">Try again</string>
+    <string name="avatar_picker_session_error_title">Session expired</string>
+    <string name="avatar_picker_session_error_message">Session expired for security reasons. Please log in to update your Avatar.</string>
+    <string name="avatar_picker_session_error_cta">Log in</string>
+    <string name="avatar_picker_network_error_title">No internet</string>
+    <string name="avatar_picker_network_error_message">Uh oh! Looks like you\'re not connected to the internet.</string>
 </resources>

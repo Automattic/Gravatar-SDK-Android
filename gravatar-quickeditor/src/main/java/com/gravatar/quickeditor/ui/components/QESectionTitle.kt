@@ -11,10 +11,7 @@ import com.gravatar.quickeditor.R
 import com.gravatar.ui.GravatarTheme
 
 @Composable
-internal fun QESectionTitle(
-    title: String,
-    modifier: Modifier = Modifier,
-) {
+internal fun QESectionTitle(title: String, modifier: Modifier = Modifier) {
     Text(
         text = title,
         fontSize = 22.sp,

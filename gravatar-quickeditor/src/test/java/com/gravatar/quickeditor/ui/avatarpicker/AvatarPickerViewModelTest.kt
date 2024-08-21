@@ -69,7 +69,7 @@ class AvatarPickerViewModelTest {
                 AvatarPickerUiState(
                     email = email,
                     identityAvatars = identityAvatarsCopy,
-                    error = false,
+                    error = null,
                     profile = null,
                     scrollToIndex = 0,
                 ),
@@ -92,7 +92,7 @@ class AvatarPickerViewModelTest {
                 awaitItem(),
             )
             assertEquals(
-                AvatarPickerUiState(email = email, error = true),
+                AvatarPickerUiState(email = email, error = SectionError.Unknown),
                 awaitItem(),
             )
             skipItems(2) // skipping profile loading states
@@ -112,7 +112,7 @@ class AvatarPickerViewModelTest {
                 AvatarPickerUiState(
                     email = email,
                     identityAvatars = identityAvatars,
-                    error = false,
+                    error = null,
                     profile = ComponentState.Loading,
                 ),
                 awaitItem(),
@@ -121,7 +121,7 @@ class AvatarPickerViewModelTest {
                 AvatarPickerUiState(
                     email = email,
                     identityAvatars = identityAvatars,
-                    error = false,
+                    error = null,
                     profile = ComponentState.Loaded(profile),
                 ),
                 awaitItem(),
@@ -140,7 +140,7 @@ class AvatarPickerViewModelTest {
                 AvatarPickerUiState(
                     email = email,
                     identityAvatars = identityAvatars,
-                    error = false,
+                    error = null,
                     profile = ComponentState.Loading,
                 ),
                 awaitItem(),
@@ -149,7 +149,7 @@ class AvatarPickerViewModelTest {
                 AvatarPickerUiState(
                     email = email,
                     identityAvatars = identityAvatars,
-                    error = false,
+                    error = null,
                     profile = null,
                 ),
                 awaitItem(),
@@ -171,12 +171,12 @@ class AvatarPickerViewModelTest {
 
         viewModel.uiState.test {
             expectMostRecentItem()
-            viewModel.selectAvatar(avatars.last())
+            viewModel.onEvent(AvatarPickerEvent.AvatarSelected(avatars.last()))
             assertEquals(
                 AvatarPickerUiState(
                     email = email,
                     identityAvatars = identityAvatarsCopy,
-                    error = false,
+                    error = null,
                     profile = ComponentState.Loaded(profile),
                     selectingAvatarId = avatars.last().imageId,
                     scrollToIndex = 0,
@@ -187,7 +187,7 @@ class AvatarPickerViewModelTest {
                 AvatarPickerUiState(
                     email = email,
                     identityAvatars = identityAvatarsCopy.copy(selectedAvatarId = avatars.last().imageId),
-                    error = false,
+                    error = null,
                     profile = ComponentState.Loaded(profile.copyAvatar(avatars.last())),
                     selectingAvatarId = null,
                     scrollToIndex = 0,
@@ -206,7 +206,7 @@ class AvatarPickerViewModelTest {
         val identityAvatarsCopy = identityAvatars.copy(avatars = avatars, selectedAvatarId = "1")
         coEvery { avatarRepository.getAvatars(email) } returns Result.Success(identityAvatarsCopy)
         coEvery { profileService.retrieveCatching(email) } returns Result.Success(profile)
-        coEvery { avatarRepository.selectAvatar(any(), any()) } returns Result.Failure(QuickEditorError.Server)
+        coEvery { avatarRepository.selectAvatar(any(), any()) } returns Result.Failure(QuickEditorError.Unknown)
 
         viewModel = initViewModel()
 
@@ -214,12 +214,12 @@ class AvatarPickerViewModelTest {
 
         viewModel.uiState.test {
             expectMostRecentItem()
-            viewModel.selectAvatar(avatars.last())
+            viewModel.onEvent(AvatarPickerEvent.AvatarSelected(avatars.last()))
             assertEquals(
                 AvatarPickerUiState(
                     email = email,
                     identityAvatars = identityAvatarsCopy,
-                    error = false,
+                    error = null,
                     profile = ComponentState.Loaded(profile),
                     selectingAvatarId = avatars.last().imageId,
                     scrollToIndex = 0,
@@ -230,7 +230,7 @@ class AvatarPickerViewModelTest {
                 AvatarPickerUiState(
                     email = email,
                     identityAvatars = identityAvatarsCopy,
-                    error = false,
+                    error = null,
                     profile = ComponentState.Loaded(profile),
                     selectingAvatarId = null,
                     scrollToIndex = 0,
@@ -255,7 +255,7 @@ class AvatarPickerViewModelTest {
 
         viewModel.uiState.test {
             expectMostRecentItem()
-            viewModel.selectAvatar(avatars.first())
+            viewModel.onEvent(AvatarPickerEvent.AvatarSelected(avatars.first()))
             expectNoEvents()
         }
         viewModel.actions.test {
@@ -272,7 +272,7 @@ class AvatarPickerViewModelTest {
         viewModel = initViewModel()
 
         viewModel.actions.test {
-            viewModel.localImageSelected(uri)
+            viewModel.onEvent(AvatarPickerEvent.LocalImageSelected(uri))
             assertEquals(AvatarPickerAction.LaunchImageCropper(uri, file), awaitItem())
         }
     }
@@ -293,13 +293,13 @@ class AvatarPickerViewModelTest {
 
         viewModel.uiState.test {
             expectMostRecentItem()
-            viewModel.uploadAvatar(uri)
+            viewModel.onEvent(AvatarPickerEvent.ImageCropped(uri))
 
             assertEquals(
                 AvatarPickerUiState(
                     email = email,
                     identityAvatars = identityAvatarsCopy,
-                    error = false,
+                    error = null,
                     profile = ComponentState.Loaded(profile),
                     selectingAvatarId = null,
                     uploadingAvatar = uri,
@@ -312,7 +312,7 @@ class AvatarPickerViewModelTest {
                 AvatarPickerUiState(
                     email = email,
                     identityAvatars = identityAvatarsCopy,
-                    error = false,
+                    error = null,
                     profile = ComponentState.Loaded(profile),
                     selectingAvatarId = null,
                     uploadingAvatar = null,
@@ -332,7 +332,7 @@ class AvatarPickerViewModelTest {
         coEvery { profileService.retrieveCatching(email) } returns Result.Success(profile)
         coEvery {
             avatarRepository.uploadAvatar(any(), any())
-        } returns Result.Failure(QuickEditorError.AvatarUploadFailed)
+        } returns Result.Failure(QuickEditorError.Request(ErrorType.SERVER))
         coEvery { avatarRepository.getAvatars(any()) } returns Result.Success(identityAvatarsCopy)
 
         viewModel = initViewModel()
@@ -341,13 +341,13 @@ class AvatarPickerViewModelTest {
 
         viewModel.uiState.test {
             expectMostRecentItem()
-            viewModel.uploadAvatar(uri)
+            viewModel.onEvent(AvatarPickerEvent.ImageCropped(uri))
 
             assertEquals(
                 AvatarPickerUiState(
                     email = email,
                     identityAvatars = identityAvatarsCopy,
-                    error = false,
+                    error = null,
                     profile = ComponentState.Loaded(profile),
                     selectingAvatarId = null,
                     uploadingAvatar = uri,
@@ -359,7 +359,7 @@ class AvatarPickerViewModelTest {
                 AvatarPickerUiState(
                     email = email,
                     identityAvatars = identityAvatarsCopy,
-                    error = false,
+                    error = null,
                     profile = ComponentState.Loaded(profile),
                     selectingAvatarId = null,
                     uploadingAvatar = null,

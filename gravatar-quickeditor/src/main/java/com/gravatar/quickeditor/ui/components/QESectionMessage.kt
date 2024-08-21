@@ -11,10 +11,7 @@ import com.gravatar.quickeditor.R
 import com.gravatar.ui.GravatarTheme
 
 @Composable
-internal fun QESectionMessage(
-    message: String,
-    modifier: Modifier = Modifier
-) {
+internal fun QESectionMessage(message: String, modifier: Modifier = Modifier) {
     Text(
         text = message,
         fontSize = 15.sp,
@@ -30,4 +27,3 @@ private fun QESectionMessagePreview() {
         QESectionMessage(message = stringResource(id = R.string.avatar_picker_description))
     }
 }
-

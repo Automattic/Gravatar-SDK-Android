@@ -48,8 +48,7 @@ class AvatarPickerTest : RoborazziTest() {
                     selectedAvatarId = "1",
                 ),
             ),
-            onLocalImageSelected = { },
-            onAvatarSelected = {},
+            onEvent = { },
         )
     }
 
@@ -84,8 +83,7 @@ class AvatarPickerTest : RoborazziTest() {
                     selectedAvatarId = "1",
                 ),
             ),
-            onAvatarSelected = {},
-            onLocalImageSelected = { },
+            onEvent = { },
         )
     }
 }

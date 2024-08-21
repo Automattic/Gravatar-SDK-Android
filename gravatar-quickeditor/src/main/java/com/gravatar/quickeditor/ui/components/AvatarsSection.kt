@@ -10,7 +10,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -18,10 +17,8 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -35,11 +32,9 @@ import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.gravatar.quickeditor.QuickEditorFileProvider
 import com.gravatar.quickeditor.R
 import com.gravatar.quickeditor.ui.avatarpicker.AvatarUi
@@ -86,18 +81,11 @@ internal fun AvatarsSection(
             Column(
                 modifier = Modifier.padding(16.dp),
             ) {
-                Text(
-                    text = stringResource(id = state.titleRes),
-                    fontSize = 22.sp,
-                    fontWeight = FontWeight.Bold,
-                )
-                Text(
-                    text = stringResource(R.string.avatar_picker_description),
-                    fontSize = 15.sp,
-                    color = MaterialTheme.colorScheme.tertiary,
+                QESectionTitle(title = stringResource(id = state.titleRes))
+                QESectionMessage(
+                    message = stringResource(R.string.avatar_picker_description),
                     modifier = Modifier.padding(top = 4.dp),
                 )
-
                 if (state.avatars.isEmpty()) {
                     Box(modifier = modifier.fillMaxWidth()) {
                         Image(
@@ -135,20 +123,12 @@ internal fun AvatarsSection(
                         }
                     }
                 }
-                Button(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .onPlaced { layoutCoordinates -> popupYOffset = layoutCoordinates.size.height },
+                QEButton(
+                    buttonText = stringResource(id = R.string.avatar_picker_upload_image),
                     onClick = { popupVisible = true },
-                    shape = RoundedCornerShape(4.dp),
-                    contentPadding = PaddingValues(14.dp),
+                    modifier = Modifier.onPlaced { layoutCoordinates -> popupYOffset = layoutCoordinates.size.height },
                     enabled = state.uploadButtonEnabled,
-                ) {
-                    Text(
-                        text = stringResource(R.string.avatar_picker_upload_image),
-                        style = MaterialTheme.typography.titleMedium,
-                    )
-                }
+                )
             }
             if (popupVisible) {
                 MediaPickerPopup(
