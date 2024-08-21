@@ -1,0 +1,7 @@
+AllCops:
+  Exclude:
+    - vendor/**/*
+  NewCops: enable
+
+Style/HashSyntax:
+  EnforcedShorthandSyntax: never
