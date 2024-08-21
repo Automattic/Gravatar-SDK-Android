@@ -4,10 +4,11 @@ default_platform(:android)
 
 UI.user_error!('Please run fastlane via `bundle exec`') unless FastlaneCore::Helper.bundler?
 
-RES_UI_DIR_PATH = File.join('gravatar-ui', 'src', 'main', 'res')
-RES_QUICK_EDITOR_DIR_PATH = File.join('gravatar-quickeditor', 'src', 'main', 'res')
-GLOTPRESS_UI_STRINGS_PROJECT_URL = 'https://translate.wordpress.com/projects/gravatar/gravatar-android-sdk/gravatar-ui/'
-GLOTPRESS_QUICK_EDITOR_STRINGS_PROJECT_URL = 'https://translate.wordpress.com/projects/gravatar/gravatar-android-sdk/gravatar-quick-editor/'
+GLOTPRESS_PROJECT_BASE_URL = 'https://translate.wordpress.com/projects/gravatar/gravatar-android-sdk'
+RESOURCES_TO_TRANSLATE = {
+  File.join('gravatar-ui', 'src', 'main', 'res') => "#{GLOTPRESS_PROJECT_BASE_URL}/gravatar-ui/",
+  File.join('gravatar-quickeditor', 'src', 'main', 'res') => "#{GLOTPRESS_PROJECT_BASE_URL}/gravatar-quick-editor/"
+}.freeze
 
 SUPPORTED_LOCALES = [
   { glotpress: 'ar',    android: 'ar'     },
@@ -35,23 +36,18 @@ platform :android do
   #          bundle exec fastlane download_translations skip_commit:true
   #
   lane :download_translations do |skip_commit: false|
-    android_download_translations(
-      res_dir: RES_UI_DIR_PATH,
-      glotpress_url: GLOTPRESS_UI_STRINGS_PROJECT_URL,
-      locales: SUPPORTED_LOCALES,
-      skip_commit: true
-    )
-
-    android_download_translations(
-      res_dir: RES_QUICK_EDITOR_DIR_PATH,
-      glotpress_url: GLOTPRESS_QUICK_EDITOR_STRINGS_PROJECT_URL,
-      locales: SUPPORTED_LOCALES,
-      skip_commit: true
-    )
+    RESOURCES_TO_TRANSLATE.each do |res_dir, gp_url|
+      android_download_translations(
+        res_dir: res_dir.to_s,
+        glotpress_url: gp_url,
+        locales: SUPPORTED_LOCALES,
+        skip_commit: true
+      )
+    end
 
     next if skip_commit
 
-    strings_paths = [RES_UI_DIR_PATH, RES_QUICK_EDITOR_DIR_PATH]
+    strings_paths = RESOURCES_TO_TRANSLATE.keys.map(&:to_s)
     git_add(path: strings_paths)
     git_commit(
       path: strings_paths,
