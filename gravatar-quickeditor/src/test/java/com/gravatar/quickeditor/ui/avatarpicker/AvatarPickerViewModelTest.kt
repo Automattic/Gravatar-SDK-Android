@@ -373,6 +373,17 @@ class AvatarPickerViewModelTest {
         }
     }
 
+    @Test
+    fun `given view model when LoginUserTapped then LoginUser action sent`() = runTest {
+        viewModel = initViewModel()
+
+        viewModel.onEvent(AvatarPickerEvent.LoginUserTapped)
+
+        viewModel.actions.test {
+            assertEquals(AvatarPickerAction.LoginUser, awaitItem())
+        }
+    }
+
     private fun initViewModel() = AvatarPickerViewModel(email, profileService, avatarRepository, fileUtils)
 
     private fun createAvatar(id: String) = Avatar {

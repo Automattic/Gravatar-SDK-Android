@@ -46,8 +46,10 @@ internal class AvatarPickerViewModel(
             AvatarPickerEvent.Refresh -> refresh()
             is AvatarPickerEvent.AvatarSelected -> selectAvatar(event.avatar)
             is AvatarPickerEvent.ImageCropped -> uploadAvatar(event.uri)
-            AvatarPickerEvent.LoginUser -> {
-                // todo
+            AvatarPickerEvent.LoginUserTapped -> {
+                viewModelScope.launch {
+                    _actions.send(AvatarPickerAction.LoginUser)
+                }
             }
         }
     }
@@ -233,6 +235,7 @@ private val QuickEditorError.asSectionError: SectionError
         is QuickEditorError.Request -> when (type) {
             ErrorType.SERVER -> SectionError.ServerError
             ErrorType.NETWORK -> SectionError.NoInternetConnection
+            ErrorType.UNAUTHORIZED -> SectionError.InvalidToken
             ErrorType.NOT_FOUND,
             ErrorType.RATE_LIMIT_EXCEEDED,
             ErrorType.TIMEOUT,

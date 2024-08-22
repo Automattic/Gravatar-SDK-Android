@@ -3,7 +3,6 @@ package com.gravatar.quickeditor.ui.editor
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -12,7 +11,6 @@ import com.gravatar.quickeditor.ui.navigation.QuickEditorPage
 import com.gravatar.quickeditor.ui.oauth.OAuthPage
 import com.gravatar.quickeditor.ui.oauth.OAuthParams
 import com.gravatar.quickeditor.ui.splash.SplashPage
-import com.gravatar.types.Email
 
 /**
  * Raw composable component for the Quick Editor.
@@ -59,27 +57,11 @@ internal fun GravatarQuickEditorPage(
             )
         }
         composable(QuickEditorPage.EDITOR.name) {
-            AvatarPicker(gravatarQuickEditorParams.email, onAvatarSelected)
+            AvatarPicker(
+                email = gravatarQuickEditorParams.email,
+                onAvatarSelected = onAvatarSelected,
+                onSessionExpired = { navController.navigate(QuickEditorPage.OAUTH.name) },
+            )
         }
     }
-}
-
-@Preview
-@Composable
-private fun ProfileQuickEditorPagePreview() {
-    val oAuthParams = OAuthParams {
-        clientSecret = "clientSecret"
-        clientId = "clientId"
-        redirectUri = "redirectUri"
-    }
-    val gravatarQuickEditorParams = GravatarQuickEditorParams {
-        appName = "FancyMobileApp"
-        email = Email("email")
-    }
-    GravatarQuickEditorPage(
-        gravatarQuickEditorParams = gravatarQuickEditorParams,
-        oAuthParams = oAuthParams,
-        onAvatarSelected = {},
-        onDismiss = {},
-    )
 }
