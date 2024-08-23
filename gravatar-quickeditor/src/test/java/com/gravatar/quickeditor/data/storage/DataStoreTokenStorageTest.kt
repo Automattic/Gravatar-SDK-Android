@@ -19,14 +19,14 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 
 @RunWith(RobolectricTestRunner::class)
-class TokenStorageTest {
+class DataStoreTokenStorageTest {
     private val testDispatcher = StandardTestDispatcher()
 
     @get:Rule
     var coroutineTestRule: CoroutineTestRule = CoroutineTestRule(testDispatcher)
 
     private lateinit var dataStore: DataStore<Preferences>
-    private lateinit var tokenStorage: TokenStorage
+    private lateinit var tokenStorage: DataStoreTokenStorage
 
     private val key = "key"
     private val token = "new_token"
@@ -37,7 +37,7 @@ class TokenStorageTest {
         dataStore = PreferenceDataStoreFactory.create(
             produceFile = { context.preferencesDataStoreFile("test_preferences") },
         )
-        tokenStorage = TokenStorage(
+        tokenStorage = DataStoreTokenStorage(
             dataStore = dataStore,
             dispatcher = testDispatcher,
         )

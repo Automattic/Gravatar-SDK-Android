@@ -13,6 +13,8 @@ import com.gravatar.quickeditor.data.datastore.createEncryptedFileWithFallbackRe
 import com.gravatar.quickeditor.data.repository.AvatarRepository
 import com.gravatar.quickeditor.data.service.WordPressOAuthApi
 import com.gravatar.quickeditor.data.service.WordPressOAuthService
+import com.gravatar.quickeditor.data.storage.DataStoreTokenStorage
+import com.gravatar.quickeditor.data.storage.InMemoryTokenStorage
 import com.gravatar.quickeditor.data.storage.TokenStorage
 import com.gravatar.services.AvatarService
 import com.gravatar.services.IdentityService
@@ -48,9 +50,18 @@ internal class QuickEditorContainer private constructor(
         context.createEncryptedFileWithFallbackReset(name = "quick-editor-preferences")
     }
 
-    val tokenStorage: TokenStorage by lazy {
-        TokenStorage(dataStore = dataStore, dispatcher = Dispatchers.IO)
+    val dataStoreTokenStorage: DataStoreTokenStorage by lazy {
+        DataStoreTokenStorage(dataStore = dataStore, dispatcher = Dispatchers.IO)
     }
+
+    private var useInMemoryTokenStorage = false
+
+    public val inMemoryTokenStorage: InMemoryTokenStorage by lazy {
+        InMemoryTokenStorage()
+    }
+
+    val tokenStorage: TokenStorage
+        get() = if (useInMemoryTokenStorage) inMemoryTokenStorage else dataStoreTokenStorage
 
     val wordPressOAuthService: WordPressOAuthService by lazy {
         WordPressOAuthService(
@@ -75,13 +86,20 @@ internal class QuickEditorContainer private constructor(
         FileUtils(context)
     }
 
-    val avatarRepository: AvatarRepository by lazy {
-        AvatarRepository(
+    val avatarRepository: AvatarRepository
+        get() = AvatarRepository(
             avatarService = avatarService,
             identityService = identityService,
             tokenStorage = tokenStorage,
             dispatcher = Dispatchers.IO,
         )
+
+    fun useInMemoryTokenStorage() {
+        useInMemoryTokenStorage = true
+    }
+
+    fun resetUseInMemoryTokenStorage() {
+        useInMemoryTokenStorage = false
     }
 
     private fun getWordpressOAuthApi(): WordPressOAuthApi {

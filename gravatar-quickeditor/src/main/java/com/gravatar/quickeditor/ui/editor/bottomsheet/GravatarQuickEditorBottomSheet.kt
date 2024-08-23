@@ -15,11 +15,11 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import com.gravatar.quickeditor.ui.components.QEDragHandle
 import com.gravatar.quickeditor.ui.components.QETopBar
+import com.gravatar.quickeditor.ui.editor.AuthenticationMethod
 import com.gravatar.quickeditor.ui.editor.AvatarUpdateResult
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorDismissReason
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorPage
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
-import com.gravatar.quickeditor.ui.oauth.OAuthParams
 import com.gravatar.ui.GravatarTheme
 import kotlinx.coroutines.launch
 
@@ -30,7 +30,7 @@ import kotlinx.coroutines.launch
  * The bottom sheet is configured to take 70% of the screen height and skips the partially expanded state.
  *
  * @param gravatarQuickEditorParams The Quick Editor parameters.
- * @param oAuthParams The OAuth parameters.
+ * @param authenticationMethod The method used for authentication with the Gravatar REST API.
  * @param onAvatarSelected The callback for the avatar update result, check [AvatarUpdateResult].
  *                       Can be invoked multiple times while the Quick Editor is open.
  * @param onDismiss The callback for the dismiss action.
@@ -41,10 +41,43 @@ import kotlinx.coroutines.launch
 @Composable
 public fun GravatarQuickEditorBottomSheet(
     gravatarQuickEditorParams: GravatarQuickEditorParams,
-    oAuthParams: OAuthParams,
+    authenticationMethod: AuthenticationMethod,
     onAvatarSelected: (AvatarUpdateResult) -> Unit,
     onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit = {},
     modalBottomSheetState: SheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+) {
+    GravatarModalBottomSheet(
+        onDismiss = onDismiss,
+        modalBottomSheetState = modalBottomSheetState,
+    ) {
+        when (authenticationMethod) {
+            is AuthenticationMethod.Bearer -> {
+                GravatarQuickEditorPage(
+                    gravatarQuickEditorParams = gravatarQuickEditorParams,
+                    authToken = authenticationMethod.token,
+                    onDismiss = onDismiss,
+                    onAvatarSelected = onAvatarSelected,
+                )
+            }
+
+            is AuthenticationMethod.OAuth -> {
+                GravatarQuickEditorPage(
+                    gravatarQuickEditorParams = gravatarQuickEditorParams,
+                    oAuthParams = authenticationMethod.oAuthParams,
+                    onDismiss = onDismiss,
+                    onAvatarSelected = onAvatarSelected,
+                )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun GravatarModalBottomSheet(
+    onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit = {},
+    modalBottomSheetState: SheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+    content: @Composable () -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
     val screenHeightDp = LocalConfiguration.current.screenHeightDp
@@ -69,12 +102,7 @@ public fun GravatarQuickEditorBottomSheet(
                             }
                         },
                     )
-                    GravatarQuickEditorPage(
-                        gravatarQuickEditorParams = gravatarQuickEditorParams,
-                        oAuthParams = oAuthParams,
-                        onDismiss = onDismiss,
-                        onAvatarSelected = onAvatarSelected,
-                    )
+                    content()
                 }
             }
         }
