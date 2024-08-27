@@ -18,7 +18,7 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        minSdk = 21
+        minSdk = 23
         // targetSdkVersion has no effect for libraries. This is only used for the test APK
         targetSdk = 34
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -96,7 +96,7 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.viewmodel.compose)
     implementation(libs.androidx.navigation.compose)
-    implementation(libs.androidx.datastore.preferences)
+    implementation(libs.security.crypto.datastore)
     implementation(libs.androidx.startup)
 
     implementation(libs.coil.compose)
