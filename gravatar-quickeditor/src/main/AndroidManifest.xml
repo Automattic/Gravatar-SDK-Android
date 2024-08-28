@@ -17,6 +17,15 @@
                 android:name="com.gravatar.quickeditor.initializer.QuickEditorContainerInitializer"
                 android:value="androidx.startup" />
         </provider>
+        <provider
+            android:name=".QuickEditorFileProvider"
+            android:authorities="${applicationId}.com.quickeditor.fileprovider"
+            android:grantUriPermissions="true"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/quickeditor_filepaths" />
+        </provider>
     </application>
 
 </manifest>

@@ -71,7 +71,7 @@ internal class AvatarPickerViewModel(
 
     fun localImageSelected(imageUri: Uri) {
         viewModelScope.launch {
-            _actions.send(AvatarPickerAction.LaunchImageCropper(imageUri, fileUtils.createTempFile()))
+            _actions.send(AvatarPickerAction.LaunchImageCropper(imageUri, fileUtils.createCroppedAvatarFile()))
         }
     }
 

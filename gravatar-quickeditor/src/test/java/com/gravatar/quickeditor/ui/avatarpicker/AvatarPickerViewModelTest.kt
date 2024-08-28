@@ -267,7 +267,7 @@ class AvatarPickerViewModelTest {
     fun `given local image when selected then launch cropper action sent`() = runTest {
         val file = mockk<File>()
         val uri = mockk<Uri>()
-        every { fileUtils.createTempFile() } returns file
+        every { fileUtils.createCroppedAvatarFile() } returns file
 
         viewModel = initViewModel()
 
