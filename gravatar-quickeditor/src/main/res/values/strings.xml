@@ -4,6 +4,7 @@
     <string name="selectable_avatar_content_description">Avatar Image</string>
     <string name="bottom_sheet_done">Done</string>
     <string name="avatar_picker_title">Avatars</string>
+    <string name="avatar_picker_title_empty_state">Let’s setup your avatar</string>
     <string name="avatar_picker_description">Choose or upload your favorite avatar images and connect them to your email address.</string>
     <string name="avatar_selected_confirmation">Avatar updated! May take a few minutes to appear everywhere.</string>
     <string name="avatar_selected_confirmation_action">Got it</string>
