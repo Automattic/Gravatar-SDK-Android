@@ -62,7 +62,7 @@ internal class AvatarPickerViewModel(
                         _uiState.update { currentState ->
                             currentState.copy(selectingAvatarId = null)
                         }
-                        // display error snack
+                        _actions.send(AvatarPickerAction.AvatarSelectionFailed)
                     }
                 }
             }
@@ -90,10 +90,10 @@ internal class AvatarPickerViewModel(
                 }
 
                 is Result.Failure -> {
-                    fileUtils.deleteFile(uri) // Once we have better UI for errors we will keep the file for retries
                     _uiState.update { currentState ->
                         currentState.copy(uploadingAvatar = null)
                     }
+                    _actions.send(AvatarPickerAction.AvatarUploadFailed(uri))
                 }
             }
         }

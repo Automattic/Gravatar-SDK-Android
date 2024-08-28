@@ -1,7 +1,11 @@
 package com.gravatar.quickeditor.ui.avatarpicker
 
+import android.content.Context
+import android.content.Intent
 import android.net.Uri
+import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,11 +17,8 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Snackbar
-import androidx.compose.material3.SnackbarDuration
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -46,6 +47,9 @@ import com.gravatar.quickeditor.ui.copperlauncher.CropperLauncher
 import com.gravatar.quickeditor.ui.copperlauncher.UCropCropperLauncher
 import com.gravatar.quickeditor.ui.editor.AvatarUpdateResult
 import com.gravatar.quickeditor.ui.editor.bottomsheet.DEFAULT_PAGE_HEIGHT
+import com.gravatar.quickeditor.ui.extensions.QESnackbarHost
+import com.gravatar.quickeditor.ui.extensions.SnackbarType
+import com.gravatar.quickeditor.ui.extensions.showQESnackbar
 import com.gravatar.restapi.models.Avatar
 import com.gravatar.types.Email
 import com.gravatar.ui.GravatarTheme
@@ -79,20 +83,7 @@ internal fun AvatarPicker(
         withContext(Dispatchers.Main.immediate) {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.actions.collect { action ->
-                    when (action) {
-                        is AvatarPickerAction.AvatarSelected -> {
-                            onAvatarSelected(AvatarUpdateResult(action.avatar.fullUrl.toUri()))
-                            snackState.showSnackbar(
-                                message = context.getString(R.string.avatar_selected_confirmation),
-                                actionLabel = context.getString(R.string.avatar_selected_confirmation_action),
-                                duration = SnackbarDuration.Long,
-                            )
-                        }
-
-                        is AvatarPickerAction.LaunchImageCropper -> {
-                            cropperLauncher.launch(uCropLauncher, action.imageUri, action.tempFile, context)
-                        }
-                    }
+                    action.handle(cropperLauncher, onAvatarSelected, snackState, context, uCropLauncher, viewModel)
                 }
             }
         }
@@ -105,17 +96,11 @@ internal fun AvatarPicker(
                 onAvatarSelected = viewModel::selectAvatar,
                 onLocalImageSelected = viewModel::localImageSelected,
             )
-            SnackbarHost(
+            QESnackbarHost(
                 modifier = Modifier
-                    .align(Alignment.BottomStart)
-                    .padding(20.dp),
+                    .align(Alignment.BottomStart),
                 hostState = snackState,
-            ) { snackbarData ->
-                Snackbar(
-                    actionColor = MaterialTheme.colorScheme.inverseOnSurface,
-                    snackbarData = snackbarData,
-                )
-            }
+            )
         }
     }
 }
@@ -164,6 +149,51 @@ internal fun AvatarPicker(
                     )
             }
             Spacer(modifier = Modifier.height(24.dp))
+        }
+    }
+}
+
+@Suppress("LongParameterList")
+private suspend fun AvatarPickerAction.handle(
+    cropperLauncher: CropperLauncher,
+    onAvatarSelected: (AvatarUpdateResult) -> Unit,
+    snackState: SnackbarHostState,
+    context: Context,
+    uCropLauncher: ManagedActivityResultLauncher<Intent, ActivityResult>,
+    viewModel: AvatarPickerViewModel,
+) {
+    when (this) {
+        is AvatarPickerAction.AvatarSelected -> {
+            onAvatarSelected(AvatarUpdateResult(avatar.fullUrl.toUri()))
+            snackState.showQESnackbar(
+                message = context.getString(R.string.avatar_selected_confirmation),
+                withDismissAction = true,
+            )
+        }
+
+        is AvatarPickerAction.LaunchImageCropper -> {
+            cropperLauncher.launch(uCropLauncher, imageUri, tempFile, context)
+        }
+
+        is AvatarPickerAction.AvatarUploadFailed -> {
+            val result = snackState.showQESnackbar(
+                message = context.getString(R.string.avatar_upload_error),
+                actionLabel = context.getString(R.string.avatar_upload_error_action),
+                snackbarType = SnackbarType.Error,
+                withDismissAction = true,
+            )
+            when (result) {
+                SnackbarResult.Dismissed -> Unit
+                SnackbarResult.ActionPerformed -> viewModel.uploadAvatar(imageUri)
+            }
+        }
+
+        AvatarPickerAction.AvatarSelectionFailed -> {
+            snackState.showQESnackbar(
+                message = context.getString(R.string.avatar_selection_error),
+                withDismissAction = true,
+                snackbarType = SnackbarType.Error,
+            )
         }
     }
 }
