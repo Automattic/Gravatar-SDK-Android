@@ -69,6 +69,7 @@ import java.time.Instant
 internal fun AvatarPicker(
     email: Email,
     onAvatarSelected: (AvatarUpdateResult) -> Unit,
+    onSessionExpired: () -> Unit,
     viewModel: AvatarPickerViewModel = viewModel(factory = AvatarPickerViewModelFactory(email)),
     cropperLauncher: CropperLauncher = UCropCropperLauncher(),
 ) {
@@ -89,7 +90,15 @@ internal fun AvatarPicker(
         withContext(Dispatchers.Main.immediate) {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.actions.collect { action ->
-                    action.handle(cropperLauncher, onAvatarSelected, snackState, context, uCropLauncher, viewModel)
+                    action.handle(
+                        cropperLauncher = cropperLauncher,
+                        onAvatarSelected = onAvatarSelected,
+                        onSessionExpired = onSessionExpired,
+                        snackState = snackState,
+                        context = context,
+                        uCropLauncher = uCropLauncher,
+                        viewModel = viewModel,
+                    )
                 }
             }
         }
@@ -171,6 +180,7 @@ internal fun AvatarPicker(uiState: AvatarPickerUiState, onEvent: (AvatarPickerEv
 private suspend fun AvatarPickerAction.handle(
     cropperLauncher: CropperLauncher,
     onAvatarSelected: (AvatarUpdateResult) -> Unit,
+    onSessionExpired: () -> Unit,
     snackState: SnackbarHostState,
     context: Context,
     uCropLauncher: ManagedActivityResultLauncher<Intent, ActivityResult>,
@@ -209,6 +219,8 @@ private suspend fun AvatarPickerAction.handle(
                 snackbarType = SnackbarType.Error,
             )
         }
+
+        AvatarPickerAction.LoginUser -> onSessionExpired()
     }
 }
 
@@ -243,7 +255,7 @@ private val SectionError.buttonTextRes: Int
 
 private val SectionError.event: AvatarPickerEvent
     get() = when (this) {
-        SectionError.InvalidToken -> AvatarPickerEvent.LoginUser
+        SectionError.InvalidToken -> AvatarPickerEvent.LoginUserTapped
         SectionError.ServerError,
         SectionError.Unknown,
         SectionError.NoInternetConnection,

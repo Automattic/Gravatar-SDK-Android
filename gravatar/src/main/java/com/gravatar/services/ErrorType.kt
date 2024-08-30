@@ -8,6 +8,7 @@ internal fun errorTypeFromHttpCode(code: Int): ErrorType = when (code) {
     HttpResponseCode.HTTP_CLIENT_TIMEOUT -> ErrorType.TIMEOUT
     HttpResponseCode.HTTP_NOT_FOUND -> ErrorType.NOT_FOUND
     HttpResponseCode.HTTP_TOO_MANY_REQUESTS -> ErrorType.RATE_LIMIT_EXCEEDED
+    HttpResponseCode.UNAUTHORIZED -> ErrorType.UNAUTHORIZED
     in HttpResponseCode.SERVER_ERRORS -> ErrorType.SERVER
     else -> ErrorType.UNKNOWN
 }
@@ -39,6 +40,9 @@ public enum class ErrorType {
 
     /** User or hash not found */
     RATE_LIMIT_EXCEEDED,
+
+    /** User not authorized to perform given action **/
+    UNAUTHORIZED,
 
     /** An unknown error occurred */
     UNKNOWN,

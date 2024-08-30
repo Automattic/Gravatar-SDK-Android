@@ -12,5 +12,5 @@ internal sealed class AvatarPickerEvent {
 
     data class ImageCropped(val uri: Uri) : AvatarPickerEvent()
 
-    data object LoginUser : AvatarPickerEvent()
+    data object LoginUserTapped : AvatarPickerEvent()
 }
