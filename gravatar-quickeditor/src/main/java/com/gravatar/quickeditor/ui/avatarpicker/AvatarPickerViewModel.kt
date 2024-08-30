@@ -7,9 +7,11 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.gravatar.quickeditor.QuickEditorContainer
 import com.gravatar.quickeditor.data.FileUtils
+import com.gravatar.quickeditor.data.models.QuickEditorError
 import com.gravatar.quickeditor.data.repository.AvatarRepository
 import com.gravatar.restapi.models.Avatar
 import com.gravatar.restapi.models.Profile
+import com.gravatar.services.ErrorType
 import com.gravatar.services.ProfileService
 import com.gravatar.services.Result
 import com.gravatar.types.Email
@@ -35,11 +37,27 @@ internal class AvatarPickerViewModel(
     val actions = _actions.receiveAsFlow()
 
     init {
+        refresh()
+    }
+
+    fun onEvent(event: AvatarPickerEvent) {
+        when (event) {
+            is AvatarPickerEvent.LocalImageSelected -> localImageSelected(event.uri)
+            AvatarPickerEvent.Refresh -> refresh()
+            is AvatarPickerEvent.AvatarSelected -> selectAvatar(event.avatar)
+            is AvatarPickerEvent.ImageCropped -> uploadAvatar(event.uri)
+            AvatarPickerEvent.LoginUser -> {
+                // todo
+            }
+        }
+    }
+
+    private fun refresh() {
         fetchAvatars()
         fetchProfile()
     }
 
-    fun selectAvatar(avatar: Avatar) {
+    private fun selectAvatar(avatar: Avatar) {
         viewModelScope.launch {
             val avatarId = avatar.imageId
             if (_uiState.value.identityAvatars?.selectedAvatarId != avatarId) {
@@ -69,13 +87,13 @@ internal class AvatarPickerViewModel(
         }
     }
 
-    fun localImageSelected(imageUri: Uri) {
+    private fun localImageSelected(imageUri: Uri) {
         viewModelScope.launch {
             _actions.send(AvatarPickerAction.LaunchImageCropper(imageUri, fileUtils.createCroppedAvatarFile()))
         }
     }
 
-    fun uploadAvatar(uri: Uri) {
+    private fun uploadAvatar(uri: Uri) {
         viewModelScope.launch {
             _uiState.update { currentState ->
                 currentState.copy(uploadingAvatar = uri, scrollToIndex = 0)
@@ -142,14 +160,14 @@ internal class AvatarPickerViewModel(
                             null
                         },
                         isLoading = false,
-                        error = false,
+                        error = null,
                     )
                 }
             }
 
             is Result.Failure -> {
                 _uiState.update { currentState ->
-                    currentState.copy(identityAvatars = null, isLoading = false, error = true)
+                    currentState.copy(identityAvatars = null, isLoading = false, error = result.error.asSectionError)
                 }
             }
         }
@@ -207,3 +225,18 @@ private fun <T> ComponentState<T>.copy(transform: T.() -> T): ComponentState<T> 
     is ComponentState.Loading -> this
     is ComponentState.Empty -> this
 }
+
+private val QuickEditorError.asSectionError: SectionError
+    get() = when (this) {
+        QuickEditorError.TokenNotFound -> SectionError.InvalidToken
+        QuickEditorError.Unknown -> SectionError.Unknown
+        is QuickEditorError.Request -> when (type) {
+            ErrorType.SERVER -> SectionError.ServerError
+            ErrorType.NETWORK -> SectionError.NoInternetConnection
+            ErrorType.NOT_FOUND,
+            ErrorType.RATE_LIMIT_EXCEEDED,
+            ErrorType.TIMEOUT,
+            ErrorType.UNKNOWN,
+            -> SectionError.Unknown
+        }
+    }

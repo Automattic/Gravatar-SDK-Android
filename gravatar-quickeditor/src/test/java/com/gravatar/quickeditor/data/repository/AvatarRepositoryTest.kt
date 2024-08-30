@@ -62,23 +62,30 @@ class AvatarRepositoryTest {
     fun `given token stored when avatar service fails then Failure result`() = runTest {
         coEvery { tokenStorage.getToken(any()) } returns "token"
 
-        coEvery { avatarService.retrieve(any()) } throws Exception()
+        coEvery { avatarService.retrieveCatching(any()) } returns Result.Failure(ErrorType.SERVER)
+        coEvery { identityService.retrieveCatching(any(), any()) } returns Result.Success(createIdentity("1"))
 
         val result = avatarRepository.getAvatars(email)
 
-        assertEquals(Result.Failure<IdentityAvatars, QuickEditorError>(QuickEditorError.Unknown), result)
+        assertEquals(
+            Result.Failure<IdentityAvatars, QuickEditorError>(QuickEditorError.Request(ErrorType.SERVER)),
+            result,
+        )
     }
 
     @Test
     fun `given token stored when identity service fails then Failure result`() = runTest {
         coEvery { tokenStorage.getToken(any()) } returns "token"
 
-        coEvery { avatarService.retrieve(any()) } returns listOf(createAvatar("1"))
-        coEvery { identityService.retrieve(any(), any()) } throws Exception()
+        coEvery { avatarService.retrieveCatching(any()) } returns Result.Success(listOf(createAvatar("1")))
+        coEvery { identityService.retrieveCatching(any(), any()) } returns Result.Failure(ErrorType.SERVER)
 
         val result = avatarRepository.getAvatars(email)
 
-        assertEquals(Result.Failure<IdentityAvatars, QuickEditorError>(QuickEditorError.Unknown), result)
+        assertEquals(
+            Result.Failure<IdentityAvatars, QuickEditorError>(QuickEditorError.Request(ErrorType.SERVER)),
+            result,
+        )
     }
 
     @Test
@@ -86,8 +93,8 @@ class AvatarRepositoryTest {
         val imageId = "2"
         val avatar = createAvatar(imageId)
         coEvery { tokenStorage.getToken(any()) } returns "token"
-        coEvery { avatarService.retrieve(any()) } returns listOf(avatar)
-        coEvery { identityService.retrieve(any(), any()) } returns createIdentity(imageId)
+        coEvery { avatarService.retrieveCatching(any()) } returns Result.Success(listOf(avatar))
+        coEvery { identityService.retrieveCatching(any(), any()) } returns Result.Success(createIdentity(imageId))
 
         val result = avatarRepository.getAvatars(email)
 
@@ -113,7 +120,7 @@ class AvatarRepositoryTest {
 
         val result = avatarRepository.selectAvatar(email, "avatarId")
 
-        assertEquals(Result.Failure<String, QuickEditorError>(QuickEditorError.Server), result)
+        assertEquals(Result.Failure<String, QuickEditorError>(QuickEditorError.Request(ErrorType.UNKNOWN)), result)
     }
 
     @Test
@@ -164,7 +171,7 @@ class AvatarRepositoryTest {
 
         val result = avatarRepository.uploadAvatar(email, uri)
 
-        assertEquals(Result.Failure<Unit, QuickEditorError>(QuickEditorError.AvatarUploadFailed), result)
+        assertEquals(Result.Failure<Unit, QuickEditorError>(QuickEditorError.Request(ErrorType.SERVER)), result)
     }
 
     private fun createAvatar(id: String) = Avatar {

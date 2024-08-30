@@ -2,11 +2,12 @@ package com.gravatar.quickeditor.ui.avatarpicker
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
+import android.util.DisplayMetrics
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -20,17 +21,21 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.lifecycle.Lifecycle
@@ -42,6 +47,7 @@ import com.gravatar.quickeditor.R
 import com.gravatar.quickeditor.data.repository.IdentityAvatars
 import com.gravatar.quickeditor.ui.components.AvatarsSection
 import com.gravatar.quickeditor.ui.components.EmailLabel
+import com.gravatar.quickeditor.ui.components.ErrorSection
 import com.gravatar.quickeditor.ui.components.ProfileCard
 import com.gravatar.quickeditor.ui.copperlauncher.CropperLauncher
 import com.gravatar.quickeditor.ui.copperlauncher.UCropCropperLauncher
@@ -74,7 +80,7 @@ internal fun AvatarPicker(
     val uCropLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         it.data?.let { intentData ->
             UCrop.getOutput(intentData)?.let { croppedImageUri ->
-                viewModel.uploadAvatar(croppedImageUri)
+                viewModel.onEvent(AvatarPickerEvent.ImageCropped(croppedImageUri))
             }
         }
     }
@@ -93,8 +99,7 @@ internal fun AvatarPicker(
         Box(modifier = Modifier.wrapContentSize()) {
             AvatarPicker(
                 uiState = uiState,
-                onAvatarSelected = viewModel::selectAvatar,
-                onLocalImageSelected = viewModel::localImageSelected,
+                onEvent = viewModel::onEvent,
             )
             QESnackbarHost(
                 modifier = Modifier
@@ -106,11 +111,9 @@ internal fun AvatarPicker(
 }
 
 @Composable
-internal fun AvatarPicker(
-    uiState: AvatarPickerUiState,
-    onAvatarSelected: (Avatar) -> Unit,
-    onLocalImageSelected: (Uri) -> Unit,
-) {
+internal fun AvatarPicker(uiState: AvatarPickerUiState, onEvent: (AvatarPickerEvent) -> Unit) {
+    val context = LocalContext.current
+    var loadingSectionHeight by remember { mutableStateOf(DEFAULT_PAGE_HEIGHT) }
     Surface(
         Modifier
             .fillMaxWidth()
@@ -137,13 +140,24 @@ internal fun AvatarPicker(
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                 }
 
-                uiState.error -> Text(text = "There was an error loading avatars", textAlign = TextAlign.Center)
+                uiState.error != null -> ErrorSection(
+                    title = stringResource(id = uiState.error.titleRes),
+                    message = stringResource(id = uiState.error.messageRes),
+                    buttonText = stringResource(id = uiState.error.buttonTextRes),
+                    onButtonClick = { onEvent(uiState.error.event) },
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .onSizeChanged { size ->
+                            loadingSectionHeight = size.height.pxToDp(context)
+                        },
+                )
+
                 uiState.avatarsSectionUiState != null ->
                     AvatarsSection(
-                        uiState.avatarsSectionUiState,
-                        onAvatarSelected,
-                        onLocalImageSelected,
-                        Modifier
+                        state = uiState.avatarsSectionUiState,
+                        onAvatarSelected = { onEvent(AvatarPickerEvent.AvatarSelected(it)) },
+                        onLocalImageSelected = { onEvent(AvatarPickerEvent.LocalImageSelected(it)) },
+                        modifier = Modifier
                             .padding(horizontal = 16.dp)
                             .fillMaxWidth(),
                     )
@@ -184,7 +198,7 @@ private suspend fun AvatarPickerAction.handle(
             )
             when (result) {
                 SnackbarResult.Dismissed -> Unit
-                SnackbarResult.ActionPerformed -> viewModel.uploadAvatar(imageUri)
+                SnackbarResult.ActionPerformed -> viewModel.onEvent(AvatarPickerEvent.ImageCropped(imageUri))
             }
         }
 
@@ -197,6 +211,44 @@ private suspend fun AvatarPickerAction.handle(
         }
     }
 }
+
+private fun Int.pxToDp(context: Context): Dp =
+    (this / (context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)).dp
+
+private val SectionError.titleRes: Int
+    @StringRes get() = when (this) {
+        SectionError.InvalidToken -> R.string.avatar_picker_session_error_title
+        SectionError.NoInternetConnection -> R.string.avatar_picker_network_error_title
+        SectionError.ServerError,
+        SectionError.Unknown,
+        -> R.string.avatar_picker_server_error_title
+    }
+
+private val SectionError.messageRes: Int
+    @StringRes get() = when (this) {
+        SectionError.InvalidToken -> R.string.avatar_picker_session_error_message
+        SectionError.NoInternetConnection -> R.string.avatar_picker_network_error_message
+        SectionError.ServerError -> R.string.avatar_picker_server_error_message
+        SectionError.Unknown -> R.string.avatar_picker_unknown_error_message
+    }
+
+private val SectionError.buttonTextRes: Int
+    @StringRes get() = when (this) {
+        SectionError.InvalidToken -> R.string.avatar_picker_session_error_cta
+        SectionError.NoInternetConnection,
+        SectionError.ServerError,
+        SectionError.Unknown,
+        -> R.string.avatar_picker_error_retry_cta
+    }
+
+private val SectionError.event: AvatarPickerEvent
+    get() = when (this) {
+        SectionError.InvalidToken -> AvatarPickerEvent.LoginUser
+        SectionError.ServerError,
+        SectionError.Unknown,
+        SectionError.NoInternetConnection,
+        -> AvatarPickerEvent.Refresh
+    }
 
 @Composable
 @PreviewLightDark
@@ -227,8 +279,7 @@ private fun AvatarPickerPreview() {
                     selectedAvatarId = "1",
                 ),
             ),
-            onAvatarSelected = { },
-            onLocalImageSelected = { },
+            onEvent = { },
         )
     }
 }
@@ -244,8 +295,24 @@ private fun AvatarPickerLoadingPreview() {
                 isLoading = true,
                 identityAvatars = null,
             ),
-            onAvatarSelected = { },
-            onLocalImageSelected = { },
+            onEvent = { },
+        )
+    }
+}
+
+@Composable
+@Preview
+private fun AvatarPickerErrorPreview() {
+    GravatarTheme {
+        AvatarPicker(
+            uiState = AvatarPickerUiState(
+                email = Email("henry.a.wallace@example.com"),
+                profile = null,
+                isLoading = false,
+                identityAvatars = null,
+                error = SectionError.ServerError,
+            ),
+            onEvent = { },
         )
     }
 }

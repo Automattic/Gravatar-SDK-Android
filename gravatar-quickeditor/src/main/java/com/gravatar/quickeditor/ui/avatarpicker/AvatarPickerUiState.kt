@@ -10,7 +10,7 @@ import com.gravatar.ui.components.ComponentState
 internal data class AvatarPickerUiState(
     val email: Email,
     val isLoading: Boolean = false,
-    val error: Boolean = false,
+    val error: SectionError? = null,
     val profile: ComponentState<Profile>? = null,
     val identityAvatars: IdentityAvatars? = null,
     val selectingAvatarId: String? = null,
@@ -39,6 +39,16 @@ internal data class AvatarPickerUiState(
             )
         }.toList()
     }
+}
+
+internal sealed class SectionError {
+    data object ServerError : SectionError()
+
+    data object InvalidToken : SectionError()
+
+    data object Unknown : SectionError()
+
+    data object NoInternetConnection : SectionError()
 }
 
 internal data class AvatarsSectionUiState(
