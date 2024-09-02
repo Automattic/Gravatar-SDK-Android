@@ -1,7 +1,6 @@
 package com.gravatar.quickeditor.ui.components
 
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -34,8 +33,7 @@ internal fun PopupButton(
 ) {
     TextButton(
         onClick = onClick,
-        modifier = modifier
-            .background(MaterialTheme.colorScheme.surfaceContainerHigh, shape),
+        modifier = modifier,
         shape = shape,
         contentPadding = PaddingValues(vertical = 12.dp, horizontal = 16.dp),
     ) {
