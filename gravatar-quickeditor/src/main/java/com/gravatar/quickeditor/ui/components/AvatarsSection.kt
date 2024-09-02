@@ -10,6 +10,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -70,6 +71,7 @@ internal fun AvatarsSection(
         state.scrollToIndex?.let { listState.scrollToItem(it) }
     }
 
+    val sectionPadding = 16.dp
     Surface(
         modifier.border(
             width = 1.dp,
@@ -79,12 +81,15 @@ internal fun AvatarsSection(
     ) {
         Box {
             Column(
-                modifier = Modifier.padding(16.dp),
+                modifier = Modifier.padding(vertical = sectionPadding),
             ) {
-                QESectionTitle(title = stringResource(id = state.titleRes))
+                QESectionTitle(
+                    title = stringResource(id = state.titleRes),
+                    modifier = Modifier.padding(horizontal = sectionPadding),
+                )
                 QESectionMessage(
                     message = stringResource(R.string.avatar_picker_description),
-                    modifier = Modifier.padding(top = 4.dp),
+                    modifier = Modifier.padding(top = 4.dp).padding(horizontal = sectionPadding),
                 )
                 if (state.avatars.isEmpty()) {
                     Box(modifier = modifier.fillMaxWidth()) {
@@ -101,6 +106,7 @@ internal fun AvatarsSection(
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                         modifier = Modifier.padding(vertical = 24.dp),
                         state = listState,
+                        contentPadding = PaddingValues(horizontal = 16.dp),
                     ) {
                         items(items = state.avatars, key = { it.avatarId }) { avatarModel ->
                             when (avatarModel) {
@@ -126,8 +132,10 @@ internal fun AvatarsSection(
                 QEButton(
                     buttonText = stringResource(id = R.string.avatar_picker_upload_image),
                     onClick = { popupVisible = true },
-                    modifier = Modifier.onPlaced { layoutCoordinates -> popupYOffset = layoutCoordinates.size.height },
                     enabled = state.uploadButtonEnabled,
+                    modifier = Modifier
+                        .padding(horizontal = sectionPadding)
+                        .onPlaced { layoutCoordinates -> popupYOffset = layoutCoordinates.size.height },
                 )
             }
             if (popupVisible) {
