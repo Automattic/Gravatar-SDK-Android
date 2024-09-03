@@ -49,7 +49,6 @@ internal fun GravatarQuickEditorPage(
         }
         composable(QuickEditorPage.OAUTH.name, enterTransition = { EnterTransition.None }) {
             OAuthPage(
-                appName = gravatarQuickEditorParams.appName,
                 oAuthParams = oAuthParams,
                 email = gravatarQuickEditorParams.email,
                 onAuthError = { onDismiss(GravatarQuickEditorDismissReason.OauthFailed) },

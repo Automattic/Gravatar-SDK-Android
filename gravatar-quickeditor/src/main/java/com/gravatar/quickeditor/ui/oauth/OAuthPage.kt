@@ -7,14 +7,11 @@ import android.net.Uri
 import androidx.activity.ComponentActivity
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -23,7 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.util.Consumer
@@ -31,6 +28,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.gravatar.quickeditor.R
+import com.gravatar.quickeditor.ui.components.ErrorSection
 import com.gravatar.quickeditor.ui.editor.bottomsheet.DEFAULT_PAGE_HEIGHT
 import com.gravatar.types.Email
 import com.gravatar.ui.GravatarTheme
@@ -39,7 +38,6 @@ import kotlinx.coroutines.withContext
 
 @Composable
 internal fun OAuthPage(
-    appName: String,
     email: Email,
     oAuthParams: OAuthParams,
     onAuthSuccess: () -> Unit,
@@ -87,33 +85,32 @@ internal fun OAuthPage(
         }
     }
 
+    OauthPage(uiState, email, oAuthParams, modifier)
+}
+
+@Composable
+internal fun OauthPage(uiState: OAuthUiState, email: Email, oAuthParams: OAuthParams, modifier: Modifier = Modifier) {
+    val context = LocalContext.current
+
     GravatarTheme {
         Surface {
-            Box(modifier = modifier.fillMaxWidth().height(DEFAULT_PAGE_HEIGHT)) {
+            Box(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .height(DEFAULT_PAGE_HEIGHT),
+            ) {
                 if (uiState.isAuthorizing) {
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                 } else {
-                    Column(
+                    ErrorSection(
+                        title = stringResource(R.string.login_required),
+                        message = stringResource(R.string.login_required_message),
+                        buttonText = stringResource(id = R.string.avatar_picker_session_error_cta),
+                        onButtonClick = { launchCustomTab(context, oAuthParams, email) },
                         modifier = Modifier
-                            .align(Alignment.Center)
-                            .padding(horizontal = 40.dp),
-                    ) {
-                        Text(
-                            modifier = Modifier.align(Alignment.CenterHorizontally),
-                            text = "$appName needs access to your Gravatar profile",
-                            textAlign = TextAlign.Center,
-                        )
-                        Button(
-                            modifier = Modifier
-                                .align(Alignment.CenterHorizontally)
-                                .padding(top = 8.dp),
-                            onClick = {
-                                launchCustomTab(context, oAuthParams, email)
-                            },
-                        ) {
-                            Text(text = "Authorize")
-                        }
-                    }
+                            .padding(horizontal = 16.dp)
+                            .align(Alignment.Center),
+                    )
                 }
             }
         }
@@ -139,16 +136,14 @@ private fun Context.findComponentActivity(): ComponentActivity? = when (this) {
 @Composable
 private fun OAuthPagePreview() {
     GravatarTheme {
-        OAuthPage(
-            appName = "Third-party app",
+        OauthPage(
+            uiState = OAuthUiState(),
+            email = Email("email"),
             oAuthParams = OAuthParams {
                 clientId = "client_id"
                 clientSecret = "client_secret"
                 redirectUri = "redirect_uri"
             },
-            email = Email("email"),
-            onAuthSuccess = { },
-            onAuthError = { },
         )
     }
 }
