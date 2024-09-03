@@ -2,6 +2,8 @@ package com.gravatar.quickeditor.ui.components
 
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.gravatar.quickeditor.ui.gravatarScreenshotTest
@@ -13,27 +15,37 @@ class PopupButtonTest : RoborazziTest() {
     @Test
     fun popupButtonLightMode() {
         gravatarScreenshotTest {
-            PopupButton(
-                text = "Choose a Photo",
-                shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
-                contentDescription = "Content description",
-                iconRes = com.gravatar.quickeditor.R.drawable.photo_library,
-                onClick = {},
-            )
+            Surface(
+                color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                shape = RoundedCornerShape(8.dp),
+            ) {
+                PopupButton(
+                    text = "Choose a Photo",
+                    shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
+                    contentDescription = "Content description",
+                    iconRes = com.gravatar.quickeditor.R.drawable.photo_library,
+                    onClick = {},
+                )
+            }
         }
     }
 
     @Test
     fun popupButtonEllipsizedText() {
         gravatarScreenshotTest {
-            PopupButton(
-                text = "Choose a Photo",
-                shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
-                contentDescription = "Content description",
-                iconRes = com.gravatar.quickeditor.R.drawable.photo_library,
-                onClick = {},
-                modifier = Modifier.width(120.dp),
-            )
+            Surface(
+                color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                shape = RoundedCornerShape(8.dp),
+            ) {
+                PopupButton(
+                    text = "Choose a Photo",
+                    shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
+                    contentDescription = "Content description",
+                    iconRes = com.gravatar.quickeditor.R.drawable.photo_library,
+                    onClick = {},
+                    modifier = Modifier.width(120.dp),
+                )
+            }
         }
     }
 
@@ -41,13 +53,18 @@ class PopupButtonTest : RoborazziTest() {
     @Config(qualifiers = "+night")
     fun popupButtonDarkMode() {
         gravatarScreenshotTest {
-            PopupButton(
-                text = "Choose a Photo",
-                shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
-                contentDescription = "Content description",
-                iconRes = com.gravatar.quickeditor.R.drawable.photo_library,
-                onClick = {},
-            )
+            Surface(
+                color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                shape = RoundedCornerShape(8.dp),
+            ) {
+                PopupButton(
+                    text = "Choose a Photo",
+                    shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
+                    contentDescription = "Content description",
+                    iconRes = com.gravatar.quickeditor.R.drawable.photo_library,
+                    onClick = {},
+                )
+            }
         }
     }
 }
