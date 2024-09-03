@@ -59,7 +59,7 @@ internal fun OAuthPage(
                     when (action) {
                         OAuthAction.AuthorizationSuccess -> onAuthSuccess()
                         OAuthAction.AuthorizationFailure -> onAuthError()
-                        OAuthAction.StartOAuth -> launchCustomTab(context, oAuthParams)
+                        OAuthAction.StartOAuth -> launchCustomTab(context, oAuthParams, email)
                     }
                 }
             }
@@ -108,7 +108,7 @@ internal fun OAuthPage(
                                 .align(Alignment.CenterHorizontally)
                                 .padding(top = 8.dp),
                             onClick = {
-                                launchCustomTab(context, oAuthParams)
+                                launchCustomTab(context, oAuthParams, email)
                             },
                         ) {
                             Text(text = "Authorize")
@@ -120,12 +120,12 @@ internal fun OAuthPage(
     }
 }
 
-private fun launchCustomTab(context: Context, oauthParams: OAuthParams) {
+private fun launchCustomTab(context: Context, oauthParams: OAuthParams, email: Email) {
     val customTabIntent: CustomTabsIntent = CustomTabsIntent.Builder()
         .build()
     customTabIntent.launchUrl(
         context,
-        Uri.parse(WordPressOauth.buildUrl(oauthParams.clientId, oauthParams.redirectUri)),
+        Uri.parse(WordPressOauth.buildUrl(oauthParams.clientId, oauthParams.redirectUri, email)),
     )
 }
 

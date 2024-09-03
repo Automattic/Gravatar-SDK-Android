@@ -1,11 +1,20 @@
 package com.gravatar.quickeditor.ui.oauth
 
-internal object WordPressOauth {
-    private const val RESPONSE_TYPE = "code"
-    private const val SCOPE = "auth"
-    private const val URL =
-        "https://public-api.wordpress.com/oauth2/authorize" +
-            "?client_id=%s&redirect_uri=%s&response_type=$RESPONSE_TYPE&scope=$SCOPE"
+import android.net.Uri
+import com.gravatar.types.Email
 
-    fun buildUrl(clientId: String, redirectUri: String) = String.format(URL, clientId, redirectUri)
+internal object WordPressOauth {
+    fun buildUrl(clientId: String, redirectUri: String, email: Email): String {
+        return Uri.Builder()
+            .scheme("https")
+            .authority("public-api.wordpress.com")
+            .appendPath("oauth2")
+            .appendPath("authorize")
+            .appendQueryParameter("client_id", clientId)
+            .appendQueryParameter("redirect_uri", redirectUri)
+            .appendQueryParameter("response_type", "code")
+            .appendQueryParameter("user_email", email.toString())
+            .build()
+            .toString()
+    }
 }
