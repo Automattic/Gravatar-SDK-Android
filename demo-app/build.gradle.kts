@@ -60,6 +60,10 @@ android {
                 "DEMO_WORDPRESS_REDIRECT_URI",
                 "\"${properties["demo-app.wordpress.oauth.redirectUri"]?.toString() ?: ""}\"",
             )
+            manifestPlaceholders["DEMO_WORDPRESS_REDIRECT_URI_HOST"] =
+                properties["demo-app.wordpress.oauth.redirectUri"]?.toString()?.split("://")?.get(1) ?: ""
+            manifestPlaceholders["DEMO_WORDPRESS_REDIRECT_URI_SCHEME"] =
+                properties["demo-app.wordpress.oauth.redirectUri"]?.toString()?.split("://")?.first() ?: ""
         }
     }
 
