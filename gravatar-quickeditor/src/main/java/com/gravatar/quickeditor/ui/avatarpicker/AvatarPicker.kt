@@ -144,7 +144,7 @@ internal fun AvatarPicker(uiState: AvatarPickerUiState, onEvent: (AvatarPickerEv
             when {
                 uiState.isLoading -> Box(
                     modifier = Modifier
-                        .height(DEFAULT_PAGE_HEIGHT)
+                        .height(loadingSectionHeight)
                         .fillMaxWidth(),
                 ) {
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
@@ -169,7 +169,10 @@ internal fun AvatarPicker(uiState: AvatarPickerUiState, onEvent: (AvatarPickerEv
                         onLocalImageSelected = { onEvent(AvatarPickerEvent.LocalImageSelected(it)) },
                         modifier = Modifier
                             .padding(horizontal = 16.dp)
-                            .fillMaxWidth(),
+                            .fillMaxWidth()
+                            .onSizeChanged { size ->
+                                loadingSectionHeight = size.height.pxToDp(context)
+                            },
                     )
             }
             Spacer(modifier = Modifier.height(24.dp))
