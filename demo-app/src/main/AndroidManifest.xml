@@ -32,8 +32,8 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="authorization-callback"
-                    android:scheme="wp-oauth-test" />
+                    android:host="${DEMO_WORDPRESS_REDIRECT_URI_HOST}"
+                    android:scheme="${DEMO_WORDPRESS_REDIRECT_URI_SCHEME}" />
             </intent-filter>
         </activity>
         <activity
@@ -42,16 +42,16 @@
             android:label="Old good Activity"
             android:theme="@style/Theme.Gravatar"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.VIEW" />-->
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
+<!--                <category android:name="android.intent.category.DEFAULT" />-->
+<!--                <category android:name="android.intent.category.BROWSABLE" />-->
 
-                <data
-                    android:host="authorization-callback"
-                    android:scheme="wp-oauth-test" />
-            </intent-filter>
+<!--                <data-->
+<!--                    android:host="${DEMO_WORDPRESS_REDIRECT_URI_HOST}"-->
+<!--                    android:scheme="${DEMO_WORDPRESS_REDIRECT_URI_SCHEME}" />-->
+<!--            </intent-filter>-->
         </activity>
         <provider
             android:name=".DemoFileProvider"
