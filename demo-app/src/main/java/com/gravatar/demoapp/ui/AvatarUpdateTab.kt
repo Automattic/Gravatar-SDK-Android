@@ -76,12 +76,14 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
                 avatarUrl = avatarUrl,
             )
             Spacer(modifier = Modifier.height(20.dp))
-            Button(
-                onClick = {
-                    context.startActivity(Intent(context, QuickEditorTestActivity::class.java))
-                },
-            ) {
-                Text(text = "Test with Activity without Compose")
+            if (BuildConfig.DEBUG) {
+                Button(
+                    onClick = {
+                        context.startActivity(Intent(context, QuickEditorTestActivity::class.java))
+                    },
+                ) {
+                    Text(text = "Test with Activity without Compose")
+                }
             }
         }
 
