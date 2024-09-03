@@ -13,6 +13,7 @@ internal object WordPressOauth {
             .appendQueryParameter("client_id", clientId)
             .appendQueryParameter("redirect_uri", redirectUri)
             .appendQueryParameter("response_type", "code")
+            .appendQueryParameter("scope", "auth")
             .appendQueryParameter("user_email", email.toString())
             .build()
             .toString()
