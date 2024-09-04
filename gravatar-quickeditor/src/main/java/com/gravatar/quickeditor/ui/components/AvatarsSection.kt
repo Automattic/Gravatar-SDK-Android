@@ -30,11 +30,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onPlaced
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import com.gravatar.quickeditor.QuickEditorFileProvider
 import com.gravatar.quickeditor.R
@@ -54,7 +56,8 @@ internal fun AvatarsSection(
 ) {
     val context = LocalContext.current
     var popupVisible by rememberSaveable { mutableStateOf(false) }
-    var popupYOffset by rememberSaveable { mutableIntStateOf(0) }
+    var popupAnchorY by rememberSaveable { mutableIntStateOf(0) }
+    var popupAnchorHeight by rememberSaveable { mutableIntStateOf(0) }
     var photoImageUri by rememberSaveable { mutableStateOf<Uri?>(null) }
     val listState = rememberLazyListState()
 
@@ -89,7 +92,9 @@ internal fun AvatarsSection(
                 )
                 QESectionMessage(
                     message = stringResource(R.string.avatar_picker_description),
-                    modifier = Modifier.padding(top = 4.dp).padding(horizontal = sectionPadding),
+                    modifier = Modifier
+                        .padding(top = 4.dp)
+                        .padding(horizontal = sectionPadding),
                 )
                 if (state.avatars.isEmpty()) {
                     Box(modifier = modifier.fillMaxWidth()) {
@@ -135,14 +140,15 @@ internal fun AvatarsSection(
                     enabled = state.uploadButtonEnabled,
                     modifier = Modifier
                         .padding(horizontal = sectionPadding)
-                        .onPlaced { layoutCoordinates -> popupYOffset = layoutCoordinates.size.height },
+                        .onSizeChanged { intSize: IntSize -> popupAnchorHeight = intSize.height }
+                        .onPlaced { layoutCoordinates -> popupAnchorY = layoutCoordinates.size.height },
                 )
             }
             if (popupVisible) {
                 MediaPickerPopup(
                     alignment = Alignment.BottomCenter,
                     onDismissRequest = { popupVisible = false },
-                    offset = IntOffset(0, -popupYOffset - 30),
+                    offset = IntOffset(0, -popupAnchorY - popupAnchorHeight / 2),
                     onChoosePhotoClick = {
                         popupVisible = false
                         pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
