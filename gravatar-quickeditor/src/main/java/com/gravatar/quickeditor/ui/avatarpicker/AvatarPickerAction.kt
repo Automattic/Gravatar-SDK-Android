@@ -13,5 +13,5 @@ internal sealed class AvatarPickerAction {
 
     data object AvatarSelectionFailed : AvatarPickerAction()
 
-    data object LoginUser : AvatarPickerAction()
+    data object InvokeAuthFailed : AvatarPickerAction()
 }

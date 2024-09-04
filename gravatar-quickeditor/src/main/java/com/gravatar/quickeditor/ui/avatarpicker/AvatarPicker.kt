@@ -68,9 +68,10 @@ import java.time.Instant
 @Composable
 internal fun AvatarPicker(
     email: Email,
+    handleExpiredSession: Boolean,
     onAvatarSelected: (AvatarUpdateResult) -> Unit,
     onSessionExpired: () -> Unit,
-    viewModel: AvatarPickerViewModel = viewModel(factory = AvatarPickerViewModelFactory(email)),
+    viewModel: AvatarPickerViewModel = viewModel(factory = AvatarPickerViewModelFactory(email, handleExpiredSession)),
     cropperLauncher: CropperLauncher = UCropCropperLauncher(),
 ) {
     val snackState = remember { SnackbarHostState() }
@@ -220,7 +221,7 @@ private suspend fun AvatarPickerAction.handle(
             )
         }
 
-        AvatarPickerAction.LoginUser -> onSessionExpired()
+        AvatarPickerAction.InvokeAuthFailed -> onSessionExpired()
     }
 }
 
@@ -229,7 +230,7 @@ private fun Int.pxToDp(context: Context): Dp =
 
 private val SectionError.titleRes: Int
     @StringRes get() = when (this) {
-        SectionError.InvalidToken -> R.string.avatar_picker_session_error_title
+        is SectionError.InvalidToken -> R.string.avatar_picker_session_error_title
         SectionError.NoInternetConnection -> R.string.avatar_picker_network_error_title
         SectionError.ServerError,
         SectionError.Unknown,
@@ -238,7 +239,12 @@ private val SectionError.titleRes: Int
 
 private val SectionError.messageRes: Int
     @StringRes get() = when (this) {
-        SectionError.InvalidToken -> R.string.avatar_picker_session_error_message
+        is SectionError.InvalidToken -> if (showLogin) {
+            R.string.avatar_picker_session_error_message
+        } else {
+            R.string.avatar_picker_session_error_no_login_message
+        }
+
         SectionError.NoInternetConnection -> R.string.avatar_picker_network_error_message
         SectionError.ServerError -> R.string.avatar_picker_server_error_message
         SectionError.Unknown -> R.string.avatar_picker_unknown_error_message
@@ -246,7 +252,12 @@ private val SectionError.messageRes: Int
 
 private val SectionError.buttonTextRes: Int
     @StringRes get() = when (this) {
-        SectionError.InvalidToken -> R.string.avatar_picker_session_error_cta
+        is SectionError.InvalidToken -> if (showLogin) {
+            R.string.avatar_picker_session_error_cta
+        } else {
+            R.string.avatar_picker_session_error_close_cta
+        }
+
         SectionError.NoInternetConnection,
         SectionError.ServerError,
         SectionError.Unknown,
@@ -255,7 +266,7 @@ private val SectionError.buttonTextRes: Int
 
 private val SectionError.event: AvatarPickerEvent
     get() = when (this) {
-        SectionError.InvalidToken -> AvatarPickerEvent.LoginUserTapped
+        is SectionError.InvalidToken -> AvatarPickerEvent.HandleAuthFailureTapped
         SectionError.ServerError,
         SectionError.Unknown,
         SectionError.NoInternetConnection,

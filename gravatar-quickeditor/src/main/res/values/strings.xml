@@ -22,6 +22,8 @@
     <string name="avatar_picker_session_error_title">Session expired</string>
     <string name="avatar_picker_session_error_message">Session expired for security reasons. Please log in to update your Avatar.</string>
     <string name="avatar_picker_session_error_cta">Log in</string>
+    <string name="avatar_picker_session_error_no_login_message">Session expired for security reasons.</string>
+    <string name="avatar_picker_session_error_close_cta">Close</string>
     <string name="avatar_picker_network_error_title">No internet</string>
     <string name="avatar_picker_network_error_message">Uh oh! Looks like you\'re not connected to the internet.</string>
     <string name="login_required">Login required</string>
