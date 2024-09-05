@@ -13,9 +13,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -105,32 +102,14 @@ internal fun AvatarsSection(
                         )
                     }
                 } else {
-                    LazyRow(
+                    LazyAvatarRow(
+                        avatars = state.avatars,
+                        onAvatarSelected = onAvatarSelected,
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                         modifier = Modifier.padding(vertical = 24.dp),
                         state = listState,
-                        contentPadding = PaddingValues(horizontal = 16.dp),
-                    ) {
-                        items(items = state.avatars, key = { it.avatarId }) { avatarModel ->
-                            when (avatarModel) {
-                                is AvatarUi.Uploaded -> SelectableAvatar(
-                                    imageUrl = avatarModel.avatar.imageUrl,
-                                    isSelected = avatarModel.isSelected,
-                                    isLoading = avatarModel.isLoading,
-                                    onAvatarClicked = {
-                                        onAvatarSelected(avatarModel.avatar)
-                                    },
-                                    modifier = Modifier.size(96.dp),
-                                )
-
-                                is AvatarUi.Local -> LocalAvatar(
-                                    imageUri = avatarModel.uri.toString(),
-                                    isLoading = true,
-                                    modifier = Modifier.size(96.dp),
-                                )
-                            }
-                        }
-                    }
+                        contentPadding = PaddingValues(horizontal = sectionPadding),
+                    )
                 }
                 QEButton(
                     buttonText = stringResource(id = R.string.avatar_picker_upload_image),
