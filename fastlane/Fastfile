@@ -55,61 +55,61 @@ platform :android do
       message: 'Update translations',
       allow_nothing_to_commit: true
     )
+  end
 
-    desc 'Builds a prototype build and uploads it to S3'
-    lane :build_and_upload_prototype_build do
-      UI.user_error!("'BUILDKITE_ARTIFACTS_S3_BUCKET' must be defined as an environment variable.") unless ENV['BUILDKITE_ARTIFACTS_S3_BUCKET']
+  desc 'Builds a prototype build and uploads it to S3'
+  lane :build_and_upload_prototype_build do
+    UI.user_error!("'BUILDKITE_ARTIFACTS_S3_BUCKET' must be defined as an environment variable.") unless ENV['BUILDKITE_ARTIFACTS_S3_BUCKET']
 
-      comment_on_pr(
-        project: 'Automattic/Gravatar-SDK-Android',
-        pr_number: Integer(ENV.fetch('BUILDKITE_PULL_REQUEST', nil)),
-        reuse_identifier: 'app-prototype-build-link',
-        body: '🚧 Prototype builds will be available soon'
-      )
+    comment_on_pr(
+      project: 'Automattic/Gravatar-SDK-Android',
+      pr_number: Integer(ENV.fetch('BUILDKITE_PULL_REQUEST', nil)),
+      reuse_identifier: 'app-prototype-build-link',
+      body: '🚧 Prototype builds will be available soon'
+    )
 
-      gradle(
-        task: ':demo-app:assemble',
-        build_type: 'debug'
-      )
+    gradle(
+      task: ':demo-app:assemble',
+      build_type: 'debug'
+    )
 
-      upload_path = upload_to_s3(
-        bucket: 'a8c-apps-public-artifacts',
-        key: "gravatar-demo-prototype-build-#{generate_prototype_build_number}.apk",
-        file: lane_context[SharedValues::GRADLE_ALL_APK_OUTPUT_PATHS].first,
-        skip_if_exists: true
-      )
+    upload_path = upload_to_s3(
+      bucket: 'a8c-apps-public-artifacts',
+      key: "gravatar-demo-prototype-build-#{generate_prototype_build_number}.apk",
+      file: lane_context[SharedValues::GRADLE_ALL_APK_OUTPUT_PATHS].first,
+      skip_if_exists: true
+    )
 
-      install_url = "#{PROTOTYPE_BUILD_DOMAIN}/#{upload_path}"
+    install_url = "#{PROTOTYPE_BUILD_DOMAIN}/#{upload_path}"
 
-      comment_body = prototype_build_details_comment(
-        app_display_name: 'Gravatar Demo',
-        download_url: install_url,
-        fold: true
-      )
+    comment_body = prototype_build_details_comment(
+      app_display_name: 'Gravatar Demo',
+      download_url: install_url,
+      fold: true
+    )
 
-      comment_on_pr(
-        project: 'automattic/pocket-casts-android',
-        pr_number: Integer(ENV.fetch('BUILDKITE_PULL_REQUEST', nil)),
-        reuse_identifier: 'app-prototype-build-link',
-        body: comment_body
-      )
-    end
+    comment_on_pr(
+      project: 'automattic/pocket-casts-android',
+      pr_number: Integer(ENV.fetch('BUILDKITE_PULL_REQUEST', nil)),
+      reuse_identifier: 'app-prototype-build-link',
+      body: comment_body
+    )
+  end
 
-    # This function is Buildkite-specific
-    def generate_prototype_build_number
-      if ENV['BUILDKITE']
-        commit = ENV.fetch('BUILDKITE_COMMIT', nil)[0, 7]
-        branch = ENV['BUILDKITE_BRANCH'].parameterize
-        pr_num = ENV.fetch('BUILDKITE_PULL_REQUEST', nil)
+  # This function is Buildkite-specific
+  def generate_prototype_build_number
+    if ENV['BUILDKITE']
+      commit = ENV.fetch('BUILDKITE_COMMIT', nil)[0, 7]
+      branch = ENV['BUILDKITE_BRANCH'].parameterize
+      pr_num = ENV.fetch('BUILDKITE_PULL_REQUEST', nil)
 
-        pr_num == 'false' ? "#{branch}-#{commit}" : "pr#{pr_num}-#{commit}"
-      else
-        repo = Git.open(PROJECT_ROOT_FOLDER)
-        commit = repo.current_branch.parameterize
-        branch = repo.revparse('HEAD')[0, 7]
+      pr_num == 'false' ? "#{branch}-#{commit}" : "pr#{pr_num}-#{commit}"
+    else
+      repo = Git.open(PROJECT_ROOT_FOLDER)
+      commit = repo.current_branch.parameterize
+      branch = repo.revparse('HEAD')[0, 7]
 
-        "#{branch}-#{commit}"
-      end
+      "#{branch}-#{commit}"
     end
   end
 end
