@@ -11,6 +11,9 @@ fastlane/README.md
 fastlane/report.xml
 fastlane/.env
 
+# Gems
+/vendor
+
 .DS_Store
 /build
 /captures
