@@ -8,11 +8,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Surface
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.window.core.layout.WindowHeightSizeClass
 import com.gravatar.quickeditor.ui.components.QEDragHandle
 import com.gravatar.quickeditor.ui.components.QETopBar
 import com.gravatar.quickeditor.ui.editor.AuthenticationMethod
@@ -45,13 +47,15 @@ public fun GravatarQuickEditorBottomSheet(
     onAvatarSelected: (AvatarUpdateResult) -> Unit,
     onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit = {},
 ) {
+    val windowHeightSizeClass = currentWindowAdaptiveInfo().windowSizeClass.windowHeightSizeClass
     GravatarQuickEditorBottomSheet(
         gravatarQuickEditorParams = gravatarQuickEditorParams,
         authenticationMethod = authenticationMethod,
         onAvatarSelected = onAvatarSelected,
         onDismiss = onDismiss,
         modalBottomSheetState = rememberModalBottomSheetState(
-            skipPartiallyExpanded = gravatarQuickEditorParams.contentLayout == ContentLayout.Horizontal,
+            skipPartiallyExpanded = gravatarQuickEditorParams.contentLayout == ContentLayout.Horizontal ||
+                windowHeightSizeClass == WindowHeightSizeClass.COMPACT,
         ),
     )
 }
