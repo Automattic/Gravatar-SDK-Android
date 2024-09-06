@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -29,7 +30,7 @@ internal fun SelectableAvatar(
     modifier: Modifier = Modifier,
 ) {
     val cornerRadius = 8.dp
-    Box(modifier = modifier) {
+    Box(modifier = modifier.aspectRatio(1f)) {
         AsyncImage(
             model = imageUrl,
             contentDescription = stringResource(id = R.string.selectable_avatar_content_description),

@@ -11,7 +11,6 @@ import androidx.annotation.StringRes
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -151,10 +150,10 @@ internal fun AvatarPicker(uiState: AvatarPickerUiState, onEvent: (AvatarPickerEv
                 profile = uiState.profile,
                 modifier = Modifier.padding(horizontal = 16.dp),
             )
-            Spacer(modifier = Modifier.height(24.dp))
+            val sectionModifier = Modifier.padding(vertical = 24.dp)
             when {
                 uiState.isLoading -> Box(
-                    modifier = Modifier
+                    modifier = sectionModifier
                         .height(loadingSectionHeight)
                         .fillMaxWidth(),
                 ) {
@@ -166,7 +165,7 @@ internal fun AvatarPicker(uiState: AvatarPickerUiState, onEvent: (AvatarPickerEv
                     message = stringResource(id = uiState.error.messageRes),
                     buttonText = stringResource(id = uiState.error.buttonTextRes),
                     onButtonClick = { onEvent(uiState.error.event) },
-                    modifier = Modifier
+                    modifier = sectionModifier
                         .padding(horizontal = 16.dp)
                         .onSizeChanged { size ->
                             loadingSectionHeight = size.height.pxToDp(context)
@@ -178,7 +177,7 @@ internal fun AvatarPicker(uiState: AvatarPickerUiState, onEvent: (AvatarPickerEv
                         state = uiState.avatarsSectionUiState,
                         onAvatarSelected = { onEvent(AvatarPickerEvent.AvatarSelected(it)) },
                         onLocalImageSelected = { onEvent(AvatarPickerEvent.LocalImageSelected(it)) },
-                        modifier = Modifier
+                        modifier = sectionModifier
                             .padding(horizontal = 16.dp)
                             .fillMaxWidth()
                             .onSizeChanged { size ->
@@ -186,7 +185,6 @@ internal fun AvatarPicker(uiState: AvatarPickerUiState, onEvent: (AvatarPickerEv
                             },
                     )
             }
-            Spacer(modifier = Modifier.height(10.dp))
         }
     }
 }

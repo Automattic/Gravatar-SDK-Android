@@ -10,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.gravatar.quickeditor.ui.avatarpicker.AvatarUi
-import com.gravatar.quickeditor.ui.avatarpicker.fullUrl
 import com.gravatar.restapi.models.Avatar
 
 @Composable
@@ -37,13 +36,13 @@ internal fun LazyAvatarRow(
     }
 }
 
-private val avatarSize = 96.dp
+internal val avatarSize = 96.dp
 
 @Composable
 internal fun AvatarUi.avatar(onAvatarSelected: (Avatar) -> Unit, modifier: Modifier) {
     when (this) {
         is AvatarUi.Uploaded -> SelectableAvatar(
-            imageUrl = avatar.fullUrl,
+            imageUrl = avatar.imageUrl,
             isSelected = isSelected,
             isLoading = isLoading,
             onAvatarClicked = {
