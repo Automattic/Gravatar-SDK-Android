@@ -3,7 +3,7 @@ package com.gravatar.quickeditor.data.repository
 import android.net.Uri
 import androidx.core.net.toFile
 import com.gravatar.quickeditor.data.models.QuickEditorError
-import com.gravatar.quickeditor.data.storage.TokenStorage
+import com.gravatar.quickeditor.data.storage.DataStoreTokenStorage
 import com.gravatar.quickeditor.ui.CoroutineTestRule
 import com.gravatar.restapi.models.Avatar
 import com.gravatar.restapi.models.Identity
@@ -33,7 +33,7 @@ class AvatarRepositoryTest {
 
     private val avatarService = mockk<AvatarService>()
     private val identityService = mockk<IdentityService>()
-    private val tokenStorage = mockk<TokenStorage>()
+    private val tokenStorage = mockk<DataStoreTokenStorage>()
 
     private lateinit var avatarRepository: AvatarRepository
 

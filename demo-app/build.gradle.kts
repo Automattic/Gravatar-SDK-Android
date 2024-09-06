@@ -42,6 +42,11 @@ android {
             )
             buildConfigField(
                 "String",
+                "DEMO_BEARER_TOKEN",
+                "\"${properties["demo-app.bearer.token"]?.toString() ?: ""}\"",
+            )
+            buildConfigField(
+                "String",
                 "DEMO_GRAVATAR_API_KEY",
                 properties["demo-app.gravatar.api.key"]?.let { "\"$it\"" } ?: "null",
             )

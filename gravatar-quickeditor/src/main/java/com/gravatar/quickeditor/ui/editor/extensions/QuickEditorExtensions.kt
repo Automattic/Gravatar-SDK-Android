@@ -13,17 +13,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.ComposeView
+import com.gravatar.quickeditor.ui.editor.AuthenticationMethod
 import com.gravatar.quickeditor.ui.editor.AvatarUpdateResult
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorDismissReason
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
 import com.gravatar.quickeditor.ui.editor.bottomsheet.GravatarQuickEditorBottomSheet
-import com.gravatar.quickeditor.ui.oauth.OAuthParams
 import kotlinx.coroutines.launch
 
 internal fun addQuickEditorToView(
     viewGroup: ViewGroup,
     gravatarQuickEditorParams: GravatarQuickEditorParams,
-    oAuthParams: OAuthParams,
+    authenticationMethod: AuthenticationMethod,
     onAvatarUpdateResult: (AvatarUpdateResult) -> Unit,
     onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit,
 ) {
@@ -34,7 +34,7 @@ internal fun addQuickEditorToView(
                     parent = viewGroup,
                     composeView = this,
                     gravatarQuickEditorParams = gravatarQuickEditorParams,
-                    oAuthParams = oAuthParams,
+                    authenticationMethod = authenticationMethod,
                     onAvatarUpdateResult = onAvatarUpdateResult,
                     onDismiss = onDismiss,
                 )
@@ -49,7 +49,7 @@ private fun GravatarQuickEditorBottomSheetWrapper(
     parent: ViewGroup,
     composeView: ComposeView,
     gravatarQuickEditorParams: GravatarQuickEditorParams,
-    oAuthParams: OAuthParams,
+    authenticationMethod: AuthenticationMethod,
     onAvatarUpdateResult: (AvatarUpdateResult) -> Unit,
     onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit,
 ) {
@@ -60,7 +60,7 @@ private fun GravatarQuickEditorBottomSheetWrapper(
 
     GravatarQuickEditorBottomSheet(
         gravatarQuickEditorParams = gravatarQuickEditorParams,
-        oAuthParams = oAuthParams,
+        authenticationMethod = authenticationMethod,
         onAvatarSelected = onAvatarUpdateResult,
         onDismiss = onDismiss,
         modalBottomSheetState = modalBottomSheetState,

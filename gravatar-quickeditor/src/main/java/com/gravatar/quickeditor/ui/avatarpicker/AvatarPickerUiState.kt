@@ -44,7 +44,7 @@ internal data class AvatarPickerUiState(
 internal sealed class SectionError {
     data object ServerError : SectionError()
 
-    data object InvalidToken : SectionError()
+    data class InvalidToken(val showLogin: Boolean) : SectionError()
 
     data object Unknown : SectionError()
 

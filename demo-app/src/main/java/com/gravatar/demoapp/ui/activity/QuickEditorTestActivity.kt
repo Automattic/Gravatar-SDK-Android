@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.gravatar.demoapp.BuildConfig
 import com.gravatar.demoapp.R
 import com.gravatar.quickeditor.GravatarQuickEditor
+import com.gravatar.quickeditor.ui.editor.AuthenticationMethod
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
 import com.gravatar.quickeditor.ui.oauth.OAuthParams
 import com.gravatar.restapi.models.Profile
@@ -51,11 +52,13 @@ class QuickEditorTestActivity : AppCompatActivity() {
                     appName = getString(R.string.app_name)
                     email = Email(BuildConfig.DEMO_EMAIL)
                 },
-                oAuthParams = OAuthParams {
-                    clientId = BuildConfig.DEMO_WORDPRESS_CLIENT_ID
-                    clientSecret = BuildConfig.DEMO_WORDPRESS_CLIENT_SECRET
-                    redirectUri = BuildConfig.DEMO_WORDPRESS_REDIRECT_URI
-                },
+                authenticationMethod = AuthenticationMethod.OAuth(
+                    OAuthParams {
+                        clientId = BuildConfig.DEMO_WORDPRESS_CLIENT_ID
+                        clientSecret = BuildConfig.DEMO_WORDPRESS_CLIENT_SECRET
+                        redirectUri = BuildConfig.DEMO_WORDPRESS_REDIRECT_URI
+                    },
+                ),
                 onAvatarSelected = {
                     Toast.makeText(this, it.toString(), Toast.LENGTH_SHORT).show()
                 },

@@ -27,6 +27,7 @@ import java.net.URI
 
 internal class AvatarPickerViewModel(
     private val email: Email,
+    private val handleExpiredSession: Boolean,
     private val profileService: ProfileService,
     private val avatarRepository: AvatarRepository,
     private val fileUtils: FileUtils,
@@ -46,9 +47,9 @@ internal class AvatarPickerViewModel(
             AvatarPickerEvent.Refresh -> refresh()
             is AvatarPickerEvent.AvatarSelected -> selectAvatar(event.avatar)
             is AvatarPickerEvent.ImageCropped -> uploadAvatar(event.uri)
-            AvatarPickerEvent.LoginUserTapped -> {
+            AvatarPickerEvent.HandleAuthFailureTapped -> {
                 viewModelScope.launch {
-                    _actions.send(AvatarPickerAction.LoginUser)
+                    _actions.send(AvatarPickerAction.InvokeAuthFailed)
                 }
             }
         }
@@ -174,15 +175,33 @@ internal class AvatarPickerViewModel(
             }
         }
     }
+
+    private val QuickEditorError.asSectionError: SectionError
+        get() = when (this) {
+            QuickEditorError.TokenNotFound -> SectionError.InvalidToken(handleExpiredSession)
+            QuickEditorError.Unknown -> SectionError.Unknown
+            is QuickEditorError.Request -> when (type) {
+                ErrorType.SERVER -> SectionError.ServerError
+                ErrorType.NETWORK -> SectionError.NoInternetConnection
+                ErrorType.UNAUTHORIZED -> SectionError.InvalidToken(handleExpiredSession)
+                ErrorType.NOT_FOUND,
+                ErrorType.RATE_LIMIT_EXCEEDED,
+                ErrorType.TIMEOUT,
+                ErrorType.UNKNOWN,
+                -> SectionError.Unknown
+            }
+        }
 }
 
 internal class AvatarPickerViewModelFactory(
     private val email: Email,
+    private val handleExpiredSession: Boolean,
 ) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
         return AvatarPickerViewModel(
             email = email,
+            handleExpiredSession = handleExpiredSession,
             profileService = QuickEditorContainer.getInstance().profileService,
             avatarRepository = QuickEditorContainer.getInstance().avatarRepository,
             fileUtils = QuickEditorContainer.getInstance().fileUtils,
@@ -227,19 +246,3 @@ private fun <T> ComponentState<T>.copy(transform: T.() -> T): ComponentState<T> 
     is ComponentState.Loading -> this
     is ComponentState.Empty -> this
 }
-
-private val QuickEditorError.asSectionError: SectionError
-    get() = when (this) {
-        QuickEditorError.TokenNotFound -> SectionError.InvalidToken
-        QuickEditorError.Unknown -> SectionError.Unknown
-        is QuickEditorError.Request -> when (type) {
-            ErrorType.SERVER -> SectionError.ServerError
-            ErrorType.NETWORK -> SectionError.NoInternetConnection
-            ErrorType.UNAUTHORIZED -> SectionError.InvalidToken
-            ErrorType.NOT_FOUND,
-            ErrorType.RATE_LIMIT_EXCEEDED,
-            ErrorType.TIMEOUT,
-            ErrorType.UNKNOWN,
-            -> SectionError.Unknown
-        }
-    }

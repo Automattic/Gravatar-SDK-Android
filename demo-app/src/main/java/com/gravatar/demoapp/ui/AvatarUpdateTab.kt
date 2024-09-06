@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,6 +17,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AccountCircle
 import androidx.compose.material3.Button
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -40,7 +42,9 @@ import com.gravatar.demoapp.BuildConfig
 import com.gravatar.demoapp.R
 import com.gravatar.demoapp.ui.activity.QuickEditorTestActivity
 import com.gravatar.demoapp.ui.components.GravatarEmailInput
+import com.gravatar.demoapp.ui.components.GravatarPasswordInput
 import com.gravatar.quickeditor.GravatarQuickEditor
+import com.gravatar.quickeditor.ui.editor.AuthenticationMethod
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
 import com.gravatar.quickeditor.ui.editor.bottomsheet.GravatarQuickEditorBottomSheet
 import com.gravatar.quickeditor.ui.oauth.OAuthParams
@@ -51,6 +55,9 @@ import kotlinx.coroutines.launch
 @Composable
 fun AvatarUpdateTab(modifier: Modifier = Modifier) {
     var userEmail by remember { mutableStateOf(BuildConfig.DEMO_EMAIL) }
+    var userToken by remember { mutableStateOf(BuildConfig.DEMO_BEARER_TOKEN) }
+    var useToken by remember { mutableStateOf(false) }
+    var tokenVisible by remember { mutableStateOf(false) }
     val context = LocalContext.current
     var showBottomSheet by rememberSaveable { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
@@ -68,6 +75,18 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             GravatarEmailInput(email = userEmail, onValueChange = { userEmail = it }, Modifier.fillMaxWidth())
+            Row {
+                GravatarPasswordInput(
+                    password = userToken,
+                    passwordIsVisible = tokenVisible,
+                    enabled = useToken,
+                    onValueChange = { value -> userToken = value },
+                    onVisibilityChange = { visible -> tokenVisible = visible },
+                    label = { Text(text = "Bearer token") },
+                    modifier = Modifier.weight(1f),
+                )
+                Checkbox(checked = useToken, onCheckedChange = { useToken = it })
+            }
             UpdateAvatarComposable(
                 modifier = Modifier.clickable {
                     showBottomSheet = true
@@ -103,16 +122,23 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
     }
     if (showBottomSheet) {
         val applicationName = stringResource(id = R.string.app_name)
+        val authenticationMethod = if (useToken) {
+            AuthenticationMethod.Bearer(userToken)
+        } else {
+            AuthenticationMethod.OAuth(
+                OAuthParams {
+                    clientId = BuildConfig.DEMO_WORDPRESS_CLIENT_ID
+                    clientSecret = BuildConfig.DEMO_WORDPRESS_CLIENT_SECRET
+                    redirectUri = BuildConfig.DEMO_WORDPRESS_REDIRECT_URI
+                },
+            )
+        }
         GravatarQuickEditorBottomSheet(
             gravatarQuickEditorParams = GravatarQuickEditorParams {
                 appName = applicationName
                 email = Email(userEmail)
             },
-            oAuthParams = OAuthParams {
-                clientId = BuildConfig.DEMO_WORDPRESS_CLIENT_ID
-                clientSecret = BuildConfig.DEMO_WORDPRESS_CLIENT_SECRET
-                redirectUri = BuildConfig.DEMO_WORDPRESS_REDIRECT_URI
-            },
+            authenticationMethod = authenticationMethod,
             onAvatarSelected = { result ->
                 avatarUrl = result.avatarUri.toString()
             },
@@ -134,7 +160,10 @@ private fun UpdateAvatarComposable(isUploading: Boolean, avatarUrl: String?, mod
                 AsyncImage(
                     model = avatarUrl,
                     contentDescription = "Avatar Image",
-                    modifier = Modifier.size(128.dp).padding(8.dp).clip(CircleShape),
+                    modifier = Modifier
+                        .size(128.dp)
+                        .padding(8.dp)
+                        .clip(CircleShape),
                 )
             } else {
                 Icon(
