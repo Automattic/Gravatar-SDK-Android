@@ -2,6 +2,7 @@ package com.gravatar.quickeditor.ui.avatarpicker
 
 import android.net.Uri
 import com.gravatar.quickeditor.data.repository.IdentityAvatars
+import com.gravatar.quickeditor.ui.editor.ContentLayout
 import com.gravatar.restapi.models.Avatar
 import com.gravatar.restapi.models.Profile
 import com.gravatar.types.Email
@@ -9,6 +10,7 @@ import com.gravatar.ui.components.ComponentState
 
 internal data class AvatarPickerUiState(
     val email: Email,
+    val contentLayout: ContentLayout,
     val isLoading: Boolean = false,
     val error: SectionError? = null,
     val profile: ComponentState<Profile>? = null,
@@ -22,6 +24,7 @@ internal data class AvatarPickerUiState(
             avatars = it,
             scrollToIndex = scrollToIndex,
             uploadButtonEnabled = uploadingAvatar == null,
+            contentLayout = contentLayout,
         )
     }
 
@@ -52,6 +55,7 @@ internal sealed class SectionError {
 }
 
 internal data class AvatarsSectionUiState(
+    val contentLayout: ContentLayout,
     val avatars: List<AvatarUi>,
     val scrollToIndex: Int?,
     val uploadButtonEnabled: Boolean,

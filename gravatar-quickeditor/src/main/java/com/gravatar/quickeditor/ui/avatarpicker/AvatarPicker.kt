@@ -53,6 +53,8 @@ import com.gravatar.quickeditor.ui.components.ProfileCard
 import com.gravatar.quickeditor.ui.copperlauncher.CropperLauncher
 import com.gravatar.quickeditor.ui.copperlauncher.UCropCropperLauncher
 import com.gravatar.quickeditor.ui.editor.AvatarUpdateResult
+import com.gravatar.quickeditor.ui.editor.ContentLayout
+import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
 import com.gravatar.quickeditor.ui.editor.bottomsheet.DEFAULT_PAGE_HEIGHT
 import com.gravatar.quickeditor.ui.extensions.QESnackbarHost
 import com.gravatar.quickeditor.ui.extensions.SnackbarType
@@ -67,11 +69,13 @@ import kotlinx.coroutines.withContext
 
 @Composable
 internal fun AvatarPicker(
-    email: Email,
+    gravatarQuickEditorParams: GravatarQuickEditorParams,
     handleExpiredSession: Boolean,
     onAvatarSelected: (AvatarUpdateResult) -> Unit,
     onSessionExpired: () -> Unit,
-    viewModel: AvatarPickerViewModel = viewModel(factory = AvatarPickerViewModelFactory(email, handleExpiredSession)),
+    viewModel: AvatarPickerViewModel = viewModel(
+        factory = AvatarPickerViewModelFactory(gravatarQuickEditorParams, handleExpiredSession),
+    ),
     cropperLauncher: CropperLauncher = UCropCropperLauncher(),
 ) {
     val snackState = remember { SnackbarHostState() }
@@ -128,7 +132,13 @@ internal fun AvatarPicker(uiState: AvatarPickerUiState, onEvent: (AvatarPickerEv
         Modifier
             .fillMaxWidth()
             .animateContentSize()
-            .verticalScroll(rememberScrollState()),
+            .then(
+                if (uiState.contentLayout == ContentLayout.Horizontal) {
+                    Modifier.verticalScroll(rememberScrollState())
+                } else {
+                    Modifier
+                },
+            ),
     ) {
         Column {
             EmailLabel(
@@ -305,6 +315,7 @@ private fun AvatarPickerPreview() {
                     ),
                     selectedAvatarId = "1",
                 ),
+                contentLayout = ContentLayout.Horizontal,
             ),
             onEvent = { },
         )
@@ -321,6 +332,7 @@ private fun AvatarPickerLoadingPreview() {
                 profile = ComponentState.Loading,
                 isLoading = true,
                 identityAvatars = null,
+                contentLayout = ContentLayout.Horizontal,
             ),
             onEvent = { },
         )
@@ -338,6 +350,7 @@ private fun AvatarPickerErrorPreview() {
                 isLoading = false,
                 identityAvatars = null,
                 error = SectionError.ServerError,
+                contentLayout = ContentLayout.Horizontal,
             ),
             onEvent = { },
         )
