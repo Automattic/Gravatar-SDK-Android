@@ -65,7 +65,7 @@ platform :android do
       project: 'Automattic/Gravatar-SDK-Android',
       pr_number: Integer(ENV.fetch('BUILDKITE_PULL_REQUEST', nil)),
       reuse_identifier: 'app-prototype-build-link',
-      body: '🚧 Prototype builds will be available soon'
+      body: '🚧 Demo app build will be available soon'
     )
 
     gradle(
