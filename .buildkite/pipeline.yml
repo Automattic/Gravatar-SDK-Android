@@ -60,17 +60,8 @@ steps:
   - wait: ~
     if: build.branch == "trunk" || build.tag != null
 
-  - label: "Publish to S3"
-    command: |
-      echo "--- 🚀 Publishing"
-      ./gradlew \
-      :gravatar:prepareToPublishToS3 $(prepare_to_publish_to_s3_params) \
-      :gravatar:publish \
-      :gravatar-ui:prepareToPublishToS3 $(prepare_to_publish_to_s3_params) \
-      :gravatar-ui:publish \
-      :gravatar-quickeditor:prepareToPublishToS3 $(prepare_to_publish_to_s3_params) \
-      :gravatar-quickeditor:publish \
-      --no-configuration-cache
+  - label: "Publish SDK to S3"
+    command: .buildkite/commands/publish-to-s3.sh
     plugins: [$CI_TOOLKIT]
     notify:
       - github_commit_status:
@@ -82,3 +73,9 @@ steps:
       echo "--- ⚒️ Generating OpenAPI code"
       ./gradlew :gravatar:openApiGenerate
 
+  - label: "Prototype Builds"
+    if: "build.pull_request.id != null"
+    command: .buildkite/commands/prototype-build.sh
+    plugins: [ $CI_TOOLKIT ]
+    artifact_paths:
+      - "**/build/outputs/apk/**/*"
