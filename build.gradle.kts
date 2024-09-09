@@ -7,7 +7,6 @@ import org.jetbrains.dokka.versioning.VersioningPlugin
 plugins {
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.kotlin.android) apply false
-    alias(libs.plugins.kotlin.plugin.compose) apply false
     // Ktlint
     alias(libs.plugins.ktlint) apply false
     // Detekt

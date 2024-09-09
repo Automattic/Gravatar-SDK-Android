@@ -1,7 +1,6 @@
 plugins {
     id(libs.plugins.android.library.get().pluginId)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.plugin.compose)
 
     // Ktlint
     alias(libs.plugins.ktlint)
@@ -29,6 +28,9 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.15"
     }
     kotlinOptions {
         jvmTarget = "1.8"

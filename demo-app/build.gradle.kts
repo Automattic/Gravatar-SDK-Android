@@ -4,7 +4,6 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.plugin.compose)
     // Ktlint
     alias(libs.plugins.ktlint)
     // Detekt
@@ -90,13 +89,8 @@ android {
     buildFeatures {
         compose = true
     }
-    composeCompiler {
-        // Enable 'strong skipping'
-        // https://medium.com/androiddevelopers/jetpack-compose-strong-skipping-mode-explained-cbdb2aa4b900
-        enableStrongSkippingMode.set(true)
-        // Needed for Layout Inspector to be able to see all of the nodes in the component tree:
-        // https://issuetracker.google.com/issues/338842143
-        includeSourceInformation.set(true)
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.15"
     }
     detekt {
         config.setFrom("${project.rootDir}/config/detekt/detekt.yml")

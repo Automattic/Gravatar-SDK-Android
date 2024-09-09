@@ -3,7 +3,6 @@ import org.jetbrains.dokka.gradle.DokkaTaskPartial
 plugins {
     id(libs.plugins.android.library.get().pluginId)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.plugin.compose)
     alias(libs.plugins.publish.to.s3)
     // Ktlint
     alias(libs.plugins.ktlint)
@@ -50,10 +49,8 @@ android {
     buildFeatures {
         compose = true
     }
-    composeCompiler {
-        // Needed for Layout Inspector to be able to see all of the nodes in the component tree:
-        // https://issuetracker.google.com/issues/338842143
-        includeSourceInformation.set(true)
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.15"
     }
     tasks.withType<DokkaTaskPartial>().configureEach {
         dokkaSourceSets {
