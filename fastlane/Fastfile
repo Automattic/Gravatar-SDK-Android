@@ -77,7 +77,7 @@ platform :android do
       bucket: 'a8c-apps-public-artifacts',
       key: "gravatar-demo-prototype-build-#{generate_prototype_build_number}.apk",
       file: lane_context[SharedValues::GRADLE_ALL_APK_OUTPUT_PATHS].first,
-      skip_if_exists: true
+      if_exists: skip
     )
 
     install_url = "#{PROTOTYPE_BUILD_DOMAIN}/#{upload_path}"
