@@ -89,7 +89,7 @@ platform :android do
     )
 
     comment_on_pr(
-      project: 'automattic/pocket-casts-android',
+      project: 'Automattic/Gravatar-SDK-Android',
       pr_number: Integer(ENV.fetch('BUILDKITE_PULL_REQUEST', nil)),
       reuse_identifier: 'app-prototype-build-link',
       body: comment_body
