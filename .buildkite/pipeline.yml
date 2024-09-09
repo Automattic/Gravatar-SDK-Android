@@ -61,16 +61,7 @@ steps:
     if: build.branch == "trunk" || build.tag != null
 
   - label: "Publish to S3"
-    command: |
-      echo "--- 🚀 Publishing"
-      ./gradlew \
-      :gravatar:prepareToPublishToS3 $(prepare_to_publish_to_s3_params) \
-      :gravatar:publish \
-      :gravatar-ui:prepareToPublishToS3 $(prepare_to_publish_to_s3_params) \
-      :gravatar-ui:publish \
-      :gravatar-quickeditor:prepareToPublishToS3 $(prepare_to_publish_to_s3_params) \
-      :gravatar-quickeditor:publish \
-      --no-configuration-cache
+    command: .buildkite/commands/publish-to-s3.sh
     plugins: [$CI_TOOLKIT]
     notify:
       - github_commit_status:
