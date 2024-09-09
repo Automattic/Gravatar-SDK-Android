@@ -3,11 +3,11 @@ package com.gravatar.quickeditor
 import android.app.Activity
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.gravatar.quickeditor.ui.editor.AuthenticationMethod
 import com.gravatar.quickeditor.ui.editor.AvatarUpdateResult
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorDismissReason
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
 import com.gravatar.quickeditor.ui.editor.extensions.addQuickEditorToView
-import com.gravatar.quickeditor.ui.oauth.OAuthParams
 import com.gravatar.types.Email
 
 /**
@@ -19,7 +19,7 @@ public object GravatarQuickEditor {
      *
      * @param activity The activity to launch the Gravatar Quick Editor from.
      * @param gravatarQuickEditorParams The parameters to configure the Quick Editor.
-     * @param oAuthParams The parameters to configure the OAuth.
+     * @param authenticationMethod The method used for authentication with the Gravatar REST API.
      * @param onAvatarSelected The callback for the avatar update result, check [AvatarUpdateResult].
      *                       Can be invoked multiple times while the Quick Editor is open.
      * @param onDismiss The callback for the dismiss action.
@@ -29,12 +29,12 @@ public object GravatarQuickEditor {
     public fun show(
         activity: Activity,
         gravatarQuickEditorParams: GravatarQuickEditorParams,
-        oAuthParams: OAuthParams,
+        authenticationMethod: AuthenticationMethod,
         onAvatarSelected: (AvatarUpdateResult) -> Unit,
         onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit,
     ) {
         val viewGroup: ViewGroup = activity.findViewById(android.R.id.content)
-        addQuickEditorToView(viewGroup, gravatarQuickEditorParams, oAuthParams, onAvatarSelected, onDismiss)
+        addQuickEditorToView(viewGroup, gravatarQuickEditorParams, authenticationMethod, onAvatarSelected, onDismiss)
     }
 
     /**
@@ -43,7 +43,7 @@ public object GravatarQuickEditor {
      *
      * @param fragment The fragment to launch the Gravatar Quick Editor from.
      * @param gravatarQuickEditorParams The parameters to configure the Quick Editor.
-     * @param oAuthParams The parameters to configure the OAuth.
+     * @param authenticationMethod The method used for authentication with the Gravatar REST API.
      * @param onAvatarSelected The callback for the avatar update result, check [AvatarUpdateResult].
      *                       Can be invoked multiple times while the Quick Editor is open.
      * @param onDismiss The callback for the dismiss action.
@@ -53,12 +53,12 @@ public object GravatarQuickEditor {
     public fun show(
         fragment: Fragment,
         gravatarQuickEditorParams: GravatarQuickEditorParams,
-        oAuthParams: OAuthParams,
+        authenticationMethod: AuthenticationMethod,
         onAvatarSelected: (AvatarUpdateResult) -> Unit,
         onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit,
     ) {
         val viewGroup: ViewGroup = fragment.requireActivity().findViewById(android.R.id.content)
-        addQuickEditorToView(viewGroup, gravatarQuickEditorParams, oAuthParams, onAvatarSelected, onDismiss)
+        addQuickEditorToView(viewGroup, gravatarQuickEditorParams, authenticationMethod, onAvatarSelected, onDismiss)
     }
 
     /**
@@ -70,6 +70,6 @@ public object GravatarQuickEditor {
      * @param email The email of the user.
      */
     public suspend fun logout(email: Email) {
-        QuickEditorContainer.getInstance().tokenStorage.deleteToken(email.hash().toString())
+        QuickEditorContainer.getInstance().dataStoreTokenStorage.deleteToken(email.hash().toString())
     }
 }

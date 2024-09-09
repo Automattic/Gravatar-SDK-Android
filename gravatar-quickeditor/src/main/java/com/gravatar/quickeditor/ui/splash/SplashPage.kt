@@ -20,7 +20,8 @@ import kotlinx.coroutines.withContext
 @Composable
 internal fun SplashPage(
     email: Email,
-    viewModel: SplashViewModel = viewModel(factory = SplashViewModelFactory(email)),
+    token: String? = null,
+    viewModel: SplashViewModel = viewModel(factory = SplashViewModelFactory(email, token)),
     onAuthorized: (Boolean) -> Unit,
 ) {
     val currentOnAuthorized by rememberUpdatedState(onAuthorized)

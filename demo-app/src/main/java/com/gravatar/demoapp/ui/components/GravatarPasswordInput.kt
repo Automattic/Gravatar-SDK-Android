@@ -17,6 +17,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 fun GravatarPasswordInput(
     password: String,
     passwordIsVisible: Boolean,
+    enabled: Boolean = true,
     onValueChange: (String) -> Unit,
     onVisibilityChange: (Boolean) -> Unit,
     label: @Composable (() -> Unit),
@@ -28,6 +29,7 @@ fun GravatarPasswordInput(
         label = label,
         maxLines = 1,
         modifier = modifier,
+        enabled = enabled,
         visualTransformation = if (passwordIsVisible) VisualTransformation.None else PasswordVisualTransformation(),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         trailingIcon = {
