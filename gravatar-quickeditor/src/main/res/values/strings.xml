@@ -29,4 +29,5 @@
     <string name="login_required">Login required</string>
     <string name="login_required_message">To modify your Gravatar profile you need to log&#160;in first</string>
     <string name="happy_face_image_content_description">Happy face image</string>
+    <string name="upload_image_content_description">Upload image</string>
 </resources>
