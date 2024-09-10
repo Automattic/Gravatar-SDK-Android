@@ -21,3 +21,5 @@ fastlane/.env
 .cxx
 local.properties
 .kotlin/
+
+secrets.properties
