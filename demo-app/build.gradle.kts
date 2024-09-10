@@ -15,6 +15,7 @@ fun secretProperties(): Properties {
     rootProject.file("secrets.properties")
         .takeIf { it.exists() }
         ?.let { properties.load(FileInputStream(it)) }
+        ?: logger.warn("Secret properties file not found. Quick Editor won't work properly.")
     return properties
 }
 
