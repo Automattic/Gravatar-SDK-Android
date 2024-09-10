@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -89,6 +90,7 @@ fun DemoGravatarApp() {
 
         Scaffold(
             snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+            modifier = Modifier.systemBarsPadding(),
         ) { innerPadding ->
             val defaultErrorMessage = stringResource(R.string.snackbar_unknown_error_message)
             GravatarTabs(

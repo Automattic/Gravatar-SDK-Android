@@ -34,6 +34,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -49,7 +50,9 @@ import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
 import com.gravatar.quickeditor.ui.editor.bottomsheet.GravatarQuickEditorBottomSheet
 import com.gravatar.quickeditor.ui.oauth.OAuthParams
 import com.gravatar.types.Email
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -62,6 +65,7 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
     var showBottomSheet by rememberSaveable { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     var avatarUrl: String? by remember { mutableStateOf(null) }
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     Box(
         modifier = Modifier
@@ -89,6 +93,7 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
             }
             UpdateAvatarComposable(
                 modifier = Modifier.clickable {
+                    keyboardController?.hide()
                     showBottomSheet = true
                 },
                 isUploading = false,
@@ -113,7 +118,9 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
             onClick = {
                 scope.launch {
                     GravatarQuickEditor.logout(Email(userEmail))
-                    Toast.makeText(context, "Logged out", Toast.LENGTH_SHORT).show()
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(context, "Logged out", Toast.LENGTH_SHORT).show()
+                    }
                 }
             },
         ) {

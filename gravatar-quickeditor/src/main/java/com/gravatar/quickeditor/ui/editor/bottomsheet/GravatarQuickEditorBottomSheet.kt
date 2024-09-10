@@ -1,9 +1,10 @@
 package com.gravatar.quickeditor.ui.editor.bottomsheet
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Surface
@@ -11,7 +12,6 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import com.gravatar.quickeditor.ui.components.QEDragHandle
 import com.gravatar.quickeditor.ui.components.QETopBar
@@ -80,20 +80,20 @@ private fun GravatarModalBottomSheet(
     content: @Composable () -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
-    val screenHeightDp = LocalConfiguration.current.screenHeightDp
 
     GravatarTheme {
         ModalBottomSheet(
-            modifier = Modifier
-                .heightIn(min = DEFAULT_PAGE_HEIGHT, max = screenHeightDp.dp * 0.9f),
             onDismissRequest = { onDismiss(GravatarQuickEditorDismissReason.Finished) },
             sheetState = modalBottomSheetState,
             dragHandle = { QEDragHandle() },
+            containerColor = MaterialTheme.colorScheme.surface,
+            tonalElevation = 1.dp,
+            windowInsets = WindowInsets(0, 0, 0, 0),
         ) {
-            Surface {
-                Column(
-                    modifier = Modifier.navigationBarsPadding(),
-                ) {
+            Surface(
+                modifier = Modifier.navigationBarsPadding(),
+            ) {
+                Column {
                     QETopBar(
                         onDoneClick = {
                             coroutineScope.launch {
