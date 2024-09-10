@@ -57,7 +57,9 @@ internal class AvatarPickerViewModel(
 
     private fun refresh() {
         fetchAvatars()
-        fetchProfile()
+        if (uiState.value.profile !is ComponentState.Loaded) {
+            fetchProfile()
+        }
     }
 
     private fun selectAvatar(avatar: Avatar) {

@@ -15,6 +15,7 @@ import com.gravatar.services.Result
 import com.gravatar.types.Email
 import com.gravatar.ui.components.ComponentState
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -382,6 +383,20 @@ class AvatarPickerViewModelTest {
         viewModel.actions.test {
             assertEquals(AvatarPickerAction.InvokeAuthFailed, awaitItem())
         }
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `given profile loaded when refresh then fetch profile not called`() = runTest {
+        coEvery { profileService.retrieveCatching(email) } returns Result.Success(profile)
+        coEvery { avatarRepository.getAvatars(email) } returns Result.Failure(QuickEditorError.Unknown)
+        viewModel = initViewModel()
+        advanceUntilIdle()
+
+        viewModel.onEvent(AvatarPickerEvent.Refresh)
+        advanceUntilIdle()
+
+        coVerify(exactly = 1) { profileService.retrieveCatching(email) }
     }
 
     private fun initViewModel(handleExpiredSession: Boolean = true) =
