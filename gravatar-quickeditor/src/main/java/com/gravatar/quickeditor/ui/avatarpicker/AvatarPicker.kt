@@ -150,7 +150,7 @@ internal fun AvatarPicker(uiState: AvatarPickerUiState, onEvent: (AvatarPickerEv
                 profile = uiState.profile,
                 modifier = Modifier.padding(horizontal = 16.dp),
             )
-            val sectionModifier = Modifier.padding(vertical = 24.dp)
+            val sectionModifier = Modifier.padding(top = 24.dp, bottom = 10.dp)
             when {
                 uiState.isLoading -> Box(
                     modifier = sectionModifier
