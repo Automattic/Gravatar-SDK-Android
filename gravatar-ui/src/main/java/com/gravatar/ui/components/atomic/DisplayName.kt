@@ -15,9 +15,6 @@ import com.gravatar.ui.R
 import com.gravatar.ui.TextSkeletonEffect
 import com.gravatar.ui.components.ComponentState
 import com.gravatar.ui.components.LoadingToLoadedProfileStatePreview
-import com.gravatar.ui.extensions.toApi2ComponentStateProfile
-import com.gravatar.ui.extensions.toApi2Profile
-import com.gravatar.api.models.Profile as LegacyProfile
 
 /**
  * [DisplayName] is a composable that displays the user's display name.
@@ -43,7 +40,6 @@ public fun DisplayName(
  * @param skeletonModifier Composable modifier for the loading skeleton component
  * @param textStyle The style to apply to the text
  */
-@JvmName("DisplayNameWithComponentState")
 @Composable
 public fun DisplayName(
     state: ComponentState<Profile>,
@@ -77,61 +73,9 @@ private fun DisplayName(displayName: String, modifier: Modifier, textStyle: Text
     Text(text = displayName, modifier = modifier, style = textStyle)
 }
 
-/**
- * [DisplayName] is a composable that displays the user's display name.
- *
- * @param profile The user's profile information
- * @param modifier Composable modifier
- * @param textStyle The style to apply to the text
- */
-@Deprecated(
-    "This class is deprecated and will be removed in a future release.",
-    replaceWith = ReplaceWith("com.gravatar.ui.components.atomic.DisplayName"),
-    level = DeprecationLevel.WARNING,
-)
-@Composable
-public fun DisplayName(
-    profile: LegacyProfile,
-    modifier: Modifier = Modifier,
-    textStyle: TextStyle = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
-) {
-    DisplayName(profile = profile.toApi2Profile(), modifier = modifier, textStyle = textStyle)
-}
-
-/**
- * [DisplayName] is a composable that displays the user's display name or a loading skeleton.
- *
- * @param state The user's profile state
- * @param modifier Composable modifier
- * @param textStyle The style to apply to the text
- */
-@Deprecated(
-    "This class is deprecated and will be removed in a future release.",
-    replaceWith = ReplaceWith("com.gravatar.ui.components.atomic.DisplayName"),
-    level = DeprecationLevel.WARNING,
-)
-@Composable
-public fun DisplayName(
-    state: ComponentState<LegacyProfile>,
-    modifier: Modifier = Modifier,
-    textStyle: TextStyle = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
-) {
-    DisplayName(
-        state = state.toApi2ComponentStateProfile(),
-        modifier = modifier,
-        skeletonModifier = Modifier,
-        textStyle = textStyle,
-    )
-}
-
-// TODO Make this preview internal in a future major release
-@Deprecated(
-    "This function is deprecated and will be removed in a future release.",
-    level = DeprecationLevel.WARNING,
-)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-public fun DisplayNamePreview() {
+private fun DisplayNamePreview() {
     LoadingToLoadedProfileStatePreview { DisplayName(it) }
 }

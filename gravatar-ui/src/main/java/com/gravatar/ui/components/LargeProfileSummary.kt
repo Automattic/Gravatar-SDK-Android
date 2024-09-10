@@ -22,9 +22,7 @@ import com.gravatar.ui.components.atomic.Avatar
 import com.gravatar.ui.components.atomic.DisplayName
 import com.gravatar.ui.components.atomic.UserInfo
 import com.gravatar.ui.components.atomic.ViewProfileButton
-import com.gravatar.ui.extensions.toApi2ComponentStateProfile
 import java.net.URI
-import com.gravatar.api.models.Profile as LegacyProfile
 
 /**
  * [LargeProfileSummary] is a composable that displays a user's profile in a resumed way.
@@ -47,7 +45,6 @@ public fun LargeProfileSummary(profile: Profile, modifier: Modifier = Modifier) 
  * @param avatar Composable to display the user avatar
  * @param viewProfile Composable to display the view profile button
  */
-@JvmName("LargeProfileWithComponentState")
 @Composable
 public fun LargeProfileSummary(
     state: ComponentState<Profile>,
@@ -97,40 +94,6 @@ public fun LargeProfileSummary(
     }
 }
 
-/**
- * [LargeProfileSummary] is a composable that displays a user's profile in a resumed way.
- * Given a [LegacyProfile], it displays a [LargeProfileSummary] using the atomic components provided within the SDK.
- *
- * @param profile The user's profile information
- * @param modifier Composable modifier
- */
-@Deprecated(
-    "This class is deprecated and will be removed in a future release.",
-    replaceWith = ReplaceWith("com.gravatar.ui.components.LargeProfileSummary"),
-    level = DeprecationLevel.WARNING,
-)
-@Composable
-public fun LargeProfileSummary(profile: LegacyProfile, modifier: Modifier = Modifier) {
-    LargeProfileSummary(state = ComponentState.Loaded(profile), modifier = modifier)
-}
-
-/**
- * [LargeProfileSummary] is a composable that displays a user's profile in a resumed way.
- * Given a [ComponentState] for a [LegacyProfile], it displays a [LargeProfileSummary] in the appropriate state.
- *
- * @param state The user's profile state
- * @param modifier Composable modifier
- */
-@Deprecated(
-    "This class is deprecated and will be removed in a future release.",
-    replaceWith = ReplaceWith("com.gravatar.ui.components.LargeProfileSummary"),
-    level = DeprecationLevel.WARNING,
-)
-@Composable
-public fun LargeProfileSummary(state: ComponentState<LegacyProfile>, modifier: Modifier = Modifier) {
-    LargeProfileSummary(state = state.toApi2ComponentStateProfile(), modifier = modifier)
-}
-
 @Preview(showBackground = true)
 @Composable
 private fun LargeProfileSummaryPreview() {
@@ -170,15 +133,10 @@ private fun LargeProfileSummaryPreview() {
     }
 }
 
-// TODO Make this preview internal in a future major release
-@Deprecated(
-    "This function is deprecated and will be removed in a future release.",
-    level = DeprecationLevel.WARNING,
-)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-public fun LargeProfileLoadingPreview() {
+private fun LargeProfileLoadingPreview() {
     LoadingToLoadedProfileStatePreview { LargeProfileSummary(it) }
 }
 

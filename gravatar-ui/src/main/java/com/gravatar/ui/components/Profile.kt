@@ -29,9 +29,7 @@ import com.gravatar.ui.components.atomic.SocialIconRow
 import com.gravatar.ui.components.atomic.UserInfo
 import com.gravatar.ui.components.atomic.ViewProfileButton
 import com.gravatar.ui.components.atomic.offsetGravatarIcon
-import com.gravatar.ui.extensions.toApi2ComponentStateProfile
 import java.net.URI
-import com.gravatar.api.models.Profile as LegacyProfile
 
 /**
  * [Profile] is a composable that displays a user's profile card.
@@ -54,7 +52,6 @@ public fun Profile(profile: Profile, modifier: Modifier = Modifier) {
  * @param avatar Composable to display the user avatar
  * @param viewProfile Composable to display the view profile button
  */
-@JvmName("ProfileWithComponentState")
 @Composable
 public fun Profile(
     state: ComponentState<Profile>,
@@ -95,7 +92,9 @@ public fun Profile(
                     AboutMe(
                         state = state,
                         modifier = Modifier.padding(top = 16.dp),
-                        skeletonModifier = Modifier.padding(top = 16.dp).fillMaxWidth(0.8f),
+                        skeletonModifier = Modifier
+                            .padding(top = 16.dp)
+                            .fillMaxWidth(0.8f),
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Row(
@@ -114,40 +113,6 @@ public fun Profile(
             }
         }
     }
-}
-
-/**
- * [Profile] is a composable that displays a user's profile card.
- * Given a [LegacyProfile], it displays a profile UI component using the atomic components provided within the SDK.
- *
- * @param profile The user's profile information
- * @param modifier Composable modifier
- */
-@Deprecated(
-    "This class is deprecated and will be removed in a future release.",
-    replaceWith = ReplaceWith("com.gravatar.ui.components.Profile"),
-    level = DeprecationLevel.WARNING,
-)
-@Composable
-public fun Profile(profile: LegacyProfile, modifier: Modifier = Modifier) {
-    Profile(state = ComponentState.Loaded(profile), modifier = modifier)
-}
-
-/**
- * [Profile] is a composable that displays a user's profile card.
- * Given a [ComponentState] for a [LegacyProfile], it displays a [Profile] in the appropriate state.
- *
- * @param state The user's profile state
- * @param modifier Composable modifier
- */
-@Deprecated(
-    "This class is deprecated and will be removed in a future release.",
-    replaceWith = ReplaceWith("com.gravatar.ui.components.Profile"),
-    level = DeprecationLevel.WARNING,
-)
-@Composable
-public fun Profile(state: ComponentState<LegacyProfile>, modifier: Modifier = Modifier) {
-    Profile(state = state.toApi2ComponentStateProfile(), modifier = modifier)
 }
 
 @Preview

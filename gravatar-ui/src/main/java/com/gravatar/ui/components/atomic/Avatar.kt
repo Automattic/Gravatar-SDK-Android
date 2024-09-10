@@ -18,10 +18,7 @@ import com.gravatar.ui.R
 import com.gravatar.ui.components.ComponentState
 import com.gravatar.ui.components.LoadingToLoadedProfileStatePreview
 import com.gravatar.ui.components.isNightModeEnabled
-import com.gravatar.ui.extensions.toApi2ComponentStateProfile
-import com.gravatar.ui.extensions.toApi2Profile
 import com.gravatar.ui.skeletonEffect
-import com.gravatar.api.models.Profile as LegacyProfile
 
 /**
  * [Avatar] is a composable that displays a user's avatar.
@@ -59,7 +56,6 @@ public fun Avatar(
  * @param modifier Composable modifier
  * @param avatarQueryOptions Options to customize the avatar query
  */
-@JvmName("AvatarWithComponentState")
 @Composable
 public fun Avatar(
     state: ComponentState<Profile>,
@@ -136,57 +132,6 @@ private fun Avatar(model: Any?, size: Dp, modifier: Modifier) {
         model = model,
         contentDescription = "User profile image",
         modifier = modifier.size(size),
-    )
-}
-
-/**
- * [Avatar] is a composable that displays a user's avatar.
- *
- * @param profile The user's profile information
- * @param size The size of the avatar
- * @param modifier Composable modifier
- * @param avatarQueryOptions Options to customize the avatar query
- */
-@Deprecated(
-    "This class is deprecated and will be removed in a future release.",
-    replaceWith = ReplaceWith("com.gravatar.ui.components.atomic.Avatar"),
-    level = DeprecationLevel.WARNING,
-)
-@Composable
-public fun Avatar(
-    profile: LegacyProfile,
-    size: Dp,
-    modifier: Modifier = Modifier,
-    avatarQueryOptions: AvatarQueryOptions? = null,
-) {
-    Avatar(profile = profile.toApi2Profile(), size = size, modifier = modifier, avatarQueryOptions = avatarQueryOptions)
-}
-
-/**
- * [Avatar] is a composable that displays a user's avatar.
- *
- * @param state
- * @param size The size of the avatar
- * @param modifier Composable modifier
- * @param avatarQueryOptions Options to customize the avatar query
- */
-@Deprecated(
-    "This class is deprecated and will be removed in a future release.",
-    replaceWith = ReplaceWith("com.gravatar.ui.components.atomic.Avatar"),
-    level = DeprecationLevel.WARNING,
-)
-@Composable
-public fun Avatar(
-    state: ComponentState<LegacyProfile>,
-    size: Dp,
-    modifier: Modifier = Modifier,
-    avatarQueryOptions: AvatarQueryOptions? = null,
-) {
-    Avatar(
-        state = state.toApi2ComponentStateProfile(),
-        size = size,
-        modifier = modifier,
-        avatarQueryOptions = avatarQueryOptions,
     )
 }
 
