@@ -10,13 +10,12 @@ plugins {
     alias(libs.plugins.detekt)
 }
 
-fun localProperties(): Properties {
-    val localProperties = Properties()
-    val localPropertiesFile = rootProject.file("secrets.properties")
-    if (localPropertiesFile.exists()) {
-        localProperties.load(FileInputStream(localPropertiesFile))
-    }
-    return localProperties
+fun secretProperties(): Properties {
+    val properties = Properties()
+    rootProject.file("secrets.properties")
+        .takeIf { it.exists() }
+        ?.let { properties.load(FileInputStream(it)) }
+    return properties
 }
 
 android {
@@ -33,7 +32,7 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        localProperties().let { properties ->
+        secretProperties().let { properties ->
             buildConfigField(
                 "String",
                 "DEMO_EMAIL",
