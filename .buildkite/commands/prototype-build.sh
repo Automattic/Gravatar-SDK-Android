@@ -1,5 +1,8 @@
 #!/bin/bash -eu
 
+echo "--- :closed_lock_with_key: Installing Secrets"
+bundle exec fastlane run configure_apply
+
 echo "--- :rubygems: Setting up Gems"
 install_gems
 
