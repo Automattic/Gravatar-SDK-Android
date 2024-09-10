@@ -33,8 +33,6 @@ android {
         }
     }
     compileOptions {
-        isCoreLibraryDesugaringEnabled = true
-
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
@@ -70,8 +68,6 @@ android {
 }
 
 dependencies {
-    coreLibraryDesugaring(libs.desugarJdk)
-
     api(libs.okhttp)
     implementation(libs.retrofit)
     implementation(libs.retrofit.gson.converter)
