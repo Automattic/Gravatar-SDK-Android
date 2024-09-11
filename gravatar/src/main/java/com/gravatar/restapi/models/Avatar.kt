@@ -40,7 +40,7 @@ public class Avatar private constructor(
     public val rating: kotlin.String,
     // Date and time when the image was last updated.
     @SerializedName("updated_date")
-    public val updatedDate: java.time.Instant,
+    public val updatedDate: String,
     // Alternative text description of the image.
     @SerializedName("altText")
     public val altText: kotlin.String,
@@ -81,7 +81,7 @@ public class Avatar private constructor(
 
         // Date and time when the image was last updated.
         @set:JvmSynthetic // Hide 'void' setter from Java
-        public var updatedDate: java.time.Instant? = null
+        public var updatedDate: String? = null
 
         // Alternative text description of the image.
         @set:JvmSynthetic // Hide 'void' setter from Java
@@ -97,7 +97,7 @@ public class Avatar private constructor(
 
         public fun setRating(rating: kotlin.String?): Builder = apply { this.rating = rating }
 
-        public fun setUpdatedDate(updatedDate: java.time.Instant?): Builder = apply { this.updatedDate = updatedDate }
+        public fun setUpdatedDate(updatedDate: String?): Builder = apply { this.updatedDate = updatedDate }
 
         public fun setAltText(altText: kotlin.String?): Builder = apply { this.altText = altText }
 

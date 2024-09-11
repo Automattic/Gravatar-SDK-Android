@@ -7,7 +7,6 @@ import com.gravatar.restapi.models.Avatar
 import com.gravatar.uitestutils.RoborazziTest
 import org.junit.Test
 import org.robolectric.annotation.Config
-import java.time.Instant
 
 class AvatarsSectionTest : RoborazziTest() {
     @Test
@@ -73,7 +72,7 @@ private val avatars = listOf(
             rating = "G"
             altText = "alt"
             isCropped = true
-            updatedDate = Instant.now()
+            updatedDate = ""
         },
         isLoading = false,
         isSelected = true,
@@ -86,7 +85,7 @@ private val avatars = listOf(
             rating = "G"
             altText = "alt"
             isCropped = true
-            updatedDate = Instant.now()
+            updatedDate = ""
         },
         isLoading = false,
         isSelected = true,

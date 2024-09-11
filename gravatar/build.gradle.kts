@@ -113,13 +113,13 @@ openApiGenerate {
     )
     importMappings.set(
         mapOf(
-            "DateTime" to "java.time.Instant",
+            "DateTime" to "String",
         ),
     )
 
     typeMappings.set(
         mapOf(
-            "DateTime" to "java.time.Instant",
+            "DateTime" to "String",
         ),
     )
 
