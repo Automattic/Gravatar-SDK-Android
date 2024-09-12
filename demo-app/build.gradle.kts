@@ -10,13 +10,13 @@ plugins {
     alias(libs.plugins.detekt)
 }
 
-fun localProperties(): Properties {
-    val localProperties = Properties()
-    val localPropertiesFile = rootProject.file("local.properties")
-    if (localPropertiesFile.exists()) {
-        localProperties.load(FileInputStream(localPropertiesFile))
-    }
-    return localProperties
+fun secretProperties(): Properties {
+    val properties = Properties()
+    rootProject.file("secrets.properties")
+        .takeIf { it.exists() }
+        ?.let { properties.load(FileInputStream(it)) }
+        ?: logger.warn("Secret properties file not found. Quick Editor won't work properly.")
+    return properties
 }
 
 android {
@@ -33,7 +33,7 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        localProperties().let { properties ->
+        secretProperties().let { properties ->
             buildConfigField(
                 "String",
                 "DEMO_EMAIL",

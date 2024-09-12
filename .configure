@@ -1,0 +1,15 @@
+{
+  "project_name": "Gravatar-SDK-Android",
+  "branch": "trunk",
+  "pinned_hash": "5655cd2466f1192ce01c1200045577412b8a89ba",
+  "files_to_copy": [
+    {
+      "file": "android/Gravatar-SDK-Android/secrets.properties",
+      "destination": "secrets.properties",
+      "encrypt": true
+    }
+  ],
+  "file_dependencies": [
+
+  ]
+}
