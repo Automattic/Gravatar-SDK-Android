@@ -42,7 +42,6 @@ import com.gravatar.quickeditor.QuickEditorFileProvider
 import com.gravatar.quickeditor.R
 import com.gravatar.quickeditor.ui.avatarpicker.AvatarUi
 import com.gravatar.quickeditor.ui.avatarpicker.AvatarsSectionUiState
-import com.gravatar.quickeditor.ui.avatarpicker.fullUrl
 import com.gravatar.restapi.models.Avatar
 import com.gravatar.ui.GravatarTheme
 import java.time.Instant
@@ -116,7 +115,7 @@ internal fun AvatarsSection(
                         items(items = state.avatars, key = { it.avatarId }) { avatarModel ->
                             when (avatarModel) {
                                 is AvatarUi.Uploaded -> SelectableAvatar(
-                                    imageUrl = avatarModel.avatar.fullUrl,
+                                    imageUrl = avatarModel.avatar.imageUrl,
                                     isSelected = avatarModel.isSelected,
                                     isLoading = avatarModel.isLoading,
                                     onAvatarClicked = {
