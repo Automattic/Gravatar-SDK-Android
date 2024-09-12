@@ -216,7 +216,7 @@ internal fun Profile.copyAvatar(avatar: Avatar): Profile {
         hash = this@copyAvatar.hash
         displayName = this@copyAvatar.displayName
         profileUrl = this@copyAvatar.profileUrl
-        avatarUrl = URI.create(avatar.fullUrl)
+        avatarUrl = URI.create(avatar.imageUrl)
         avatarAltText = avatar.altText
         location = this@copyAvatar.location
         description = this@copyAvatar.description

@@ -194,7 +194,7 @@ private suspend fun AvatarPickerAction.handle(
 ) {
     when (this) {
         is AvatarPickerAction.AvatarSelected -> {
-            onAvatarSelected(AvatarUpdateResult(avatar.fullUrl.toUri()))
+            onAvatarSelected(AvatarUpdateResult(avatar.imageUrl.toUri()))
             snackState.showQESnackbar(
                 message = context.getString(R.string.avatar_selected_confirmation),
                 withDismissAction = true,
@@ -344,6 +344,3 @@ private fun AvatarPickerErrorPreview() {
         )
     }
 }
-
-internal val Avatar.fullUrl: String
-    get() = "https://www.gravatar.com$imageUrl?size=200"
