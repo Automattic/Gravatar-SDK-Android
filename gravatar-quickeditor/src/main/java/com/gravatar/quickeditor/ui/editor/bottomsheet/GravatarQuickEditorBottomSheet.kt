@@ -53,10 +53,15 @@ public fun GravatarQuickEditorBottomSheet(
         authenticationMethod = authenticationMethod,
         onAvatarSelected = onAvatarSelected,
         onDismiss = onDismiss,
-        modalBottomSheetState = rememberModalBottomSheetState(
-            skipPartiallyExpanded = gravatarQuickEditorParams.contentLayout == ContentLayout.Horizontal ||
-                windowHeightSizeClass == WindowHeightSizeClass.COMPACT,
-        ),
+        modalBottomSheetState = if (windowHeightSizeClass == WindowHeightSizeClass.COMPACT) {
+            rememberModalBottomSheetState(
+                skipPartiallyExpanded = true,
+            )
+        } else {
+            rememberModalBottomSheetState(
+                skipPartiallyExpanded = gravatarQuickEditorParams.contentLayout == ContentLayout.Horizontal,
+            )
+        },
     )
 }
 
@@ -99,7 +104,7 @@ internal fun GravatarQuickEditorBottomSheet(
 @Composable
 private fun GravatarModalBottomSheet(
     onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit = {},
-    modalBottomSheetState: SheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+    modalBottomSheetState: SheetState,
     content: @Composable () -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
