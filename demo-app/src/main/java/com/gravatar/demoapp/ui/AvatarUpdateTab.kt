@@ -29,6 +29,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -67,7 +68,9 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
     val scope = rememberCoroutineScope()
     var avatarUrl: String? by remember { mutableStateOf(null) }
     val keyboardController = LocalSoftwareKeyboardController.current
-    var pickerContentLayout: ContentLayout by remember { mutableStateOf(ContentLayout.Horizontal) }
+    var pickerContentLayout: ContentLayout by rememberSaveable(stateSaver = ContentLayoutSaver) {
+        mutableStateOf(ContentLayout.Horizontal)
+    }
 
     Box(
         modifier = Modifier
@@ -212,6 +215,25 @@ private fun UpdateAvatarComposable(isUploading: Boolean, avatarUrl: String?, mod
             Text(text = stringResource(R.string.update_avatar_button_label))
         }
     }
+}
+
+private val ContentLayoutSaver: Saver<ContentLayout, String> = run {
+    val horizontalKey = "horizontal"
+    val verticalKey = "vertical"
+    Saver(
+        save = { value ->
+            when (value) {
+                ContentLayout.Horizontal -> horizontalKey
+                ContentLayout.Vertical -> verticalKey
+            }
+        },
+        restore = { value ->
+            when (value) {
+                horizontalKey -> ContentLayout.Horizontal
+                else -> ContentLayout.Vertical
+            }
+        },
+    )
 }
 
 @Preview
