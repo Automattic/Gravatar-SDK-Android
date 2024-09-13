@@ -27,7 +27,10 @@ class AvatarUrlTest {
         assertEquals(
             "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe970a1e66" +
                 "?s=1000",
-            AvatarUrl(Email("example@example.com"), AvatarQueryOptions(preferredSize = 1000)).url().toString(),
+            AvatarUrl(
+                Email("example@example.com"),
+                AvatarQueryOptions { preferredSize = 1000 },
+            ).url().toString(),
         )
     }
 
@@ -38,7 +41,7 @@ class AvatarUrlTest {
                 "?d=monsterid",
             AvatarUrl(
                 Email("example@example.com"),
-                AvatarQueryOptions(defaultAvatarOption = MonsterId),
+                AvatarQueryOptions { defaultAvatarOption = MonsterId },
             ).url().toString(),
         )
     }
@@ -50,7 +53,13 @@ class AvatarUrlTest {
                 "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe" +
                     "970a1e66?d=identicon&s=42",
             ),
-            AvatarUrl(Email("example@example.com"), AvatarQueryOptions(42, Identicon)).url(),
+            AvatarUrl(
+                Email("example@example.com"),
+                AvatarQueryOptions {
+                    preferredSize = 42
+                    defaultAvatarOption = Identicon
+                },
+            ).url(),
         )
     }
 
@@ -61,7 +70,15 @@ class AvatarUrlTest {
                 "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe" +
                     "970a1e66?d=robohash&s=42&r=x&f=y",
             ),
-            AvatarUrl(Email("example@example.com"), AvatarQueryOptions(42, RoboHash, X, true)).url(),
+            AvatarUrl(
+                Email("example@example.com"),
+                AvatarQueryOptions {
+                    preferredSize = 42
+                    defaultAvatarOption = RoboHash
+                    rating = X
+                    forceDefaultAvatar = true
+                },
+            ).url(),
         )
     }
 
@@ -88,12 +105,12 @@ class AvatarUrlTest {
                     "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe" +
                         "970a1e66",
                 ),
-                AvatarQueryOptions(
-                    42,
-                    Identicon,
-                    ParentalGuidance,
-                    true,
-                ),
+                AvatarQueryOptions {
+                    preferredSize = 42
+                    defaultAvatarOption = Identicon
+                    rating = ParentalGuidance
+                    forceDefaultAvatar = true
+                },
             ).url().toString(),
         )
     }
@@ -134,7 +151,10 @@ class AvatarUrlTest {
                     "https://gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe" +
                         "970a1e66?d=identicon&s=42",
                 ),
-                AvatarQueryOptions(42, Identicon),
+                AvatarQueryOptions {
+                    preferredSize = 42
+                    defaultAvatarOption = Identicon
+                },
             ).url().toString(),
         )
     }
@@ -149,7 +169,10 @@ class AvatarUrlTest {
                     "https://1.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe" +
                         "970a1e66?d=identicon&s=42",
                 ),
-                AvatarQueryOptions(42, Identicon),
+                AvatarQueryOptions {
+                    preferredSize = 42
+                    defaultAvatarOption = Identicon
+                },
             ).url().toString(),
         )
     }
@@ -239,9 +262,9 @@ class AvatarUrlTest {
                 "?d=https%3A%2F%2Fexample.com%2F%3Fencoded%3Dtrue%26please%3Dyes",
             AvatarUrl(
                 Email("example@example.com"),
-                AvatarQueryOptions(
-                    defaultAvatarOption = CustomUrl("https://example.com/?encoded=true&please=yes"),
-                ),
+                AvatarQueryOptions {
+                    defaultAvatarOption = CustomUrl("https://example.com/?encoded=true&please=yes")
+                },
             ).url().toString(),
         )
     }
@@ -253,7 +276,9 @@ class AvatarUrlTest {
                 "?f=n",
             AvatarUrl(
                 Email("example@example.com"),
-                AvatarQueryOptions(forceDefaultAvatar = false),
+                AvatarQueryOptions {
+                    forceDefaultAvatar = false
+                },
             ).url().toString(),
         )
     }
