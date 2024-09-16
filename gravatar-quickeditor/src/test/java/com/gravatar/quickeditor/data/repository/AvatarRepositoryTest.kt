@@ -23,7 +23,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import java.io.File
-import java.time.Instant
 
 class AvatarRepositoryTest {
     private val testDispatcher = StandardTestDispatcher()
@@ -181,7 +180,7 @@ class AvatarRepositoryTest {
         rating = "G"
         altText = "alt"
         isCropped = true
-        updatedDate = Instant.now()
+        updatedDate = ""
     }
 
     private fun createIdentity(imageIdentifier: String) = Identity {

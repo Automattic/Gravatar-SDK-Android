@@ -64,7 +64,6 @@ import com.gravatar.ui.components.ComponentState
 import com.yalantis.ucrop.UCrop
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.time.Instant
 
 @Composable
 internal fun AvatarPicker(
@@ -301,7 +300,7 @@ private fun AvatarPickerPreview() {
                             rating = "G"
                             altText = "alt"
                             isCropped = true
-                            updatedDate = Instant.now()
+                            updatedDate = null
                         },
                     ),
                     selectedAvatarId = "1",
