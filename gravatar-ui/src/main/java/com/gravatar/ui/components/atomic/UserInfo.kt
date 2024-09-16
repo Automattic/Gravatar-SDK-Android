@@ -17,9 +17,6 @@ import com.gravatar.ui.R
 import com.gravatar.ui.TextSkeletonEffect
 import com.gravatar.ui.components.ComponentState
 import com.gravatar.ui.components.LoadingToLoadedProfileStatePreview
-import com.gravatar.ui.extensions.toApi2ComponentStateProfile
-import com.gravatar.ui.extensions.toApi2Profile
-import com.gravatar.api.models.Profile as LegacyProfile
 
 /**
  * [UserInfo] is a composable that displays a user's information in a formatted way.
@@ -54,7 +51,6 @@ public fun UserInfo(
  * @param textStyle The style to apply to the default text content
  * @param content Composable to display the formatted user information
  */
-@JvmName("UserInfoWithComponentState")
 @Composable
 public fun UserInfo(
     state: ComponentState<Profile>,
@@ -80,60 +76,6 @@ public fun UserInfo(
 
         ComponentState.Empty -> content.invoke(stringResource(R.string.empty_state_user_info), modifier)
     }
-}
-
-/**
- * [UserInfo] is a composable that displays a user's information in a formatted way.
- * The user's information includes their company, job title, pronunciation, pronouns, and current
- * location when available.
- *
- * @param profile The user's profile information
- * @param modifier Composable modifier
- * @param textStyle The style to apply to the default text content
- * @param content Composable to display the formatted user information
- */
-@Deprecated(
-    "This class is deprecated and will be removed in a future release.",
-    replaceWith = ReplaceWith("com.gravatar.ui.components.atomic.UserInfo"),
-    level = DeprecationLevel.WARNING,
-)
-@Composable
-public fun UserInfo(
-    profile: LegacyProfile,
-    modifier: Modifier = Modifier,
-    textStyle: TextStyle = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.outline),
-    content: @Composable ((String, Modifier) -> Unit) = { userInfo, contentModifier ->
-        UserInfoDefaultContent(userInfo, textStyle, contentModifier)
-    },
-) {
-    UserInfo(profile = profile.toApi2Profile(), modifier = modifier, textStyle = textStyle, content = content)
-}
-
-/**
- * [UserInfo] is a composable that displays a user's information in a formatted way.
- * The user's information includes their company, job title, pronunciation, pronouns, and current
- * location when available.
- *
- * @param state The user's profile state
- * @param modifier Composable modifier
- * @param textStyle The style to apply to the default text content
- * @param content Composable to display the formatted user information
- */
-@Deprecated(
-    "This class is deprecated and will be removed in a future release.",
-    replaceWith = ReplaceWith("com.gravatar.ui.components.atomic.UserInfo"),
-    level = DeprecationLevel.WARNING,
-)
-@Composable
-public fun UserInfo(
-    state: ComponentState<LegacyProfile>,
-    modifier: Modifier = Modifier,
-    textStyle: TextStyle = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.outline),
-    content: @Composable ((String, Modifier) -> Unit) = { userInfo, contentModifier ->
-        UserInfoDefaultContent(userInfo, textStyle, contentModifier)
-    },
-) {
-    UserInfo(state.toApi2ComponentStateProfile(), modifier, skeletonModifier = Modifier, textStyle, content)
 }
 
 @Composable

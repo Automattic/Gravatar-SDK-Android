@@ -32,13 +32,10 @@ import com.gravatar.restapi.models.VerifiedAccount
 import com.gravatar.ui.R
 import com.gravatar.ui.components.ComponentState
 import com.gravatar.ui.components.LoadingToLoadedProfileStatePreview
-import com.gravatar.ui.extensions.toApi2ComponentStateProfile
-import com.gravatar.ui.extensions.toApi2Profile
 import com.gravatar.ui.skeletonEffect
 import java.net.MalformedURLException
 import java.net.URI
 import java.net.URL
-import com.gravatar.api.models.Profile as LegacyProfile
 
 /**
  * LocalIcon is a predefined list of social media icons that can be used in the SocialIcon composable.
@@ -198,7 +195,6 @@ public fun SocialIconRow(profile: Profile, modifier: Modifier = Modifier, maxIco
  * @param modifier Composable modifier
  * @param maxIcons The maximum number of icons to display
  */
-@JvmName("SocialIconRowWithComponentState")
 @Composable
 public fun SocialIconRow(state: ComponentState<Profile>, modifier: Modifier = Modifier, maxIcons: Int = 4) {
     when (state) {
@@ -233,40 +229,6 @@ public fun SocialIconRow(state: ComponentState<Profile>, modifier: Modifier = Mo
             )
         }
     }
-}
-
-/**
- * [SocialIconRow] is a composable that displays a row of clickable [SocialIcon].
- *
- * @param profile The user's profile information
- * @param modifier Composable modifier
- * @param maxIcons The maximum number of icons to display
- */
-@Deprecated(
-    "This class is deprecated and will be removed in a future release.",
-    replaceWith = ReplaceWith("com.gravatar.ui.components.atomic.SocialIconRow"),
-    level = DeprecationLevel.WARNING,
-)
-@Composable
-public fun SocialIconRow(profile: LegacyProfile, modifier: Modifier = Modifier, maxIcons: Int = 4) {
-    SocialIconRow(mediaList(profile.toApi2Profile()), modifier, maxIcons)
-}
-
-/**
- * [SocialIconRow] is a composable that displays a row of clickable [SocialIcon].
- *
- * @param state The user's profile state
- * @param modifier Composable modifier
- * @param maxIcons The maximum number of icons to display
- */
-@Deprecated(
-    "This class is deprecated and will be removed in a future release.",
-    replaceWith = ReplaceWith("com.gravatar.ui.components.atomic.SocialIconRow"),
-    level = DeprecationLevel.WARNING,
-)
-@Composable
-public fun SocialIconRow(state: ComponentState<LegacyProfile>, modifier: Modifier = Modifier, maxIcons: Int = 4) {
-    SocialIconRow(state = state.toApi2ComponentStateProfile(), modifier = modifier, maxIcons = maxIcons)
 }
 
 internal fun Modifier.offsetGravatarIcon(): Modifier = this.offset(x = (-5).dp)

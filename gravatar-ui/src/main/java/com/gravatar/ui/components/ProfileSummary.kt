@@ -25,9 +25,6 @@ import com.gravatar.ui.components.atomic.Avatar
 import com.gravatar.ui.components.atomic.DisplayName
 import com.gravatar.ui.components.atomic.Location
 import com.gravatar.ui.components.atomic.ViewProfileButton
-import com.gravatar.ui.extensions.toApi2ComponentStateProfile
-import com.gravatar.ui.extensions.toApi2Profile
-import com.gravatar.api.models.Profile as LegacyProfile
 
 /**
  * [ProfileSummary] is a composable that displays a mini profile card.
@@ -50,7 +47,6 @@ public fun ProfileSummary(profile: Profile, modifier: Modifier = Modifier) {
  * @param avatar Composable to display the user avatar
  * @param viewProfile Composable to display the view profile button
  */
-@JvmName("ProfileSummaryWithComponentState")
 @Composable
 public fun ProfileSummary(
     state: ComponentState<Profile>,
@@ -95,40 +91,6 @@ public fun ProfileSummary(
             }
         }
     }
-}
-
-/**
- * [ProfileSummary] is a composable that displays a mini profile card.
- * Given a [LegacyProfile], it displays a profile summary card using the atomic components provided within the SDK.
- *
- * @param profile The user's profile information
- * @param modifier Composable modifier
- */
-@Deprecated(
-    "This class is deprecated and will be removed in a future release.",
-    replaceWith = ReplaceWith("com.gravatar.ui.components.ProfileSummary"),
-    level = DeprecationLevel.WARNING,
-)
-@Composable
-public fun ProfileSummary(profile: LegacyProfile, modifier: Modifier = Modifier) {
-    ProfileSummary(state = ComponentState.Loaded(profile.toApi2Profile()), modifier = modifier)
-}
-
-/**
- * [ProfileSummary] is a composable that displays a mini profile card.
- * Given a [ComponentState] for a [LegacyProfile], it displays a profile summary card using the other atomic components.
- *
- * @param state The user's profile state
- * @param modifier Composable modifier
- */
-@Deprecated(
-    "This class is deprecated and will be removed in a future release.",
-    replaceWith = ReplaceWith("com.gravatar.ui.components.ProfileSummary"),
-    level = DeprecationLevel.WARNING,
-)
-@Composable
-public fun ProfileSummary(state: ComponentState<LegacyProfile>, modifier: Modifier = Modifier) {
-    ProfileSummary(state = state.toApi2ComponentStateProfile(), modifier = modifier)
 }
 
 @Preview

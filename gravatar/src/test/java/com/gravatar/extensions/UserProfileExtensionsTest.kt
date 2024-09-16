@@ -6,32 +6,32 @@ import org.junit.Test
 class UserProfileExtensionsTest {
     @Test
     fun `given an empty user profile return an empty formatted info string`() {
-        val userProfile = emptyProfile(hash = "")
+        val userProfile = defaultProfile(hash = "")
         assertEquals("", userProfile.formattedUserInfo())
     }
 
     @Test
     fun `given a user profile with job title set return a correctly formatted info string`() {
-        val userProfile = emptyProfile(hash = "", jobTitle = "Pony Trainer")
+        val userProfile = defaultProfile(hash = "", jobTitle = "Pony Trainer")
         assertEquals("Pony Trainer", userProfile.formattedUserInfo())
     }
 
     @Test
     fun `given a user profile with job title and company set return a correctly formatted info string`() {
-        val userProfile = emptyProfile(hash = "", jobTitle = "Pony Trainer", company = "Pony Land")
+        val userProfile = defaultProfile(hash = "", jobTitle = "Pony Trainer", company = "Pony Land")
         assertEquals("Pony Trainer, Pony Land", userProfile.formattedUserInfo())
     }
 
     @Test
     fun `given a user profile with location only return a correctly formatted info string`() {
-        val userProfile = emptyProfile(hash = "", location = "Crac'h, France")
+        val userProfile = defaultProfile(hash = "", location = "Crac'h, France")
         assertEquals("Crac'h, France", userProfile.formattedUserInfo())
     }
 
     @Test
     fun `given a fully set user profile return a correctly formatted info string`() {
         val userProfile =
-            emptyProfile(
+            defaultProfile(
                 hash = "",
                 jobTitle = "Pony Trainer",
                 company = "Pony Land",
@@ -49,7 +49,7 @@ class UserProfileExtensionsTest {
     @Test
     fun `given a profile without pronouns return a correctly formatted info string`() {
         val userProfile =
-            emptyProfile(
+            defaultProfile(
                 hash = "",
                 jobTitle = "Pony Trainer",
                 company = "Pony Land",

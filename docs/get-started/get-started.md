@@ -131,7 +131,7 @@ fun GravatarProfileSummary(emailAddress: String = "gravatar@automattic.com") {
         // Set the profile state to loading
         profileState = ComponentState.Loading
         // Fetch the user profile
-        when (val result = profileService.fetch(Email(emailAddress))) {
+        when (val result = profileService.retrieve(Email(emailAddress))) {
             is Result.Success -> {
                 // Update the profile state with the loaded profile
                 result.value.let {
@@ -199,7 +199,7 @@ fun GravatarProfileSummary(emailAddress: String = "gravatar@automattic.com") {
         // Set the profile state to loading
         profileState = ComponentState.Loading
         // Fetch the user profile
-        when (val result = profileService.fetch(Email(emailAddress))) {
+        when (val result = profileService.retrieve(Email(emailAddress))) {
             is Result.Success -> {
                 // Update the profile state with the loaded profile
                 result.value.let {
@@ -231,7 +231,7 @@ For example, using the user's email:
 
 ```kotlin
 coroutineScope.launch {
-    when (val profile = ProfileService().fetch(Email("gravatar@automattic.com"))) {
+    when (val profile = ProfileService().retrieve(Email("gravatar@automattic.com"))) {
         is Result.Success -> {
             Log.d("Gravatar", "Profile: ${profile.value}")
             // Do something with the profile

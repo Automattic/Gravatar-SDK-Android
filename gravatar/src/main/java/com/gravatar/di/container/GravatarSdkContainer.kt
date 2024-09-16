@@ -4,7 +4,6 @@ import com.google.gson.GsonBuilder
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
-import com.gravatar.GravatarApiService
 import com.gravatar.GravatarConstants.GRAVATAR_API_BASE_URL_V1
 import com.gravatar.GravatarConstants.GRAVATAR_API_BASE_URL_V3
 import com.gravatar.services.AuthenticationInterceptor
@@ -54,14 +53,6 @@ internal class GravatarSdkContainer private constructor() {
         return getRetrofitApiV1Builder().apply {
             okHttpClient?.let { client(it) }
         }.build().create(GravatarApi::class.java)
-    }
-
-    @Deprecated("Use getGravatarV3Service instead", level = DeprecationLevel.WARNING)
-    fun getGravatarApiV3Service(okHttpClient: OkHttpClient? = null): GravatarApiService {
-        return getRetrofitApiV3Builder().apply {
-            client((okHttpClient ?: OkHttpClient()).newBuilder().addInterceptor(AuthenticationInterceptor()).build())
-        }.addConverterFactory(GsonConverterFactory.create(gson))
-            .build().create(GravatarApiService::class.java)
     }
 
     fun getGravatarV3Service(okHttpClient: OkHttpClient? = null, oauthToken: String? = null): GravatarApi {

@@ -21,14 +21,12 @@ class GravatarSdkContainerRule : TestRule {
     }
 
     internal var gravatarSdkContainerMock = mockk<GravatarSdkContainer>()
-    internal var gravatarApiServiceMock = mockk<GravatarApiService>()
     internal var gravatarApiMock = mockk<GravatarApi>()
 
     override fun apply(base: Statement, description: Description): Statement {
         return object : Statement() {
             override fun evaluate() {
                 gravatarSdkContainerMock = mockk<GravatarSdkContainer>(relaxed = true)
-                gravatarApiServiceMock = mockk<GravatarApiService>(relaxed = true)
                 mockkObject(GravatarSdkContainer)
                 every { gravatarSdkContainerMock.dispatcherMain } returns testDispatcher
                 every { gravatarSdkContainerMock.dispatcherDefault } returns testDispatcher
@@ -36,7 +34,6 @@ class GravatarSdkContainerRule : TestRule {
                 every { gravatarSdkContainerMock.apiKey } returns null
                 every { GravatarSdkContainer.instance } returns gravatarSdkContainerMock
                 every { gravatarSdkContainerMock.getGravatarV1Service(any()) } returns gravatarApiMock
-                every { gravatarSdkContainerMock.getGravatarApiV3Service(any()) } returns gravatarApiServiceMock
                 every { gravatarSdkContainerMock.getGravatarV3Service(any()) } returns gravatarApiMock
                 every { gravatarSdkContainerMock.getGravatarV3Service(any(), any()) } returns gravatarApiMock
 

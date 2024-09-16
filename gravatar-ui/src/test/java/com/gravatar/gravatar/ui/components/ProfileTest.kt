@@ -13,7 +13,6 @@ import com.gravatar.ui.gravatarTheme
 import com.gravatar.uitestutils.RoborazziTest
 import org.junit.Test
 import org.robolectric.annotation.Config
-import com.gravatar.api.models.Profile as LegacyProfile
 
 class ProfileTest : RoborazziTest() {
     @Test
@@ -45,14 +44,4 @@ class ProfileTest : RoborazziTest() {
             viewProfile = { _ -> Text(text = "Custom Profile Button", color = gravatarTheme.colorScheme.primary) },
         )
     }
-
-    // Compatibility tests using old models - We should remove these tests once we remove the old models
-    @Test
-    fun legacyProfileLoadingLight() = gravatarScreenshotTest {
-        Profile(ComponentState.Loading as ComponentState<LegacyProfile>)
-    }
-
-    @Test
-    fun legacyProfileLight() = gravatarScreenshotTest { Profile(ComponentState.Loaded(completeProfile)) }
-    // END - Compatibility tests using old models - We should remove these tests once we remove the old models
 }

@@ -36,9 +36,6 @@ import com.gravatar.ui.R
 import com.gravatar.ui.TextSkeletonEffect
 import com.gravatar.ui.components.ComponentState
 import com.gravatar.ui.components.LoadingToLoadedProfileStatePreview
-import com.gravatar.ui.extensions.toApi2ComponentStateProfile
-import com.gravatar.ui.extensions.toApi2Profile
-import com.gravatar.api.models.Profile as LegacyProfile
 
 @Composable
 private fun defaultViewProfileButtonText(): String = stringResource(R.string.view_profile_button)
@@ -105,7 +102,6 @@ public fun ViewProfileButton(
  * @param inlineContent The content to display inline with the text, by default it is an arrow icon.
  * It can be null if no content is needed.
  */
-@JvmName("ViewProfileButtonWithComponentState")
 @Composable
 public fun ViewProfileButton(
     state: ComponentState<Profile>,
@@ -137,81 +133,6 @@ public fun ViewProfileButton(
             )
         }
     }
-}
-
-/**
- * ViewProfileButton is a composable that displays a button to view a user's profile.
- *
- * @param profile The user's profile information
- * @param modifier Composable modifier
- * @param textStyle The style to apply to the text
- * @param buttonText The text to display on the button
- * @param inlineContent The content to display inline with the text, by default it is an arrow icon.
- * It can be null if no content is needed.
- *
- */
-@Deprecated(
-    "This class is deprecated and will be removed in a future release.",
-    replaceWith = ReplaceWith("com.gravatar.ui.components.atomic.ViewProfileButton"),
-    level = DeprecationLevel.WARNING,
-)
-@Composable
-public fun ViewProfileButton(
-    profile: LegacyProfile,
-    modifier: Modifier = Modifier,
-    textStyle: TextStyle = MaterialTheme.typography.titleSmall.copy(color = MaterialTheme.colorScheme.onBackground),
-    buttonText: String = defaultViewProfileButtonText(),
-    inlineContent: @Composable ((String) -> Unit)? = { DefaultInlineContent(textStyle.color) },
-) {
-    ViewProfileButton(profile = profile.toApi2Profile(), modifier, textStyle, buttonText, inlineContent)
-}
-
-/**
- * ViewProfileButton is a composable that displays a button to view a user's profile.
- *
- * @param profile The user's profile information
- * @param modifier Composable modifier
- * @param textStyle The style to apply to the text
- * @param inlineContent The content to display inline with the text, by default it is an arrow icon.
- * It can be null if no content is needed.
- */
-@Deprecated(
-    "This class is deprecated and will be removed in a future release.",
-    replaceWith = ReplaceWith("com.gravatar.ui.components.atomic.ViewProfileButton"),
-    level = DeprecationLevel.WARNING,
-)
-@Composable
-public fun ViewProfileButton(
-    profile: LegacyProfile,
-    modifier: Modifier = Modifier,
-    textStyle: TextStyle = MaterialTheme.typography.titleSmall.copy(color = MaterialTheme.colorScheme.onBackground),
-    inlineContent: @Composable ((String) -> Unit)? = { DefaultInlineContent(textStyle.color) },
-) {
-    ViewProfileButton(profile = profile.toApi2Profile(), modifier, textStyle, inlineContent)
-}
-
-/**
- * [ViewProfileButton] is a composable that displays a button to view a user's profile or it's loading state.
- *
- * @param state The user's profile state
- * @param modifier Composable modifier
- * @param textStyle The style to apply to the text
- * @param inlineContent The content to display inline with the text, by default it is an arrow icon.
- * It can be null if no content is needed.
- */
-@Deprecated(
-    "This class is deprecated and will be removed in a future release.",
-    replaceWith = ReplaceWith("com.gravatar.ui.components.atomic.ViewProfileButton"),
-    level = DeprecationLevel.WARNING,
-)
-@Composable
-public fun ViewProfileButton(
-    state: ComponentState<LegacyProfile>,
-    modifier: Modifier = Modifier,
-    textStyle: TextStyle = MaterialTheme.typography.titleSmall.copy(color = MaterialTheme.colorScheme.onBackground),
-    inlineContent: @Composable ((String) -> Unit)? = { DefaultInlineContent(textStyle.color) },
-) {
-    ViewProfileButton(state = state.toApi2ComponentStateProfile(), modifier, textStyle, inlineContent)
 }
 
 @Composable
