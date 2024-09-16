@@ -43,6 +43,11 @@ steps:
     artifact_paths:
       - "**/build/test-results/*/*.xml"
 
+  - label: "Lint"
+    command: ".buildkite/commands/lint.sh"
+    artifact_paths:
+      - "**/build/reports/lint-results*.*"
+
   - label: "Screenshot tests"
     command: |
       echo "--- 🧪📸 Screenshot Testing"
