@@ -1,7 +1,7 @@
 #!/bin/bash -u
 
 echo "--- 🧹 Linting"
-# Run lint on app module first, to make sure that the lint-results-debug.sarif file is always generated
+# Run lint on the app module first to ensure that the SARIF file is always generated.
 ./gradlew :gravatar-quickeditor:lintRelease
 lint_exit_code=$?
 
