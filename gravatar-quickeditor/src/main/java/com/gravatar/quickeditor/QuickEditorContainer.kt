@@ -17,7 +17,6 @@ import com.gravatar.quickeditor.data.storage.DataStoreTokenStorage
 import com.gravatar.quickeditor.data.storage.InMemoryTokenStorage
 import com.gravatar.quickeditor.data.storage.TokenStorage
 import com.gravatar.services.AvatarService
-import com.gravatar.services.IdentityService
 import com.gravatar.services.ProfileService
 import io.github.osipxd.security.crypto.createEncrypted
 import kotlinx.coroutines.Dispatchers
@@ -78,10 +77,6 @@ internal class QuickEditorContainer private constructor(
         ProfileService()
     }
 
-    private val identityService: IdentityService by lazy {
-        IdentityService()
-    }
-
     val fileUtils: FileUtils by lazy {
         FileUtils(context)
     }
@@ -89,7 +84,6 @@ internal class QuickEditorContainer private constructor(
     val avatarRepository: AvatarRepository
         get() = AvatarRepository(
             avatarService = avatarService,
-            identityService = identityService,
             tokenStorage = tokenStorage,
             dispatcher = Dispatchers.IO,
         )

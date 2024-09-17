@@ -6,7 +6,7 @@ import com.gravatar.extensions.defaultProfile
 import com.gravatar.quickeditor.data.FileUtils
 import com.gravatar.quickeditor.data.models.QuickEditorError
 import com.gravatar.quickeditor.data.repository.AvatarRepository
-import com.gravatar.quickeditor.data.repository.IdentityAvatars
+import com.gravatar.quickeditor.data.repository.EmailAvatars
 import com.gravatar.quickeditor.ui.CoroutineTestRule
 import com.gravatar.restapi.models.Avatar
 import com.gravatar.services.ErrorType
@@ -44,7 +44,7 @@ class AvatarPickerViewModelTest {
     private val email = Email("testEmail")
     private val profile = defaultProfile(hash = "hash", displayName = "Display name")
     private val avatars = listOf(createAvatar("1"), createAvatar("2"))
-    private val identityAvatars = IdentityAvatars(emptyList(), null)
+    private val identityAvatars = EmailAvatars(emptyList(), null)
 
     @Before
     fun setup() {
@@ -403,11 +403,9 @@ class AvatarPickerViewModelTest {
 
     private fun createAvatar(id: String) = Avatar {
         imageUrl = "/image/url"
-        format = 0
         imageId = id
-        rating = "G"
+        rating = Avatar.Rating.G
         altText = "alt"
-        isCropped = true
         updatedDate = ""
     }
 }
