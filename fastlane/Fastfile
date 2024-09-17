@@ -16,7 +16,7 @@ SUPPORTED_LOCALES = [
   { glotpress: 'de',    android: 'de'     },
   { glotpress: 'es',    android: 'es'     },
   { glotpress: 'fr',    android: 'fr'     },
-  { glotpress: 'he',    android: 'he'     },
+  { glotpress: 'he',    android: 'iw'     },
   { glotpress: 'id',    android: 'in'     },
   { glotpress: 'it',    android: 'it'     },
   { glotpress: 'ja',    android: 'ja'     },
