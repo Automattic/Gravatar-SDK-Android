@@ -85,7 +85,6 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.android.material)
-    implementation(libs.ucrop)
     implementation(libs.coil.compose)
     implementation(libs.coil.svg)
     implementation(project(":gravatar"))
