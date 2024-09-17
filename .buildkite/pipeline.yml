@@ -45,6 +45,7 @@ steps:
 
   - label: "Lint"
     command: ".buildkite/commands/lint.sh"
+    plugins: [$CI_TOOLKIT]
     artifact_paths:
       - "**/build/reports/lint-results*.*"
 
