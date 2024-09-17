@@ -1,9 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: +0000
+Translation-Revision-Date: 2024-09-12 09:54:03+0000
 Plural-Forms: nplurals=1; plural=0;
 Generator: GlotPress/2.4.0-alpha
 Language: ko_KR
 -->
 <resources>
+    <string name="avatar_picker_session_error_close_cta">닫기</string>
+    <string name="avatar_picker_session_error_no_login_message">보안상의 이유로 세션이 만료되었습니다.</string>
+    <string name="login_required_message">그라바타 프로필을 수정하려면 먼저 로그인해야 합니다.</string>
+    <string name="login_required">로그인 필요</string>
+    <string name="avatar_picker_network_error_message">이런! 인터넷에 연결되지 않은 것 같습니다.</string>
+    <string name="avatar_picker_network_error_title">인터넷에 연결되지 않음</string>
+    <string name="avatar_picker_session_error_cta">로그인</string>
+    <string name="avatar_picker_session_error_message">보안상의 이유로 세션이 만료되었습니다. 아바타를 업데이트하려면 로그인하세요.</string>
+    <string name="avatar_picker_session_error_title">세션이 만료됐습니다</string>
+    <string name="avatar_picker_error_retry_cta">다시 시도</string>
+    <string name="avatar_picker_unknown_error_message">큰 문제가 발생했습니다.</string>
+    <string name="avatar_picker_server_error_message">문제가 발생하여 그라바타 서버에 연결할 수 없습니다.</string>
+    <string name="avatar_picker_server_error_title">이런</string>
+    <string name="avatar_selection_error">이런, 아바타를 선택하는 중 오류가 발생했습니다.</string>
+    <string name="avatar_upload_error_action">다시 시도</string>
+    <string name="avatar_upload_error">이런, 이미지를 업로드하는 중 오류가 발생했습니다.</string>
+    <string name="avatar_picker_title_empty_state">아바타를 설정하겠습니다.</string>
+    <string name="capture_photo_icon_description">사진 캡처</string>
+    <string name="photo_library_icon_description">사진 라이브러리</string>
+    <string name="avatar_picker_take_photo">사진 촬영</string>
+    <string name="avatar_picker_choose_a_photo">사진 선택</string>
+    <string name="avatar_picker_upload_image">이미지 업로드</string>
+    <string name="avatar_selected_confirmation">아바타가 업데이트되었습니다! 모든 위치에 표시되려면 몇 분 정도 걸릴 수 있습니다.</string>
+    <string name="avatar_picker_description">좋아하는 아바타 이미지를 선택하거나 업로드하고 이메일 주소에 연결하세요.</string>
+    <string name="avatar_picker_title">아바타</string>
+    <string name="bottom_sheet_done">완료</string>
+    <string name="selectable_avatar_content_description">아바타 이미지</string>
+    <string name="gravatar">그라바타</string>
 </resources>

@@ -1,9 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: +0000
+Translation-Revision-Date: 2024-09-13 16:54:03+0000
 Plural-Forms: nplurals=2; plural=n != 1;
 Generator: GlotPress/2.4.0-alpha
 Language: nl
 -->
 <resources>
+    <string name="avatar_picker_session_error_close_cta">Sluiten</string>
+    <string name="avatar_picker_session_error_no_login_message">Sessie verlopen vanwege beveiligingsredenen.</string>
+    <string name="login_required_message">Je moet eerst inloggen om je Gravatar-profiel aan te passen</string>
+    <string name="login_required">Login vereist</string>
+    <string name="avatar_picker_network_error_message">Uh oh. Het lijkt erop dat je niet bent verbonden met het internet.</string>
+    <string name="avatar_picker_network_error_title">Geen internet</string>
+    <string name="avatar_picker_session_error_cta">Inloggen</string>
+    <string name="avatar_picker_session_error_message">Sessie verlopen vanwege beveiligingsredenen. Log in om je Avatar bij te werken.</string>
+    <string name="avatar_picker_session_error_title">Sessie verlopen</string>
+    <string name="avatar_picker_error_retry_cta">Opnieuw proberen</string>
+    <string name="avatar_picker_unknown_error_message">Er is iets fout gegaan.</string>
+    <string name="avatar_picker_server_error_message">Er is iets fout gegaan en we kunnen geen verbinding maken met de Gravatar-servers.</string>
+    <string name="avatar_picker_server_error_title">Oeps</string>
+    <string name="avatar_selection_error">Oeps, er is een fout opgetreden bij het selecteren van de avatar.</string>
+    <string name="avatar_upload_error_action">Opnieuw proberen</string>
+    <string name="avatar_upload_error">Oeps, er is een fout opgetreden bij het uploaden van de afbeelding.</string>
+    <string name="avatar_picker_title_empty_state">Laten we je avatar instellen</string>
+    <string name="capture_photo_icon_description">Foto vastleggen</string>
+    <string name="photo_library_icon_description">Fotobibliotheek</string>
+    <string name="avatar_picker_take_photo">Foto nemen</string>
+    <string name="avatar_picker_choose_a_photo">Foto kiezen</string>
+    <string name="avatar_picker_upload_image">Afbeelding uploaden</string>
+    <string name="avatar_selected_confirmation">Avatar is bijgewerkt! Het kan enkele minuten duren voordat deze overal wordt weergegeven.</string>
+    <string name="avatar_picker_description">Kies of upload je favoriete avatarafbeeldingen en koppel ze aan je e-mailadres.</string>
+    <string name="avatar_picker_title">Avatars</string>
+    <string name="bottom_sheet_done">Klaar</string>
+    <string name="selectable_avatar_content_description">Avatarafbeelding</string>
+    <string name="gravatar">Gravatar</string>
 </resources>
