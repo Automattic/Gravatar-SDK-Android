@@ -1,0 +1,5 @@
+<lint>
+    <!--  i18n issues are ignored as the process is handled via GlotPress  -->
+    <issue id="MissingTranslation" severity="ignore" />
+    <issue id="ExtraTranslation" severity="ignore" />
+</lint>
