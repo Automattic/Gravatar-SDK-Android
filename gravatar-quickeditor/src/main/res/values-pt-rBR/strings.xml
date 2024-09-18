@@ -11,7 +11,6 @@ Language: pt_BR
     <string name="avatar_picker_take_photo">Tirar Foto</string>
     <string name="avatar_picker_choose_a_photo">Escolher uma Foto</string>
     <string name="avatar_picker_upload_image">Subir imagem</string>
-    <string name="avatar_selected_confirmation_action">Entendi</string>
     <string name="avatar_selected_confirmation">Avatar atualizado! Pode ser que demore alguns minutos até que ele apareça em todos os lugares.</string>
     <string name="avatar_picker_description">Escolha ou suba suas imagens de avatar favoritas e conecte-as ao seu endereço de e-mail.</string>
     <string name="avatar_picker_title">Avatares</string>
