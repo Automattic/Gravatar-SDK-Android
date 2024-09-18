@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Translation-Revision-Date: 2024-09-13 14:54:14+0000
+Plural-Forms: nplurals=2; plural=n > 1;
+Generator: GlotPress/2.4.0-alpha
+Language: id
+-->
+<resources>
+    <string name="avatar_picker_session_error_close_cta">Tutup</string>
+    <string name="avatar_picker_session_error_no_login_message">Sesi telah kedaluwarsa karena alasan keamanan.</string>
+    <string name="login_required_message">Untuk mengubah profil Gravatar, Anda harus login terlebih dahulu</string>
+    <string name="login_required">Wajib login</string>
+    <string name="avatar_picker_network_error_message">Aduh! Tampaknya Anda tidak terhubung ke internet.</string>
+    <string name="avatar_picker_network_error_title">Tidak ada koneksi internet</string>
+    <string name="avatar_picker_session_error_cta">Login</string>
+    <string name="avatar_picker_session_error_message">Sesi telah kedaluwarsa karena alasan keamanan. Login untuk memperbarui Avatar Anda.</string>
+    <string name="avatar_picker_session_error_title">Sesi telah kedaluwarsa</string>
+    <string name="avatar_picker_error_retry_cta">Coba lagi</string>
+    <string name="avatar_picker_unknown_error_message">Terjadi masalah serius.</string>
+    <string name="avatar_picker_server_error_message">Terjadi masalah sehingga kami tidak dapat terhubung ke server Gravatar.</string>
+    <string name="avatar_picker_server_error_title">Ups</string>
+    <string name="avatar_selection_error">Ups, terjadi error saat memilih avatar.</string>
+    <string name="avatar_upload_error_action">Coba lagi</string>
+    <string name="avatar_upload_error">Ups, terjadi error saat mengunggah gambar.</string>
+    <string name="avatar_picker_title_empty_state">Mari siapkan avatar Anda</string>
+    <string name="capture_photo_icon_description">Tangkap foto</string>
+    <string name="photo_library_icon_description">Pustaka foto</string>
+    <string name="avatar_picker_take_photo">Ambil foto</string>
+    <string name="avatar_picker_choose_a_photo">Pilih foto</string>
+    <string name="avatar_picker_upload_image">Unggah gambar</string>
+    <string name="avatar_selected_confirmation">Avatar diperbarui! Perlu waktu sejenak agar perubahannya terlihat di semua tempat.</string>
+    <string name="avatar_picker_description">Pilih atau unggah gambar avatar favorit Anda, lalu hubungkan ke alamat email Anda.</string>
+    <string name="avatar_picker_title">Avatar</string>
+    <string name="bottom_sheet_done">Selesai</string>
+    <string name="selectable_avatar_content_description">Gambar Avatar</string>
+    <string name="gravatar">Gravatar</string>
+</resources>

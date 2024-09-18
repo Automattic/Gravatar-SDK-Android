@@ -1,9 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: +0000
+Translation-Revision-Date: 2024-09-12 11:54:03+0000
 Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;
 Generator: GlotPress/2.4.0-alpha
 Language: ar
 -->
 <resources>
+    <string name="avatar_picker_session_error_close_cta">إغلاق</string>
+    <string name="avatar_picker_session_error_no_login_message">انتهت صلاحية الجلسة لأسباب تتعلق بالأمان.</string>
+    <string name="login_required_message">لتعديل ملفك الشخصي على جرافتار، يجب عليك تسجيل الدخول أولاً</string>
+    <string name="login_required">يلزم تسجيل الدخول</string>
+    <string name="avatar_picker_network_error_message">عفوًا! يبدو أنك غير متصل بالإنترنت.</string>
+    <string name="avatar_picker_network_error_title">لا يوجد إنترنت</string>
+    <string name="avatar_picker_session_error_cta">تسجيل الدخول</string>
+    <string name="avatar_picker_session_error_message">انتهت صلاحية الجلسة لأسباب تتعلق بالأمان. يرجى تسجيل الدخول لتحديث صورتك الرمزية.</string>
+    <string name="avatar_picker_session_error_title">انتهت صلاحية الجلسة</string>
+    <string name="avatar_picker_error_retry_cta">المحاولة مجددًا</string>
+    <string name="avatar_picker_unknown_error_message">حدث خطأ فظيع.</string>
+    <string name="avatar_picker_server_error_message">حدث خطأ وتعذر علينا الاتصال بخوادم جرافتار.</string>
+    <string name="avatar_picker_server_error_title">عفوًا</string>
+    <string name="avatar_selection_error">عفوًا، كان هناك خطأ في أثناء تحديد الصورة الرمزية.</string>
+    <string name="avatar_upload_error_action">إعادة المحاولة</string>
+    <string name="avatar_upload_error">عفوًا، كان هناك خطأ في أثناء رفع الصورة.</string>
+    <string name="avatar_picker_title_empty_state">لنقم بإعداد صورتك الرمزية</string>
+    <string name="capture_photo_icon_description">التقاط صورة</string>
+    <string name="photo_library_icon_description">مكتبة الصور</string>
+    <string name="avatar_picker_take_photo">التقاط صورة</string>
+    <string name="avatar_picker_choose_a_photo">اختيار صورة</string>
+    <string name="avatar_picker_upload_image">رفع صورة</string>
+    <string name="avatar_selected_confirmation">تم تحديث الصورة الرمزية! قد يستغرق ظهوره في كل مكان بضع دقائق.</string>
+    <string name="avatar_picker_description">اختر الصور الرمزية التي تفضِّلها أو ارفعها، واربطها بعنوان بريدك الإلكتروني.</string>
+    <string name="avatar_picker_title">الصور الرمزية</string>
+    <string name="bottom_sheet_done">تم</string>
+    <string name="selectable_avatar_content_description">صورة رمزية</string>
+    <string name="gravatar">جرافتار</string>
 </resources>

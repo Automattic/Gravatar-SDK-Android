@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Translation-Revision-Date: 2024-09-12 15:54:03+0000
+Plural-Forms: nplurals=2; plural=n != 1;
+Generator: GlotPress/2.4.0-alpha
+Language: he_IL
+-->
+<resources>
+    <string name="avatar_picker_session_error_close_cta">לסגור</string>
+    <string name="avatar_picker_session_error_no_login_message">מטעמי אבטחה, פג תוקף ההפעלה.</string>
+    <string name="login_required_message">כדי לשנות את פרופיל ה-Gravatar שלך, עליך להתחבר תחילה</string>
+    <string name="login_required">נדרשת התחברות</string>
+    <string name="avatar_picker_network_error_message">אוי לא! נראה שהחיבור לאינטרנט לא פעיל אצלך.</string>
+    <string name="avatar_picker_network_error_title">אין אינטרנט</string>
+    <string name="avatar_picker_session_error_cta">התחברות</string>
+    <string name="avatar_picker_session_error_message">מטעמי אבטחה, פג תוקף ההפעלה. עליך להתחבר כדי לעדכן את צלמית המשתמש שלך.</string>
+    <string name="avatar_picker_session_error_title">פג תוקף ההפעלה</string>
+    <string name="avatar_picker_error_retry_cta">לנסות שוב</string>
+    <string name="avatar_picker_unknown_error_message">אוי, משהו השתבש.</string>
+    <string name="avatar_picker_server_error_message">משהו השתבש ולא הצלחנו להתחבר לשרתים של Gravatar.</string>
+    <string name="avatar_picker_server_error_title">אופס</string>
+    <string name="avatar_selection_error">אופס, אירעה שגיאה בבחירת צלמית המשתמש.</string>
+    <string name="avatar_upload_error_action">לנסות שוב</string>
+    <string name="avatar_upload_error">אופס, אירעה שגיאה בהעלאת התמונה.</string>
+    <string name="avatar_picker_title_empty_state">זה הזמן להגדיר את צלמית המשתמש שלך</string>
+    <string name="capture_photo_icon_description">לצלם תמונה</string>
+    <string name="photo_library_icon_description">ספריית תמונות</string>
+    <string name="avatar_picker_take_photo">צילום תמונה</string>
+    <string name="avatar_picker_choose_a_photo">לבחור תמונה</string>
+    <string name="avatar_picker_upload_image">להעלות תמונה</string>
+    <string name="avatar_selected_confirmation">צלמית המשתמש עודכנה! ייתכן שיעברו מספר דקות עד שצלמית המשתמש תופיע בכל מקום.</string>
+    <string name="avatar_picker_description">יש לבחור או להעלות את התמונות המועדפות עליך לצלמית משתמש ולחבר אותן אל כתובת האימייל שלך.</string>
+    <string name="avatar_picker_title">צלמיות משתמשים</string>
+    <string name="bottom_sheet_done">בוצע</string>
+    <string name="selectable_avatar_content_description">הגודל של צלמית המשתמש</string>
+    <string name="gravatar">Gravatar</string>
+</resources>

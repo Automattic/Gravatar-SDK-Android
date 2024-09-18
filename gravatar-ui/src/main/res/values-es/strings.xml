@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: +0000
+Translation-Revision-Date: 2024-09-13 14:54:03+0000
 Plural-Forms: nplurals=2; plural=n != 1;
 Generator: GlotPress/2.4.0-alpha
 Language: es
 -->
 <resources>
+    <string name="empty_state_view_profile_button">Reclamar perfil</string>
+    <string name="empty_state_user_info">Añade tu ubicación, pronombres, etc.</string>
+    <string name="empty_state_display_name">Tu nombre</string>
+    <string name="empty_state_about_me">Dile al mundo quién eres. Tu avatar y biografía que te siguen por toda la web.</string>
+    <string name="view_profile_button">Ver perfil</string>
 </resources>
