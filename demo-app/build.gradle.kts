@@ -99,6 +99,12 @@ android {
         buildUponDefaultConfig = true
         parallel = false
     }
+    lint {
+        lintConfig = rootProject.file("lint.xml")
+        checkDependencies = true
+        sarifReport = System.getenv()["CI"].toBoolean()
+        error.add("UnusedResources")
+    }
 }
 
 dependencies {

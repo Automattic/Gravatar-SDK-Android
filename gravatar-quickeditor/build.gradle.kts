@@ -81,11 +81,6 @@ android {
             }
         }
     }
-
-    lint {
-        checkDependencies = true
-        sarifReport = System.getenv()["CI"].toBoolean()
-    }
 }
 
 dependencies {

@@ -3,5 +3,13 @@
     <issue id="MissingTranslation" severity="ignore" />
     <issue id="ExtraTranslation" severity="ignore" />
 
-    <issue id="UnusedResources" severity="error" />
+    <issue id="UnusedResources" severity="error">
+        <ignore path="demo-app"/>
+    </issue>
+
+    <!-- The special id "all" matches all issues but is only consulted if there is no specific match -->
+    <!-- https://googlesamples.github.io/android-custom-lint-rules/user-guide.md.html#configuringusinglint.xmlfiles -->
+    <issue id="all" >
+        <ignore path="demo-app"/>
+    </issue>
 </lint>
