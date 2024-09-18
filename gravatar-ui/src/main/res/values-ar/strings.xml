@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: +0000
+Translation-Revision-Date: 2024-09-12 11:54:02+0000
 Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;
 Generator: GlotPress/2.4.0-alpha
 Language: ar
 -->
 <resources>
+    <string name="empty_state_view_profile_button">المطالبة بالملف الشخصي</string>
+    <string name="empty_state_user_info">إضافة موقعك وضمائرك وما إلى ذلك</string>
+    <string name="empty_state_display_name">اسمك</string>
+    <string name="empty_state_about_me">أخبر العالم مَن أنت. صورتك الرمزية وسيرتك الذاتية التي تتبعك عبر الويب.</string>
+    <string name="view_profile_button">عرض الملف الشخصي</string>
 </resources>

@@ -1,9 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: +0000
+Translation-Revision-Date: 2024-09-11 09:54:03+0000
 Plural-Forms: nplurals=1; plural=0;
 Generator: GlotPress/2.4.0-alpha
 Language: ja_JP
 -->
 <resources>
+    <string name="avatar_picker_session_error_close_cta">閉じる</string>
+    <string name="avatar_picker_session_error_no_login_message">セキュリティ上の理由でセッションの有効期限が切れました。</string>
+    <string name="login_required_message">Gravatar プロフィールを変更するには、まずログインする必要があります</string>
+    <string name="login_required">ログインが必須です</string>
+    <string name="avatar_picker_network_error_message">エラーが発生しました。 インターネットに接続されていないようです。</string>
+    <string name="avatar_picker_network_error_title">インターネットに接続されていません</string>
+    <string name="avatar_picker_session_error_cta">ログイン</string>
+    <string name="avatar_picker_session_error_message">セキュリティ上の理由でセッションの有効期限が切れました。 ログインしてアバターを更新してください。</string>
+    <string name="avatar_picker_session_error_title">セッションの有効期限が切れました</string>
+    <string name="avatar_picker_error_retry_cta">再試行</string>
+    <string name="avatar_picker_unknown_error_message">大きな問題が発生しました。</string>
+    <string name="avatar_picker_server_error_message">問題が発生したため、Gravatar サーバーに接続できませんでした。</string>
+    <string name="avatar_picker_server_error_title">エラーが発生しました</string>
+    <string name="avatar_selection_error">アバターの選択中にエラーが発生しました。</string>
+    <string name="avatar_upload_error_action">再試行</string>
+    <string name="avatar_upload_error">画像のアップロード中にエラーが発生しました。</string>
+    <string name="avatar_picker_title_empty_state">アバターを設定しましょう</string>
+    <string name="capture_photo_icon_description">写真をキャプチャ</string>
+    <string name="photo_library_icon_description">フォトライブラリ</string>
+    <string name="avatar_picker_take_photo">写真を撮影</string>
+    <string name="avatar_picker_choose_a_photo">写真を選択</string>
+    <string name="avatar_picker_upload_image">画像をアップロード</string>
+    <string name="avatar_selected_confirmation">アバターを更新しました。 すべての場所に表示されるまで数分かかる場合があります。</string>
+    <string name="avatar_picker_description">お気に入りのアバター画像を選択またはアップロードして、メールアドレスに連携します。</string>
+    <string name="avatar_picker_title">アバター</string>
+    <string name="bottom_sheet_done">完了</string>
+    <string name="selectable_avatar_content_description">アバター画像</string>
+    <string name="gravatar">Gravatar</string>
 </resources>

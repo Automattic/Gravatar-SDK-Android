@@ -10,9 +10,6 @@ public object GravatarConstants {
     /** Gravatar host */
     internal const val GRAVATAR_WWW_BASE_HOST = "www.gravatar.com"
 
-    /** Gravatar API base URL - V1 */
-    internal const val GRAVATAR_API_BASE_URL_V1 = "https://api.gravatar.com/v1/"
-
     /** Gravatar API base URL - V3 */
     internal const val GRAVATAR_API_BASE_URL_V3 = "https://api.gravatar.com/v3/"
 

@@ -27,7 +27,7 @@ repositories {
     maven {
         url "https://a8c-libs.s3.amazonaws.com/android"
     }
-    // Jitpack is used to fetch the uCrop library. Required only for gravatar-ui module.
+    // Jitpack is used to fetch the uCrop library. Required only for gravatar-quickeditor module.
     maven {
         url "https://jitpack.io"
         content {
@@ -41,36 +41,8 @@ repositories {
 dependencies {
     implementation ("com.gravatar:gravatar:<version>")
     implementation ("com.gravatar:gravatar-ui:<version>")
+    implementation ("com.gravatar:gravatar-quickeditor:<version>")
 }
-```
-
-### Enable desugaring
-
-The Gravatar SDK uses Java 8 features in it's core module, so you need to [enable desugaring](https://developer.android.com/studio/write/java8-support#library-desugaring) in each module depending on the SDK. You can do this by adding the following to your `build.gradle` file:
-
-```groovy
-android {
-    compileOptions {
-        // For AGP 4.1+
-        isCoreLibraryDesugaringEnabled = true
-        // For AGP 4.0
-        // coreLibraryDesugaringEnabled = true
-
-        // Sets Java compatibility to Java 8
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-}
-
-dependencies {
-    // For AGP 7.4+
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
-    // For AGP 7.3
-    // coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.2.3")
-    // For AGP 4.0 to 7.2
-    // coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.9")
-}
-
 ```
 
 ### Store the Gravatar API key in your app

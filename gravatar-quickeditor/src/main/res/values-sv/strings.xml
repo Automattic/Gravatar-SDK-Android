@@ -1,9 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: +0000
+Translation-Revision-Date: 2024-09-11 11:54:03+0000
 Plural-Forms: nplurals=2; plural=n != 1;
 Generator: GlotPress/2.4.0-alpha
 Language: sv_SE
 -->
 <resources>
+    <string name="avatar_picker_session_error_close_cta">Stäng</string>
+    <string name="avatar_picker_session_error_no_login_message">Sessionen har löpt ut av säkerhetsskäl.</string>
+    <string name="login_required_message">För att ändra din Gravatar-profilbild måste du först logga in</string>
+    <string name="login_required">Inloggning krävs</string>
+    <string name="avatar_picker_network_error_message">Oj oj. Det verkar som att du inte är ansluten till internet.</string>
+    <string name="avatar_picker_network_error_title">Inget internet</string>
+    <string name="avatar_picker_session_error_cta">Logga in</string>
+    <string name="avatar_picker_session_error_message">Sessionen har löpt ut av säkerhetsskäl. Logga in för att uppdatera din profilbild.</string>
+    <string name="avatar_picker_session_error_title">Sessionen har löpt ut</string>
+    <string name="avatar_picker_error_retry_cta">Försök igen</string>
+    <string name="avatar_picker_unknown_error_message">Något gick väldigt fel.</string>
+    <string name="avatar_picker_server_error_message">Något gick fel och vi kunde inte ansluta till Gravatar-servrarna.</string>
+    <string name="avatar_picker_server_error_title">Hoppsan</string>
+    <string name="avatar_selection_error">Hoppsan, det gick inte att välja profilbilden.</string>
+    <string name="avatar_upload_error_action">Försök igen</string>
+    <string name="avatar_upload_error">Hoppsan, det gick inte att ladda upp bilden.</string>
+    <string name="avatar_picker_title_empty_state">Låt oss konfigurera din profilbild</string>
+    <string name="capture_photo_icon_description">Ta foto</string>
+    <string name="photo_library_icon_description">Fotobibliotek</string>
+    <string name="avatar_picker_take_photo">Ta bild</string>
+    <string name="avatar_picker_choose_a_photo">Välj ett foto</string>
+    <string name="avatar_picker_upload_image">Ladda upp bild</string>
+    <string name="avatar_selected_confirmation">Profilbilden har uppdaterats. Det kan ta ett par minuter innan den visas överallt.</string>
+    <string name="avatar_picker_description">Välj eller ladda upp dina favoritprofilbilder och anslut dem till din e-postadress.</string>
+    <string name="avatar_picker_title">Profilbilder</string>
+    <string name="bottom_sheet_done">Klar</string>
+    <string name="selectable_avatar_content_description">Profilbild</string>
+    <string name="gravatar">Gravatar</string>
 </resources>

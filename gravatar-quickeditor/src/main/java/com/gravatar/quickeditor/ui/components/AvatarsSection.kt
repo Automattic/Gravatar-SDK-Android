@@ -44,7 +44,6 @@ import com.gravatar.quickeditor.ui.avatarpicker.AvatarUi
 import com.gravatar.quickeditor.ui.avatarpicker.AvatarsSectionUiState
 import com.gravatar.restapi.models.Avatar
 import com.gravatar.ui.GravatarTheme
-import java.time.Instant
 
 @Composable
 internal fun AvatarsSection(
@@ -186,7 +185,7 @@ private fun AvatarSectionPreview() {
                             rating = "G"
                             altText = "alt"
                             isCropped = true
-                            updatedDate = Instant.now()
+                            updatedDate = null
                         },
                         isSelected = true,
                         isLoading = false,

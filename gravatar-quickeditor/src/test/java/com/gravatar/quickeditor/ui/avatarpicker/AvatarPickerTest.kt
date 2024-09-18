@@ -9,7 +9,6 @@ import com.gravatar.ui.components.ComponentState
 import com.gravatar.uitestutils.RoborazziTest
 import org.junit.Test
 import org.robolectric.annotation.Config
-import java.time.Instant
 
 class AvatarPickerTest : RoborazziTest() {
     private val profile = defaultProfile(
@@ -33,7 +32,7 @@ class AvatarPickerTest : RoborazziTest() {
                             rating = "G"
                             altText = "alt"
                             isCropped = true
-                            updatedDate = Instant.now()
+                            updatedDate = ""
                         },
                         Avatar {
                             imageUrl = "/image/url2"
@@ -42,7 +41,7 @@ class AvatarPickerTest : RoborazziTest() {
                             rating = "G"
                             altText = "alt"
                             isCropped = true
-                            updatedDate = Instant.now()
+                            updatedDate = ""
                         },
                     ),
                     selectedAvatarId = "1",
@@ -68,7 +67,7 @@ class AvatarPickerTest : RoborazziTest() {
                             rating = "G"
                             altText = "alt"
                             isCropped = true
-                            updatedDate = Instant.now()
+                            updatedDate = ""
                         },
                         Avatar {
                             imageUrl = "/image/url2"
@@ -77,7 +76,7 @@ class AvatarPickerTest : RoborazziTest() {
                             rating = "G"
                             altText = "alt"
                             isCropped = true
-                            updatedDate = Instant.now()
+                            updatedDate = ""
                         },
                     ),
                     selectedAvatarId = "1",

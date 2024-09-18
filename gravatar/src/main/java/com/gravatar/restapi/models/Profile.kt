@@ -110,10 +110,10 @@ public class Profile private constructor(
     public val numberVerifiedAccounts: kotlin.Int? = null,
     // The date and time (UTC) the user last edited their profile. This is only provided in authenticated API requests.
     @SerializedName("last_profile_edit")
-    public val lastProfileEdit: java.time.Instant? = null,
+    public val lastProfileEdit: String? = null,
     // The date the user registered their account. This is only provided in authenticated API requests.
     @SerializedName("registration_date")
-    public val registrationDate: java.time.Instant? = null,
+    public val registrationDate: String? = null,
 ) {
     override fun toString(): String = "Profile(hash=$hash, displayName=$displayName, profileUrl=$profileUrl, avatarUrl=$avatarUrl, avatarAltText=$avatarAltText, location=$location, description=$description, jobTitle=$jobTitle, company=$company, verifiedAccounts=$verifiedAccounts, pronunciation=$pronunciation, pronouns=$pronouns, timezone=$timezone, languages=$languages, firstName=$firstName, lastName=$lastName, isOrganization=$isOrganization, links=$links, interests=$interests, payments=$payments, contactInfo=$contactInfo, gallery=$gallery, numberVerifiedAccounts=$numberVerifiedAccounts, lastProfileEdit=$lastProfileEdit, registrationDate=$registrationDate)"
 
@@ -239,11 +239,11 @@ public class Profile private constructor(
 
         // The date and time (UTC) the user last edited their profile. This is only provided in authenticated API requests.
         @set:JvmSynthetic // Hide 'void' setter from Java
-        public var lastProfileEdit: java.time.Instant? = null
+        public var lastProfileEdit: String? = null
 
         // The date the user registered their account. This is only provided in authenticated API requests.
         @set:JvmSynthetic // Hide 'void' setter from Java
-        public var registrationDate: java.time.Instant? = null
+        public var registrationDate: String? = null
 
         public fun setHash(hash: kotlin.String?): Builder = apply { this.hash = hash }
 
@@ -291,9 +291,9 @@ public class Profile private constructor(
 
         public fun setNumberVerifiedAccounts(numberVerifiedAccounts: kotlin.Int?): Builder = apply { this.numberVerifiedAccounts = numberVerifiedAccounts }
 
-        public fun setLastProfileEdit(lastProfileEdit: java.time.Instant?): Builder = apply { this.lastProfileEdit = lastProfileEdit }
+        public fun setLastProfileEdit(lastProfileEdit: String?): Builder = apply { this.lastProfileEdit = lastProfileEdit }
 
-        public fun setRegistrationDate(registrationDate: java.time.Instant?): Builder = apply { this.registrationDate = registrationDate }
+        public fun setRegistrationDate(registrationDate: String?): Builder = apply { this.registrationDate = registrationDate }
 
         public fun build(): Profile = Profile(hash!!, displayName!!, profileUrl!!, avatarUrl!!, avatarAltText!!, location!!, description!!, jobTitle!!, company!!, verifiedAccounts!!, pronunciation!!, pronouns!!, timezone, languages, firstName, lastName, isOrganization, links, interests, payments, contactInfo, gallery, numberVerifiedAccounts, lastProfileEdit, registrationDate)
     }

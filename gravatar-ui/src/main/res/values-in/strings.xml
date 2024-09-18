@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Translation-Revision-Date: 2024-09-13 14:54:03+0000
+Plural-Forms: nplurals=2; plural=n > 1;
+Generator: GlotPress/2.4.0-alpha
+Language: id
+-->
+<resources>
+    <string name="empty_state_view_profile_button">Klaim profil</string>
+    <string name="empty_state_user_info">Masukkan lokasi, kata ganti Anda, dll.</string>
+    <string name="empty_state_display_name">Nama Anda</string>
+    <string name="empty_state_about_me">Perkenalkan diri Anda. Avatar dan bio yang mengikuti Anda di internet.</string>
+    <string name="view_profile_button">Lihat Profil</string>
+</resources>

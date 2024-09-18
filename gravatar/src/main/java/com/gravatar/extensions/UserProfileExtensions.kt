@@ -11,7 +11,6 @@ import com.gravatar.restapi.models.ProfilePayments
 import com.gravatar.restapi.models.VerifiedAccount
 import com.gravatar.types.Hash
 import java.net.URI
-import java.time.Instant
 
 /**
  * Get the hash for a user profile.
@@ -67,8 +66,8 @@ public fun defaultProfile(
     contactInfo: ProfileContactInfo? = null,
     gallery: List<GalleryImage>? = null,
     numberVerifiedAccounts: Int? = null,
-    lastProfileEdit: Instant? = null,
-    registrationDate: Instant? = null,
+    lastProfileEdit: String? = null,
+    registrationDate: String? = null,
 ): Profile = Profile {
     this.hash = hash
     this.displayName = displayName

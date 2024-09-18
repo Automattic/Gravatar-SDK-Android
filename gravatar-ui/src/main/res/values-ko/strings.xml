@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: +0000
+Translation-Revision-Date: 2024-09-12 09:54:03+0000
 Plural-Forms: nplurals=1; plural=0;
 Generator: GlotPress/2.4.0-alpha
 Language: ko_KR
 -->
 <resources>
+    <string name="empty_state_view_profile_button">프로필 신청</string>
+    <string name="empty_state_user_info">위치, 대명사 등 추가</string>
+    <string name="empty_state_display_name">이름</string>
+    <string name="empty_state_about_me">회원님을 소개하세요. 웹에서 나를 따라다니는 아바타와 약력입니다.</string>
+    <string name="view_profile_button">프로필 보기</string>
 </resources>

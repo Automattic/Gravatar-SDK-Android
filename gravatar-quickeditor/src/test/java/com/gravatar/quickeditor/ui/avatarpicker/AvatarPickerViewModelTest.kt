@@ -28,7 +28,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import java.io.File
-import java.time.Instant
 
 class AvatarPickerViewModelTest {
     private val testDispatcher = StandardTestDispatcher()
@@ -409,6 +408,6 @@ class AvatarPickerViewModelTest {
         rating = "G"
         altText = "alt"
         isCropped = true
-        updatedDate = Instant.now()
+        updatedDate = ""
     }
 }

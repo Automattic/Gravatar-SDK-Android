@@ -1,9 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: +0000
+Translation-Revision-Date: 2024-09-12 18:54:04+0000
 Plural-Forms: nplurals=2; plural=n > 1;
 Generator: GlotPress/2.4.0-alpha
 Language: fr
 -->
 <resources>
+    <string name="avatar_picker_session_error_close_cta">Fermer</string>
+    <string name="avatar_picker_session_error_no_login_message">La session a expiré pour des raisons de sécurité.</string>
+    <string name="login_required_message">Pour modifier votre profil Gravatar, vous devez d’abord vous connecter</string>
+    <string name="login_required">Connexion obligatoire</string>
+    <string name="avatar_picker_network_error_message">Hum. Il semblerait que vous ne soyez pas connecté(e) à Internet.</string>
+    <string name="avatar_picker_network_error_title">Pas de connexion Internet</string>
+    <string name="avatar_picker_session_error_cta">Se connecter</string>
+    <string name="avatar_picker_session_error_message">La session a expiré pour des raisons de sécurité. Veuillez vous connecter pour mettre à jour votre avatar.</string>
+    <string name="avatar_picker_session_error_title">La session a expiré</string>
+    <string name="avatar_picker_error_retry_cta">Réessayer</string>
+    <string name="avatar_picker_unknown_error_message">Un problème est malheureusement survenu.</string>
+    <string name="avatar_picker_server_error_message">Un problème est survenu et nous n’avons pas pu nous connecter aux serveurs Gravatar.</string>
+    <string name="avatar_picker_server_error_title">Oups</string>
+    <string name="avatar_selection_error">Oups, une erreur est survenue lors de la sélection de l’avatar.</string>
+    <string name="avatar_upload_error_action">Réessayer</string>
+    <string name="avatar_upload_error">Oups, une erreur est survenue lors du chargement de l’image.</string>
+    <string name="avatar_picker_title_empty_state">Configurons votre avatar</string>
+    <string name="capture_photo_icon_description">Prendre une photo</string>
+    <string name="photo_library_icon_description">Bibliothèque de photos</string>
+    <string name="avatar_picker_take_photo">Prendre une photo</string>
+    <string name="avatar_picker_choose_a_photo">Choisir une photo</string>
+    <string name="avatar_picker_upload_image">Charger une image</string>
+    <string name="avatar_selected_confirmation">Avatar mis à jour ! Il peut s\'écouler quelques minutes avant qu\'il apparaisse partout.</string>
+    <string name="avatar_picker_description">Choisissez ou chargez un avatar et associez-le à votre adresse e-mail.</string>
+    <string name="avatar_picker_title">Avatars</string>
+    <string name="bottom_sheet_done">Terminé</string>
+    <string name="selectable_avatar_content_description">Image d\'avatar</string>
+    <string name="gravatar">Gravatar</string>
 </resources>

@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: +0000
+Translation-Revision-Date: 2024-09-12 11:54:02+0000
 Plural-Forms: nplurals=2; plural=(n > 1);
 Generator: GlotPress/2.4.0-alpha
 Language: tr
 -->
 <resources>
+    <string name="empty_state_view_profile_button">Profili sahiplen</string>
+    <string name="empty_state_user_info">Konumunuzu, zamirlerinizi vb. ekleyin</string>
+    <string name="empty_state_display_name">Adınız</string>
+    <string name="empty_state_about_me">Kim olduğunuzu dünyaya anlatın. Web\'de gösterilen avatarınız ve biyografiniz.</string>
+    <string name="view_profile_button">Profili Görüntüle</string>
 </resources>
