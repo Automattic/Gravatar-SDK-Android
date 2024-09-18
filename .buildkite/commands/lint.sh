@@ -1,7 +1,6 @@
 #!/bin/bash -u
 
 echo "--- 🧹 Linting"
-# Run lint on the app module first to ensure that the SARIF file is always generated.
 ./gradlew :demo-app:lintRelease
 lint_exit_code=$?
 
