@@ -27,7 +27,7 @@ repositories {
     maven {
         url "https://a8c-libs.s3.amazonaws.com/android"
     }
-    // Jitpack is used to fetch the uCrop library. Required only for gravatar-ui module.
+    // Jitpack is used to fetch the uCrop library. Required only for gravatar-quickeditor module.
     maven {
         url "https://jitpack.io"
         content {
@@ -41,6 +41,7 @@ repositories {
 dependencies {
     implementation ("com.gravatar:gravatar:<version>")
     implementation ("com.gravatar:gravatar-ui:<version>")
+    implementation ("com.gravatar:gravatar-quickeditor:<version>")
 }
 ```
 
