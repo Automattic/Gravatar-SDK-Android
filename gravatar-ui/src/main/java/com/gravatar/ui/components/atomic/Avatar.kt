@@ -35,13 +35,16 @@ public fun Avatar(
     modifier: Modifier = Modifier,
     avatarQueryOptions: AvatarQueryOptions? = null,
 ) {
-    val preferredSize = with(LocalDensity.current) { size.roundToPx() }
+    val sizePx = with(LocalDensity.current) { size.roundToPx() }
     Avatar(
         model = profile.avatarUrl(
             // Override the preferredSize
-            avatarQueryOptions?.copy(
-                preferredSize = preferredSize,
-            ) ?: AvatarQueryOptions(preferredSize = preferredSize),
+            AvatarQueryOptions {
+                preferredSize = sizePx
+                rating = avatarQueryOptions?.rating
+                forceDefaultAvatar = avatarQueryOptions?.forceDefaultAvatar
+                defaultAvatarOption = avatarQueryOptions?.defaultAvatarOption
+            },
         ).url().toString(),
         size = size,
         modifier = modifier,
