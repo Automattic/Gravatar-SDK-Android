@@ -36,7 +36,7 @@ android {
     }
     kotlinOptions {
         jvmTarget = "1.8"
-        val composeReportsDir = "compose_reports"
+        val composeReportsDir = "reports/compose"
         freeCompilerArgs += listOf(
             "-P",
             "plugin:androidx.compose.compiler.plugins.kotlin:stabilityConfigurationPath=" +
