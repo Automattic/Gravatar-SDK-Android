@@ -124,17 +124,18 @@ class AvatarRepositoryTest {
 
     @Test
     fun `given token stored when avatar upload succeeds then Success result`() = runTest {
+        val avatar = createAvatar("2")
         mockkStatic("androidx.core.net.UriKt")
         val file = mockk<File>()
         val uri = mockk<Uri> {
             every { toFile() } returns file
         }
         coEvery { tokenStorage.getToken(any()) } returns "token"
-        coEvery { avatarService.uploadCatching(any(), any()) } returns Result.Success(createAvatar("2"))
+        coEvery { avatarService.uploadCatching(any(), any()) } returns Result.Success(avatar)
 
         val result = avatarRepository.uploadAvatar(email, uri)
 
-        assertEquals(Result.Success<Unit, QuickEditorError>(Unit), result)
+        assertEquals(Result.Success<Avatar, QuickEditorError>(avatar), result)
     }
 
     @Test

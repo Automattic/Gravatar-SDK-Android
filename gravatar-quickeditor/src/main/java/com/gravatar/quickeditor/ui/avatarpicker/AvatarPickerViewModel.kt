@@ -103,12 +103,20 @@ internal class AvatarPickerViewModel(
             _uiState.update { currentState ->
                 currentState.copy(uploadingAvatar = uri, scrollToIndex = 0)
             }
-            when (avatarRepository.uploadAvatar(email, uri)) {
+            when (val result = avatarRepository.uploadAvatar(email, uri)) {
                 is Result.Success -> {
                     fileUtils.deleteFile(uri)
-                    fetchAvatars(showLoading = false, scrollToSelected = false)
                     _uiState.update { currentState ->
-                        currentState.copy(uploadingAvatar = null)
+                        val avatar = result.value
+                        currentState.copy(
+                            uploadingAvatar = null,
+                            identityAvatars = currentState.identityAvatars?.copy(
+                                avatars = buildList {
+                                    add(avatar)
+                                    addAll(currentState.identityAvatars.avatars.filter { it.imageId != avatar.imageId })
+                                },
+                            ),
+                        )
                     }
                 }
 

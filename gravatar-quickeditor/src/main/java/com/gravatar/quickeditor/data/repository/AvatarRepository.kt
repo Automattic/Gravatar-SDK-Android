@@ -47,11 +47,11 @@ internal class AvatarRepository(
         } ?: Result.Failure(QuickEditorError.TokenNotFound)
     }
 
-    suspend fun uploadAvatar(email: Email, avatarUri: Uri): Result<Unit, QuickEditorError> = withContext(dispatcher) {
+    suspend fun uploadAvatar(email: Email, avatarUri: Uri): Result<Avatar, QuickEditorError> = withContext(dispatcher) {
         val token = tokenStorage.getToken(email.hash().toString())
         token?.let {
             when (val result = avatarService.uploadCatching(avatarUri.toFile(), token)) {
-                is Result.Success -> Result.Success(Unit)
+                is Result.Success -> Result.Success(result.value)
                 is Result.Failure -> Result.Failure(QuickEditorError.Request(result.error))
             }
         } ?: Result.Failure(QuickEditorError.TokenNotFound)

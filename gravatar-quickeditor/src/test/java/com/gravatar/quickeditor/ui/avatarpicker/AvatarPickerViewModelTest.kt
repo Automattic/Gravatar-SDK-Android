@@ -284,7 +284,8 @@ class AvatarPickerViewModelTest {
         val identityAvatarsCopy = identityAvatars.copy(avatars = avatars, selectedAvatarId = "1")
         every { fileUtils.deleteFile(any()) } returns Unit
         coEvery { profileService.retrieveCatching(email) } returns Result.Success(profile)
-        coEvery { avatarRepository.uploadAvatar(any(), any()) } returns Result.Success(Unit)
+        val uploadedAvatar = createAvatar("3")
+        coEvery { avatarRepository.uploadAvatar(any(), any()) } returns Result.Success(uploadedAvatar)
         coEvery { avatarRepository.getAvatars(any()) } returns Result.Success(identityAvatarsCopy)
 
         viewModel = initViewModel()
@@ -307,7 +308,46 @@ class AvatarPickerViewModelTest {
                 ),
                 awaitItem(),
             )
-            skipItems(1) // extra state to fetch the avatars again
+            assertEquals(
+                AvatarPickerUiState(
+                    email = email,
+                    identityAvatars = identityAvatarsCopy.copy(
+                        avatars = buildList {
+                            add(uploadedAvatar)
+                            addAll(identityAvatarsCopy.avatars)
+                        },
+                    ),
+                    error = null,
+                    profile = ComponentState.Loaded(profile),
+                    selectingAvatarId = null,
+                    uploadingAvatar = null,
+                    scrollToIndex = 0,
+                ),
+                awaitItem(),
+            )
+        }
+        verify { fileUtils.deleteFile(uri) }
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `given avatar returned when avatar with the same id then uiState is updated`() = runTest {
+        val uri = mockk<Uri>()
+        val identityAvatarsCopy = identityAvatars.copy(avatars = avatars, selectedAvatarId = "1")
+        every { fileUtils.deleteFile(any()) } returns Unit
+        coEvery { profileService.retrieveCatching(email) } returns Result.Success(profile)
+        val uploadedAvatar = createAvatar("2")
+        coEvery { avatarRepository.uploadAvatar(any(), any()) } returns Result.Success(uploadedAvatar)
+        coEvery { avatarRepository.getAvatars(any()) } returns Result.Success(identityAvatarsCopy)
+
+        viewModel = initViewModel()
+
+        advanceUntilIdle()
+
+        viewModel.uiState.test {
+            expectMostRecentItem()
+            viewModel.onEvent(AvatarPickerEvent.ImageCropped(uri))
+
             assertEquals(
                 AvatarPickerUiState(
                     email = email,
@@ -315,7 +355,25 @@ class AvatarPickerViewModelTest {
                     error = null,
                     profile = ComponentState.Loaded(profile),
                     selectingAvatarId = null,
+                    uploadingAvatar = uri,
+                    scrollToIndex = 0,
+                ),
+                awaitItem(),
+            )
+            assertEquals(
+                AvatarPickerUiState(
+                    email = email,
+                    identityAvatars = identityAvatarsCopy.copy(
+                        avatars = buildList {
+                            add(uploadedAvatar)
+                            add(createAvatar("1"))
+                        },
+                    ),
+                    error = null,
+                    profile = ComponentState.Loaded(profile),
+                    selectingAvatarId = null,
                     uploadingAvatar = null,
+                    scrollToIndex = 0,
                 ),
                 awaitItem(),
             )
