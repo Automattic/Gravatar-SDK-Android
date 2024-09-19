@@ -291,7 +291,7 @@ private fun AvatarPickerPreview() {
                         location = "London, UK",
                     ),
                 ),
-                identityAvatars = EmailAvatars(
+                emailAvatars = EmailAvatars(
                     avatars = listOf(
                         Avatar {
                             imageUrl = "/image/url"
@@ -318,7 +318,7 @@ private fun AvatarPickerLoadingPreview() {
                 email = Email("henry.a.wallace@example.com"),
                 profile = ComponentState.Loading,
                 isLoading = true,
-                identityAvatars = null,
+                emailAvatars = null,
             ),
             onEvent = { },
         )
@@ -334,7 +334,7 @@ private fun AvatarPickerErrorPreview() {
                 email = Email("henry.a.wallace@example.com"),
                 profile = null,
                 isLoading = false,
-                identityAvatars = null,
+                emailAvatars = null,
                 error = SectionError.ServerError,
             ),
             onEvent = { },

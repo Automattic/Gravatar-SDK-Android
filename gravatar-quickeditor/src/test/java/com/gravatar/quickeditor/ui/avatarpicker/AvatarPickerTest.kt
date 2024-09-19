@@ -23,7 +23,7 @@ class AvatarPickerTest : RoborazziTest() {
             uiState = AvatarPickerUiState(
                 profile = ComponentState.Loaded(profile),
                 email = Email("william.henry.harrison@example.com"),
-                identityAvatars = EmailAvatars(
+                emailAvatars = EmailAvatars(
                     avatars = listOf(
                         Avatar {
                             imageUrl = "/image/url1"
@@ -54,7 +54,7 @@ class AvatarPickerTest : RoborazziTest() {
             uiState = AvatarPickerUiState(
                 profile = ComponentState.Loaded(profile),
                 email = Email("william.henry.harrison@example.com"),
-                identityAvatars = EmailAvatars(
+                emailAvatars = EmailAvatars(
                     avatars = listOf(
                         Avatar {
                             imageUrl = "/image/url1"

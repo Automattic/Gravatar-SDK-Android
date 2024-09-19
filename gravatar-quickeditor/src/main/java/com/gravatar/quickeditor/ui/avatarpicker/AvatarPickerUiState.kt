@@ -12,12 +12,12 @@ internal data class AvatarPickerUiState(
     val isLoading: Boolean = false,
     val error: SectionError? = null,
     val profile: ComponentState<Profile>? = null,
-    val identityAvatars: EmailAvatars? = null,
+    val emailAvatars: EmailAvatars? = null,
     val selectingAvatarId: String? = null,
     val uploadingAvatar: Uri? = null,
     val scrollToIndex: Int? = null,
 ) {
-    val avatarsSectionUiState: AvatarsSectionUiState? = identityAvatars?.mapToUiModel()?.let {
+    val avatarsSectionUiState: AvatarsSectionUiState? = emailAvatars?.mapToUiModel()?.let {
         AvatarsSectionUiState(
             avatars = it,
             scrollToIndex = scrollToIndex,

@@ -44,18 +44,18 @@ class AvatarPickerViewModelTest {
     private val email = Email("testEmail")
     private val profile = defaultProfile(hash = "hash", displayName = "Display name")
     private val avatars = listOf(createAvatar("1"), createAvatar("2"))
-    private val identityAvatars = EmailAvatars(emptyList(), null)
+    private val emailAvatars = EmailAvatars(emptyList(), null)
 
     @Before
     fun setup() {
         coEvery { profileService.retrieveCatching(email) } returns Result.Failure(ErrorType.UNKNOWN)
-        coEvery { avatarRepository.getAvatars(email) } returns Result.Success(identityAvatars)
+        coEvery { avatarRepository.getAvatars(email) } returns Result.Success(emailAvatars)
     }
 
     @Test
     fun `given view model initialization when avatars request succeed then uiState is updated`() = runTest {
-        val identityAvatarsCopy = identityAvatars.copy(avatars = avatars, selectedAvatarId = "1")
-        coEvery { avatarRepository.getAvatars(email) } returns Result.Success(identityAvatarsCopy)
+        val emailAvatarsCopy = emailAvatars.copy(avatars = avatars, selectedAvatarId = "1")
+        coEvery { avatarRepository.getAvatars(email) } returns Result.Success(emailAvatarsCopy)
 
         viewModel = initViewModel()
 
@@ -68,7 +68,7 @@ class AvatarPickerViewModelTest {
             assertEquals(
                 AvatarPickerUiState(
                     email = email,
-                    identityAvatars = identityAvatarsCopy,
+                    emailAvatars = emailAvatarsCopy,
                     error = null,
                     profile = null,
                     scrollToIndex = 0,
@@ -111,7 +111,7 @@ class AvatarPickerViewModelTest {
             assertEquals(
                 AvatarPickerUiState(
                     email = email,
-                    identityAvatars = identityAvatars,
+                    emailAvatars = emailAvatars,
                     error = null,
                     profile = ComponentState.Loading,
                 ),
@@ -120,7 +120,7 @@ class AvatarPickerViewModelTest {
             assertEquals(
                 AvatarPickerUiState(
                     email = email,
-                    identityAvatars = identityAvatars,
+                    emailAvatars = emailAvatars,
                     error = null,
                     profile = ComponentState.Loaded(profile),
                 ),
@@ -139,7 +139,7 @@ class AvatarPickerViewModelTest {
             assertEquals(
                 AvatarPickerUiState(
                     email = email,
-                    identityAvatars = identityAvatars,
+                    emailAvatars = emailAvatars,
                     error = null,
                     profile = ComponentState.Loading,
                 ),
@@ -148,7 +148,7 @@ class AvatarPickerViewModelTest {
             assertEquals(
                 AvatarPickerUiState(
                     email = email,
-                    identityAvatars = identityAvatars,
+                    emailAvatars = emailAvatars,
                     error = null,
                     profile = null,
                 ),
@@ -160,8 +160,8 @@ class AvatarPickerViewModelTest {
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `given avatar when selected successful then uiState is updated`() = runTest {
-        val identityAvatarsCopy = identityAvatars.copy(avatars = avatars, selectedAvatarId = "1")
-        coEvery { avatarRepository.getAvatars(email) } returns Result.Success(identityAvatarsCopy)
+        val emailAvatarsCopy = emailAvatars.copy(avatars = avatars, selectedAvatarId = "1")
+        coEvery { avatarRepository.getAvatars(email) } returns Result.Success(emailAvatarsCopy)
         coEvery { profileService.retrieveCatching(email) } returns Result.Success(profile)
         coEvery { avatarRepository.selectAvatar(any(), any()) } returns Result.Success(Unit)
 
@@ -175,7 +175,7 @@ class AvatarPickerViewModelTest {
             assertEquals(
                 AvatarPickerUiState(
                     email = email,
-                    identityAvatars = identityAvatarsCopy,
+                    emailAvatars = emailAvatarsCopy,
                     error = null,
                     profile = ComponentState.Loaded(profile),
                     selectingAvatarId = avatars.last().imageId,
@@ -186,7 +186,7 @@ class AvatarPickerViewModelTest {
             assertEquals(
                 AvatarPickerUiState(
                     email = email,
-                    identityAvatars = identityAvatarsCopy.copy(selectedAvatarId = avatars.last().imageId),
+                    emailAvatars = emailAvatarsCopy.copy(selectedAvatarId = avatars.last().imageId),
                     error = null,
                     profile = ComponentState.Loaded(profile.copyAvatar(avatars.last())),
                     selectingAvatarId = null,
@@ -203,8 +203,8 @@ class AvatarPickerViewModelTest {
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `given avatar when selected failure then uiState is updated`() = runTest {
-        val identityAvatarsCopy = identityAvatars.copy(avatars = avatars, selectedAvatarId = "1")
-        coEvery { avatarRepository.getAvatars(email) } returns Result.Success(identityAvatarsCopy)
+        val emailAvatarsCopy = emailAvatars.copy(avatars = avatars, selectedAvatarId = "1")
+        coEvery { avatarRepository.getAvatars(email) } returns Result.Success(emailAvatarsCopy)
         coEvery { profileService.retrieveCatching(email) } returns Result.Success(profile)
         coEvery { avatarRepository.selectAvatar(any(), any()) } returns Result.Failure(QuickEditorError.Unknown)
 
@@ -218,7 +218,7 @@ class AvatarPickerViewModelTest {
             assertEquals(
                 AvatarPickerUiState(
                     email = email,
-                    identityAvatars = identityAvatarsCopy,
+                    emailAvatars = emailAvatarsCopy,
                     error = null,
                     profile = ComponentState.Loaded(profile),
                     selectingAvatarId = avatars.last().imageId,
@@ -229,7 +229,7 @@ class AvatarPickerViewModelTest {
             assertEquals(
                 AvatarPickerUiState(
                     email = email,
-                    identityAvatars = identityAvatarsCopy,
+                    emailAvatars = emailAvatarsCopy,
                     error = null,
                     profile = ComponentState.Loaded(profile),
                     selectingAvatarId = null,
@@ -281,12 +281,12 @@ class AvatarPickerViewModelTest {
     @Test
     fun `given cropped image when upload successful then uiState is updated`() = runTest {
         val uri = mockk<Uri>()
-        val identityAvatarsCopy = identityAvatars.copy(avatars = avatars, selectedAvatarId = "1")
+        val emailAvatarsCopy = emailAvatars.copy(avatars = avatars, selectedAvatarId = "1")
         every { fileUtils.deleteFile(any()) } returns Unit
         coEvery { profileService.retrieveCatching(email) } returns Result.Success(profile)
         val uploadedAvatar = createAvatar("3")
         coEvery { avatarRepository.uploadAvatar(any(), any()) } returns Result.Success(uploadedAvatar)
-        coEvery { avatarRepository.getAvatars(any()) } returns Result.Success(identityAvatarsCopy)
+        coEvery { avatarRepository.getAvatars(any()) } returns Result.Success(emailAvatarsCopy)
 
         viewModel = initViewModel()
 
@@ -299,7 +299,7 @@ class AvatarPickerViewModelTest {
             assertEquals(
                 AvatarPickerUiState(
                     email = email,
-                    identityAvatars = identityAvatarsCopy,
+                    emailAvatars = emailAvatarsCopy,
                     error = null,
                     profile = ComponentState.Loaded(profile),
                     selectingAvatarId = null,
@@ -311,10 +311,10 @@ class AvatarPickerViewModelTest {
             assertEquals(
                 AvatarPickerUiState(
                     email = email,
-                    identityAvatars = identityAvatarsCopy.copy(
+                    emailAvatars = emailAvatarsCopy.copy(
                         avatars = buildList {
                             add(uploadedAvatar)
-                            addAll(identityAvatarsCopy.avatars)
+                            addAll(emailAvatarsCopy.avatars)
                         },
                     ),
                     error = null,
@@ -333,12 +333,12 @@ class AvatarPickerViewModelTest {
     @Test
     fun `given avatar returned when avatar with the same id then uiState is updated`() = runTest {
         val uri = mockk<Uri>()
-        val identityAvatarsCopy = identityAvatars.copy(avatars = avatars, selectedAvatarId = "1")
+        val emailAvatarsCopy = emailAvatars.copy(avatars = avatars, selectedAvatarId = "1")
         every { fileUtils.deleteFile(any()) } returns Unit
         coEvery { profileService.retrieveCatching(email) } returns Result.Success(profile)
         val uploadedAvatar = createAvatar("2")
         coEvery { avatarRepository.uploadAvatar(any(), any()) } returns Result.Success(uploadedAvatar)
-        coEvery { avatarRepository.getAvatars(any()) } returns Result.Success(identityAvatarsCopy)
+        coEvery { avatarRepository.getAvatars(any()) } returns Result.Success(emailAvatarsCopy)
 
         viewModel = initViewModel()
 
@@ -351,7 +351,7 @@ class AvatarPickerViewModelTest {
             assertEquals(
                 AvatarPickerUiState(
                     email = email,
-                    identityAvatars = identityAvatarsCopy,
+                    emailAvatars = emailAvatarsCopy,
                     error = null,
                     profile = ComponentState.Loaded(profile),
                     selectingAvatarId = null,
@@ -363,7 +363,7 @@ class AvatarPickerViewModelTest {
             assertEquals(
                 AvatarPickerUiState(
                     email = email,
-                    identityAvatars = identityAvatarsCopy.copy(
+                    emailAvatars = emailAvatarsCopy.copy(
                         avatars = buildList {
                             add(uploadedAvatar)
                             add(createAvatar("1"))
@@ -385,13 +385,13 @@ class AvatarPickerViewModelTest {
     @Test
     fun `given cropped image when upload failure then uiState is updated`() = runTest {
         val uri = mockk<Uri>()
-        val identityAvatarsCopy = identityAvatars.copy(avatars = avatars, selectedAvatarId = "1")
+        val emailAvatarsCopy = emailAvatars.copy(avatars = avatars, selectedAvatarId = "1")
         every { fileUtils.deleteFile(any()) } returns Unit
         coEvery { profileService.retrieveCatching(email) } returns Result.Success(profile)
         coEvery {
             avatarRepository.uploadAvatar(any(), any())
         } returns Result.Failure(QuickEditorError.Request(ErrorType.SERVER))
-        coEvery { avatarRepository.getAvatars(any()) } returns Result.Success(identityAvatarsCopy)
+        coEvery { avatarRepository.getAvatars(any()) } returns Result.Success(emailAvatarsCopy)
 
         viewModel = initViewModel()
 
@@ -404,7 +404,7 @@ class AvatarPickerViewModelTest {
             assertEquals(
                 AvatarPickerUiState(
                     email = email,
-                    identityAvatars = identityAvatarsCopy,
+                    emailAvatars = emailAvatarsCopy,
                     error = null,
                     profile = ComponentState.Loaded(profile),
                     selectingAvatarId = null,
@@ -416,7 +416,7 @@ class AvatarPickerViewModelTest {
             assertEquals(
                 AvatarPickerUiState(
                     email = email,
-                    identityAvatars = identityAvatarsCopy,
+                    emailAvatars = emailAvatarsCopy,
                     error = null,
                     profile = ComponentState.Loaded(profile),
                     selectingAvatarId = null,
