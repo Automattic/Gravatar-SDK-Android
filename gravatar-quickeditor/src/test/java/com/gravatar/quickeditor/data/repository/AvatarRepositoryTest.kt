@@ -54,7 +54,7 @@ class AvatarRepositoryTest {
     }
 
     @Test
-    fun `given token stored when avatar service fails then Failure result`() = runTest {
+    fun `given token stored when get avatars fails then Failure result`() = runTest {
         coEvery { tokenStorage.getToken(any()) } returns "token"
 
         coEvery { avatarService.retrieveCatching(any(), any()) } returns Result.Failure(ErrorType.SERVER)
@@ -68,7 +68,7 @@ class AvatarRepositoryTest {
     }
 
     @Test
-    fun `given token stored when avatar service succeed then Success result`() = runTest {
+    fun `given token stored when get avatars succeed then Success result`() = runTest {
         val imageId = "2"
         val avatar = createAvatar(imageId, isSelected = true)
         coEvery { tokenStorage.getToken(any()) } returns "token"
