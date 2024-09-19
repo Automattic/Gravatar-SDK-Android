@@ -1,1 +1,1 @@
-export CI_TOOLKIT="automattic/a8c-ci-toolkit#bb4dcd06eb24c67f4862af359201ae180648c518"
+export CI_TOOLKIT="automattic/a8c-ci-toolkit#85fa9f2ece46c50cfa10e194db2fdf46f86e4ad5"
