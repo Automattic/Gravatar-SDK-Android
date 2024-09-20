@@ -8,12 +8,12 @@ import java.util.Objects
  *
  * @property appName The appName of the app that is launching the Quick Editor
  * @property email The email of the user
- * @property contentLayout The contentLayout of the Quick Editor.
+ * @property avatarPickerContentLayout The layout direction used in the Avatar Picker.
  */
 public class GravatarQuickEditorParams private constructor(
     public val appName: String,
     public val email: Email,
-    public val contentLayout: ContentLayout,
+    public val avatarPickerContentLayout: AvatarPickerContentLayout,
 ) {
     override fun toString(): String = "GravatarQuickEditorParams(appName='$appName', email='$email')"
 
@@ -42,16 +42,16 @@ public class GravatarQuickEditorParams private constructor(
         public var email: Email? = null
 
         /**
-         * The contentLayout of the Quick Editor
+         * The content layout direction used in the Avatar Picker
          */
         @set:JvmSynthetic // Hide 'void' setter from Java
-        public var contentLayout: ContentLayout = ContentLayout.Horizontal
+        public var avatarPickerContentLayout: AvatarPickerContentLayout = AvatarPickerContentLayout.Horizontal
 
         /**
-         * Sets the contentLayout
+         * Sets the content layout direction used in the Avatar Picker
          */
-        public fun setContentLayout(contentLayout: ContentLayout): Builder =
-            apply { this.contentLayout = contentLayout }
+        public fun setAvatarPickerContentLayout(avatarPickerContentLayout: AvatarPickerContentLayout): Builder =
+            apply { this.avatarPickerContentLayout = avatarPickerContentLayout }
 
         /**
          * Sets the appName
@@ -66,7 +66,11 @@ public class GravatarQuickEditorParams private constructor(
         /**
          * Builds the GravatarQuickEditorParams object
          */
-        public fun build(): GravatarQuickEditorParams = GravatarQuickEditorParams(appName!!, email!!, contentLayout)
+        public fun build(): GravatarQuickEditorParams = GravatarQuickEditorParams(
+            appName!!,
+            email!!,
+            avatarPickerContentLayout,
+        )
     }
 }
 

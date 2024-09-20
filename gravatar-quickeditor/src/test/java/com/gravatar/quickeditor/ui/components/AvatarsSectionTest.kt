@@ -2,7 +2,7 @@ package com.gravatar.quickeditor.ui.components
 
 import com.gravatar.quickeditor.ui.avatarpicker.AvatarUi
 import com.gravatar.quickeditor.ui.avatarpicker.AvatarsSectionUiState
-import com.gravatar.quickeditor.ui.editor.ContentLayout
+import com.gravatar.quickeditor.ui.editor.AvatarPickerContentLayout
 import com.gravatar.quickeditor.ui.gravatarScreenshotTest
 import com.gravatar.restapi.models.Avatar
 import com.gravatar.uitestutils.RoborazziTest
@@ -17,7 +17,7 @@ class AvatarsSectionTest : RoborazziTest() {
                 avatars = createAvatarList(2),
                 scrollToIndex = null,
                 uploadButtonEnabled = true,
-                contentLayout = ContentLayout.Horizontal,
+                avatarPickerContentLayout = AvatarPickerContentLayout.Horizontal,
             ),
             onLocalImageSelected = { },
             onAvatarSelected = {},
@@ -32,7 +32,7 @@ class AvatarsSectionTest : RoborazziTest() {
                 avatars = createAvatarList(2),
                 scrollToIndex = null,
                 uploadButtonEnabled = true,
-                contentLayout = ContentLayout.Horizontal,
+                avatarPickerContentLayout = AvatarPickerContentLayout.Horizontal,
             ),
             onLocalImageSelected = { },
             onAvatarSelected = {},
@@ -46,7 +46,7 @@ class AvatarsSectionTest : RoborazziTest() {
                 avatars = emptyList(),
                 scrollToIndex = null,
                 uploadButtonEnabled = true,
-                contentLayout = ContentLayout.Horizontal,
+                avatarPickerContentLayout = AvatarPickerContentLayout.Horizontal,
             ),
             onLocalImageSelected = { },
             onAvatarSelected = {},
@@ -60,7 +60,7 @@ class AvatarsSectionTest : RoborazziTest() {
                 avatars = createAvatarList(2),
                 scrollToIndex = null,
                 uploadButtonEnabled = false,
-                contentLayout = ContentLayout.Horizontal,
+                avatarPickerContentLayout = AvatarPickerContentLayout.Horizontal,
             ),
             onLocalImageSelected = { },
             onAvatarSelected = {},
@@ -74,7 +74,7 @@ class AvatarsSectionTest : RoborazziTest() {
                 avatars = createAvatarList(5),
                 scrollToIndex = null,
                 uploadButtonEnabled = true,
-                contentLayout = ContentLayout.Vertical,
+                avatarPickerContentLayout = AvatarPickerContentLayout.Vertical,
             ),
             onLocalImageSelected = { },
             onAvatarSelected = {},

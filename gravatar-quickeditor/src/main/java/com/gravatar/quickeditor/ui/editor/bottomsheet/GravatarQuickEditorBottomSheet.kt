@@ -18,8 +18,8 @@ import androidx.window.core.layout.WindowHeightSizeClass
 import com.gravatar.quickeditor.ui.components.QEDragHandle
 import com.gravatar.quickeditor.ui.components.QETopBar
 import com.gravatar.quickeditor.ui.editor.AuthenticationMethod
+import com.gravatar.quickeditor.ui.editor.AvatarPickerContentLayout
 import com.gravatar.quickeditor.ui.editor.AvatarUpdateResult
-import com.gravatar.quickeditor.ui.editor.ContentLayout
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorDismissReason
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorPage
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
@@ -59,7 +59,8 @@ public fun GravatarQuickEditorBottomSheet(
             )
         } else {
             rememberModalBottomSheetState(
-                skipPartiallyExpanded = gravatarQuickEditorParams.contentLayout == ContentLayout.Horizontal,
+                skipPartiallyExpanded =
+                    gravatarQuickEditorParams.avatarPickerContentLayout == AvatarPickerContentLayout.Horizontal,
             )
         },
     )

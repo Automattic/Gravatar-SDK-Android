@@ -34,7 +34,7 @@ import androidx.compose.ui.unit.round
 import com.gravatar.quickeditor.R
 import com.gravatar.quickeditor.ui.avatarpicker.AvatarUi
 import com.gravatar.quickeditor.ui.avatarpicker.AvatarsSectionUiState
-import com.gravatar.quickeditor.ui.editor.ContentLayout
+import com.gravatar.quickeditor.ui.editor.AvatarPickerContentLayout
 import com.gravatar.restapi.models.Avatar
 import com.gravatar.ui.GravatarTheme
 
@@ -156,7 +156,7 @@ private fun HorizontalAvatarSectionPreview() {
                 },
                 scrollToIndex = null,
                 uploadButtonEnabled = true,
-                contentLayout = ContentLayout.Vertical,
+                avatarPickerContentLayout = AvatarPickerContentLayout.Vertical,
             ),
             onTakePhotoClick = { },
             onChoosePhotoClick = { },
@@ -174,7 +174,7 @@ private fun HorizontalAvatarSectionEmptyPreview() {
                 avatars = emptyList(),
                 scrollToIndex = null,
                 uploadButtonEnabled = true,
-                contentLayout = ContentLayout.Vertical,
+                avatarPickerContentLayout = AvatarPickerContentLayout.Vertical,
             ),
             onTakePhotoClick = { },
             onChoosePhotoClick = { },

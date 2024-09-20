@@ -17,7 +17,7 @@ import com.gravatar.quickeditor.QuickEditorFileProvider
 import com.gravatar.quickeditor.R
 import com.gravatar.quickeditor.ui.avatarpicker.AvatarUi
 import com.gravatar.quickeditor.ui.avatarpicker.AvatarsSectionUiState
-import com.gravatar.quickeditor.ui.editor.ContentLayout
+import com.gravatar.quickeditor.ui.editor.AvatarPickerContentLayout
 import com.gravatar.restapi.models.Avatar
 import com.gravatar.ui.GravatarTheme
 
@@ -38,8 +38,8 @@ internal fun AvatarsSection(
         if (success && takenPictureUri != null) onLocalImageSelected(takenPictureUri)
     }
 
-    when (state.contentLayout) {
-        ContentLayout.Vertical -> {
+    when (state.avatarPickerContentLayout) {
+        AvatarPickerContentLayout.Vertical -> {
             VerticalAvatarsSection(
                 state = state,
                 modifier = modifier,
@@ -55,7 +55,7 @@ internal fun AvatarsSection(
             )
         }
 
-        ContentLayout.Horizontal -> {
+        AvatarPickerContentLayout.Horizontal -> {
             HorizontalAvatarsSection(
                 state = state,
                 modifier = modifier,
@@ -101,7 +101,7 @@ private fun AvatarSectionPreview() {
                 ),
                 scrollToIndex = null,
                 uploadButtonEnabled = true,
-                contentLayout = ContentLayout.Horizontal,
+                avatarPickerContentLayout = AvatarPickerContentLayout.Horizontal,
             ),
             onAvatarSelected = { },
             onLocalImageSelected = { },
@@ -130,7 +130,7 @@ private fun AvatarSectionGridPreview() {
                 },
                 scrollToIndex = null,
                 uploadButtonEnabled = true,
-                contentLayout = ContentLayout.Vertical,
+                avatarPickerContentLayout = AvatarPickerContentLayout.Vertical,
             ),
             onAvatarSelected = { },
             onLocalImageSelected = { },
@@ -147,7 +147,7 @@ private fun AvatarSectionEmptyPreview() {
                 avatars = emptyList(),
                 scrollToIndex = null,
                 uploadButtonEnabled = true,
-                contentLayout = ContentLayout.Horizontal,
+                avatarPickerContentLayout = AvatarPickerContentLayout.Horizontal,
             ),
             onAvatarSelected = { },
             onLocalImageSelected = { },

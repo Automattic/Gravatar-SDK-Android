@@ -48,7 +48,7 @@ import com.gravatar.demoapp.ui.components.GravatarEmailInput
 import com.gravatar.demoapp.ui.components.GravatarPasswordInput
 import com.gravatar.quickeditor.GravatarQuickEditor
 import com.gravatar.quickeditor.ui.editor.AuthenticationMethod
-import com.gravatar.quickeditor.ui.editor.ContentLayout
+import com.gravatar.quickeditor.ui.editor.AvatarPickerContentLayout
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
 import com.gravatar.quickeditor.ui.editor.bottomsheet.GravatarQuickEditorBottomSheet
 import com.gravatar.quickeditor.ui.oauth.OAuthParams
@@ -68,8 +68,10 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
     val scope = rememberCoroutineScope()
     var avatarUrl: String? by remember { mutableStateOf(null) }
     val keyboardController = LocalSoftwareKeyboardController.current
-    var pickerContentLayout: ContentLayout by rememberSaveable(stateSaver = ContentLayoutSaver) {
-        mutableStateOf(ContentLayout.Horizontal)
+    var pickerContentLayout: AvatarPickerContentLayout by rememberSaveable(
+        stateSaver = AvatarPickerContentLayoutSaver,
+    ) {
+        mutableStateOf(AvatarPickerContentLayout.Horizontal)
     }
 
     Box(
@@ -101,24 +103,24 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 RadioButton(
-                    selected = pickerContentLayout == ContentLayout.Horizontal,
-                    onClick = { pickerContentLayout = ContentLayout.Horizontal },
+                    selected = pickerContentLayout == AvatarPickerContentLayout.Horizontal,
+                    onClick = { pickerContentLayout = AvatarPickerContentLayout.Horizontal },
                 )
                 Text(
                     text = "Horizontal",
                     modifier = Modifier
                         .align(Alignment.CenterVertically)
-                        .clickable { pickerContentLayout = ContentLayout.Horizontal },
+                        .clickable { pickerContentLayout = AvatarPickerContentLayout.Horizontal },
                 )
                 RadioButton(
-                    selected = pickerContentLayout == ContentLayout.Vertical,
-                    onClick = { pickerContentLayout = ContentLayout.Vertical },
+                    selected = pickerContentLayout == AvatarPickerContentLayout.Vertical,
+                    onClick = { pickerContentLayout = AvatarPickerContentLayout.Vertical },
                 )
                 Text(
                     text = "Vertical",
                     modifier = Modifier
                         .align(Alignment.CenterVertically)
-                        .clickable { pickerContentLayout = ContentLayout.Vertical },
+                        .clickable { pickerContentLayout = AvatarPickerContentLayout.Vertical },
                 )
             }
             UpdateAvatarComposable(
@@ -176,7 +178,7 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
             gravatarQuickEditorParams = GravatarQuickEditorParams {
                 appName = applicationName
                 email = Email(userEmail)
-                contentLayout = pickerContentLayout
+                avatarPickerContentLayout = pickerContentLayout
             },
             authenticationMethod = authenticationMethod,
             onAvatarSelected = remember {
@@ -221,20 +223,20 @@ private fun UpdateAvatarComposable(isUploading: Boolean, avatarUrl: String?, mod
     }
 }
 
-private val ContentLayoutSaver: Saver<ContentLayout, String> = run {
+private val AvatarPickerContentLayoutSaver: Saver<AvatarPickerContentLayout, String> = run {
     val horizontalKey = "horizontal"
     val verticalKey = "vertical"
     Saver(
         save = { value ->
             when (value) {
-                ContentLayout.Horizontal -> horizontalKey
-                ContentLayout.Vertical -> verticalKey
+                AvatarPickerContentLayout.Horizontal -> horizontalKey
+                AvatarPickerContentLayout.Vertical -> verticalKey
             }
         },
         restore = { value ->
             when (value) {
-                horizontalKey -> ContentLayout.Horizontal
-                else -> ContentLayout.Vertical
+                horizontalKey -> AvatarPickerContentLayout.Horizontal
+                else -> AvatarPickerContentLayout.Vertical
             }
         },
     )

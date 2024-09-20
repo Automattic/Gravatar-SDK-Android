@@ -51,8 +51,8 @@ import com.gravatar.quickeditor.ui.components.ErrorSection
 import com.gravatar.quickeditor.ui.components.ProfileCard
 import com.gravatar.quickeditor.ui.copperlauncher.CropperLauncher
 import com.gravatar.quickeditor.ui.copperlauncher.UCropCropperLauncher
+import com.gravatar.quickeditor.ui.editor.AvatarPickerContentLayout
 import com.gravatar.quickeditor.ui.editor.AvatarUpdateResult
-import com.gravatar.quickeditor.ui.editor.ContentLayout
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
 import com.gravatar.quickeditor.ui.editor.bottomsheet.DEFAULT_PAGE_HEIGHT
 import com.gravatar.quickeditor.ui.extensions.QESnackbarHost
@@ -132,7 +132,7 @@ internal fun AvatarPicker(uiState: AvatarPickerUiState, onEvent: (AvatarPickerEv
             .fillMaxWidth()
             .animateContentSize()
             .then(
-                if (uiState.contentLayout == ContentLayout.Horizontal) {
+                if (uiState.avatarPickerContentLayout == AvatarPickerContentLayout.Horizontal) {
                     Modifier.verticalScroll(rememberScrollState())
                 } else {
                     Modifier
@@ -311,7 +311,7 @@ private fun AvatarPickerPreview() {
                     ),
                     selectedAvatarId = "1",
                 ),
-                contentLayout = ContentLayout.Horizontal,
+                avatarPickerContentLayout = AvatarPickerContentLayout.Horizontal,
             ),
             onEvent = { },
         )
@@ -327,7 +327,7 @@ private fun AvatarPickerLoadingPreview() {
                 email = Email("henry.a.wallace@example.com"),
                 profile = ComponentState.Loading,
                 isLoading = true,
-                contentLayout = ContentLayout.Horizontal,
+                avatarPickerContentLayout = AvatarPickerContentLayout.Horizontal,
                 emailAvatars = null,
             ),
             onEvent = { },
@@ -346,7 +346,7 @@ private fun AvatarPickerErrorPreview() {
                 isLoading = false,
                 emailAvatars = null,
                 error = SectionError.ServerError,
-                contentLayout = ContentLayout.Horizontal,
+                avatarPickerContentLayout = AvatarPickerContentLayout.Horizontal,
             ),
             onEvent = { },
         )
