@@ -321,7 +321,6 @@ class AvatarPickerViewModelTest {
                     profile = ComponentState.Loaded(profile),
                     selectingAvatarId = null,
                     uploadingAvatar = null,
-                    scrollToIndex = 0,
                 ),
                 awaitItem(),
             )
@@ -373,7 +372,6 @@ class AvatarPickerViewModelTest {
                     profile = ComponentState.Loaded(profile),
                     selectingAvatarId = null,
                     uploadingAvatar = null,
-                    scrollToIndex = 0,
                 ),
                 awaitItem(),
             )
@@ -428,6 +426,40 @@ class AvatarPickerViewModelTest {
         }
         viewModel.actions.test {
             assertEquals(AvatarPickerAction.AvatarUploadFailed(uri), awaitItem())
+        }
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `given cropped image when upload successful then scrollToIndex updated`() = runTest {
+        val uri = mockk<Uri>()
+        val emailAvatarsCopy = emailAvatars.copy(avatars = avatars, selectedAvatarId = "2")
+        every { fileUtils.deleteFile(any()) } returns Unit
+        coEvery { profileService.retrieveCatching(email) } returns Result.Success(profile)
+        coEvery {
+            avatarRepository.uploadAvatar(any(), any())
+        } returns Result.Success(createAvatar("3"))
+        coEvery { avatarRepository.getAvatars(any()) } returns Result.Success(emailAvatarsCopy)
+
+        viewModel = initViewModel()
+
+        advanceUntilIdle()
+
+        viewModel.uiState.test {
+            assertEquals(1, awaitItem().scrollToIndex) // initial scroll to after loading avatars
+
+            viewModel.onEvent(AvatarPickerEvent.ImageCropped(uri))
+
+            assertEquals(0, awaitItem().scrollToIndex) // set to 0 to show the loading item
+            assertEquals(
+                null,
+                awaitItem().scrollToIndex,
+            ) // set to null, if we leave it as 0 the scroll won't work with the next upload
+
+            viewModel.onEvent(AvatarPickerEvent.ImageCropped(uri))
+
+            assertEquals(0, awaitItem().scrollToIndex)
+            assertEquals(null, awaitItem().scrollToIndex)
         }
     }
 

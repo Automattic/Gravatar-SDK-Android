@@ -116,6 +116,7 @@ internal class AvatarPickerViewModel(
                                     addAll(currentState.emailAvatars.avatars.filter { it.imageId != avatar.imageId })
                                 },
                             ),
+                            scrollToIndex = null,
                         )
                     }
                 }
