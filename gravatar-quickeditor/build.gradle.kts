@@ -101,6 +101,8 @@ dependencies {
     implementation(project(":gravatar"))
     implementation(project(":gravatar-ui"))
 
+    implementation(libs.moshi)
+    implementation(libs.moshi.kotlin)
     implementation(libs.androidx.browser)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.viewmodel.compose)
@@ -110,7 +112,7 @@ dependencies {
 
     implementation(libs.coil.compose)
     implementation(libs.retrofit)
-    implementation(libs.retrofit.gson.converter)
+    implementation(libs.retrofit.moshi.converter)
     implementation(libs.ucrop)
 
     // Jetpack Compose

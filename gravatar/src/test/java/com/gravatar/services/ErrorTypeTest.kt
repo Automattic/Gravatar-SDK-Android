@@ -1,12 +1,12 @@
 package com.gravatar.services
 
-import com.google.gson.Gson
 import com.gravatar.HttpResponseCode.HTTP_CLIENT_TIMEOUT
 import com.gravatar.HttpResponseCode.HTTP_NOT_FOUND
 import com.gravatar.HttpResponseCode.HTTP_TOO_MANY_REQUESTS
 import com.gravatar.HttpResponseCode.INVALID_REQUEST
 import com.gravatar.HttpResponseCode.SERVER_ERRORS
 import com.gravatar.restapi.models.Error
+import com.squareup.moshi.Moshi
 import io.mockk.every
 import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
@@ -16,7 +16,7 @@ import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
 class ErrorTypeTest {
-    private val gson = Gson()
+    private val moshi = Moshi.Builder().build()
 
     private val errorBody = """
         {
@@ -52,7 +52,7 @@ class ErrorTypeTest {
                 }
             }
             // When
-            val errorType = HttpException(response).errorTypeFromHttpCode(gson)
+            val errorType = HttpException(response).errorTypeFromHttpCode(moshi)
             // Then
             assertEquals(expectedErrorType, errorType)
         }
@@ -76,7 +76,7 @@ class ErrorTypeTest {
         }
         exceptionToErrorTypeRelation.forEach { (exception, expectedErrorType) ->
             // When
-            val errorType = exception.errorType(gson)
+            val errorType = exception.errorType(moshi)
             // Then
             assertEquals(expectedErrorType, errorType)
         }
