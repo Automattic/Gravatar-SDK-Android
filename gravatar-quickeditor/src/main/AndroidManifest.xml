@@ -26,6 +26,11 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/quickeditor_filepaths" />
         </provider>
+
+        <!-- Lib activities-->
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
     </application>
 
 </manifest>
