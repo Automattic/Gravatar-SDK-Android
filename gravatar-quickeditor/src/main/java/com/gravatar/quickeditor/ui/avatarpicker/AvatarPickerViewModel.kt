@@ -123,7 +123,10 @@ internal class AvatarPickerViewModel(
 
                 is Result.Failure -> {
                     _uiState.update { currentState ->
-                        currentState.copy(uploadingAvatar = null)
+                        currentState.copy(
+                            uploadingAvatar = null,
+                            scrollToIndex = null,
+                        )
                     }
                     _actions.send(AvatarPickerAction.AvatarUploadFailed(uri))
                 }
