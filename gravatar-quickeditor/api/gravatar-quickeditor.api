@@ -163,31 +163,31 @@ public final class com/gravatar/quickeditor/ui/editor/AuthenticationMethod$OAuth
 	public fun toString ()Ljava/lang/String;
 }
 
+public abstract class com/gravatar/quickeditor/ui/editor/AvatarPickerContentLayout {
+	public static final field $stable I
+}
+
+public final class com/gravatar/quickeditor/ui/editor/AvatarPickerContentLayout$Horizontal : com/gravatar/quickeditor/ui/editor/AvatarPickerContentLayout {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/gravatar/quickeditor/ui/editor/AvatarPickerContentLayout$Horizontal;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/gravatar/quickeditor/ui/editor/AvatarPickerContentLayout$Vertical : com/gravatar/quickeditor/ui/editor/AvatarPickerContentLayout {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/gravatar/quickeditor/ui/editor/AvatarPickerContentLayout$Vertical;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
 public final class com/gravatar/quickeditor/ui/editor/AvatarUpdateResult {
 	public static final field $stable I
 	public fun <init> (Landroid/net/Uri;)V
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getAvatarUri ()Landroid/net/Uri;
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public abstract class com/gravatar/quickeditor/ui/editor/ContentLayout {
-	public static final field $stable I
-}
-
-public final class com/gravatar/quickeditor/ui/editor/ContentLayout$Horizontal : com/gravatar/quickeditor/ui/editor/ContentLayout {
-	public static final field $stable I
-	public static final field INSTANCE Lcom/gravatar/quickeditor/ui/editor/ContentLayout$Horizontal;
-	public fun equals (Ljava/lang/Object;)Z
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class com/gravatar/quickeditor/ui/editor/ContentLayout$Vertical : com/gravatar/quickeditor/ui/editor/ContentLayout {
-	public static final field $stable I
-	public static final field INSTANCE Lcom/gravatar/quickeditor/ui/editor/ContentLayout$Vertical;
-	public fun equals (Ljava/lang/Object;)Z
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
@@ -222,10 +222,10 @@ public final class com/gravatar/quickeditor/ui/editor/GravatarQuickEditorDismiss
 
 public final class com/gravatar/quickeditor/ui/editor/GravatarQuickEditorParams {
 	public static final field $stable I
-	public synthetic fun <init> (Ljava/lang/String;Lcom/gravatar/types/Email;Lcom/gravatar/quickeditor/ui/editor/ContentLayout;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Lcom/gravatar/types/Email;Lcom/gravatar/quickeditor/ui/editor/AvatarPickerContentLayout;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getAppName ()Ljava/lang/String;
-	public final fun getContentLayout ()Lcom/gravatar/quickeditor/ui/editor/ContentLayout;
+	public final fun getAvatarPickerContentLayout ()Lcom/gravatar/quickeditor/ui/editor/AvatarPickerContentLayout;
 	public final fun getEmail ()Lcom/gravatar/types/Email;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
@@ -236,12 +236,12 @@ public final class com/gravatar/quickeditor/ui/editor/GravatarQuickEditorParams$
 	public fun <init> ()V
 	public final fun build ()Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorParams;
 	public final fun getAppName ()Ljava/lang/String;
-	public final fun getContentLayout ()Lcom/gravatar/quickeditor/ui/editor/ContentLayout;
+	public final fun getAvatarPickerContentLayout ()Lcom/gravatar/quickeditor/ui/editor/AvatarPickerContentLayout;
 	public final fun getEmail ()Lcom/gravatar/types/Email;
 	public final fun setAppName (Ljava/lang/String;)Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorParams$Builder;
 	public final synthetic fun setAppName (Ljava/lang/String;)V
-	public final fun setContentLayout (Lcom/gravatar/quickeditor/ui/editor/ContentLayout;)Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorParams$Builder;
-	public final synthetic fun setContentLayout (Lcom/gravatar/quickeditor/ui/editor/ContentLayout;)V
+	public final fun setAvatarPickerContentLayout (Lcom/gravatar/quickeditor/ui/editor/AvatarPickerContentLayout;)Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorParams$Builder;
+	public final synthetic fun setAvatarPickerContentLayout (Lcom/gravatar/quickeditor/ui/editor/AvatarPickerContentLayout;)V
 	public final fun setEmail (Lcom/gravatar/types/Email;)Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorParams$Builder;
 	public final synthetic fun setEmail (Lcom/gravatar/types/Email;)V
 }
