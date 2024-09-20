@@ -1,7 +1,7 @@
 package com.gravatar.quickeditor.ui.avatarpicker
 
 import android.net.Uri
-import com.gravatar.quickeditor.data.repository.IdentityAvatars
+import com.gravatar.quickeditor.data.repository.EmailAvatars
 import com.gravatar.restapi.models.Avatar
 import com.gravatar.restapi.models.Profile
 import com.gravatar.types.Email
@@ -12,12 +12,12 @@ internal data class AvatarPickerUiState(
     val isLoading: Boolean = false,
     val error: SectionError? = null,
     val profile: ComponentState<Profile>? = null,
-    val identityAvatars: IdentityAvatars? = null,
+    val emailAvatars: EmailAvatars? = null,
     val selectingAvatarId: String? = null,
     val uploadingAvatar: Uri? = null,
     val scrollToIndex: Int? = null,
 ) {
-    val avatarsSectionUiState: AvatarsSectionUiState? = identityAvatars?.mapToUiModel()?.let {
+    val avatarsSectionUiState: AvatarsSectionUiState? = emailAvatars?.mapToUiModel()?.let {
         AvatarsSectionUiState(
             avatars = it,
             scrollToIndex = scrollToIndex,
@@ -25,7 +25,7 @@ internal data class AvatarPickerUiState(
         )
     }
 
-    private fun IdentityAvatars.mapToUiModel(): List<AvatarUi> {
+    private fun EmailAvatars.mapToUiModel(): List<AvatarUi> {
         return mutableListOf<AvatarUi>().apply {
             if (uploadingAvatar != null) add(AvatarUi.Local(uploadingAvatar))
             addAll(
