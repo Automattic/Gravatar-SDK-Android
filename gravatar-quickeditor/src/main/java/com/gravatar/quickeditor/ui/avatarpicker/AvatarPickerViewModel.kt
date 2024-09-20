@@ -128,7 +128,15 @@ internal class AvatarPickerViewModel(
                             scrollToIndex = null,
                         )
                     }
-                    _actions.send(AvatarPickerAction.AvatarUploadFailed(uri))
+                    _actions.send(
+                        AvatarPickerAction.AvatarUploadFailed(
+                            uri,
+                            (
+                                (result.error as? QuickEditorError.Request)
+                                    ?.type as? ErrorType.InvalidRequest
+                            )?.error?.error,
+                        ),
+                    )
                 }
             }
         }
