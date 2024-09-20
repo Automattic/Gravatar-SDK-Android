@@ -48,7 +48,7 @@ class AvatarPickerViewModelTest {
 
     @Before
     fun setup() {
-        coEvery { profileService.retrieveCatching(email) } returns Result.Failure(ErrorType.UNKNOWN)
+        coEvery { profileService.retrieveCatching(email) } returns Result.Failure(ErrorType.Unknown)
         coEvery { avatarRepository.getAvatars(email) } returns Result.Success(emailAvatars)
     }
 
@@ -388,7 +388,7 @@ class AvatarPickerViewModelTest {
         coEvery { profileService.retrieveCatching(email) } returns Result.Success(profile)
         coEvery {
             avatarRepository.uploadAvatar(any(), any())
-        } returns Result.Failure(QuickEditorError.Request(ErrorType.SERVER))
+        } returns Result.Failure(QuickEditorError.Request(ErrorType.Server))
         coEvery { avatarRepository.getAvatars(any()) } returns Result.Success(emailAvatarsCopy)
 
         viewModel = initViewModel()
@@ -472,7 +472,7 @@ class AvatarPickerViewModelTest {
         coEvery { profileService.retrieveCatching(email) } returns Result.Success(profile)
         coEvery {
             avatarRepository.uploadAvatar(any(), any())
-        } returns Result.Failure(QuickEditorError.Request(ErrorType.SERVER))
+        } returns Result.Failure(QuickEditorError.Request(ErrorType.Server))
         coEvery { avatarRepository.getAvatars(any()) } returns Result.Success(emailAvatarsCopy)
 
         viewModel = initViewModel()

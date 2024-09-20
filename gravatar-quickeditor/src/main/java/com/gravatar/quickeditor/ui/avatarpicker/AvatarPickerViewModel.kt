@@ -195,13 +195,14 @@ internal class AvatarPickerViewModel(
             QuickEditorError.TokenNotFound -> SectionError.InvalidToken(handleExpiredSession)
             QuickEditorError.Unknown -> SectionError.Unknown
             is QuickEditorError.Request -> when (type) {
-                ErrorType.SERVER -> SectionError.ServerError
-                ErrorType.NETWORK -> SectionError.NoInternetConnection
-                ErrorType.UNAUTHORIZED -> SectionError.InvalidToken(handleExpiredSession)
-                ErrorType.NOT_FOUND,
-                ErrorType.RATE_LIMIT_EXCEEDED,
-                ErrorType.TIMEOUT,
-                ErrorType.UNKNOWN,
+                ErrorType.Server -> SectionError.ServerError
+                ErrorType.Network -> SectionError.NoInternetConnection
+                ErrorType.Unauthorized -> SectionError.InvalidToken(handleExpiredSession)
+                ErrorType.NotFound,
+                ErrorType.RateLimitExceeded,
+                ErrorType.Timeout,
+                ErrorType.Unknown,
+                is ErrorType.InvalidRequest,
                 -> SectionError.Unknown
             }
         }

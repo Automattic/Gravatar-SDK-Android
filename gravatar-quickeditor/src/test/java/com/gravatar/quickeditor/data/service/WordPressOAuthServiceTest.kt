@@ -42,7 +42,7 @@ class WordPressOAuthServiceTest {
 
             val result = wordPressOAuthService.getAccessToken("code", "clientId", "clientSecret", "redirectUri")
 
-            assertEquals(Result.Failure<WordPressOAuthToken, ErrorType>(ErrorType.SERVER), result)
+            assertEquals(Result.Failure<WordPressOAuthToken, ErrorType>(ErrorType.Server), result)
         }
 
     @Test
@@ -57,7 +57,7 @@ class WordPressOAuthServiceTest {
 
         val result = wordPressOAuthService.getAccessToken("code", "clientId", "clientSecret", "redirectUri")
 
-        assertEquals(Result.Failure<WordPressOAuthToken, ErrorType>(ErrorType.UNKNOWN), result)
+        assertEquals(Result.Failure<WordPressOAuthToken, ErrorType>(ErrorType.Unknown), result)
     }
 
     @Test

@@ -75,7 +75,7 @@ class OAuthViewModelTest {
                 any(),
                 any(),
             )
-        } returns Result.Failure(ErrorType.UNKNOWN)
+        } returns Result.Failure(ErrorType.Unknown)
 
         viewModel.actions.test {
             skipItems(1) // skipping the StartOAuth action
