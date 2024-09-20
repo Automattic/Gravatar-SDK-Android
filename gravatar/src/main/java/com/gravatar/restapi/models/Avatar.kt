@@ -15,11 +15,10 @@ import java.util.Objects
  *
  * @param imageId Unique identifier for the image.
  * @param imageUrl Image URL
- * @param isCropped Indicates whether the image has been cropped.
- * @param format Format of the image (e.g., JPEG, PNG).
  * @param rating Rating associated with the image.
  * @param updatedDate Date and time when the image was last updated.
  * @param altText Alternative text description of the image.
+ * @param selected Whether the image is currently selected as the provided selected email's avatar.
  */
 
 public class Avatar private constructor(
@@ -29,34 +28,49 @@ public class Avatar private constructor(
     // Image URL
     @SerializedName("image_url")
     public val imageUrl: kotlin.String,
-    // Indicates whether the image has been cropped.
-    @SerializedName("is_cropped")
-    public val isCropped: kotlin.Boolean,
-    // Format of the image (e.g., JPEG, PNG).
-    @SerializedName("format")
-    public val format: kotlin.Int,
     // Rating associated with the image.
     @SerializedName("rating")
-    public val rating: kotlin.String,
+    public val rating: Avatar.Rating,
     // Date and time when the image was last updated.
     @SerializedName("updated_date")
     public val updatedDate: String,
     // Alternative text description of the image.
-    @SerializedName("altText")
+    @SerializedName("alt_text")
     public val altText: kotlin.String,
+    // Whether the image is currently selected as the provided selected email's avatar.
+    @SerializedName("selected")
+    public val selected: kotlin.Boolean? = null,
 ) {
-    override fun toString(): String = "Avatar(imageId=$imageId, imageUrl=$imageUrl, isCropped=$isCropped, format=$format, rating=$rating, updatedDate=$updatedDate, altText=$altText)"
+    /**
+     * Rating associated with the image.
+     *
+     * Values: G,PG,R,X
+     */
+    public enum class Rating(public val value: kotlin.String) {
+        @SerializedName(value = "G")
+        G("G"),
+
+        @SerializedName(value = "PG")
+        PG("PG"),
+
+        @SerializedName(value = "R")
+        R("R"),
+
+        @SerializedName(value = "X")
+        X("X"),
+    }
+
+    override fun toString(): String = "Avatar(imageId=$imageId, imageUrl=$imageUrl, rating=$rating, updatedDate=$updatedDate, altText=$altText, selected=$selected)"
 
     override fun equals(other: Any?): Boolean = other is Avatar &&
         imageId == other.imageId &&
         imageUrl == other.imageUrl &&
-        isCropped == other.isCropped &&
-        format == other.format &&
         rating == other.rating &&
         updatedDate == other.updatedDate &&
-        altText == other.altText
+        altText == other.altText &&
+        selected == other.selected
 
-    override fun hashCode(): Int = Objects.hash(imageId, imageUrl, isCropped, format, rating, updatedDate, altText)
+    override fun hashCode(): Int = Objects.hash(imageId, imageUrl, rating, updatedDate, altText, selected)
 
     public class Builder {
         // Unique identifier for the image.
@@ -67,17 +81,9 @@ public class Avatar private constructor(
         @set:JvmSynthetic // Hide 'void' setter from Java
         public var imageUrl: kotlin.String? = null
 
-        // Indicates whether the image has been cropped.
-        @set:JvmSynthetic // Hide 'void' setter from Java
-        public var isCropped: kotlin.Boolean? = null
-
-        // Format of the image (e.g., JPEG, PNG).
-        @set:JvmSynthetic // Hide 'void' setter from Java
-        public var format: kotlin.Int? = null
-
         // Rating associated with the image.
         @set:JvmSynthetic // Hide 'void' setter from Java
-        public var rating: kotlin.String? = null
+        public var rating: Avatar.Rating? = null
 
         // Date and time when the image was last updated.
         @set:JvmSynthetic // Hide 'void' setter from Java
@@ -87,21 +93,23 @@ public class Avatar private constructor(
         @set:JvmSynthetic // Hide 'void' setter from Java
         public var altText: kotlin.String? = null
 
+        // Whether the image is currently selected as the provided selected email's avatar.
+        @set:JvmSynthetic // Hide 'void' setter from Java
+        public var selected: kotlin.Boolean? = null
+
         public fun setImageId(imageId: kotlin.String?): Builder = apply { this.imageId = imageId }
 
         public fun setImageUrl(imageUrl: kotlin.String?): Builder = apply { this.imageUrl = imageUrl }
 
-        public fun setIsCropped(isCropped: kotlin.Boolean?): Builder = apply { this.isCropped = isCropped }
-
-        public fun setFormat(format: kotlin.Int?): Builder = apply { this.format = format }
-
-        public fun setRating(rating: kotlin.String?): Builder = apply { this.rating = rating }
+        public fun setRating(rating: Avatar.Rating?): Builder = apply { this.rating = rating }
 
         public fun setUpdatedDate(updatedDate: String?): Builder = apply { this.updatedDate = updatedDate }
 
         public fun setAltText(altText: kotlin.String?): Builder = apply { this.altText = altText }
 
-        public fun build(): Avatar = Avatar(imageId!!, imageUrl!!, isCropped!!, format!!, rating!!, updatedDate!!, altText!!)
+        public fun setSelected(selected: kotlin.Boolean?): Builder = apply { this.selected = selected }
+
+        public fun build(): Avatar = Avatar(imageId!!, imageUrl!!, rating!!, updatedDate!!, altText!!, selected)
     }
 }
 

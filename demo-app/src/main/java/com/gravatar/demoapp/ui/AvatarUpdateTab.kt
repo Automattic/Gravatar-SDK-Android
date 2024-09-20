@@ -179,12 +179,16 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
                 contentLayout = pickerContentLayout
             },
             authenticationMethod = authenticationMethod,
-            onAvatarSelected = { result ->
-                avatarUrl = result.avatarUri.toString()
+            onAvatarSelected = remember {
+                { result ->
+                    avatarUrl = result.avatarUri.toString()
+                }
             },
-            onDismiss = {
-                Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()
-                showBottomSheet = false
+            onDismiss = remember {
+                {
+                    Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()
+                    showBottomSheet = false
+                }
             },
         )
     }

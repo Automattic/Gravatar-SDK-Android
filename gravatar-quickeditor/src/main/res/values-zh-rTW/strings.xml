@@ -1,9 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: +0000
+Translation-Revision-Date: 2024-09-12 13:54:02+0000
 Plural-Forms: nplurals=1; plural=0;
 Generator: GlotPress/2.4.0-alpha
 Language: zh_TW
 -->
 <resources>
+    <string name="avatar_picker_session_error_close_cta">關閉</string>
+    <string name="avatar_picker_session_error_no_login_message">基於安全考量，工作階段已過期。</string>
+    <string name="login_required_message">請先登入，才可修改 Gravatar 個人檔案</string>
+    <string name="login_required">需要登入</string>
+    <string name="avatar_picker_network_error_message">噢噢，不好了。 看來你目前並未連上網際網路。</string>
+    <string name="avatar_picker_network_error_title">無網際網路</string>
+    <string name="avatar_picker_session_error_cta">登入</string>
+    <string name="avatar_picker_session_error_message">基於安全考量，工作階段已過期。 請登入以更新大頭貼。</string>
+    <string name="avatar_picker_session_error_title">工作階段已過期</string>
+    <string name="avatar_picker_error_retry_cta">再試一次</string>
+    <string name="avatar_picker_unknown_error_message">發生嚴重錯誤。</string>
+    <string name="avatar_picker_server_error_message">發生錯誤，我們無法連結至 Gravatar 伺服器。</string>
+    <string name="avatar_picker_server_error_title">糟糕</string>
+    <string name="avatar_selection_error">糟糕，在選取大頭貼時發生錯誤。</string>
+    <string name="avatar_upload_error_action">重試</string>
+    <string name="avatar_upload_error">糟糕，在上傳圖片時發生錯誤。</string>
+    <string name="avatar_picker_title_empty_state">立即設定你的大頭貼</string>
+    <string name="capture_photo_icon_description">拍攝照片</string>
+    <string name="photo_library_icon_description">照片庫</string>
+    <string name="avatar_picker_take_photo">拍攝照片</string>
+    <string name="avatar_picker_choose_a_photo">選擇一張照片</string>
+    <string name="avatar_picker_upload_image">上傳圖片</string>
+    <string name="avatar_selected_confirmation">已更新大頭貼！ 可能需要幾分鐘才能在網頁各處顯示。</string>
+    <string name="avatar_picker_description">選擇或上傳你喜愛的大頭貼圖片，並與電子郵件地址建立連結。</string>
+    <string name="avatar_picker_title">大頭貼</string>
+    <string name="bottom_sheet_done">完成</string>
+    <string name="selectable_avatar_content_description">大頭貼圖片</string>
+    <string name="gravatar">Gravatar</string>
 </resources>

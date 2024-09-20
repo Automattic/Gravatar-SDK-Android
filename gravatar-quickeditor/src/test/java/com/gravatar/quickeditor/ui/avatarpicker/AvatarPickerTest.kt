@@ -1,7 +1,7 @@
 package com.gravatar.quickeditor.ui.avatarpicker
 
 import com.gravatar.extensions.defaultProfile
-import com.gravatar.quickeditor.data.repository.IdentityAvatars
+import com.gravatar.quickeditor.data.repository.EmailAvatars
 import com.gravatar.quickeditor.ui.editor.ContentLayout
 import com.gravatar.quickeditor.ui.gravatarScreenshotTest
 import com.gravatar.restapi.models.Avatar
@@ -25,24 +25,20 @@ class AvatarPickerTest : RoborazziTest() {
                 profile = ComponentState.Loaded(profile),
                 email = Email("william.henry.harrison@example.com"),
                 contentLayout = ContentLayout.Horizontal,
-                identityAvatars = IdentityAvatars(
+                emailAvatars = EmailAvatars(
                     avatars = listOf(
                         Avatar {
                             imageUrl = "/image/url1"
-                            format = 0
                             imageId = "1"
-                            rating = "G"
+                            rating = Avatar.Rating.G
                             altText = "alt"
-                            isCropped = true
                             updatedDate = ""
                         },
                         Avatar {
                             imageUrl = "/image/url2"
-                            format = 0
                             imageId = "2"
-                            rating = "G"
+                            rating = Avatar.Rating.G
                             altText = "alt"
-                            isCropped = true
                             updatedDate = ""
                         },
                     ),
@@ -61,24 +57,20 @@ class AvatarPickerTest : RoborazziTest() {
                 profile = ComponentState.Loaded(profile),
                 email = Email("william.henry.harrison@example.com"),
                 contentLayout = ContentLayout.Horizontal,
-                identityAvatars = IdentityAvatars(
+                emailAvatars = EmailAvatars(
                     avatars = listOf(
                         Avatar {
                             imageUrl = "/image/url1"
-                            format = 0
                             imageId = "1"
-                            rating = "G"
+                            rating = Avatar.Rating.G
                             altText = "alt"
-                            isCropped = true
                             updatedDate = ""
                         },
                         Avatar {
                             imageUrl = "/image/url2"
-                            format = 0
                             imageId = "2"
-                            rating = "G"
+                            rating = Avatar.Rating.G
                             altText = "alt"
-                            isCropped = true
                             updatedDate = ""
                         },
                     ),

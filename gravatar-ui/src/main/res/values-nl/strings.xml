@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: +0000
+Translation-Revision-Date: 2024-09-13 16:54:05+0000
 Plural-Forms: nplurals=2; plural=n != 1;
 Generator: GlotPress/2.4.0-alpha
 Language: nl
 -->
 <resources>
+    <string name="empty_state_view_profile_button">Profiel claimen</string>
+    <string name="empty_state_user_info">Je locatie, persoonlijk voornaamwoorden, etc. toevoegen</string>
+    <string name="empty_state_display_name">Je naam</string>
+    <string name="empty_state_about_me">Vertel de wereld wie je bent: Je avatar en bio die jou door het hele web volgen.</string>
+    <string name="view_profile_button">Profiel bekijken</string>
 </resources>

@@ -6,10 +6,8 @@ import com.gravatar.quickeditor.data.models.QuickEditorError
 import com.gravatar.quickeditor.data.storage.DataStoreTokenStorage
 import com.gravatar.quickeditor.ui.CoroutineTestRule
 import com.gravatar.restapi.models.Avatar
-import com.gravatar.restapi.models.Identity
 import com.gravatar.services.AvatarService
 import com.gravatar.services.ErrorType
-import com.gravatar.services.IdentityService
 import com.gravatar.services.Result
 import com.gravatar.types.Email
 import io.mockk.coEvery
@@ -31,7 +29,6 @@ class AvatarRepositoryTest {
     var coroutinesTestRule = CoroutineTestRule(testDispatcher)
 
     private val avatarService = mockk<AvatarService>()
-    private val identityService = mockk<IdentityService>()
     private val tokenStorage = mockk<DataStoreTokenStorage>()
 
     private lateinit var avatarRepository: AvatarRepository
@@ -42,7 +39,6 @@ class AvatarRepositoryTest {
     fun setUp() {
         avatarRepository = AvatarRepository(
             avatarService = avatarService,
-            identityService = identityService,
             tokenStorage = tokenStorage,
             dispatcher = testDispatcher,
         )
@@ -54,51 +50,34 @@ class AvatarRepositoryTest {
 
         val result = avatarRepository.getAvatars(email)
 
-        assertEquals(Result.Failure<IdentityAvatars, QuickEditorError>(QuickEditorError.TokenNotFound), result)
+        assertEquals(Result.Failure<EmailAvatars, QuickEditorError>(QuickEditorError.TokenNotFound), result)
     }
 
     @Test
-    fun `given token stored when avatar service fails then Failure result`() = runTest {
+    fun `given token stored when get avatars fails then Failure result`() = runTest {
         coEvery { tokenStorage.getToken(any()) } returns "token"
 
-        coEvery { avatarService.retrieveCatching(any()) } returns Result.Failure(ErrorType.SERVER)
-        coEvery { identityService.retrieveCatching(any(), any()) } returns Result.Success(createIdentity("1"))
+        coEvery { avatarService.retrieveCatching(any(), any()) } returns Result.Failure(ErrorType.SERVER)
 
         val result = avatarRepository.getAvatars(email)
 
         assertEquals(
-            Result.Failure<IdentityAvatars, QuickEditorError>(QuickEditorError.Request(ErrorType.SERVER)),
+            Result.Failure<EmailAvatars, QuickEditorError>(QuickEditorError.Request(ErrorType.SERVER)),
             result,
         )
     }
 
     @Test
-    fun `given token stored when identity service fails then Failure result`() = runTest {
-        coEvery { tokenStorage.getToken(any()) } returns "token"
-
-        coEvery { avatarService.retrieveCatching(any()) } returns Result.Success(listOf(createAvatar("1")))
-        coEvery { identityService.retrieveCatching(any(), any()) } returns Result.Failure(ErrorType.SERVER)
-
-        val result = avatarRepository.getAvatars(email)
-
-        assertEquals(
-            Result.Failure<IdentityAvatars, QuickEditorError>(QuickEditorError.Request(ErrorType.SERVER)),
-            result,
-        )
-    }
-
-    @Test
-    fun `given token stored when avatar service and identity service succeed then Success result`() = runTest {
+    fun `given token stored when get avatars succeed then Success result`() = runTest {
         val imageId = "2"
-        val avatar = createAvatar(imageId)
+        val avatar = createAvatar(imageId, isSelected = true)
         coEvery { tokenStorage.getToken(any()) } returns "token"
-        coEvery { avatarService.retrieveCatching(any()) } returns Result.Success(listOf(avatar))
-        coEvery { identityService.retrieveCatching(any(), any()) } returns Result.Success(createIdentity(imageId))
+        coEvery { avatarService.retrieveCatching(any(), any()) } returns Result.Success(listOf(avatar))
 
         val result = avatarRepository.getAvatars(email)
 
         assertEquals(
-            Result.Success<IdentityAvatars, QuickEditorError>(IdentityAvatars(listOf(avatar), imageId)),
+            Result.Success<EmailAvatars, QuickEditorError>(EmailAvatars(listOf(avatar), imageId)),
             result,
         )
     }
@@ -115,7 +94,7 @@ class AvatarRepositoryTest {
     @Test
     fun `given token stored when avatar selected fails then Failure result`() = runTest {
         coEvery { tokenStorage.getToken(any()) } returns "token"
-        coEvery { identityService.setAvatarCatching(any(), any(), any()) } returns Result.Failure(ErrorType.UNKNOWN)
+        coEvery { avatarService.setAvatarCatching(any(), any(), any()) } returns Result.Failure(ErrorType.UNKNOWN)
 
         val result = avatarRepository.selectAvatar(email, "avatarId")
 
@@ -125,7 +104,7 @@ class AvatarRepositoryTest {
     @Test
     fun `given token stored when avatar selected succeeds then Success result`() = runTest {
         coEvery { tokenStorage.getToken(any()) } returns "token"
-        coEvery { identityService.setAvatarCatching(any(), any(), any()) } returns Result.Success(Unit)
+        coEvery { avatarService.setAvatarCatching(any(), any(), any()) } returns Result.Success(Unit)
 
         val result = avatarRepository.selectAvatar(email, "avatarId")
 
@@ -136,7 +115,7 @@ class AvatarRepositoryTest {
     fun `given token not stored when avatar upload then Failure result`() = runTest {
         val uri = mockk<Uri>()
         coEvery { tokenStorage.getToken(any()) } returns null
-        coEvery { avatarService.uploadCatching(any(), any()) } returns Result.Success(Unit)
+        coEvery { avatarService.uploadCatching(any(), any()) } returns Result.Success(createAvatar("1"))
 
         val result = avatarRepository.uploadAvatar(email, uri)
 
@@ -145,17 +124,18 @@ class AvatarRepositoryTest {
 
     @Test
     fun `given token stored when avatar upload succeeds then Success result`() = runTest {
+        val avatar = createAvatar("2")
         mockkStatic("androidx.core.net.UriKt")
         val file = mockk<File>()
         val uri = mockk<Uri> {
             every { toFile() } returns file
         }
         coEvery { tokenStorage.getToken(any()) } returns "token"
-        coEvery { avatarService.uploadCatching(any(), any()) } returns Result.Success(Unit)
+        coEvery { avatarService.uploadCatching(any(), any()) } returns Result.Success(avatar)
 
         val result = avatarRepository.uploadAvatar(email, uri)
 
-        assertEquals(Result.Success<Unit, QuickEditorError>(Unit), result)
+        assertEquals(Result.Success<Avatar, QuickEditorError>(avatar), result)
     }
 
     @Test
@@ -173,23 +153,12 @@ class AvatarRepositoryTest {
         assertEquals(Result.Failure<Unit, QuickEditorError>(QuickEditorError.Request(ErrorType.SERVER)), result)
     }
 
-    private fun createAvatar(id: String) = Avatar {
+    private fun createAvatar(id: String, isSelected: Boolean = false) = Avatar {
         imageUrl = "/image/url"
-        format = 0
         imageId = id
-        rating = "G"
+        rating = Avatar.Rating.G
         altText = "alt"
-        isCropped = true
         updatedDate = ""
-    }
-
-    private fun createIdentity(imageIdentifier: String) = Identity {
-        id = "id"
-        email = "email"
-        imageId = imageIdentifier
-        rating = "G"
-        imageUrl = "url"
-        emailHash = "hash"
-        format = 1
+        selected = isSelected
     }
 }

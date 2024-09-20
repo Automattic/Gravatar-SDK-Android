@@ -145,11 +145,9 @@ private fun HorizontalAvatarSectionPreview() {
                     AvatarUi.Uploaded(
                         avatar = Avatar {
                             imageUrl = "/image/url"
-                            format = 0
                             imageId = it.toString()
-                            rating = "G"
+                            rating = Avatar.Rating.G
                             altText = "alt"
-                            isCropped = true
                             updatedDate = ""
                         },
                         isSelected = it == 0,

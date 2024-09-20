@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: +0000
+Translation-Revision-Date: 2024-09-12 13:54:02+0000
 Plural-Forms: nplurals=1; plural=0;
 Generator: GlotPress/2.4.0-alpha
 Language: zh_TW
 -->
 <resources>
+    <string name="empty_state_view_profile_button">登記個人檔案</string>
+    <string name="empty_state_user_info">新增你的位置、性別認同代稱等</string>
+    <string name="empty_state_display_name">你的姓名</string>
+    <string name="empty_state_about_me">讓全世界認識你。 網路世界的隨身大頭貼與簡介。</string>
+    <string name="view_profile_button">檢視個人檔案</string>
 </resources>

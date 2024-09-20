@@ -1,9 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: +0000
+Translation-Revision-Date: 2024-09-12 15:54:03+0000
 Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);
 Generator: GlotPress/2.4.0-alpha
 Language: ru
 -->
 <resources>
+    <string name="avatar_picker_session_error_close_cta">Закрыть</string>
+    <string name="avatar_picker_session_error_no_login_message">В целях безопасности время сеанса истекло.</string>
+    <string name="login_required_message">Необходимо войти в учётную запись, чтобы изменить профиль Gravatar</string>
+    <string name="login_required">Необходимо войти в учётную запись</string>
+    <string name="avatar_picker_network_error_message">Ой-ой-ой! Похоже, вы не подключены к Интернету.</string>
+    <string name="avatar_picker_network_error_title">Отсутствует подключение к Интернету</string>
+    <string name="avatar_picker_session_error_cta">Войти</string>
+    <string name="avatar_picker_session_error_message">В целях безопасности время сеанса истекло. Войдите, чтобы изменить свой аватар.</string>
+    <string name="avatar_picker_session_error_title">Время сеанса истекло</string>
+    <string name="avatar_picker_error_retry_cta">Повторить попытку</string>
+    <string name="avatar_picker_unknown_error_message">Что-то пошло не так.</string>
+    <string name="avatar_picker_server_error_message">Что-то пошло не так, и нам не удалось подключиться к серверам Gravatar.</string>
+    <string name="avatar_picker_server_error_title">Ой-ой-ой</string>
+    <string name="avatar_selection_error">Ошибка при выборе аватара.</string>
+    <string name="avatar_upload_error_action">Повторить попытку</string>
+    <string name="avatar_upload_error">Ошибка при загрузке изображения.</string>
+    <string name="avatar_picker_title_empty_state">Настройте свой аватар</string>
+    <string name="capture_photo_icon_description">Сделать фотоснимок</string>
+    <string name="photo_library_icon_description">Библиотека фотографий</string>
+    <string name="avatar_picker_take_photo">Сделать фотографию</string>
+    <string name="avatar_picker_choose_a_photo">Выбрать фотографию</string>
+    <string name="avatar_picker_upload_image">Загрузить изображение</string>
+    <string name="avatar_selected_confirmation">Аватар обновлён! Отображение на всех сайтах может занять несколько минут.</string>
+    <string name="avatar_picker_description">Выберите или загрузите любимые изображения для аватаров и подключите их к своему адресу электронной почты.</string>
+    <string name="avatar_picker_title">Аватары</string>
+    <string name="bottom_sheet_done">Готово</string>
+    <string name="selectable_avatar_content_description">Изображение аватара</string>
+    <string name="gravatar">Gravatar</string>
 </resources>

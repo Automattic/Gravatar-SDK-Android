@@ -86,12 +86,10 @@ private fun createAvatarList(size: Int): List<AvatarUi> {
     return List(size) {
         AvatarUi.Uploaded(
             avatar = Avatar {
-                imageUrl = "/image/url"
-                format = 0
+                imageUrl = "/image/url/$it"
                 imageId = it.toString()
-                rating = "G"
+                rating = Avatar.Rating.G
                 altText = "alt"
-                isCropped = true
                 updatedDate = ""
             },
             isLoading = false,

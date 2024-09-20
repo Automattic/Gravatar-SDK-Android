@@ -36,6 +36,22 @@ android {
     }
     kotlinOptions {
         jvmTarget = "1.8"
+        val composeReportsDir = "reports/compose"
+        freeCompilerArgs += listOf(
+            "-P",
+            "plugin:androidx.compose.compiler.plugins.kotlin:stabilityConfigurationPath=" +
+                "${project.rootDir}/compose_compiler_config.conf",
+        )
+        freeCompilerArgs += listOf(
+            "-P",
+            "plugin:androidx.compose.compiler.plugins.kotlin:metricsDestination=" +
+                project.layout.buildDirectory.get().dir(composeReportsDir).asFile.absolutePath,
+        )
+        freeCompilerArgs += listOf(
+            "-P",
+            "plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=" +
+                project.layout.buildDirectory.get().dir(composeReportsDir).asFile.absolutePath,
+        )
     }
     detekt {
         config.setFrom("${project.rootDir}/config/detekt/detekt.yml")
@@ -85,7 +101,6 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.android.material)
-    implementation(libs.ucrop)
     implementation(libs.coil.compose)
     implementation(libs.coil.svg)
     implementation(project(":gravatar"))

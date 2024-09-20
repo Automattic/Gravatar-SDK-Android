@@ -1,9 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: +0000
+Translation-Revision-Date: 2024-09-12 11:54:03+0000
 Plural-Forms: nplurals=2; plural=(n > 1);
 Generator: GlotPress/2.4.0-alpha
 Language: tr
 -->
 <resources>
+    <string name="avatar_picker_session_error_close_cta">Kapat</string>
+    <string name="avatar_picker_session_error_no_login_message">Güvenlik nedeniyle oturum süresi doldu.</string>
+    <string name="login_required_message">Gravatar profilinizi değiştirmek için önce oturum açmalısınız</string>
+    <string name="login_required">Oturum açmanız gerekiyor</string>
+    <string name="avatar_picker_network_error_message">Üzgünüz. Görünüşe göre internete bağlı değilsiniz.</string>
+    <string name="avatar_picker_network_error_title">İnternet yok</string>
+    <string name="avatar_picker_session_error_cta">Oturum açın</string>
+    <string name="avatar_picker_session_error_message">Güvenlik nedeniyle oturum süresi doldu. Avatarınızı güncellemek için lütfen oturum açın.</string>
+    <string name="avatar_picker_session_error_title">Oturum süresi doldu</string>
+    <string name="avatar_picker_error_retry_cta">Tekrar deneyin</string>
+    <string name="avatar_picker_unknown_error_message">Bir sorun oluştu.</string>
+    <string name="avatar_picker_server_error_message">Bir sorun oluştu ve Gravatar sunucularına bağlanılamadı.</string>
+    <string name="avatar_picker_server_error_title">Üzgünüz</string>
+    <string name="avatar_selection_error">Üzgünüz, avatar seçilirken bir sorun oluştu</string>
+    <string name="avatar_upload_error_action">Tekrar dene</string>
+    <string name="avatar_upload_error">Üzgünüz, görsel yüklenirken bir hata oluştu.</string>
+    <string name="avatar_picker_title_empty_state">Avatarınızı oluşturalım</string>
+    <string name="capture_photo_icon_description">Fotoğraf Çekin</string>
+    <string name="photo_library_icon_description">Fotoğraf kütüphanesi</string>
+    <string name="avatar_picker_take_photo">Fotoğraf Çek</string>
+    <string name="avatar_picker_choose_a_photo">Fotoğraf Seç</string>
+    <string name="avatar_picker_upload_image">Görsel yükle</string>
+    <string name="avatar_selected_confirmation">Avatar güncellendi! Her yerde görünmesi birkaç dakika sürebilir.</string>
+    <string name="avatar_picker_description">Favori avatar görsellerinizi oluşturun veya yükleyin ve onları e-posta adresinize bağlayın.</string>
+    <string name="avatar_picker_title">Avatarlar</string>
+    <string name="bottom_sheet_done">Tamam</string>
+    <string name="selectable_avatar_content_description">Avatar Görseli</string>
+    <string name="gravatar">Gravatar</string>
 </resources>

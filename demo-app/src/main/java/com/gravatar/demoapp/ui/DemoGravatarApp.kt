@@ -371,16 +371,16 @@ private fun AvatarTab(
                         onGravatarUrlChanged(
                             AvatarUrl(
                                 Email(settingsState.email),
-                                AvatarQueryOptions(
-                                    preferredSize = settingsState.size,
+                                AvatarQueryOptions {
+                                    preferredSize = settingsState.size
                                     defaultAvatarOption = if (settingsState.defaultAvatarImageEnabled) {
                                         settingsState.selectedDefaultAvatar
                                     } else {
                                         null
-                                    },
-                                    forceDefaultAvatar = if (settingsState.forceDefaultAvatar) true else null,
-                                    rating = if (settingsState.imageRatingEnabled) settingsState.imageRating else null,
-                                ),
+                                    }
+                                    forceDefaultAvatar = if (settingsState.forceDefaultAvatar) true else null
+                                    rating = if (settingsState.imageRatingEnabled) settingsState.imageRating else null
+                                },
                             ).url().toString(),
                         )
                     } catch (e: Exception) {
