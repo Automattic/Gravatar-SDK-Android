@@ -7,7 +7,7 @@
  */
 package com.gravatar.restapi.models
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
 import java.util.Objects
 
 /**
@@ -23,22 +23,22 @@ import java.util.Objects
 
 public class ProfileContactInfo private constructor(
     // The user's home phone number.
-    @SerializedName("home_phone")
+    @Json(name = "home_phone")
     public val homePhone: kotlin.String? = null,
     // The user's work phone number.
-    @SerializedName("work_phone")
+    @Json(name = "work_phone")
     public val workPhone: kotlin.String? = null,
     // The user's cell phone number.
-    @SerializedName("cell_phone")
+    @Json(name = "cell_phone")
     public val cellPhone: kotlin.String? = null,
     // The user's email address as provided on the contact section of the profile. Might differ from their account emails.
-    @SerializedName("email")
+    @Json(name = "email")
     public val email: kotlin.String? = null,
     // The URL to the user's contact form.
-    @SerializedName("contact_form")
+    @Json(name = "contact_form")
     public val contactForm: java.net.URI? = null,
     // The URL to the user's calendar.
-    @SerializedName("calendar")
+    @Json(name = "calendar")
     public val calendar: java.net.URI? = null,
 ) {
     override fun toString(): String = "ProfileContactInfo(homePhone=$homePhone, workPhone=$workPhone, cellPhone=$cellPhone, email=$email, contactForm=$contactForm, calendar=$calendar)"

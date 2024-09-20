@@ -7,7 +7,7 @@
  */
 package com.gravatar.restapi.models
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
 import java.util.Objects
 
 /**
@@ -21,16 +21,16 @@ import java.util.Objects
 
 public class VerifiedAccount private constructor(
     // The type of the service.
-    @SerializedName("service_type")
+    @Json(name = "service_type")
     public val serviceType: kotlin.String,
     // The name of the service.
-    @SerializedName("service_label")
+    @Json(name = "service_label")
     public val serviceLabel: kotlin.String,
     // The URL to the service's icon.
-    @SerializedName("service_icon")
+    @Json(name = "service_icon")
     public val serviceIcon: java.net.URI,
     // The URL to the user's profile on the service.
-    @SerializedName("url")
+    @Json(name = "url")
     public val url: java.net.URI,
 ) {
     override fun toString(): String = "VerifiedAccount(serviceType=$serviceType, serviceLabel=$serviceLabel, serviceIcon=$serviceIcon, url=$url)"

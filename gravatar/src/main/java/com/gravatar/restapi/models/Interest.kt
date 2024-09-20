@@ -7,7 +7,7 @@
  */
 package com.gravatar.restapi.models
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
 import java.util.Objects
 
 /**
@@ -19,10 +19,10 @@ import java.util.Objects
 
 public class Interest private constructor(
     // The unique identifier for the interest.
-    @SerializedName("id")
+    @Json(name = "id")
     public val id: kotlin.Int,
     // The name of the interest.
-    @SerializedName("name")
+    @Json(name = "name")
     public val name: kotlin.String,
 ) {
     override fun toString(): String = "Interest(id=$id, name=$name)"

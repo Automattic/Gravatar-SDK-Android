@@ -7,7 +7,7 @@
  */
 package com.gravatar.restapi.models
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
 import java.util.Objects
 
 /**
@@ -21,16 +21,16 @@ import java.util.Objects
 
 public class Language private constructor(
     // The language code.
-    @SerializedName("code")
+    @Json(name = "code")
     public val code: kotlin.String,
     // The language name.
-    @SerializedName("name")
+    @Json(name = "name")
     public val name: kotlin.String,
     // Whether the language is the user's primary language.
-    @SerializedName("is_primary")
+    @Json(name = "is_primary")
     public val isPrimary: kotlin.Boolean,
     // The order of the language in the user's profile.
-    @SerializedName("order")
+    @Json(name = "order")
     public val order: kotlin.Int,
 ) {
     override fun toString(): String = "Language(code=$code, name=$name, isPrimary=$isPrimary, order=$order)"

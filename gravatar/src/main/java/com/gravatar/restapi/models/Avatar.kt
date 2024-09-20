@@ -7,7 +7,8 @@
  */
 package com.gravatar.restapi.models
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 import java.util.Objects
 
 /**
@@ -23,22 +24,22 @@ import java.util.Objects
 
 public class Avatar private constructor(
     // Unique identifier for the image.
-    @SerializedName("image_id")
+    @Json(name = "image_id")
     public val imageId: kotlin.String,
     // Image URL
-    @SerializedName("image_url")
+    @Json(name = "image_url")
     public val imageUrl: java.net.URI,
     // Rating associated with the image.
-    @SerializedName("rating")
+    @Json(name = "rating")
     public val rating: Avatar.Rating,
     // Date and time when the image was last updated.
-    @SerializedName("updated_date")
+    @Json(name = "updated_date")
     public val updatedDate: String,
     // Alternative text description of the image.
-    @SerializedName("alt_text")
+    @Json(name = "alt_text")
     public val altText: kotlin.String,
     // Whether the image is currently selected as the provided selected email's avatar.
-    @SerializedName("selected")
+    @Json(name = "selected")
     public val selected: kotlin.Boolean? = null,
 ) {
     /**
@@ -46,17 +47,18 @@ public class Avatar private constructor(
      *
      * Values: G,PG,R,X
      */
+    @JsonClass(generateAdapter = false)
     public enum class Rating(public val value: kotlin.String) {
-        @SerializedName(value = "G")
+        @Json(name = "G")
         G("G"),
 
-        @SerializedName(value = "PG")
+        @Json(name = "PG")
         PG("PG"),
 
-        @SerializedName(value = "R")
+        @Json(name = "R")
         R("R"),
 
-        @SerializedName(value = "X")
+        @Json(name = "X")
         X("X"),
     }
 
