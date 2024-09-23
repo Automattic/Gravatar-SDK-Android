@@ -267,13 +267,13 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
 
                                 is Result.Failure -> {
                                     when (result.error) {
-                                        ErrorType.NOT_FOUND -> {
+                                        ErrorType.NotFound -> {
                                             profileState = ComponentState.Empty
                                         }
 
                                         else -> {
-                                            onError(result.error.name, null)
-                                            error = result.error.name
+                                            onError(result.error.toString(), null)
+                                            error = result.error.toString()
                                         }
                                     }
                                 }

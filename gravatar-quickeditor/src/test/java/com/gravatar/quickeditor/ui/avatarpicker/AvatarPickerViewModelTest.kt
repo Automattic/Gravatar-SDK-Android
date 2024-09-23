@@ -9,6 +9,7 @@ import com.gravatar.quickeditor.data.repository.AvatarRepository
 import com.gravatar.quickeditor.data.repository.EmailAvatars
 import com.gravatar.quickeditor.ui.CoroutineTestRule
 import com.gravatar.restapi.models.Avatar
+import com.gravatar.restapi.models.Error
 import com.gravatar.services.ErrorType
 import com.gravatar.services.ProfileService
 import com.gravatar.services.Result
@@ -48,7 +49,7 @@ class AvatarPickerViewModelTest {
 
     @Before
     fun setup() {
-        coEvery { profileService.retrieveCatching(email) } returns Result.Failure(ErrorType.UNKNOWN)
+        coEvery { profileService.retrieveCatching(email) } returns Result.Failure(ErrorType.Unknown)
         coEvery { avatarRepository.getAvatars(email) } returns Result.Success(emailAvatars)
     }
 
@@ -384,11 +385,22 @@ class AvatarPickerViewModelTest {
     fun `given cropped image when upload failure then uiState is updated`() = runTest {
         val uri = mockk<Uri>()
         val emailAvatarsCopy = emailAvatars.copy(avatars = avatars, selectedAvatarId = "1")
+        val uploadErrorMessage = "Failed to upload avatar"
         every { fileUtils.deleteFile(any()) } returns Unit
         coEvery { profileService.retrieveCatching(email) } returns Result.Success(profile)
         coEvery {
             avatarRepository.uploadAvatar(any(), any())
-        } returns Result.Failure(QuickEditorError.Request(ErrorType.SERVER))
+        } returns Result.Failure(
+            QuickEditorError.Request(
+                ErrorType.InvalidRequest(
+                    error = Error {
+                        code = "error"
+                        error = uploadErrorMessage
+                    },
+                ),
+            ),
+        )
+
         coEvery { avatarRepository.getAvatars(any()) } returns Result.Success(emailAvatarsCopy)
 
         viewModel = initViewModel()
@@ -425,7 +437,7 @@ class AvatarPickerViewModelTest {
             )
         }
         viewModel.actions.test {
-            assertEquals(AvatarPickerAction.AvatarUploadFailed(uri), awaitItem())
+            assertEquals(AvatarPickerAction.AvatarUploadFailed(uri, uploadErrorMessage), awaitItem())
         }
     }
 
@@ -472,7 +484,7 @@ class AvatarPickerViewModelTest {
         coEvery { profileService.retrieveCatching(email) } returns Result.Success(profile)
         coEvery {
             avatarRepository.uploadAvatar(any(), any())
-        } returns Result.Failure(QuickEditorError.Request(ErrorType.SERVER))
+        } returns Result.Failure(QuickEditorError.Request(ErrorType.Server))
         coEvery { avatarRepository.getAvatars(any()) } returns Result.Success(emailAvatarsCopy)
 
         viewModel = initViewModel()

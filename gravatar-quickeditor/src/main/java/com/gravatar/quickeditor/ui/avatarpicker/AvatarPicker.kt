@@ -206,7 +206,7 @@ private suspend fun AvatarPickerAction.handle(
 
         is AvatarPickerAction.AvatarUploadFailed -> {
             val result = snackState.showQESnackbar(
-                message = context.getString(R.string.avatar_upload_error),
+                message = this.message ?: context.getString(R.string.avatar_upload_error),
                 actionLabel = context.getString(R.string.avatar_upload_error_action),
                 snackbarType = SnackbarType.Error,
                 withDismissAction = true,

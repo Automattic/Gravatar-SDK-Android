@@ -9,6 +9,7 @@ import retrofit2.Response
  * [message] The HTTP status message.
  */
 public class HttpException internal constructor(response: Response<*>) : RuntimeException() {
+    internal val rawErrorBody: String? = response.errorBody()?.string()
     public val code: Int = response.code()
-    public override val message: String = "HTTP ${response.code()} ${response.errorBody()?.string()}"
+    public override val message: String = "HTTP ${response.code()} $rawErrorBody"
 }

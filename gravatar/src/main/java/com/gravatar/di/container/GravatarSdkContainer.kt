@@ -20,7 +20,7 @@ internal class GravatarSdkContainer private constructor() {
 
     private fun getRetrofitApiV3Builder() = Retrofit.Builder().baseUrl(GRAVATAR_API_BASE_URL_V3)
 
-    private val gson = GsonBuilder().setLenient()
+    val gson = GsonBuilder().setLenient()
         .create()
 
     val dispatcherMain: CoroutineDispatcher = Dispatchers.Main
