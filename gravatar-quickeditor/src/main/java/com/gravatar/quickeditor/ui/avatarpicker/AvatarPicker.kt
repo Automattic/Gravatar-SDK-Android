@@ -45,7 +45,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.gravatar.extensions.defaultProfile
 import com.gravatar.quickeditor.R
-import com.gravatar.quickeditor.data.repository.IdentityAvatars
+import com.gravatar.quickeditor.data.repository.EmailAvatars
 import com.gravatar.quickeditor.ui.components.AvatarsSection
 import com.gravatar.quickeditor.ui.components.EmailLabel
 import com.gravatar.quickeditor.ui.components.ErrorSection
@@ -206,7 +206,7 @@ private suspend fun AvatarPickerAction.handle(
 
         is AvatarPickerAction.AvatarUploadFailed -> {
             val result = snackState.showQESnackbar(
-                message = context.getString(R.string.avatar_upload_error),
+                message = this.message ?: context.getString(R.string.avatar_upload_error),
                 actionLabel = context.getString(R.string.avatar_upload_error_action),
                 snackbarType = SnackbarType.Error,
                 withDismissAction = true,
@@ -291,15 +291,13 @@ private fun AvatarPickerPreview() {
                         location = "London, UK",
                     ),
                 ),
-                identityAvatars = IdentityAvatars(
+                emailAvatars = EmailAvatars(
                     avatars = listOf(
                         Avatar {
                             imageUrl = "/image/url"
-                            format = 0
                             imageId = "1"
-                            rating = "G"
+                            rating = Avatar.Rating.G
                             altText = "alt"
-                            isCropped = true
                             updatedDate = null
                         },
                     ),
@@ -320,7 +318,7 @@ private fun AvatarPickerLoadingPreview() {
                 email = Email("henry.a.wallace@example.com"),
                 profile = ComponentState.Loading,
                 isLoading = true,
-                identityAvatars = null,
+                emailAvatars = null,
             ),
             onEvent = { },
         )
@@ -336,7 +334,7 @@ private fun AvatarPickerErrorPreview() {
                 email = Email("henry.a.wallace@example.com"),
                 profile = null,
                 isLoading = false,
-                identityAvatars = null,
+                emailAvatars = null,
                 error = SectionError.ServerError,
             ),
             onEvent = { },

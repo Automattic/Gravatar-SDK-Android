@@ -82,7 +82,7 @@ public class Profile private constructor(
     public val timezone: kotlin.String? = null,
     // The languages the user knows. This is only provided in authenticated API requests.
     @SerializedName("languages")
-    public val languages: kotlin.collections.List<kotlin.String>? = null,
+    public val languages: kotlin.collections.List<Language>? = null,
     // User's first name. This is only provided in authenticated API requests.
     @SerializedName("first_name")
     public val firstName: kotlin.String? = null,
@@ -201,7 +201,7 @@ public class Profile private constructor(
 
         // The languages the user knows. This is only provided in authenticated API requests.
         @set:JvmSynthetic // Hide 'void' setter from Java
-        public var languages: kotlin.collections.List<kotlin.String>? = null
+        public var languages: kotlin.collections.List<Language>? = null
 
         // User's first name. This is only provided in authenticated API requests.
         @set:JvmSynthetic // Hide 'void' setter from Java
@@ -271,7 +271,7 @@ public class Profile private constructor(
 
         public fun setTimezone(timezone: kotlin.String?): Builder = apply { this.timezone = timezone }
 
-        public fun setLanguages(languages: kotlin.collections.List<kotlin.String>?): Builder = apply { this.languages = languages }
+        public fun setLanguages(languages: kotlin.collections.List<Language>?): Builder = apply { this.languages = languages }
 
         public fun setFirstName(firstName: kotlin.String?): Builder = apply { this.firstName = firstName }
 

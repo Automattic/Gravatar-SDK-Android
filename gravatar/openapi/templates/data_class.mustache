@@ -104,7 +104,7 @@ import java.util.Objects
     {{#multiplatform}}
     @Serializable
     {{/multiplatform}}
-    {{#nonPublicApi}}internal {{/nonPublicApi}}enum class {{{nameInCamelCase}}}(val value: {{^isContainer}}{{dataType}}{{/isContainer}}{{#isContainer}}kotlin.String{{/isContainer}}) {
+    {{#nonPublicApi}}internal {{/nonPublicApi}}{{^nonPublicApi}}public {{/nonPublicApi}}enum class {{{nameInCamelCase}}}({{^nonPublicApi}}public {{/nonPublicApi}}val value: {{^isContainer}}{{dataType}}{{/isContainer}}{{#isContainer}}kotlin.String{{/isContainer}}) {
     {{#allowableValues}}
     {{#enumVars}}
         {{^multiplatform}}
@@ -159,11 +159,11 @@ import java.util.Objects
 				/* {{{.}}} */
 			{{/description}}
 			@set:JvmSynthetic // Hide 'void' setter from Java
-			public var {{name}}: {{{dataType}}}? = null
+			public var {{name}}: {{#isEnum}}{{classname}}.{{{nameInCamelCase}}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}}? = null
 		{{/allVars}}
 
 		{{#allVars}}
-			public fun set{{nameInCamelCase}}({{name}}: {{{dataType}}}?): Builder = apply { this.{{name}} = {{name}} }
+			public fun set{{nameInCamelCase}}({{name}}: {{#isEnum}}{{classname}}.{{{nameInCamelCase}}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}}?): Builder = apply { this.{{name}} = {{name}} }
 		{{/allVars}}
 		public fun build(): {{classname}} = {{classname}}({{#allVars}}{{name}}{{#required}}!!{{/required}}{{^-last}},{{/-last}}{{/allVars}})
 	}

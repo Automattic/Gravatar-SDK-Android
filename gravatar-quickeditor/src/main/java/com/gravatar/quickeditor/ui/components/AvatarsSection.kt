@@ -180,11 +180,9 @@ private fun AvatarSectionPreview() {
                     AvatarUi.Uploaded(
                         avatar = Avatar {
                             imageUrl = "/image/url"
-                            format = 0
                             imageId = "1"
-                            rating = "G"
+                            rating = Avatar.Rating.G
                             altText = "alt"
-                            isCropped = true
                             updatedDate = null
                         },
                         isSelected = true,

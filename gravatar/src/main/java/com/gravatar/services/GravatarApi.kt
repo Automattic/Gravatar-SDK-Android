@@ -1,7 +1,6 @@
 package com.gravatar.services
 
 import com.gravatar.restapi.apis.AvatarsApi
-import com.gravatar.restapi.apis.IdentitiesApi
 import com.gravatar.restapi.apis.ProfilesApi
 
-internal interface GravatarApi : ProfilesApi, AvatarsApi, IdentitiesApi
+internal interface GravatarApi : ProfilesApi, AvatarsApi
