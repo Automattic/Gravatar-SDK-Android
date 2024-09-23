@@ -40,11 +40,7 @@ internal fun LazyAvatarRow(
 internal val avatarSize = 96.dp
 
 @Composable
-internal fun Avatar(
-    avatar: AvatarUi,
-    onAvatarSelected: (Avatar) -> Unit,
-    modifier: Modifier
-) {
+internal fun Avatar(avatar: AvatarUi, onAvatarSelected: (Avatar) -> Unit, modifier: Modifier) {
     when (avatar) {
         is AvatarUi.Uploaded -> SelectableAvatar(
             imageUrl = avatar.avatar.imageUrl,
