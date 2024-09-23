@@ -86,7 +86,7 @@ fun GravatarProfileSummary(emailAddress: String = "gravatar@automattic.com") {
             }
 
             is Result.Failure -> {
-                Log.e("Gravatar", result.error.name)
+                Log.e("Gravatar", result.error.toString())
                 profileState = ComponentState.Empty
             }
         }

@@ -119,7 +119,7 @@ class AvatarServiceTest {
             )
         }
 
-        assertEquals(ErrorType.SERVER, (response as Result.Failure).error)
+        assertEquals(ErrorType.Server, (response as Result.Failure).error)
     }
 
     @Test
@@ -179,6 +179,6 @@ class AvatarServiceTest {
 
             val response = avatarService.setAvatarCatching(hash, avatarId, oauthToken)
 
-            assertEquals(ErrorType.SERVER, (response as Result.Failure).error)
+            assertEquals(ErrorType.Server, (response as Result.Failure).error)
         }
 }

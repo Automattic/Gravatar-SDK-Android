@@ -29,12 +29,12 @@ internal class WordPressOAuthService(
             if (body != null) {
                 Result.Success(body.token)
             } else {
-                Result.Failure(ErrorType.UNKNOWN)
+                Result.Failure(ErrorType.Unknown)
             }
         } catch (cancellationException: CancellationException) {
             throw cancellationException
         } catch (ex: Exception) {
-            Result.Failure(ErrorType.SERVER)
+            Result.Failure(ErrorType.Server)
         }
     }
 }

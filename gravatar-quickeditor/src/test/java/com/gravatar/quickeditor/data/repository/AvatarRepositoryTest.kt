@@ -57,12 +57,12 @@ class AvatarRepositoryTest {
     fun `given token stored when get avatars fails then Failure result`() = runTest {
         coEvery { tokenStorage.getToken(any()) } returns "token"
 
-        coEvery { avatarService.retrieveCatching(any(), any()) } returns Result.Failure(ErrorType.SERVER)
+        coEvery { avatarService.retrieveCatching(any(), any()) } returns Result.Failure(ErrorType.Server)
 
         val result = avatarRepository.getAvatars(email)
 
         assertEquals(
-            Result.Failure<EmailAvatars, QuickEditorError>(QuickEditorError.Request(ErrorType.SERVER)),
+            Result.Failure<EmailAvatars, QuickEditorError>(QuickEditorError.Request(ErrorType.Server)),
             result,
         )
     }
@@ -94,11 +94,11 @@ class AvatarRepositoryTest {
     @Test
     fun `given token stored when avatar selected fails then Failure result`() = runTest {
         coEvery { tokenStorage.getToken(any()) } returns "token"
-        coEvery { avatarService.setAvatarCatching(any(), any(), any()) } returns Result.Failure(ErrorType.UNKNOWN)
+        coEvery { avatarService.setAvatarCatching(any(), any(), any()) } returns Result.Failure(ErrorType.Unknown)
 
         val result = avatarRepository.selectAvatar(email, "avatarId")
 
-        assertEquals(Result.Failure<String, QuickEditorError>(QuickEditorError.Request(ErrorType.UNKNOWN)), result)
+        assertEquals(Result.Failure<String, QuickEditorError>(QuickEditorError.Request(ErrorType.Unknown)), result)
     }
 
     @Test
@@ -146,11 +146,11 @@ class AvatarRepositoryTest {
             every { toFile() } returns file
         }
         coEvery { tokenStorage.getToken(any()) } returns "token"
-        coEvery { avatarService.uploadCatching(any(), any()) } returns Result.Failure(ErrorType.SERVER)
+        coEvery { avatarService.uploadCatching(any(), any()) } returns Result.Failure(ErrorType.Server)
 
         val result = avatarRepository.uploadAvatar(email, uri)
 
-        assertEquals(Result.Failure<Unit, QuickEditorError>(QuickEditorError.Request(ErrorType.SERVER)), result)
+        assertEquals(Result.Failure<Unit, QuickEditorError>(QuickEditorError.Request(ErrorType.Server)), result)
     }
 
     private fun createAvatar(id: String, isSelected: Boolean = false) = Avatar {

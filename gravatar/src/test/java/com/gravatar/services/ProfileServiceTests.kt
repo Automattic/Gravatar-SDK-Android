@@ -58,7 +58,7 @@ class ProfileServiceTests {
             val loadProfileResponse = profileService.retrieveByUsernameCatching(username)
 
             coVerify(exactly = 1) { containerRule.gravatarApiMock.getProfileById(username) }
-            assertTrue((loadProfileResponse as Result.Failure).error == ErrorType.UNKNOWN)
+            assertTrue((loadProfileResponse as Result.Failure).error == ErrorType.Unknown)
         }
 
     @Test
@@ -73,7 +73,7 @@ class ProfileServiceTests {
             val loadProfileResponse = profileService.retrieveByUsernameCatching(username)
 
             coVerify(exactly = 1) { containerRule.gravatarApiMock.getProfileById(username) }
-            assertTrue((loadProfileResponse as Result.Failure).error == ErrorType.UNKNOWN)
+            assertTrue((loadProfileResponse as Result.Failure).error == ErrorType.Unknown)
         }
 
     @Test
@@ -118,7 +118,7 @@ class ProfileServiceTests {
         val loadProfileResponse = profileService.retrieveByUsernameCatching(username)
 
         coVerify(exactly = 1) { containerRule.gravatarApiMock.getProfileById(username) }
-        assertTrue((loadProfileResponse as Result.Failure).error == ErrorType.UNKNOWN)
+        assertTrue((loadProfileResponse as Result.Failure).error == ErrorType.Unknown)
     }
 
     @Test
@@ -130,7 +130,7 @@ class ProfileServiceTests {
 
         val loadProfileResponse = profileService.retrieveCatching(usernameEmail)
         coVerify(exactly = 1) { containerRule.gravatarApiMock.getProfileById(usernameEmail.hash().toString()) }
-        assertTrue((loadProfileResponse as Result.Failure).error == ErrorType.UNKNOWN)
+        assertTrue((loadProfileResponse as Result.Failure).error == ErrorType.Unknown)
     }
 
     @Test
@@ -142,7 +142,7 @@ class ProfileServiceTests {
 
         val loadProfileResponse = profileService.retrieveCatching(usernameHash)
         coVerify(exactly = 1) { containerRule.gravatarApiMock.getProfileById(usernameHash.toString()) }
-        assertTrue((loadProfileResponse as Result.Failure).error == ErrorType.UNKNOWN)
+        assertTrue((loadProfileResponse as Result.Failure).error == ErrorType.Unknown)
     }
 
     @Test
@@ -158,7 +158,7 @@ class ProfileServiceTests {
             containerRule.gravatarApiMock.getProfileById(username)
         } returns mockResponse
 
-        assertEquals(ErrorType.NOT_FOUND, (profileService.retrieveCatching(username) as Result.Failure).error)
+        assertEquals(ErrorType.NotFound, (profileService.retrieveCatching(username) as Result.Failure).error)
     }
 
     // Throwing Exception Version of the methods

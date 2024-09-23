@@ -613,17 +613,64 @@ public final class com/gravatar/services/AvatarService {
 	public final fun uploadCatching (Ljava/io/File;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
-public final class com/gravatar/services/ErrorType : java/lang/Enum {
-	public static final field NETWORK Lcom/gravatar/services/ErrorType;
-	public static final field NOT_FOUND Lcom/gravatar/services/ErrorType;
-	public static final field RATE_LIMIT_EXCEEDED Lcom/gravatar/services/ErrorType;
-	public static final field SERVER Lcom/gravatar/services/ErrorType;
-	public static final field TIMEOUT Lcom/gravatar/services/ErrorType;
-	public static final field UNAUTHORIZED Lcom/gravatar/services/ErrorType;
-	public static final field UNKNOWN Lcom/gravatar/services/ErrorType;
-	public static fun getEntries ()Lkotlin/enums/EnumEntries;
-	public static fun valueOf (Ljava/lang/String;)Lcom/gravatar/services/ErrorType;
-	public static fun values ()[Lcom/gravatar/services/ErrorType;
+public abstract class com/gravatar/services/ErrorType {
+}
+
+public final class com/gravatar/services/ErrorType$InvalidRequest : com/gravatar/services/ErrorType {
+	public fun <init> (Lcom/gravatar/restapi/models/Error;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getError ()Lcom/gravatar/restapi/models/Error;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/gravatar/services/ErrorType$Network : com/gravatar/services/ErrorType {
+	public static final field INSTANCE Lcom/gravatar/services/ErrorType$Network;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/gravatar/services/ErrorType$NotFound : com/gravatar/services/ErrorType {
+	public static final field INSTANCE Lcom/gravatar/services/ErrorType$NotFound;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/gravatar/services/ErrorType$RateLimitExceeded : com/gravatar/services/ErrorType {
+	public static final field INSTANCE Lcom/gravatar/services/ErrorType$RateLimitExceeded;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/gravatar/services/ErrorType$Server : com/gravatar/services/ErrorType {
+	public static final field INSTANCE Lcom/gravatar/services/ErrorType$Server;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/gravatar/services/ErrorType$Timeout : com/gravatar/services/ErrorType {
+	public static final field INSTANCE Lcom/gravatar/services/ErrorType$Timeout;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/gravatar/services/ErrorType$Unauthorized : com/gravatar/services/ErrorType {
+	public static final field INSTANCE Lcom/gravatar/services/ErrorType$Unauthorized;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/gravatar/services/ErrorType$Unknown : com/gravatar/services/ErrorType {
+	public static final field INSTANCE Lcom/gravatar/services/ErrorType$Unknown;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
 }
 
 public abstract interface class com/gravatar/services/GravatarListener {
