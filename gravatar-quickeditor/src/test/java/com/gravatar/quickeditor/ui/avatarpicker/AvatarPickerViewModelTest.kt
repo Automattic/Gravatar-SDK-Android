@@ -8,6 +8,7 @@ import com.gravatar.quickeditor.data.models.QuickEditorError
 import com.gravatar.quickeditor.data.repository.AvatarRepository
 import com.gravatar.quickeditor.data.repository.EmailAvatars
 import com.gravatar.quickeditor.ui.CoroutineTestRule
+import com.gravatar.quickeditor.ui.editor.AvatarPickerContentLayout
 import com.gravatar.restapi.models.Avatar
 import com.gravatar.restapi.models.Error
 import com.gravatar.services.ErrorType
@@ -43,6 +44,7 @@ class AvatarPickerViewModelTest {
     private lateinit var viewModel: AvatarPickerViewModel
 
     private val email = Email("testEmail")
+    private val avatarPickerContentLayout = AvatarPickerContentLayout.Horizontal
     private val profile = defaultProfile(hash = "hash", displayName = "Display name")
     private val avatars = listOf(createAvatar("1"), createAvatar("2"))
     private val emailAvatars = EmailAvatars(emptyList(), null)
@@ -61,13 +63,15 @@ class AvatarPickerViewModelTest {
         viewModel = initViewModel()
 
         viewModel.uiState.test {
-            assertEquals(AvatarPickerUiState(email = email), awaitItem())
+            val avatarPickerUiState =
+                AvatarPickerUiState(email = email, avatarPickerContentLayout = avatarPickerContentLayout)
+            assertEquals(avatarPickerUiState, awaitItem())
             assertEquals(
-                AvatarPickerUiState(email = email, isLoading = true, profile = null),
+                avatarPickerUiState.copy(isLoading = true, profile = null),
                 awaitItem(),
             )
             assertEquals(
-                AvatarPickerUiState(
+                avatarPickerUiState.copy(
                     email = email,
                     emailAvatars = emailAvatarsCopy,
                     error = null,
@@ -87,13 +91,15 @@ class AvatarPickerViewModelTest {
         viewModel = initViewModel()
 
         viewModel.uiState.test {
-            assertEquals(AvatarPickerUiState(email = email), awaitItem())
+            val avatarPickerUiState =
+                AvatarPickerUiState(email = email, avatarPickerContentLayout = avatarPickerContentLayout)
+            assertEquals(avatarPickerUiState, awaitItem())
             assertEquals(
-                AvatarPickerUiState(email = email, isLoading = true),
+                avatarPickerUiState.copy(isLoading = true),
                 awaitItem(),
             )
             assertEquals(
-                AvatarPickerUiState(email = email, error = SectionError.Unknown),
+                avatarPickerUiState.copy(error = SectionError.Unknown),
                 awaitItem(),
             )
             skipItems(2) // skipping profile loading states
@@ -107,10 +113,12 @@ class AvatarPickerViewModelTest {
         viewModel = initViewModel()
 
         viewModel.uiState.test {
-            assertEquals(AvatarPickerUiState(email = email), awaitItem())
+            val avatarPickerUiState =
+                AvatarPickerUiState(email = email, avatarPickerContentLayout = avatarPickerContentLayout)
+            assertEquals(avatarPickerUiState, awaitItem())
             skipItems(2) // skipping loading avatars states
             assertEquals(
-                AvatarPickerUiState(
+                avatarPickerUiState.copy(
                     email = email,
                     emailAvatars = emailAvatars,
                     error = null,
@@ -119,7 +127,7 @@ class AvatarPickerViewModelTest {
                 awaitItem(),
             )
             assertEquals(
-                AvatarPickerUiState(
+                avatarPickerUiState.copy(
                     email = email,
                     emailAvatars = emailAvatars,
                     error = null,
@@ -135,10 +143,12 @@ class AvatarPickerViewModelTest {
         viewModel = initViewModel()
 
         viewModel.uiState.test {
-            assertEquals(AvatarPickerUiState(email = email), awaitItem())
+            val avatarPickerUiState =
+                AvatarPickerUiState(email = email, avatarPickerContentLayout = avatarPickerContentLayout)
+            assertEquals(avatarPickerUiState, awaitItem())
             skipItems(2) // skipping loading avatars states
             assertEquals(
-                AvatarPickerUiState(
+                avatarPickerUiState.copy(
                     email = email,
                     emailAvatars = emailAvatars,
                     error = null,
@@ -147,7 +157,7 @@ class AvatarPickerViewModelTest {
                 awaitItem(),
             )
             assertEquals(
-                AvatarPickerUiState(
+                avatarPickerUiState.copy(
                     email = email,
                     emailAvatars = emailAvatars,
                     error = null,
@@ -173,22 +183,22 @@ class AvatarPickerViewModelTest {
         viewModel.uiState.test {
             expectMostRecentItem()
             viewModel.onEvent(AvatarPickerEvent.AvatarSelected(avatars.last()))
+            val avatarPickerUiState = AvatarPickerUiState(
+                email = email,
+                emailAvatars = emailAvatarsCopy,
+                error = null,
+                profile = ComponentState.Loaded(profile),
+                selectingAvatarId = avatars.last().imageId,
+                scrollToIndex = 0,
+                avatarPickerContentLayout = avatarPickerContentLayout,
+            )
             assertEquals(
-                AvatarPickerUiState(
-                    email = email,
-                    emailAvatars = emailAvatarsCopy,
-                    error = null,
-                    profile = ComponentState.Loaded(profile),
-                    selectingAvatarId = avatars.last().imageId,
-                    scrollToIndex = 0,
-                ),
+                avatarPickerUiState,
                 awaitItem(),
             )
             assertEquals(
-                AvatarPickerUiState(
-                    email = email,
+                avatarPickerUiState.copy(
                     emailAvatars = emailAvatarsCopy.copy(selectedAvatarId = avatars.last().imageId),
-                    error = null,
                     profile = ComponentState.Loaded(profile.copyAvatar(avatars.last())),
                     selectingAvatarId = null,
                     scrollToIndex = 0,
@@ -216,25 +226,22 @@ class AvatarPickerViewModelTest {
         viewModel.uiState.test {
             expectMostRecentItem()
             viewModel.onEvent(AvatarPickerEvent.AvatarSelected(avatars.last()))
+            val avatarPickerUiState = AvatarPickerUiState(
+                email = email,
+                emailAvatars = emailAvatarsCopy,
+                error = null,
+                profile = ComponentState.Loaded(profile),
+                selectingAvatarId = avatars.last().imageId,
+                scrollToIndex = 0,
+                avatarPickerContentLayout = avatarPickerContentLayout,
+            )
             assertEquals(
-                AvatarPickerUiState(
-                    email = email,
-                    emailAvatars = emailAvatarsCopy,
-                    error = null,
-                    profile = ComponentState.Loaded(profile),
-                    selectingAvatarId = avatars.last().imageId,
-                    scrollToIndex = 0,
-                ),
+                avatarPickerUiState,
                 awaitItem(),
             )
             assertEquals(
-                AvatarPickerUiState(
-                    email = email,
-                    emailAvatars = emailAvatarsCopy,
-                    error = null,
-                    profile = ComponentState.Loaded(profile),
+                avatarPickerUiState.copy(
                     selectingAvatarId = null,
-                    scrollToIndex = 0,
                 ),
                 awaitItem(),
             )
@@ -297,31 +304,30 @@ class AvatarPickerViewModelTest {
             expectMostRecentItem()
             viewModel.onEvent(AvatarPickerEvent.ImageCropped(uri))
 
+            val avatarPickerUiState = AvatarPickerUiState(
+                email = email,
+                emailAvatars = emailAvatarsCopy,
+                error = null,
+                profile = ComponentState.Loaded(profile),
+                selectingAvatarId = null,
+                uploadingAvatar = uri,
+                scrollToIndex = 0,
+                avatarPickerContentLayout = avatarPickerContentLayout,
+            )
             assertEquals(
-                AvatarPickerUiState(
-                    email = email,
-                    emailAvatars = emailAvatarsCopy,
-                    error = null,
-                    profile = ComponentState.Loaded(profile),
-                    selectingAvatarId = null,
-                    uploadingAvatar = uri,
-                    scrollToIndex = 0,
-                ),
+                avatarPickerUiState,
                 awaitItem(),
             )
             assertEquals(
-                AvatarPickerUiState(
-                    email = email,
+                avatarPickerUiState.copy(
                     emailAvatars = emailAvatarsCopy.copy(
                         avatars = buildList {
                             add(uploadedAvatar)
                             addAll(emailAvatarsCopy.avatars)
                         },
                     ),
-                    error = null,
-                    profile = ComponentState.Loaded(profile),
-                    selectingAvatarId = null,
                     uploadingAvatar = null,
+                    scrollToIndex = null,
                 ),
                 awaitItem(),
             )
@@ -357,6 +363,7 @@ class AvatarPickerViewModelTest {
                     selectingAvatarId = null,
                     uploadingAvatar = uri,
                     scrollToIndex = 0,
+                    avatarPickerContentLayout = AvatarPickerContentLayout.Horizontal,
                 ),
                 awaitItem(),
             )
@@ -373,6 +380,8 @@ class AvatarPickerViewModelTest {
                     profile = ComponentState.Loaded(profile),
                     selectingAvatarId = null,
                     uploadingAvatar = null,
+                    scrollToIndex = null,
+                    avatarPickerContentLayout = AvatarPickerContentLayout.Horizontal,
                 ),
                 awaitItem(),
             )
@@ -411,25 +420,22 @@ class AvatarPickerViewModelTest {
             expectMostRecentItem()
             viewModel.onEvent(AvatarPickerEvent.ImageCropped(uri))
 
+            val avatarPickerUiState = AvatarPickerUiState(
+                email = email,
+                emailAvatars = emailAvatarsCopy,
+                error = null,
+                profile = ComponentState.Loaded(profile),
+                selectingAvatarId = null,
+                uploadingAvatar = uri,
+                scrollToIndex = 0,
+                avatarPickerContentLayout = avatarPickerContentLayout,
+            )
             assertEquals(
-                AvatarPickerUiState(
-                    email = email,
-                    emailAvatars = emailAvatarsCopy,
-                    error = null,
-                    profile = ComponentState.Loaded(profile),
-                    selectingAvatarId = null,
-                    uploadingAvatar = uri,
-                    scrollToIndex = 0,
-                ),
+                avatarPickerUiState,
                 awaitItem(),
             )
             assertEquals(
-                AvatarPickerUiState(
-                    email = email,
-                    emailAvatars = emailAvatarsCopy,
-                    error = null,
-                    profile = ComponentState.Loaded(profile),
-                    selectingAvatarId = null,
+                avatarPickerUiState.copy(
                     uploadingAvatar = null,
                     scrollToIndex = null,
                 ),
@@ -534,8 +540,14 @@ class AvatarPickerViewModelTest {
         coVerify(exactly = 1) { profileService.retrieveCatching(email) }
     }
 
-    private fun initViewModel(handleExpiredSession: Boolean = true) =
-        AvatarPickerViewModel(email, handleExpiredSession, profileService, avatarRepository, fileUtils)
+    private fun initViewModel(handleExpiredSession: Boolean = true) = AvatarPickerViewModel(
+        email,
+        handleExpiredSession,
+        avatarPickerContentLayout,
+        profileService,
+        avatarRepository,
+        fileUtils,
+    )
 
     private fun createAvatar(id: String) = Avatar {
         imageUrl = "/image/url"

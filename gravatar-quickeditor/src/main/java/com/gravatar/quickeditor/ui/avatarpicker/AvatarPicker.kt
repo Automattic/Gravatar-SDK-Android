@@ -11,7 +11,6 @@ import androidx.annotation.StringRes
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -52,7 +51,9 @@ import com.gravatar.quickeditor.ui.components.ErrorSection
 import com.gravatar.quickeditor.ui.components.ProfileCard
 import com.gravatar.quickeditor.ui.copperlauncher.CropperLauncher
 import com.gravatar.quickeditor.ui.copperlauncher.UCropCropperLauncher
+import com.gravatar.quickeditor.ui.editor.AvatarPickerContentLayout
 import com.gravatar.quickeditor.ui.editor.AvatarUpdateResult
+import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
 import com.gravatar.quickeditor.ui.editor.bottomsheet.DEFAULT_PAGE_HEIGHT
 import com.gravatar.quickeditor.ui.extensions.QESnackbarHost
 import com.gravatar.quickeditor.ui.extensions.SnackbarType
@@ -67,11 +68,13 @@ import kotlinx.coroutines.withContext
 
 @Composable
 internal fun AvatarPicker(
-    email: Email,
+    gravatarQuickEditorParams: GravatarQuickEditorParams,
     handleExpiredSession: Boolean,
     onAvatarSelected: (AvatarUpdateResult) -> Unit,
     onSessionExpired: () -> Unit,
-    viewModel: AvatarPickerViewModel = viewModel(factory = AvatarPickerViewModelFactory(email, handleExpiredSession)),
+    viewModel: AvatarPickerViewModel = viewModel(
+        factory = AvatarPickerViewModelFactory(gravatarQuickEditorParams, handleExpiredSession),
+    ),
     cropperLauncher: CropperLauncher = UCropCropperLauncher(),
 ) {
     val snackState = remember { SnackbarHostState() }
@@ -128,7 +131,13 @@ internal fun AvatarPicker(uiState: AvatarPickerUiState, onEvent: (AvatarPickerEv
         Modifier
             .fillMaxWidth()
             .animateContentSize()
-            .verticalScroll(rememberScrollState()),
+            .then(
+                if (uiState.avatarPickerContentLayout == AvatarPickerContentLayout.Horizontal) {
+                    Modifier.verticalScroll(rememberScrollState())
+                } else {
+                    Modifier
+                },
+            ),
     ) {
         Column {
             EmailLabel(
@@ -141,10 +150,10 @@ internal fun AvatarPicker(uiState: AvatarPickerUiState, onEvent: (AvatarPickerEv
                 profile = uiState.profile,
                 modifier = Modifier.padding(horizontal = 16.dp),
             )
-            Spacer(modifier = Modifier.height(24.dp))
+            val sectionModifier = Modifier.padding(top = 24.dp, bottom = 10.dp)
             when {
                 uiState.isLoading -> Box(
-                    modifier = Modifier
+                    modifier = sectionModifier
                         .height(loadingSectionHeight)
                         .fillMaxWidth(),
                 ) {
@@ -156,7 +165,7 @@ internal fun AvatarPicker(uiState: AvatarPickerUiState, onEvent: (AvatarPickerEv
                     message = stringResource(id = uiState.error.messageRes),
                     buttonText = stringResource(id = uiState.error.buttonTextRes),
                     onButtonClick = { onEvent(uiState.error.event) },
-                    modifier = Modifier
+                    modifier = sectionModifier
                         .padding(horizontal = 16.dp)
                         .onSizeChanged { size ->
                             loadingSectionHeight = size.height.pxToDp(context)
@@ -168,7 +177,7 @@ internal fun AvatarPicker(uiState: AvatarPickerUiState, onEvent: (AvatarPickerEv
                         state = uiState.avatarsSectionUiState,
                         onAvatarSelected = { onEvent(AvatarPickerEvent.AvatarSelected(it)) },
                         onLocalImageSelected = { onEvent(AvatarPickerEvent.LocalImageSelected(it)) },
-                        modifier = Modifier
+                        modifier = sectionModifier
                             .padding(horizontal = 16.dp)
                             .fillMaxWidth()
                             .onSizeChanged { size ->
@@ -176,7 +185,6 @@ internal fun AvatarPicker(uiState: AvatarPickerUiState, onEvent: (AvatarPickerEv
                             },
                     )
             }
-            Spacer(modifier = Modifier.height(10.dp))
         }
     }
 }
@@ -303,6 +311,7 @@ private fun AvatarPickerPreview() {
                     ),
                     selectedAvatarId = "1",
                 ),
+                avatarPickerContentLayout = AvatarPickerContentLayout.Horizontal,
             ),
             onEvent = { },
         )
@@ -318,6 +327,7 @@ private fun AvatarPickerLoadingPreview() {
                 email = Email("henry.a.wallace@example.com"),
                 profile = ComponentState.Loading,
                 isLoading = true,
+                avatarPickerContentLayout = AvatarPickerContentLayout.Horizontal,
                 emailAvatars = null,
             ),
             onEvent = { },
@@ -336,6 +346,7 @@ private fun AvatarPickerErrorPreview() {
                 isLoading = false,
                 emailAvatars = null,
                 error = SectionError.ServerError,
+                avatarPickerContentLayout = AvatarPickerContentLayout.Horizontal,
             ),
             onEvent = { },
         )
