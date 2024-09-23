@@ -125,7 +125,8 @@ internal fun VerticalAvatarsSection(
                         )
                     }
                     items(items = state.avatars, key = { it.avatarId }) { avatarModel ->
-                        avatarModel.avatar(
+                        Avatar(
+                            avatar = avatarModel,
                             onAvatarSelected = onAvatarSelected,
                             modifier = Modifier,
                         )

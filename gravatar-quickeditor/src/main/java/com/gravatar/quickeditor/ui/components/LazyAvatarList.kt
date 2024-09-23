@@ -28,7 +28,8 @@ internal fun LazyAvatarRow(
         contentPadding = contentPadding,
     ) {
         items(items = avatars, key = { it.avatarId }) { avatarModel ->
-            avatarModel.avatar(
+            Avatar(
+                avatar = avatarModel,
                 onAvatarSelected = onAvatarSelected,
                 modifier = Modifier.size(avatarSize),
             )
@@ -39,20 +40,24 @@ internal fun LazyAvatarRow(
 internal val avatarSize = 96.dp
 
 @Composable
-internal fun AvatarUi.avatar(onAvatarSelected: (Avatar) -> Unit, modifier: Modifier) {
-    when (this) {
+internal fun Avatar(
+    avatar: AvatarUi,
+    onAvatarSelected: (Avatar) -> Unit,
+    modifier: Modifier
+) {
+    when (avatar) {
         is AvatarUi.Uploaded -> SelectableAvatar(
-            imageUrl = avatar.imageUrl,
-            isSelected = isSelected,
-            isLoading = isLoading,
+            imageUrl = avatar.avatar.imageUrl,
+            isSelected = avatar.isSelected,
+            isLoading = avatar.isLoading,
             onAvatarClicked = {
-                onAvatarSelected(avatar)
+                onAvatarSelected(avatar.avatar)
             },
             modifier = modifier,
         )
 
         is AvatarUi.Local -> LocalAvatar(
-            imageUri = uri.toString(),
+            imageUri = avatar.uri.toString(),
             isLoading = true,
             modifier = modifier,
         )
