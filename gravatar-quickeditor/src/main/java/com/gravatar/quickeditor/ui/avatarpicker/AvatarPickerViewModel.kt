@@ -55,6 +55,31 @@ internal class AvatarPickerViewModel(
                     _actions.send(AvatarPickerAction.InvokeAuthFailed)
                 }
             }
+
+            AvatarPickerEvent.FailedAvatarDialogDismissed -> dismissFailedUploadDialog()
+            is AvatarPickerEvent.FailedAvatarTapped -> showFailedUploadDialog(event.uri)
+            is AvatarPickerEvent.FailedAvatarDismissed -> removedFailedUpload(event.uri)
+        }
+    }
+
+    private fun showFailedUploadDialog(uri: Uri) {
+        _uiState.update { currentState ->
+            currentState.copy(failedUploadDialog = currentState.failedUploads.firstOrNull { it.uri == uri })
+        }
+    }
+
+    private fun dismissFailedUploadDialog() {
+        _uiState.update { currentState ->
+            currentState.copy(failedUploadDialog = null)
+        }
+    }
+
+    private fun removedFailedUpload(uri: Uri) {
+        _uiState.update { currentState ->
+            currentState.copy(
+                failedUploads = currentState.failedUploads.filter { it.uri != uri }.toSet(),
+                failedUploadDialog = null,
+            )
         }
     }
 
@@ -104,7 +129,12 @@ internal class AvatarPickerViewModel(
     private fun uploadAvatar(uri: Uri) {
         viewModelScope.launch {
             _uiState.update { currentState ->
-                currentState.copy(uploadingAvatar = uri, scrollToIndex = 0)
+                currentState.copy(
+                    uploadingAvatar = uri,
+                    failedUploads = currentState.failedUploads.filter { it.uri != uri }.toSet(),
+                    scrollToIndex = 0,
+                    failedUploadDialog = null,
+                )
             }
             when (val result = avatarRepository.uploadAvatar(email, uri)) {
                 is Result.Success -> {
@@ -129,17 +159,13 @@ internal class AvatarPickerViewModel(
                         currentState.copy(
                             uploadingAvatar = null,
                             scrollToIndex = null,
+                            failedUploads = currentState.failedUploads + AvatarUploadFailure(
+                                uri,
+                                error = ((result.error as? QuickEditorError.Request)?.type as? ErrorType.InvalidRequest)
+                                    ?.error?.error,
+                            ),
                         )
                     }
-                    _actions.send(
-                        AvatarPickerAction.AvatarUploadFailed(
-                            uri,
-                            (
-                                (result.error as? QuickEditorError.Request)
-                                    ?.type as? ErrorType.InvalidRequest
-                            )?.error?.error,
-                        ),
-                    )
                 }
             }
         }

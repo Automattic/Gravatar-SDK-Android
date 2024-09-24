@@ -21,7 +21,7 @@ class AvatarsSectionTest : RoborazziTest() {
                 avatarPickerContentLayout = AvatarPickerContentLayout.Horizontal,
             ),
             onLocalImageSelected = { },
-            onAvatarSelected = {},
+            onAvatarSelected = { },
         )
     }
 

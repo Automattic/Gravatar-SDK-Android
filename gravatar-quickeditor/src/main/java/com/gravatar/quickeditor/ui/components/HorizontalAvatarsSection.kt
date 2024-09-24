@@ -42,7 +42,7 @@ import java.net.URI
 @Composable
 internal fun HorizontalAvatarsSection(
     state: AvatarsSectionUiState,
-    onAvatarSelected: (Avatar) -> Unit,
+    onAvatarSelected: (AvatarUi) -> Unit,
     onChoosePhotoClick: () -> Unit,
     onTakePhotoClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -53,7 +53,9 @@ internal fun HorizontalAvatarsSection(
     val listState = rememberLazyListState()
 
     LaunchedEffect(state.scrollToIndex) {
-        state.scrollToIndex?.let { listState.scrollToItem(it) }
+        state.scrollToIndex?.let {
+            listState.scrollToItem(it)
+        }
     }
 
     val sectionPadding = 16.dp

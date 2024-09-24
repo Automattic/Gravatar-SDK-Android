@@ -25,7 +25,7 @@ import java.net.URI
 @Composable
 internal fun AvatarsSection(
     state: AvatarsSectionUiState,
-    onAvatarSelected: (Avatar) -> Unit,
+    onAvatarSelected: (AvatarUi) -> Unit,
     onLocalImageSelected: (Uri) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -94,7 +94,7 @@ private fun AvatarSectionPreview() {
                             imageId = "1"
                             rating = Avatar.Rating.G
                             altText = "alt"
-                            updatedDate = null
+                            updatedDate = ""
                         },
                         isSelected = true,
                         isLoading = false,
