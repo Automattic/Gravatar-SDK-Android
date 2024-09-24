@@ -13,9 +13,9 @@ class SelectableAvatarTest : RoborazziTest() {
         SelectableAvatar(
             "https://fakeavatarurl.com/hash",
             isSelected = true,
-            isLoading = false,
-            {},
-            Modifier.size(150.dp),
+            loadingState = AvatarLoadingState.None,
+            onAvatarClicked = {},
+            modifier = Modifier.size(150.dp),
         )
     }
 
@@ -24,9 +24,9 @@ class SelectableAvatarTest : RoborazziTest() {
         SelectableAvatar(
             "https://fakeavatarurl.com/hash",
             isSelected = false,
-            isLoading = false,
-            {},
-            Modifier.size(150.dp),
+            loadingState = AvatarLoadingState.None,
+            onAvatarClicked = {},
+            modifier = Modifier.size(150.dp),
         )
     }
 
@@ -34,10 +34,21 @@ class SelectableAvatarTest : RoborazziTest() {
     fun selectableAvatarLoading() = gravatarScreenshotTest {
         SelectableAvatar(
             "https://fakeavatarurl.com/hash",
-            isSelected = true,
-            isLoading = true,
-            {},
-            Modifier.size(150.dp),
+            isSelected = false,
+            loadingState = AvatarLoadingState.Loading,
+            onAvatarClicked = {},
+            modifier = Modifier.size(150.dp),
+        )
+    }
+
+    @Test
+    fun selectableAvatarFailure() = gravatarScreenshotTest {
+        SelectableAvatar(
+            "https://fakeavatarurl.com/hash",
+            isSelected = false,
+            loadingState = AvatarLoadingState.Failure,
+            onAvatarClicked = {},
+            modifier = Modifier.size(150.dp),
         )
     }
 }

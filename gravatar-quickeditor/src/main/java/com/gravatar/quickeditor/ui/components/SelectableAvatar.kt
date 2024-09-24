@@ -4,11 +4,15 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Warning
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -21,55 +25,96 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.gravatar.quickeditor.R
 
+private val cornerRadius = 8.dp
+
 @Composable
 internal fun SelectableAvatar(
     imageUrl: String,
     isSelected: Boolean,
-    isLoading: Boolean,
+    loadingState: AvatarLoadingState,
     onAvatarClicked: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val cornerRadius = 8.dp
-    Box(modifier = modifier.aspectRatio(1f)) {
+    Box(
+        modifier = modifier
+            .aspectRatio(1f)
+            .then(
+                if (isSelected) {
+                    Modifier.border(4.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(cornerRadius))
+                } else {
+                    Modifier.border(
+                        1.dp,
+                        MaterialTheme.colorScheme.surfaceDim,
+                        RoundedCornerShape(cornerRadius),
+                    )
+                },
+            )
+            .clickable {
+                onAvatarClicked()
+            },
+    ) {
         AsyncImage(
             model = imageUrl,
             contentDescription = stringResource(id = R.string.selectable_avatar_content_description),
             modifier = Modifier
                 .fillMaxSize()
-                .clip(RoundedCornerShape(cornerRadius))
-                .then(
-                    if (isSelected) {
-                        Modifier.border(4.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(cornerRadius))
-                    } else {
-                        Modifier.border(
-                            1.dp,
-                            MaterialTheme.colorScheme.surfaceDim,
-                            RoundedCornerShape(cornerRadius),
-                        )
-                    },
-                )
-                .clickable {
-                    onAvatarClicked()
-                },
+                .clip(RoundedCornerShape(cornerRadius)),
         )
-        if (isLoading) {
-            Box(
-                modifier = modifier
-                    .fillMaxSize()
-                    .background(
-                        color = Color.Black.copy(alpha = 0.3f),
-                        shape = RoundedCornerShape(cornerRadius),
-                    ),
-            ) {
-                CircularProgressIndicator(
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                        .size(20.dp),
-                    strokeWidth = 2.dp,
-                )
-            }
+        when (loadingState) {
+            AvatarLoadingState.None -> Unit
+            AvatarLoadingState.Loading -> LoadingOverlay()
+            is AvatarLoadingState.Failure -> FailureOverlay()
         }
     }
+}
+
+@Composable
+private fun LoadingOverlay(modifier: Modifier = Modifier) {
+    Overlay(modifier) {
+        CircularProgressIndicator(
+            modifier = Modifier
+                .align(Alignment.Center)
+                .size(20.dp),
+            strokeWidth = 2.dp,
+        )
+    }
+}
+
+@Composable
+private fun FailureOverlay(modifier: Modifier = Modifier) {
+    Overlay(modifier) {
+        Icon(
+            imageVector = Icons.Rounded.Warning,
+            contentDescription = stringResource(R.string.failed_to_load_avatar_content_description),
+            tint = Color.White,
+            modifier = Modifier
+                .size(50.dp)
+                .align(Alignment.Center),
+        )
+    }
+}
+
+@Composable
+private fun Overlay(modifier: Modifier = Modifier, content: @Composable BoxScope.() -> Unit) {
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .background(
+                color = Color.Black.copy(alpha = 0.3f),
+                shape = RoundedCornerShape(cornerRadius),
+            ),
+    ) {
+        content()
+    }
+}
+
+internal sealed class AvatarLoadingState {
+    data object None : AvatarLoadingState()
+
+    data object Loading : AvatarLoadingState()
+
+    data object Failure : AvatarLoadingState()
 }
 
 @Preview
@@ -78,9 +123,9 @@ private fun SelectableAvatarNotSelectedPreview() {
     SelectableAvatar(
         "https://gravatar.com/avatar/fd2188b818f15e629f7b62896b5c6075?s=250",
         isSelected = false,
-        isLoading = false,
-        { },
-        Modifier.size(150.dp),
+        loadingState = AvatarLoadingState.None,
+        onAvatarClicked = { },
+        modifier = Modifier.size(150.dp),
     )
 }
 
@@ -90,9 +135,9 @@ private fun SelectableAvatarSelectedPreview() {
     SelectableAvatar(
         "https://gravatar.com/avatar/fd2188b818f15e629f7b62896b5c6075?s=250",
         isSelected = true,
-        isLoading = false,
-        { },
-        Modifier.size(150.dp),
+        loadingState = AvatarLoadingState.None,
+        onAvatarClicked = { },
+        modifier = Modifier.size(150.dp),
     )
 }
 
@@ -102,8 +147,20 @@ private fun SelectableAvatarLoadingPreview() {
     SelectableAvatar(
         "https://gravatar.com/avatar/fd2188b818f15e629f7b62896b5c6075?s=250",
         isSelected = false,
-        isLoading = true,
-        { },
-        Modifier.size(150.dp),
+        loadingState = AvatarLoadingState.Loading,
+        onAvatarClicked = { },
+        modifier = Modifier.size(150.dp),
+    )
+}
+
+@Preview
+@Composable
+private fun SelectableAvatarFailurePreview() {
+    SelectableAvatar(
+        "https://gravatar.com/avatar/fd2188b818f15e629f7b62896b5c6075?s=250",
+        isSelected = false,
+        loadingState = AvatarLoadingState.Failure,
+        onAvatarClicked = { },
+        modifier = Modifier.size(150.dp),
     )
 }
