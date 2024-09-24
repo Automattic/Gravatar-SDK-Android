@@ -708,6 +708,8 @@ public final class com/gravatar/services/ProfileService {
 	public fun <init> ()V
 	public fun <init> (Lokhttp3/OkHttpClient;)V
 	public synthetic fun <init> (Lokhttp3/OkHttpClient;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun checkAssociatedEmail (Ljava/lang/String;Lcom/gravatar/types/Email;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun checkAssociatedEmailCatching (Ljava/lang/String;Lcom/gravatar/types/Email;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun retrieve (Lcom/gravatar/types/Email;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun retrieve (Lcom/gravatar/types/Hash;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun retrieve (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
