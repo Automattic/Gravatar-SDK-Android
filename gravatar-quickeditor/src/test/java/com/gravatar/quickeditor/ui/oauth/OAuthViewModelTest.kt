@@ -1,7 +1,6 @@
 package com.gravatar.quickeditor.ui.oauth
 
 import app.cash.turbine.test
-import com.gravatar.quickeditor.data.service.WordPressOAuthService
 import com.gravatar.quickeditor.data.storage.TokenStorage
 import com.gravatar.quickeditor.ui.CoroutineTestRule
 import com.gravatar.services.ErrorType
@@ -23,16 +22,18 @@ class OAuthViewModelTest {
     @get:Rule
     var containerRule = CoroutineTestRule()
 
-    private val wordPressOAuthService = mockk<WordPressOAuthService>()
     private val tokenStorage = mockk<TokenStorage>()
     private val profileService = mockk<ProfileService>()
 
     private lateinit var viewModel: OAuthViewModel
 
+    val token = "access_token"
+    val email = Email("email")
+
     @Before
     fun setup() {
         coEvery { tokenStorage.storeToken(any(), any()) } returns Unit
-        viewModel = OAuthViewModel(wordPressOAuthService, tokenStorage, profileService)
+        viewModel = OAuthViewModel(tokenStorage, profileService)
     }
 
     @Test
@@ -42,115 +43,43 @@ class OAuthViewModelTest {
         }
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `given oAuth params when fetching the access token then UiState_Status is properly updated`() = runTest {
-        coEvery {
-            wordPressOAuthService.getAccessToken(
-                any(),
-                any(),
-                any(),
-                any(),
-            )
-        } returns Result.Success("access_token")
+    fun `given oAuth params when token stored then email association checked sent`() = runTest {
+        coEvery { profileService.checkAssociatedEmailCatching(token, email) } returns Result.Success(true)
 
-        coEvery { profileService.checkAssociatedEmailCatching(any(), any()) } returns Result.Success(true)
+        viewModel.tokenReceived(
+            email,
+            token = token,
+        )
+        advanceUntilIdle()
 
-        viewModel.uiState.test {
-            assertEquals(OAuthUiState(OAuthStatus.LoginRequired), awaitItem())
-            viewModel.fetchAccessToken(
-                "code",
-                OAuthParams {
-                    clientId = "client_id"
-                    clientSecret = "client_secret"
-                    redirectUri = "redirect_uri"
-                },
-                Email("email"),
-            )
-            assertEquals(OAuthUiState(OAuthStatus.Authorizing), awaitItem())
-        }
+        coVerify { profileService.checkAssociatedEmailCatching(token, email) }
     }
 
     @Test
-    fun `given oAuth params when fetching token fails then OAuthAction_AuthorizationFailure sent`() = runTest {
-        coEvery {
-            wordPressOAuthService.getAccessToken(
-                any(),
-                any(),
-                any(),
-                any(),
-            )
-        } returns Result.Failure(ErrorType.Unknown)
+    fun `given token when email associated then OAuthAction_AuthorizationSuccess sent`() = runTest {
+        coEvery { profileService.checkAssociatedEmailCatching(token, email) } returns Result.Success(true)
+
+        viewModel.tokenReceived(
+            email,
+            token = token,
+        )
 
         viewModel.actions.test {
-            skipItems(1) // skipping the StartOAuth action
-            viewModel.fetchAccessToken(
-                "code",
-                OAuthParams {
-                    clientId = "client_id"
-                    clientSecret = "client_secret"
-                    redirectUri = "redirect_uri"
-                },
-                Email("email"),
-            )
-            assertEquals(OAuthAction.AuthorizationFailure, awaitItem())
+            expectMostRecentItem()
+            assertEquals(OAuthAction.AuthorizationSuccess, awaitItem())
         }
     }
 
     @Test
-    fun `given oAuth params when fetching token but email doesn't match then UiState_Status is properly updated`() =
+    fun `given wrong email when restarting OAuth flow after email error then UiState_Status keeps the error state`() =
         runTest {
-            coEvery {
-                wordPressOAuthService.getAccessToken(
-                    any(),
-                    any(),
-                    any(),
-                    any(),
-                )
-            } returns Result.Success("access_token")
-
             coEvery { profileService.checkAssociatedEmailCatching(any(), any()) } returns Result.Success(false)
 
             viewModel.uiState.test {
                 assertEquals(OAuthUiState(OAuthStatus.LoginRequired), awaitItem())
-                viewModel.fetchAccessToken(
-                    "code",
-                    OAuthParams {
-                        clientId = "client_id"
-                        clientSecret = "client_secret"
-                        redirectUri = "redirect_uri"
-                    },
-                    Email("email"),
-                )
-                skipItems(1) // skipping the OAuthStatus.Authorizing state
-                assertEquals(OAuthUiState(OAuthStatus.WrongEmailAuthorized), awaitItem())
-            }
-        }
-
-    @Test
-    fun `given oAuth params when restarting OAuth flow after email error then UiState_Status keeps the error state`() =
-        runTest {
-            coEvery {
-                wordPressOAuthService.getAccessToken(
-                    any(),
-                    any(),
-                    any(),
-                    any(),
-                )
-            } returns Result.Success("access_token")
-
-            coEvery { profileService.checkAssociatedEmailCatching(any(), any()) } returns Result.Success(false)
-
-            viewModel.uiState.test {
-                assertEquals(OAuthUiState(OAuthStatus.LoginRequired), awaitItem())
-                viewModel.fetchAccessToken(
-                    "code",
-                    OAuthParams {
-                        clientId = "client_id"
-                        clientSecret = "client_secret"
-                        redirectUri = "redirect_uri"
-                    },
-                    Email("email"),
-                )
+                viewModel.tokenReceived(email, token)
                 skipItems(1) // skipping the OAuthStatus.Authorizing state
                 assertEquals(OAuthUiState(OAuthStatus.WrongEmailAuthorized), awaitItem())
                 viewModel.startOAuth()
@@ -159,90 +88,50 @@ class OAuthViewModelTest {
         }
 
     @Test
-    fun `given oAuth params when fetching token successful then OAuthAction_AuthorizationSuccess sent`() = runTest {
-        coEvery {
-            wordPressOAuthService.getAccessToken(
-                any(),
-                any(),
-                any(),
-                any(),
-            )
-        } returns Result.Success("access_token")
+    fun `given token when association check failed then OAuthAction_AuthorizationFailure sent`() = runTest {
+        coEvery { profileService.checkAssociatedEmailCatching(token, email) } returns Result.Failure(ErrorType.Unknown)
 
-        coEvery { profileService.checkAssociatedEmailCatching(any(), any()) } returns Result.Success(true)
+        viewModel.tokenReceived(
+            email,
+            token = token,
+        )
 
         viewModel.actions.test {
-            skipItems(1) // skipping the StartOAuth action
-            viewModel.fetchAccessToken(
-                "code",
-                OAuthParams {
-                    clientId = "client_id"
-                    clientSecret = "client_secret"
-                    redirectUri = "redirect_uri"
-                },
-                Email("email"),
-            )
-            assertEquals(OAuthAction.AuthorizationSuccess, awaitItem())
+            expectMostRecentItem()
+            assertEquals(OAuthAction.AuthorizationFailure, awaitItem())
         }
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `given oAuth params when account for fetched token matches email then token saved`() = runTest {
-        val token = "access_token"
-        val email = Email("email")
-        coEvery {
-            wordPressOAuthService.getAccessToken(
-                any(),
-                any(),
-                any(),
-                any(),
-            )
-        } returns Result.Success(token)
-
+    fun `given token when email associated then token stored sent`() = runTest {
         coEvery { profileService.checkAssociatedEmailCatching(token, email) } returns Result.Success(true)
 
-        viewModel.fetchAccessToken(
-            "code",
-            OAuthParams {
-                clientId = "client_id"
-                clientSecret = "client_secret"
-                redirectUri = "redirect_uri"
-            },
+        viewModel.tokenReceived(
             email,
+            token = token,
         )
+
         advanceUntilIdle()
 
-        coVerify(exactly = 1) { tokenStorage.storeToken(email.hash().toString(), token) }
+        coEvery { tokenStorage.storeToken(email.hash().toString(), token) }
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `given oAuth params when account for fetched token doesn't matches email then token is not saved`() = runTest {
-        val token = "access_token"
-        val email = Email("email")
-        coEvery {
-            wordPressOAuthService.getAccessToken(
-                any(),
-                any(),
-                any(),
-                any(),
-            )
-        } returns Result.Success(token)
-
+    fun `given token when email not associated then UiState updated`() = runTest {
         coEvery { profileService.checkAssociatedEmailCatching(token, email) } returns Result.Success(false)
 
-        viewModel.fetchAccessToken(
-            "code",
-            OAuthParams {
-                clientId = "client_id"
-                clientSecret = "client_secret"
-                redirectUri = "redirect_uri"
-            },
+        viewModel.tokenReceived(
             email,
+            token = token,
         )
-        advanceUntilIdle()
 
-        coVerify(exactly = 0) { tokenStorage.storeToken(any(), token) }
+        viewModel.uiState.test {
+            expectMostRecentItem()
+            assertEquals(OAuthStatus.Authorizing, awaitItem().status)
+            assertEquals(OAuthStatus.WrongEmailAuthorized, awaitItem().status)
+        }
+
+        coEvery { tokenStorage.storeToken(email.hash().toString(), token) }
     }
 }

@@ -12,7 +12,7 @@ internal object WordPressOauth {
             .appendPath("authorize")
             .appendQueryParameter("client_id", clientId)
             .appendQueryParameter("redirect_uri", redirectUri)
-            .appendQueryParameter("response_type", "code")
+            .appendQueryParameter("response_type", "token")
             .appendQueryParameter("scope[1]", "auth")
             .appendQueryParameter("scope[2]", "gravatar-profile:read")
             .appendQueryParameter("scope[3]", "gravatar-profile:manage")

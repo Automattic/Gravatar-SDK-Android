@@ -35,6 +35,7 @@ import com.gravatar.types.Email
 import com.gravatar.ui.GravatarTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.net.URLDecoder
 
 @Composable
 internal fun OAuthPage(
@@ -67,13 +68,18 @@ internal fun OAuthPage(
     if (activity != null) {
         DisposableEffect(Unit) {
             val listener = Consumer<Intent> { newIntent ->
-                val code = newIntent.data?.getQueryParameter("code")
-                if (code != null) {
-                    viewModel.fetchAccessToken(
-                        code = code,
-                        oAuthParams = oAuthParams,
-                        email = email,
-                    )
+                val token = newIntent.data
+                    ?.encodedFragment
+                    ?.split("&")
+                    ?.associate {
+                        val split = it.split("=")
+                        split.first() to split.last()
+                    }
+                    ?.get("access_token")
+                    .let { URLDecoder.decode(it, "UTF-8") }
+
+                if (token != null) {
+                    viewModel.tokenReceived(email, token)
                 } else {
                     onAuthError()
                 }
@@ -95,6 +101,8 @@ internal fun OauthPage(
     onStartOAuthClicked: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val context = LocalContext.current
+
     GravatarTheme {
         Surface {
             Box(

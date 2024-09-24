@@ -56,11 +56,6 @@ android {
             )
             buildConfigField(
                 "String",
-                "DEMO_WORDPRESS_CLIENT_SECRET",
-                "\"${properties["demo-app.wordpress.oauth.clientSecret"]?.toString() ?: ""}\"",
-            )
-            buildConfigField(
-                "String",
                 "DEMO_WORDPRESS_REDIRECT_URI",
                 "\"${properties["demo-app.wordpress.oauth.redirectUri"]?.toString() ?: ""}\"",
             )
