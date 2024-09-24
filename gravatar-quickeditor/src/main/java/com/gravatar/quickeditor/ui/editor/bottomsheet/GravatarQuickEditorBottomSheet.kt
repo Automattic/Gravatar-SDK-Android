@@ -8,14 +8,17 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Surface
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.window.core.layout.WindowHeightSizeClass
 import com.gravatar.quickeditor.ui.components.QEDragHandle
 import com.gravatar.quickeditor.ui.components.QETopBar
 import com.gravatar.quickeditor.ui.editor.AuthenticationMethod
+import com.gravatar.quickeditor.ui.editor.AvatarPickerContentLayout
 import com.gravatar.quickeditor.ui.editor.AvatarUpdateResult
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorDismissReason
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorPage
@@ -35,7 +38,6 @@ import kotlinx.coroutines.launch
  *                       Can be invoked multiple times while the Quick Editor is open.
  * @param onDismiss The callback for the dismiss action.
  *                  [GravatarQuickEditorError] will be non-null if the dismiss was caused by an error.
- * @param modalBottomSheetState The state of the bottom sheet.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -44,7 +46,34 @@ public fun GravatarQuickEditorBottomSheet(
     authenticationMethod: AuthenticationMethod,
     onAvatarSelected: (AvatarUpdateResult) -> Unit,
     onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit = {},
-    modalBottomSheetState: SheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+) {
+    val windowHeightSizeClass = currentWindowAdaptiveInfo().windowSizeClass.windowHeightSizeClass
+    GravatarQuickEditorBottomSheet(
+        gravatarQuickEditorParams = gravatarQuickEditorParams,
+        authenticationMethod = authenticationMethod,
+        onAvatarSelected = onAvatarSelected,
+        onDismiss = onDismiss,
+        modalBottomSheetState = if (windowHeightSizeClass == WindowHeightSizeClass.COMPACT) {
+            rememberModalBottomSheetState(
+                skipPartiallyExpanded = true,
+            )
+        } else {
+            rememberModalBottomSheetState(
+                skipPartiallyExpanded =
+                    gravatarQuickEditorParams.avatarPickerContentLayout == AvatarPickerContentLayout.Horizontal,
+            )
+        },
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+internal fun GravatarQuickEditorBottomSheet(
+    gravatarQuickEditorParams: GravatarQuickEditorParams,
+    authenticationMethod: AuthenticationMethod,
+    onAvatarSelected: (AvatarUpdateResult) -> Unit,
+    onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit = {},
+    modalBottomSheetState: SheetState,
 ) {
     GravatarModalBottomSheet(
         onDismiss = onDismiss,
@@ -76,7 +105,7 @@ public fun GravatarQuickEditorBottomSheet(
 @Composable
 private fun GravatarModalBottomSheet(
     onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit = {},
-    modalBottomSheetState: SheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+    modalBottomSheetState: SheetState,
     content: @Composable () -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()

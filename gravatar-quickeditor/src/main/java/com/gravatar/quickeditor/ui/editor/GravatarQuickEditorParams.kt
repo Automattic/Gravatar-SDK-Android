@@ -8,10 +8,12 @@ import java.util.Objects
  *
  * @property appName The appName of the app that is launching the Quick Editor
  * @property email The email of the user
+ * @property avatarPickerContentLayout The layout direction used in the Avatar Picker.
  */
 public class GravatarQuickEditorParams private constructor(
     public val appName: String,
     public val email: Email,
+    public val avatarPickerContentLayout: AvatarPickerContentLayout,
 ) {
     override fun toString(): String = "GravatarQuickEditorParams(appName='$appName', email='$email')"
 
@@ -40,6 +42,18 @@ public class GravatarQuickEditorParams private constructor(
         public var email: Email? = null
 
         /**
+         * The content layout direction used in the Avatar Picker
+         */
+        @set:JvmSynthetic // Hide 'void' setter from Java
+        public var avatarPickerContentLayout: AvatarPickerContentLayout = AvatarPickerContentLayout.Horizontal
+
+        /**
+         * Sets the content layout direction used in the Avatar Picker
+         */
+        public fun setAvatarPickerContentLayout(avatarPickerContentLayout: AvatarPickerContentLayout): Builder =
+            apply { this.avatarPickerContentLayout = avatarPickerContentLayout }
+
+        /**
          * Sets the appName
          */
         public fun setAppName(appName: String): Builder = apply { this.appName = appName }
@@ -52,7 +66,11 @@ public class GravatarQuickEditorParams private constructor(
         /**
          * Builds the GravatarQuickEditorParams object
          */
-        public fun build(): GravatarQuickEditorParams = GravatarQuickEditorParams(appName!!, email!!)
+        public fun build(): GravatarQuickEditorParams = GravatarQuickEditorParams(
+            appName!!,
+            email!!,
+            avatarPickerContentLayout,
+        )
     }
 }
 

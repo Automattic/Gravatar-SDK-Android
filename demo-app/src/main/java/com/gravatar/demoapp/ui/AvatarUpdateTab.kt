@@ -4,6 +4,7 @@ import android.content.Intent
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,15 +20,16 @@ import androidx.compose.material.icons.rounded.AccountCircle
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -46,6 +48,7 @@ import com.gravatar.demoapp.ui.components.GravatarEmailInput
 import com.gravatar.demoapp.ui.components.GravatarPasswordInput
 import com.gravatar.quickeditor.GravatarQuickEditor
 import com.gravatar.quickeditor.ui.editor.AuthenticationMethod
+import com.gravatar.quickeditor.ui.editor.AvatarPickerContentLayout
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
 import com.gravatar.quickeditor.ui.editor.bottomsheet.GravatarQuickEditorBottomSheet
 import com.gravatar.quickeditor.ui.oauth.OAuthParams
@@ -54,7 +57,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AvatarUpdateTab(modifier: Modifier = Modifier) {
     var userEmail by remember { mutableStateOf(BuildConfig.DEMO_EMAIL) }
@@ -66,6 +68,11 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
     val scope = rememberCoroutineScope()
     var avatarUrl: String? by remember { mutableStateOf(null) }
     val keyboardController = LocalSoftwareKeyboardController.current
+    var pickerContentLayout: AvatarPickerContentLayout by rememberSaveable(
+        stateSaver = AvatarPickerContentLayoutSaver,
+    ) {
+        mutableStateOf(AvatarPickerContentLayout.Horizontal)
+    }
 
     Box(
         modifier = Modifier
@@ -91,6 +98,31 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
                 )
                 Checkbox(checked = useToken, onCheckedChange = { useToken = it })
             }
+            Row(
+                horizontalArrangement = Arrangement.Start,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                RadioButton(
+                    selected = pickerContentLayout == AvatarPickerContentLayout.Horizontal,
+                    onClick = { pickerContentLayout = AvatarPickerContentLayout.Horizontal },
+                )
+                Text(
+                    text = "Horizontal",
+                    modifier = Modifier
+                        .align(Alignment.CenterVertically)
+                        .clickable { pickerContentLayout = AvatarPickerContentLayout.Horizontal },
+                )
+                RadioButton(
+                    selected = pickerContentLayout == AvatarPickerContentLayout.Vertical,
+                    onClick = { pickerContentLayout = AvatarPickerContentLayout.Vertical },
+                )
+                Text(
+                    text = "Vertical",
+                    modifier = Modifier
+                        .align(Alignment.CenterVertically)
+                        .clickable { pickerContentLayout = AvatarPickerContentLayout.Vertical },
+                )
+            }
             UpdateAvatarComposable(
                 modifier = Modifier.clickable {
                     keyboardController?.hide()
@@ -100,31 +132,33 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
                 avatarUrl = avatarUrl,
             )
             Spacer(modifier = Modifier.height(20.dp))
+        }
+        Column(
+            modifier = Modifier.align(Alignment.BottomCenter),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Button(
+                onClick = {
+                    scope.launch {
+                        GravatarQuickEditor.logout(Email(userEmail))
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(context, "Logged out", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                },
+            ) {
+                Text(text = "Logout user")
+            }
             if (BuildConfig.DEBUG) {
                 Button(
                     onClick = {
                         context.startActivity(Intent(context, QuickEditorTestActivity::class.java))
                     },
+                    modifier = Modifier.padding(bottom = 20.dp),
                 ) {
                     Text(text = "Test with Activity without Compose")
                 }
             }
-        }
-
-        Button(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(bottom = 20.dp),
-            onClick = {
-                scope.launch {
-                    GravatarQuickEditor.logout(Email(userEmail))
-                    withContext(Dispatchers.Main) {
-                        Toast.makeText(context, "Logged out", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            },
-        ) {
-            Text(text = "Logout user")
         }
     }
     if (showBottomSheet) {
@@ -144,6 +178,7 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
             gravatarQuickEditorParams = GravatarQuickEditorParams {
                 appName = applicationName
                 email = Email(userEmail)
+                avatarPickerContentLayout = pickerContentLayout
             },
             authenticationMethod = authenticationMethod,
             onAvatarSelected = remember {
@@ -186,6 +221,25 @@ private fun UpdateAvatarComposable(isUploading: Boolean, avatarUrl: String?, mod
             Text(text = stringResource(R.string.update_avatar_button_label))
         }
     }
+}
+
+private val AvatarPickerContentLayoutSaver: Saver<AvatarPickerContentLayout, String> = run {
+    val horizontalKey = "horizontal"
+    val verticalKey = "vertical"
+    Saver(
+        save = { value ->
+            when (value) {
+                AvatarPickerContentLayout.Horizontal -> horizontalKey
+                AvatarPickerContentLayout.Vertical -> verticalKey
+            }
+        },
+        restore = { value ->
+            when (value) {
+                horizontalKey -> AvatarPickerContentLayout.Horizontal
+                else -> AvatarPickerContentLayout.Vertical
+            }
+        },
+    )
 }
 
 @Preview

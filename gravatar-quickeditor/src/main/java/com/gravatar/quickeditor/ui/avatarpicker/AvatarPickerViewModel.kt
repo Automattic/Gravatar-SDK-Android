@@ -9,6 +9,8 @@ import com.gravatar.quickeditor.QuickEditorContainer
 import com.gravatar.quickeditor.data.FileUtils
 import com.gravatar.quickeditor.data.models.QuickEditorError
 import com.gravatar.quickeditor.data.repository.AvatarRepository
+import com.gravatar.quickeditor.ui.editor.AvatarPickerContentLayout
+import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
 import com.gravatar.restapi.models.Avatar
 import com.gravatar.restapi.models.Profile
 import com.gravatar.services.ErrorType
@@ -28,11 +30,13 @@ import java.net.URI
 internal class AvatarPickerViewModel(
     private val email: Email,
     private val handleExpiredSession: Boolean,
+    private val avatarPickerContentLayout: AvatarPickerContentLayout,
     private val profileService: ProfileService,
     private val avatarRepository: AvatarRepository,
     private val fileUtils: FileUtils,
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow(AvatarPickerUiState(email = email))
+    private val _uiState =
+        MutableStateFlow(AvatarPickerUiState(email = email, avatarPickerContentLayout = avatarPickerContentLayout))
     val uiState: StateFlow<AvatarPickerUiState> = _uiState.asStateFlow()
     private val _actions = Channel<AvatarPickerAction>(Channel.BUFFERED)
     val actions = _actions.receiveAsFlow()
@@ -163,7 +167,10 @@ internal class AvatarPickerViewModel(
 
     private fun fetchAvatars() {
         viewModelScope.launch {
-            fetchAvatars(showLoading = true)
+            fetchAvatars(
+                showLoading = true,
+                scrollToSelected = avatarPickerContentLayout == AvatarPickerContentLayout.Horizontal,
+            )
         }
     }
 
@@ -217,14 +224,15 @@ internal class AvatarPickerViewModel(
 }
 
 internal class AvatarPickerViewModelFactory(
-    private val email: Email,
+    private val gravatarQuickEditorParams: GravatarQuickEditorParams,
     private val handleExpiredSession: Boolean,
 ) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
         return AvatarPickerViewModel(
-            email = email,
             handleExpiredSession = handleExpiredSession,
+            email = gravatarQuickEditorParams.email,
+            avatarPickerContentLayout = gravatarQuickEditorParams.avatarPickerContentLayout,
             profileService = QuickEditorContainer.getInstance().profileService,
             avatarRepository = QuickEditorContainer.getInstance().avatarRepository,
             fileUtils = QuickEditorContainer.getInstance().fileUtils,

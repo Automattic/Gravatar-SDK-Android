@@ -59,7 +59,7 @@ internal fun GravatarQuickEditorPage(
         }
         composable(QuickEditorPage.EDITOR.name) {
             AvatarPicker(
-                email = gravatarQuickEditorParams.email,
+                gravatarQuickEditorParams = gravatarQuickEditorParams,
                 handleExpiredSession = true,
                 onAvatarSelected = onAvatarSelected,
                 onSessionExpired = { navController.navigate(QuickEditorPage.OAUTH.name) },
@@ -112,7 +112,7 @@ internal fun GravatarQuickEditorPage(
         }
         composable(QuickEditorPage.EDITOR.name) {
             AvatarPicker(
-                email = gravatarQuickEditorParams.email,
+                gravatarQuickEditorParams = gravatarQuickEditorParams,
                 handleExpiredSession = false,
                 onAvatarSelected = onAvatarSelected,
                 onSessionExpired = { onDismiss(GravatarQuickEditorDismissReason.InvalidToken) },

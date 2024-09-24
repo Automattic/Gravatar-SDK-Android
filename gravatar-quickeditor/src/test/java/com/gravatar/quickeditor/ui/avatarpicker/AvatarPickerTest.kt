@@ -2,6 +2,7 @@ package com.gravatar.quickeditor.ui.avatarpicker
 
 import com.gravatar.extensions.defaultProfile
 import com.gravatar.quickeditor.data.repository.EmailAvatars
+import com.gravatar.quickeditor.ui.editor.AvatarPickerContentLayout
 import com.gravatar.quickeditor.ui.gravatarScreenshotTest
 import com.gravatar.restapi.models.Avatar
 import com.gravatar.types.Email
@@ -23,6 +24,7 @@ class AvatarPickerTest : RoborazziTest() {
             uiState = AvatarPickerUiState(
                 profile = ComponentState.Loaded(profile),
                 email = Email("william.henry.harrison@example.com"),
+                avatarPickerContentLayout = AvatarPickerContentLayout.Horizontal,
                 emailAvatars = EmailAvatars(
                     avatars = listOf(
                         Avatar {
@@ -54,6 +56,7 @@ class AvatarPickerTest : RoborazziTest() {
             uiState = AvatarPickerUiState(
                 profile = ComponentState.Loaded(profile),
                 email = Email("william.henry.harrison@example.com"),
+                avatarPickerContentLayout = AvatarPickerContentLayout.Horizontal,
                 emailAvatars = EmailAvatars(
                     avatars = listOf(
                         Avatar {

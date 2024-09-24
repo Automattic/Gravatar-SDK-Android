@@ -2,6 +2,7 @@ package com.gravatar.quickeditor.ui.components
 
 import com.gravatar.quickeditor.ui.avatarpicker.AvatarUi
 import com.gravatar.quickeditor.ui.avatarpicker.AvatarsSectionUiState
+import com.gravatar.quickeditor.ui.editor.AvatarPickerContentLayout
 import com.gravatar.quickeditor.ui.gravatarScreenshotTest
 import com.gravatar.restapi.models.Avatar
 import com.gravatar.uitestutils.RoborazziTest
@@ -13,9 +14,10 @@ class AvatarsSectionTest : RoborazziTest() {
     fun avatarPickerListLoaded() = gravatarScreenshotTest {
         AvatarsSection(
             state = AvatarsSectionUiState(
-                avatars = avatars,
+                avatars = createAvatarList(2),
                 scrollToIndex = null,
                 uploadButtonEnabled = true,
+                avatarPickerContentLayout = AvatarPickerContentLayout.Horizontal,
             ),
             onLocalImageSelected = { },
             onAvatarSelected = {},
@@ -27,9 +29,10 @@ class AvatarsSectionTest : RoborazziTest() {
     fun avatarPickerListLoadedDark() = gravatarScreenshotTest {
         AvatarsSection(
             state = AvatarsSectionUiState(
-                avatars = avatars,
+                avatars = createAvatarList(2),
                 scrollToIndex = null,
                 uploadButtonEnabled = true,
+                avatarPickerContentLayout = AvatarPickerContentLayout.Horizontal,
             ),
             onLocalImageSelected = { },
             onAvatarSelected = {},
@@ -43,6 +46,7 @@ class AvatarsSectionTest : RoborazziTest() {
                 avatars = emptyList(),
                 scrollToIndex = null,
                 uploadButtonEnabled = true,
+                avatarPickerContentLayout = AvatarPickerContentLayout.Horizontal,
             ),
             onLocalImageSelected = { },
             onAvatarSelected = {},
@@ -53,9 +57,24 @@ class AvatarsSectionTest : RoborazziTest() {
     fun avatarPickerButtonDisabled() = gravatarScreenshotTest {
         AvatarsSection(
             state = AvatarsSectionUiState(
-                avatars = avatars,
+                avatars = createAvatarList(2),
                 scrollToIndex = null,
                 uploadButtonEnabled = false,
+                avatarPickerContentLayout = AvatarPickerContentLayout.Horizontal,
+            ),
+            onLocalImageSelected = { },
+            onAvatarSelected = {},
+        )
+    }
+
+    @Test
+    fun avatarPickerVertical() = gravatarScreenshotTest {
+        AvatarsSection(
+            state = AvatarsSectionUiState(
+                avatars = createAvatarList(5),
+                scrollToIndex = null,
+                uploadButtonEnabled = true,
+                avatarPickerContentLayout = AvatarPickerContentLayout.Vertical,
             ),
             onLocalImageSelected = { },
             onAvatarSelected = {},
@@ -63,27 +82,18 @@ class AvatarsSectionTest : RoborazziTest() {
     }
 }
 
-private val avatars = listOf(
-    AvatarUi.Uploaded(
-        avatar = Avatar {
-            imageUrl = "/image/url"
-            imageId = "1"
-            rating = Avatar.Rating.G
-            altText = "alt"
-            updatedDate = ""
-        },
-        isLoading = false,
-        isSelected = true,
-    ),
-    AvatarUi.Uploaded(
-        avatar = Avatar {
-            imageUrl = "/image/url"
-            imageId = "2"
-            rating = Avatar.Rating.G
-            altText = "alt"
-            updatedDate = ""
-        },
-        isLoading = false,
-        isSelected = true,
-    ),
-)
+private fun createAvatarList(size: Int): List<AvatarUi> {
+    return List(size) {
+        AvatarUi.Uploaded(
+            avatar = Avatar {
+                imageUrl = "/image/url/$it"
+                imageId = it.toString()
+                rating = Avatar.Rating.G
+                altText = "alt"
+                updatedDate = ""
+            },
+            isLoading = false,
+            isSelected = it == 0,
+        )
+    }
+}
