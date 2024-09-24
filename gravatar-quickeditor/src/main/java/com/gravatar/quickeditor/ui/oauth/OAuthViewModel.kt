@@ -7,6 +7,7 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import com.gravatar.quickeditor.QuickEditorContainer
 import com.gravatar.quickeditor.data.service.WordPressOAuthService
 import com.gravatar.quickeditor.data.storage.TokenStorage
+import com.gravatar.services.ProfileService
 import com.gravatar.services.Result
 import com.gravatar.types.Email
 import kotlinx.coroutines.channels.Channel
@@ -20,6 +21,7 @@ import kotlinx.coroutines.launch
 internal class OAuthViewModel(
     private val wordPressOAuthService: WordPressOAuthService,
     private val tokenStorage: TokenStorage,
+    private val profileService: ProfileService,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(OAuthUiState())
     val uiState: StateFlow<OAuthUiState> = _uiState.asStateFlow()
@@ -45,13 +47,33 @@ internal class OAuthViewModel(
 
             when (result) {
                 is Result.Success -> {
-                    tokenStorage.storeToken(email.hash().toString(), result.value)
-                    _actions.send(OAuthAction.AuthorizationSuccess)
+                    checkAuthorizedUserEmail(email, result.value)
                 }
 
                 is Result.Failure -> {
                     _actions.send(OAuthAction.AuthorizationFailure)
                     _uiState.update { currentState -> currentState.copy(isAuthorizing = false) }
+                }
+            }
+        }
+    }
+
+    private fun checkAuthorizedUserEmail(email: Email, token: String) {
+        viewModelScope.launch {
+            when (val result = profileService.checkAssociatedEmailCatching(token, email)) {
+                is Result.Success -> {
+                    result.value.let {
+                        if (it) {
+                            tokenStorage.storeToken(email.hash().toString(), token)
+                            _actions.send(OAuthAction.AuthorizationSuccess)
+                        } else {
+                            _actions.send(OAuthAction.AuthorizationFailure)
+                        }
+                    }
+                }
+
+                is Result.Failure -> {
+                    _actions.send(OAuthAction.AuthorizationFailure)
                 }
             }
         }
@@ -64,6 +86,7 @@ internal class OAuthViewModel(
                 return OAuthViewModel(
                     wordPressOAuthService = QuickEditorContainer.getInstance().wordPressOAuthService,
                     tokenStorage = QuickEditorContainer.getInstance().tokenStorage,
+                    profileService = QuickEditorContainer.getInstance().profileService,
                 ) as T
             }
         }
