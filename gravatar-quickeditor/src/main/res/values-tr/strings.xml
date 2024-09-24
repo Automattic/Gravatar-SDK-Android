@@ -21,7 +21,6 @@ Language: tr
     <string name="avatar_picker_server_error_title">Üzgünüz</string>
     <string name="avatar_selection_error">Üzgünüz, avatar seçilirken bir sorun oluştu</string>
     <string name="avatar_upload_error_action">Tekrar dene</string>
-    <string name="avatar_upload_error">Üzgünüz, görsel yüklenirken bir hata oluştu.</string>
     <string name="avatar_picker_title_empty_state">Avatarınızı oluşturalım</string>
     <string name="capture_photo_icon_description">Fotoğraf Çekin</string>
     <string name="photo_library_icon_description">Fotoğraf kütüphanesi</string>

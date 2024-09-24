@@ -21,7 +21,6 @@ Language: fr
     <string name="avatar_picker_server_error_title">Oups</string>
     <string name="avatar_selection_error">Oups, une erreur est survenue lors de la sélection de l’avatar.</string>
     <string name="avatar_upload_error_action">Réessayer</string>
-    <string name="avatar_upload_error">Oups, une erreur est survenue lors du chargement de l’image.</string>
     <string name="avatar_picker_title_empty_state">Configurons votre avatar</string>
     <string name="capture_photo_icon_description">Prendre une photo</string>
     <string name="photo_library_icon_description">Bibliothèque de photos</string>

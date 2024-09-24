@@ -21,7 +21,6 @@ Language: de
     <string name="avatar_picker_server_error_title">Ups</string>
     <string name="avatar_selection_error">Ups, beim Auswählen des Avatars ist ein Fehler aufgetreten.</string>
     <string name="avatar_upload_error_action">Erneut versuchen</string>
-    <string name="avatar_upload_error">Ups, beim Hochladen des Bildes ist ein Fehler aufgetreten.</string>
     <string name="avatar_picker_title_empty_state">Richten wir deinen Avatar ein</string>
     <string name="capture_photo_icon_description">Foto aufnehmen</string>
     <string name="photo_library_icon_description">Foto-Bibliothek</string>

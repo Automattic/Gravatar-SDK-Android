@@ -21,7 +21,6 @@ Language: sv_SE
     <string name="avatar_picker_server_error_title">Hoppsan</string>
     <string name="avatar_selection_error">Hoppsan, det gick inte att välja profilbilden.</string>
     <string name="avatar_upload_error_action">Försök igen</string>
-    <string name="avatar_upload_error">Hoppsan, det gick inte att ladda upp bilden.</string>
     <string name="avatar_picker_title_empty_state">Låt oss konfigurera din profilbild</string>
     <string name="capture_photo_icon_description">Ta foto</string>
     <string name="photo_library_icon_description">Fotobibliotek</string>

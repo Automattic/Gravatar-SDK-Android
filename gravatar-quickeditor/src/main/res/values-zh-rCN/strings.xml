@@ -21,7 +21,6 @@ Language: zh_CN
     <string name="avatar_picker_server_error_title">哎呀</string>
     <string name="avatar_selection_error">哎呀，选择头像时出错了。</string>
     <string name="avatar_upload_error_action">重试</string>
-    <string name="avatar_upload_error">哎呀，上传图片时出错了。</string>
     <string name="avatar_picker_title_empty_state">让我们来设置您的头像</string>
     <string name="capture_photo_icon_description">捕获照片</string>
     <string name="photo_library_icon_description">照片库</string>

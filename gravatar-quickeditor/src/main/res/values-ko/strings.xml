@@ -21,7 +21,6 @@ Language: ko_KR
     <string name="avatar_picker_server_error_title">이런</string>
     <string name="avatar_selection_error">이런, 아바타를 선택하는 중 오류가 발생했습니다.</string>
     <string name="avatar_upload_error_action">다시 시도</string>
-    <string name="avatar_upload_error">이런, 이미지를 업로드하는 중 오류가 발생했습니다.</string>
     <string name="avatar_picker_title_empty_state">아바타를 설정하겠습니다.</string>
     <string name="capture_photo_icon_description">사진 캡처</string>
     <string name="photo_library_icon_description">사진 라이브러리</string>
