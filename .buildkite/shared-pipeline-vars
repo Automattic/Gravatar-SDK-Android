@@ -1,1 +1,3 @@
-export CI_TOOLKIT="automattic/a8c-ci-toolkit#3.7.0"
+CI_TOOLKIT_PLUGIN_VERSION="3.7.1"
+
+export CI_TOOLKIT="automattic/a8c-ci-toolkit#$CI_TOOLKIT_PLUGIN_VERSION"
