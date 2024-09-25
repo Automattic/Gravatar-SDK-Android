@@ -582,7 +582,6 @@ class AvatarPickerViewModelTest {
     fun `given failed avatar upload when FailedAvatarTapped then UiState updated`() = runTest {
         val uri = mockk<Uri>()
         val identityAvatarsCopy = emailAvatars.copy(avatars = avatars, selectedAvatarId = "1")
-        every { fileUtils.deleteFile(any()) } returns Unit
         coEvery { profileService.retrieveCatching(email) } returns Result.Success(profile)
         coEvery { avatarRepository.uploadAvatar(any(), any()) } returns Result.Failure(invalidRequest)
         coEvery { avatarRepository.getAvatars(any()) } returns Result.Success(identityAvatarsCopy)
@@ -605,7 +604,6 @@ class AvatarPickerViewModelTest {
     fun `given failed avatar upload dialog shown when FailedAvatarDismissed then UiState updated`() = runTest {
         val uri = mockk<Uri>()
         val identityAvatarsCopy = emailAvatars.copy(avatars = avatars, selectedAvatarId = "1")
-        every { fileUtils.deleteFile(any()) } returns Unit
         coEvery { profileService.retrieveCatching(email) } returns Result.Success(profile)
         coEvery {
             avatarRepository.uploadAvatar(any(), any())
@@ -633,7 +631,6 @@ class AvatarPickerViewModelTest {
     fun `given failed avatar upload dialog shown when FailedAvatarDialogDismissed then UiState updated`() = runTest {
         val uri = mockk<Uri>()
         val identityAvatarsCopy = emailAvatars.copy(avatars = avatars, selectedAvatarId = "1")
-        every { fileUtils.deleteFile(any()) } returns Unit
         coEvery { profileService.retrieveCatching(email) } returns Result.Success(profile)
         coEvery { avatarRepository.uploadAvatar(any(), any()) } returns Result.Failure(invalidRequest)
         coEvery { avatarRepository.getAvatars(any()) } returns Result.Success(identityAvatarsCopy)
@@ -659,7 +656,6 @@ class AvatarPickerViewModelTest {
     fun `given failed avatar upload dialog shown when ImageCropped then UiState updated`() = runTest {
         val uri = mockk<Uri>()
         val identityAvatarsCopy = emailAvatars.copy(avatars = avatars, selectedAvatarId = "1")
-        every { fileUtils.deleteFile(any()) } returns Unit
         coEvery { profileService.retrieveCatching(email) } returns Result.Success(profile)
         coEvery {
             avatarRepository.uploadAvatar(any(), any())
