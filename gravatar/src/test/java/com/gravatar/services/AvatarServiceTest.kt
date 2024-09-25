@@ -14,6 +14,7 @@ import org.junit.Rule
 import org.junit.Test
 import retrofit2.Response
 import java.io.File
+import java.net.URI
 
 class AvatarServiceTest {
     @get:Rule
@@ -24,7 +25,7 @@ class AvatarServiceTest {
 
     private val avatar = Avatar {
         imageId = "id"
-        imageUrl = "url"
+        imageUrl = URI.create("https://gravatar.com/avatar/test")
         selected = false
         altText = ""
         rating = Avatar.Rating.G

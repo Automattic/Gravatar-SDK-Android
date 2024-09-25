@@ -27,7 +27,7 @@ public class Avatar private constructor(
     public val imageId: kotlin.String,
     // Image URL
     @SerializedName("image_url")
-    public val imageUrl: kotlin.String,
+    public val imageUrl: java.net.URI,
     // Rating associated with the image.
     @SerializedName("rating")
     public val rating: Avatar.Rating,
@@ -79,7 +79,7 @@ public class Avatar private constructor(
 
         // Image URL
         @set:JvmSynthetic // Hide 'void' setter from Java
-        public var imageUrl: kotlin.String? = null
+        public var imageUrl: java.net.URI? = null
 
         // Rating associated with the image.
         @set:JvmSynthetic // Hide 'void' setter from Java
@@ -99,7 +99,7 @@ public class Avatar private constructor(
 
         public fun setImageId(imageId: kotlin.String?): Builder = apply { this.imageId = imageId }
 
-        public fun setImageUrl(imageUrl: kotlin.String?): Builder = apply { this.imageUrl = imageUrl }
+        public fun setImageUrl(imageUrl: java.net.URI?): Builder = apply { this.imageUrl = imageUrl }
 
         public fun setRating(rating: Avatar.Rating?): Builder = apply { this.rating = rating }
 

@@ -30,6 +30,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import java.io.File
+import java.net.URI
 
 class AvatarPickerViewModelTest {
     private val testDispatcher = StandardTestDispatcher()
@@ -550,7 +551,7 @@ class AvatarPickerViewModelTest {
     )
 
     private fun createAvatar(id: String) = Avatar {
-        imageUrl = "/image/url"
+        imageUrl = URI.create("https://gravatar.com/avatar/test")
         imageId = id
         rating = Avatar.Rating.G
         altText = "alt"

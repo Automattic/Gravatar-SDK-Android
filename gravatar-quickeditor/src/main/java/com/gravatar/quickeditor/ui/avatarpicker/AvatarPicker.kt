@@ -65,6 +65,7 @@ import com.gravatar.ui.components.ComponentState
 import com.yalantis.ucrop.UCrop
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.net.URI
 
 @Composable
 internal fun AvatarPicker(
@@ -201,7 +202,7 @@ private suspend fun AvatarPickerAction.handle(
 ) {
     when (this) {
         is AvatarPickerAction.AvatarSelected -> {
-            onAvatarSelected(AvatarUpdateResult(avatar.imageUrl.toUri()))
+            onAvatarSelected(AvatarUpdateResult(avatar.imageUrl.toString().toUri()))
             snackState.showQESnackbar(
                 message = context.getString(R.string.avatar_selected_confirmation),
                 withDismissAction = true,
@@ -302,7 +303,7 @@ private fun AvatarPickerPreview() {
                 emailAvatars = EmailAvatars(
                     avatars = listOf(
                         Avatar {
-                            imageUrl = "/image/url"
+                            imageUrl = URI.create("https://gravatar.com/avatar/test")
                             imageId = "1"
                             rating = Avatar.Rating.G
                             altText = "alt"

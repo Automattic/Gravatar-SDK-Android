@@ -69,7 +69,7 @@ public class AvatarService(private val okHttpClient: OkHttpClient? = null) {
         withContext(GravatarSdkDI.dispatcherIO) {
             val service = instance.getGravatarV3Service(okHttpClient, oauthToken)
 
-            val response = service.getAvatars(selectedEmail = hash.toString())
+            val response = service.getAvatars(selectedEmailHash = hash.toString())
 
             if (response.isSuccessful) {
                 response.body() ?: error("Response body is null")

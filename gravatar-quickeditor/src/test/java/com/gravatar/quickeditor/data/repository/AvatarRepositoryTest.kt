@@ -21,6 +21,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import java.io.File
+import java.net.URI
 
 class AvatarRepositoryTest {
     private val testDispatcher = StandardTestDispatcher()
@@ -154,7 +155,7 @@ class AvatarRepositoryTest {
     }
 
     private fun createAvatar(id: String, isSelected: Boolean = false) = Avatar {
-        imageUrl = "/image/url"
+        imageUrl = URI.create("https://gravatar.com/avatar/test")
         imageId = id
         rating = Avatar.Rating.G
         altText = "alt"

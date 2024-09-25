@@ -26,12 +26,12 @@ internal interface AvatarsApi {
      * Responses:
      *  - 200: Successful retrieval of avatars
      *
-     * @param selectedEmail The email address used to determine which avatar is selected. The &#39;selected&#39; attribute in the avatar list will be set to &#39;true&#39; for the avatar associated with this email. (optional, default to "null")
+     * @param selectedEmailHash The sha256 hash of the email address used to determine which avatar is selected. The &#39;selected&#39; attribute in the avatar list will be set to &#39;true&#39; for the avatar associated with this email. (optional, default to "null")
      * @return [kotlin.collections.List<Avatar>]
      */
     @GET("me/avatars")
     suspend fun getAvatars(
-        @Query("selected_email") selectedEmail: kotlin.String? = "null",
+        @Query("selected_email_hash") selectedEmailHash: kotlin.String? = "null",
     ): Response<kotlin.collections.List<Avatar>>
 
     /**
