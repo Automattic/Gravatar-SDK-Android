@@ -43,7 +43,7 @@ class OAuthViewModelTest {
     }
 
     @Test
-    fun `given oAuth params when fetching the access token then UiState_IsAuthorizing is properly updated`() = runTest {
+    fun `given oAuth params when fetching the access token then UiState_Status is properly updated`() = runTest {
         coEvery {
             wordPressOAuthService.getAccessToken(
                 any(),
@@ -56,7 +56,7 @@ class OAuthViewModelTest {
         coEvery { profileService.checkAssociatedEmailCatching(any(), any()) } returns Result.Success(true)
 
         viewModel.uiState.test {
-            assertEquals(OAuthUiState(isAuthorizing = false), awaitItem())
+            assertEquals(OAuthUiState(OAuthStatus.LoginRequired), awaitItem())
             viewModel.fetchAccessToken(
                 "code",
                 OAuthParams {
@@ -66,7 +66,7 @@ class OAuthViewModelTest {
                 },
                 Email("email"),
             )
-            assertEquals(OAuthUiState(isAuthorizing = true), awaitItem())
+            assertEquals(OAuthUiState(OAuthStatus.Authorizing), awaitItem())
         }
     }
 
@@ -97,7 +97,7 @@ class OAuthViewModelTest {
     }
 
     @Test
-    fun `given oAuth params when fetching token but email doesn't match then OAuthAction_AuthorizationFailure sent`() =
+    fun `given oAuth params when fetching token but email doesn't match then UiState_Status is properly updated`() =
         runTest {
             coEvery {
                 wordPressOAuthService.getAccessToken(
@@ -110,8 +110,8 @@ class OAuthViewModelTest {
 
             coEvery { profileService.checkAssociatedEmailCatching(any(), any()) } returns Result.Success(false)
 
-            viewModel.actions.test {
-                skipItems(1) // skipping the StartOAuth action
+            viewModel.uiState.test {
+                assertEquals(OAuthUiState(OAuthStatus.LoginRequired), awaitItem())
                 viewModel.fetchAccessToken(
                     "code",
                     OAuthParams {
@@ -121,7 +121,8 @@ class OAuthViewModelTest {
                     },
                     Email("email"),
                 )
-                assertEquals(OAuthAction.AuthorizationFailure, awaitItem())
+                skipItems(1) // skipping the OAuthStatus.Authorizing state
+                assertEquals(OAuthUiState(OAuthStatus.WrongEmailAuthorized), awaitItem())
             }
         }
 

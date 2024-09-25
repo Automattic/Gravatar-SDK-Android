@@ -27,6 +27,8 @@
     <string name="avatar_picker_network_error_message">Uh oh! Looks like you\'re not connected to the internet.</string>
     <string name="login_required">Login required</string>
     <string name="login_required_message">To modify your Gravatar profile you need to log&#160;in first</string>
+    <string name="oauth_wrong_email_authenticated_error_title">Ooops</string>
+    <string name="oauth_wrong_email_authenticated_error_message">It looks like you used the wrong email to log in. Please try again using %s this time. Thanks!</string>
     <string name="happy_face_image_content_description">Happy face image</string>
     <string name="upload_image_content_description">Upload image</string>
     <string name="failed_to_load_avatar_content_description">Upload failed, tap to see actions.</string>

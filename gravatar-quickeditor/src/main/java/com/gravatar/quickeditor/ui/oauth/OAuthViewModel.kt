@@ -30,14 +30,21 @@ internal class OAuthViewModel(
     val actions = _actions.receiveAsFlow()
 
     init {
+        startOAuth()
+    }
+
+    fun startOAuth() {
         viewModelScope.launch {
             _actions.send(OAuthAction.StartOAuth)
+            _uiState.update { currentState ->
+                currentState.copy(status = OAuthStatus.LoginRequired)
+            }
         }
     }
 
     fun fetchAccessToken(code: String, oAuthParams: OAuthParams, email: Email) {
         viewModelScope.launch {
-            _uiState.update { currentState -> currentState.copy(isAuthorizing = true) }
+            _uiState.update { currentState -> currentState.copy(status = OAuthStatus.Authorizing) }
             val result = wordPressOAuthService.getAccessToken(
                 code = code,
                 clientId = oAuthParams.clientId,
@@ -52,7 +59,7 @@ internal class OAuthViewModel(
 
                 is Result.Failure -> {
                     _actions.send(OAuthAction.AuthorizationFailure)
-                    _uiState.update { currentState -> currentState.copy(isAuthorizing = false) }
+                    _uiState.update { currentState -> currentState.copy(status = OAuthStatus.LoginRequired) }
                 }
             }
         }
@@ -67,7 +74,9 @@ internal class OAuthViewModel(
                             tokenStorage.storeToken(email.hash().toString(), token)
                             _actions.send(OAuthAction.AuthorizationSuccess)
                         } else {
-                            _actions.send(OAuthAction.AuthorizationFailure)
+                            _uiState.update { currentState ->
+                                currentState.copy(status = OAuthStatus.WrongEmailAuthorized)
+                            }
                         }
                     }
                 }

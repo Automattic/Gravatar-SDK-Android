@@ -85,13 +85,16 @@ internal fun OAuthPage(
         }
     }
 
-    OauthPage(uiState, email, oAuthParams, modifier)
+    OauthPage(uiState, email, { viewModel.startOAuth() }, modifier)
 }
 
 @Composable
-internal fun OauthPage(uiState: OAuthUiState, email: Email, oAuthParams: OAuthParams, modifier: Modifier = Modifier) {
-    val context = LocalContext.current
-
+internal fun OauthPage(
+    uiState: OAuthUiState,
+    email: Email,
+    onStartOAuthClicked: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     GravatarTheme {
         Surface {
             Box(
@@ -99,18 +102,34 @@ internal fun OauthPage(uiState: OAuthUiState, email: Email, oAuthParams: OAuthPa
                     .fillMaxWidth()
                     .height(DEFAULT_PAGE_HEIGHT),
             ) {
-                if (uiState.isAuthorizing) {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-                } else {
-                    ErrorSection(
-                        title = stringResource(R.string.login_required),
-                        message = stringResource(R.string.login_required_message),
-                        buttonText = stringResource(id = R.string.avatar_picker_session_error_cta),
-                        onButtonClick = { launchCustomTab(context, oAuthParams, email) },
-                        modifier = Modifier
-                            .padding(horizontal = 16.dp)
-                            .align(Alignment.Center),
-                    )
+                when (uiState.status) {
+                    OAuthStatus.Authorizing -> CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                    OAuthStatus.LoginRequired -> {
+                        ErrorSection(
+                            title = stringResource(R.string.login_required),
+                            message = stringResource(R.string.login_required_message),
+                            buttonText = stringResource(id = R.string.avatar_picker_session_error_cta),
+                            onButtonClick = onStartOAuthClicked,
+                            modifier = Modifier
+                                .padding(horizontal = 16.dp)
+                                .align(Alignment.Center),
+                        )
+                    }
+
+                    OAuthStatus.WrongEmailAuthorized -> {
+                        ErrorSection(
+                            title = stringResource(R.string.oauth_wrong_email_authenticated_error_title),
+                            message = stringResource(
+                                R.string.oauth_wrong_email_authenticated_error_message,
+                                email.toString(),
+                            ),
+                            buttonText = stringResource(id = R.string.avatar_picker_session_error_cta),
+                            onButtonClick = onStartOAuthClicked,
+                            modifier = Modifier
+                                .padding(horizontal = 16.dp)
+                                .align(Alignment.Center),
+                        )
+                    }
                 }
             }
         }
@@ -139,11 +158,7 @@ private fun OAuthPagePreview() {
         OauthPage(
             uiState = OAuthUiState(),
             email = Email("email"),
-            oAuthParams = OAuthParams {
-                clientId = "client_id"
-                clientSecret = "client_secret"
-                redirectUri = "redirect_uri"
-            },
+            onStartOAuthClicked = { },
         )
     }
 }
