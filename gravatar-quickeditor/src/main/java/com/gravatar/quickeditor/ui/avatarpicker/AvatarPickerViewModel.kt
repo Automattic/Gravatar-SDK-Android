@@ -25,7 +25,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.net.URI
 
 internal class AvatarPickerViewModel(
     private val email: Email,
@@ -245,7 +244,7 @@ internal fun Profile.copyAvatar(avatar: Avatar): Profile {
         hash = this@copyAvatar.hash
         displayName = this@copyAvatar.displayName
         profileUrl = this@copyAvatar.profileUrl
-        avatarUrl = URI.create(avatar.imageUrl)
+        avatarUrl = avatar.imageUrl
         avatarAltText = avatar.altText
         location = this@copyAvatar.location
         description = this@copyAvatar.description

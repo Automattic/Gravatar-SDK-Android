@@ -37,6 +37,7 @@ import com.gravatar.quickeditor.ui.avatarpicker.AvatarsSectionUiState
 import com.gravatar.quickeditor.ui.editor.AvatarPickerContentLayout
 import com.gravatar.restapi.models.Avatar
 import com.gravatar.ui.GravatarTheme
+import java.net.URI
 
 @Composable
 internal fun VerticalAvatarsSection(
@@ -183,7 +184,7 @@ private fun VerticalAvatarSectionPreview() {
                 avatars = List(6) {
                     AvatarUi.Uploaded(
                         avatar = Avatar {
-                            imageUrl = "/image/url"
+                            imageUrl = URI.create("https://gravatar.com/avatar/test")
                             imageId = it.toString()
                             rating = Avatar.Rating.G
                             altText = "alt"

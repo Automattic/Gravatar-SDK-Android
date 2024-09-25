@@ -8,6 +8,7 @@ import com.gravatar.restapi.models.Avatar
 import com.gravatar.uitestutils.RoborazziTest
 import org.junit.Test
 import org.robolectric.annotation.Config
+import java.net.URI
 
 class AvatarsSectionTest : RoborazziTest() {
     @Test
@@ -86,7 +87,7 @@ private fun createAvatarList(size: Int): List<AvatarUi> {
     return List(size) {
         AvatarUi.Uploaded(
             avatar = Avatar {
-                imageUrl = "/image/url/$it"
+                imageUrl = URI.create("https://gravatar.com/avatar/test/$it")
                 imageId = it.toString()
                 rating = Avatar.Rating.G
                 altText = "alt"

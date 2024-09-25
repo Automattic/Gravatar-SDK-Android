@@ -10,6 +10,7 @@ import com.gravatar.ui.components.ComponentState
 import com.gravatar.uitestutils.RoborazziTest
 import org.junit.Test
 import org.robolectric.annotation.Config
+import java.net.URI
 
 class AvatarPickerTest : RoborazziTest() {
     private val profile = defaultProfile(
@@ -28,14 +29,14 @@ class AvatarPickerTest : RoborazziTest() {
                 emailAvatars = EmailAvatars(
                     avatars = listOf(
                         Avatar {
-                            imageUrl = "/image/url1"
+                            imageUrl = URI.create("https://gravatar.com/avatar/test")
                             imageId = "1"
                             rating = Avatar.Rating.G
                             altText = "alt"
                             updatedDate = ""
                         },
                         Avatar {
-                            imageUrl = "/image/url2"
+                            imageUrl = URI.create("https://gravatar.com/avatar/test2")
                             imageId = "2"
                             rating = Avatar.Rating.G
                             altText = "alt"
@@ -60,14 +61,14 @@ class AvatarPickerTest : RoborazziTest() {
                 emailAvatars = EmailAvatars(
                     avatars = listOf(
                         Avatar {
-                            imageUrl = "/image/url1"
+                            imageUrl = URI.create("https://gravatar.com/avatar/test")
                             imageId = "1"
                             rating = Avatar.Rating.G
                             altText = "alt"
                             updatedDate = ""
                         },
                         Avatar {
-                            imageUrl = "/image/url2"
+                            imageUrl = URI.create("https://gravatar.com/avatar/test2")
                             imageId = "2"
                             rating = Avatar.Rating.G
                             altText = "alt"

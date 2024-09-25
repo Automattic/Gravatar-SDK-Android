@@ -11,7 +11,7 @@ import com.google.gson.annotations.SerializedName
 import java.util.Objects
 
 /**
- *
+ * An error response from the API.
  *
  * @param error The error message
  * @param code The error code for the error message

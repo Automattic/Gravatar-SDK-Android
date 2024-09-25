@@ -166,11 +166,11 @@ public final class com/gravatar/extensions/UserProfileExtensionsKt {
 }
 
 public final class com/gravatar/restapi/models/Avatar {
-	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lcom/gravatar/restapi/models/Avatar$Rating;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Boolean;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/net/URI;Lcom/gravatar/restapi/models/Avatar$Rating;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Boolean;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getAltText ()Ljava/lang/String;
 	public final fun getImageId ()Ljava/lang/String;
-	public final fun getImageUrl ()Ljava/lang/String;
+	public final fun getImageUrl ()Ljava/net/URI;
 	public final fun getRating ()Lcom/gravatar/restapi/models/Avatar$Rating;
 	public final fun getSelected ()Ljava/lang/Boolean;
 	public final fun getUpdatedDate ()Ljava/lang/String;
@@ -183,7 +183,7 @@ public final class com/gravatar/restapi/models/Avatar$Builder {
 	public final fun build ()Lcom/gravatar/restapi/models/Avatar;
 	public final fun getAltText ()Ljava/lang/String;
 	public final fun getImageId ()Ljava/lang/String;
-	public final fun getImageUrl ()Ljava/lang/String;
+	public final fun getImageUrl ()Ljava/net/URI;
 	public final fun getRating ()Lcom/gravatar/restapi/models/Avatar$Rating;
 	public final fun getSelected ()Ljava/lang/Boolean;
 	public final fun getUpdatedDate ()Ljava/lang/String;
@@ -191,8 +191,8 @@ public final class com/gravatar/restapi/models/Avatar$Builder {
 	public final synthetic fun setAltText (Ljava/lang/String;)V
 	public final fun setImageId (Ljava/lang/String;)Lcom/gravatar/restapi/models/Avatar$Builder;
 	public final synthetic fun setImageId (Ljava/lang/String;)V
-	public final fun setImageUrl (Ljava/lang/String;)Lcom/gravatar/restapi/models/Avatar$Builder;
-	public final synthetic fun setImageUrl (Ljava/lang/String;)V
+	public final fun setImageUrl (Ljava/net/URI;)Lcom/gravatar/restapi/models/Avatar$Builder;
+	public final synthetic fun setImageUrl (Ljava/net/URI;)V
 	public final fun setRating (Lcom/gravatar/restapi/models/Avatar$Rating;)Lcom/gravatar/restapi/models/Avatar$Builder;
 	public final synthetic fun setRating (Lcom/gravatar/restapi/models/Avatar$Rating;)V
 	public final fun setSelected (Ljava/lang/Boolean;)Lcom/gravatar/restapi/models/Avatar$Builder;
