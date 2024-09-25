@@ -6,6 +6,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import com.gravatar.quickeditor.R
 import com.gravatar.quickeditor.ui.avatarpicker.AvatarUploadFailure
 import com.gravatar.ui.GravatarTheme
@@ -40,4 +41,15 @@ internal fun FailedAvatarUploadAlertDialog(
             )
         }
     }
+}
+
+@Preview
+@Composable
+private fun FailedAvatarUploadAlertDialogPreview() {
+    FailedAvatarUploadAlertDialog(
+        avatarUploadFailure = AvatarUploadFailure(Uri.EMPTY, "Error message"),
+        onRemoveUploadClicked = {},
+        onRetryClicked = {},
+        onDismiss = {},
+    )
 }
