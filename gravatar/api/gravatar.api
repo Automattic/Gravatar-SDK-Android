@@ -165,6 +165,26 @@ public final class com/gravatar/extensions/UserProfileExtensionsKt {
 	public static final fun profileUrl (Lcom/gravatar/restapi/models/Profile;)Lcom/gravatar/ProfileUrl;
 }
 
+public final class com/gravatar/restapi/models/AssociatedEmail200Response {
+	public synthetic fun <init> (ZLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAssociated ()Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/gravatar/restapi/models/AssociatedEmail200Response$Builder {
+	public fun <init> ()V
+	public final fun build ()Lcom/gravatar/restapi/models/AssociatedEmail200Response;
+	public final fun getAssociated ()Ljava/lang/Boolean;
+	public final fun setAssociated (Ljava/lang/Boolean;)Lcom/gravatar/restapi/models/AssociatedEmail200Response$Builder;
+	public final synthetic fun setAssociated (Ljava/lang/Boolean;)V
+}
+
+public final class com/gravatar/restapi/models/AssociatedEmail200ResponseKt {
+	public static final synthetic fun AssociatedEmail200Response (Lkotlin/jvm/functions/Function1;)Lcom/gravatar/restapi/models/AssociatedEmail200Response;
+}
+
 public final class com/gravatar/restapi/models/Avatar {
 	public synthetic fun <init> (Ljava/lang/String;Ljava/net/URI;Lcom/gravatar/restapi/models/Avatar$Rating;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Boolean;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun equals (Ljava/lang/Object;)Z
@@ -688,6 +708,8 @@ public final class com/gravatar/services/ProfileService {
 	public fun <init> ()V
 	public fun <init> (Lokhttp3/OkHttpClient;)V
 	public synthetic fun <init> (Lokhttp3/OkHttpClient;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun checkAssociatedEmail (Ljava/lang/String;Lcom/gravatar/types/Email;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun checkAssociatedEmailCatching (Ljava/lang/String;Lcom/gravatar/types/Email;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun retrieve (Lcom/gravatar/types/Email;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun retrieve (Lcom/gravatar/types/Hash;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun retrieve (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;

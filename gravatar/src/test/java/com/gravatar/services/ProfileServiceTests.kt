@@ -1,6 +1,7 @@
 package com.gravatar.services
 
 import com.gravatar.GravatarSdkContainerRule
+import com.gravatar.restapi.models.AssociatedEmail200Response
 import com.gravatar.restapi.models.Profile
 import com.gravatar.types.Email
 import com.gravatar.types.Hash
@@ -9,6 +10,7 @@ import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
+import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertNull
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.test.runTest
@@ -236,4 +238,81 @@ class ProfileServiceTests {
 
         assertNull(profileService.retrieve(username))
     }
+
+    @Test
+    fun `given oauthToken and email when checking associated email and it's associated then result is successful`() =
+        runTest {
+            val oauthToken = "oauth"
+            val usernameEmail = Email("username@automattic.com")
+
+            val body = AssociatedEmail200Response { associated = true }
+            val mockResponse = mockk<Response<AssociatedEmail200Response>> {
+                every { isSuccessful } returns true
+                every { body() } returns body
+            }
+
+            coEvery {
+                containerRule.gravatarApiMock.associatedEmail(usernameEmail.hash().toString())
+            } returns mockResponse
+
+            assertTrue((profileService.checkAssociatedEmailCatching(oauthToken, usernameEmail) as Result.Success).value)
+        }
+
+    @Test
+    fun `given oauthToken and email when checking associated email and it's not associated then successful`() =
+        runTest {
+            val oauthToken = "oauth"
+            val usernameEmail = Email("username@automattic.com")
+
+            val body = AssociatedEmail200Response { associated = false }
+            val mockResponse = mockk<Response<AssociatedEmail200Response>> {
+                every { isSuccessful } returns true
+                every { body() } returns body
+            }
+
+            coEvery {
+                containerRule.gravatarApiMock.associatedEmail(usernameEmail.hash().toString())
+            } returns mockResponse
+
+            assertFalse(
+                (profileService.checkAssociatedEmailCatching(oauthToken, usernameEmail) as Result.Success).value,
+            )
+        }
+
+    @Test
+    fun `given oauthToken and email when checking associated email and response body is null then result is Failure`() =
+        runTest {
+            val oauthToken = "oauth"
+            val usernameEmail = Email("username@automattic.com")
+
+            val mockResponse = mockk<Response<AssociatedEmail200Response>> {
+                every { isSuccessful } returns true
+                every { body() } returns null
+            }
+
+            coEvery {
+                containerRule.gravatarApiMock.associatedEmail(usernameEmail.hash().toString())
+            } returns mockResponse
+
+            val result = profileService.checkAssociatedEmailCatching(oauthToken, usernameEmail)
+            assertTrue((result as Result.Failure).error == ErrorType.Unknown)
+        }
+
+    @Test(expected = IllegalStateException::class)
+    fun `given oauthToken and email when checking associated email and null body then IllegalStateException thrown`() =
+        runTest {
+            val oauthToken = "oauth"
+            val usernameEmail = Email("username@automattic.com")
+
+            val mockResponse = mockk<Response<AssociatedEmail200Response>> {
+                every { isSuccessful } returns true
+                every { body() } returns null
+            }
+
+            coEvery {
+                containerRule.gravatarApiMock.associatedEmail(usernameEmail.hash().toString())
+            } returns mockResponse
+
+            profileService.checkAssociatedEmail(oauthToken, usernameEmail)
+        }
 }

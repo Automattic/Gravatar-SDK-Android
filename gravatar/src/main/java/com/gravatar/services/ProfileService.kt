@@ -12,7 +12,7 @@ import com.gravatar.di.container.GravatarSdkContainer.Companion.instance as Grav
 /**
  * Service for managing Gravatar profiles.
  */
-public class ProfileService(okHttpClient: OkHttpClient? = null) {
+public class ProfileService(private val okHttpClient: OkHttpClient? = null) {
     private companion object {
         const val LOG_TAG = "ProfileService"
     }
@@ -120,4 +120,42 @@ public class ProfileService(okHttpClient: OkHttpClient? = null) {
     public suspend fun retrieveByUsernameCatching(username: String): Result<Profile, ErrorType> = runCatchingRequest {
         retrieveByUsername(username)
     }
+
+    /**
+     * Checks if the given email address is associated with the already authorized Gravatar account.
+     * This method throws any exception that occurs during the execution.
+     *
+     * @param oauthToken The OAuth token to use for authentication
+     * @param email The email address to check
+     * @return True if the email is associated with the account, false otherwise
+     */
+    public suspend fun checkAssociatedEmail(oauthToken: String, email: Email): Boolean =
+        withContext(GravatarSdkDI.dispatcherIO) {
+            val service = GravatarSdkDI.getGravatarV3Service(okHttpClient, oauthToken)
+
+            val response = service.associatedEmail(email.hash().toString())
+            if (response.isSuccessful) {
+                response.body()?.associated ?: error("Response body is null")
+            } else {
+                // Log the response body for debugging purposes if the response is not successful
+                Logger.w(
+                    LOG_TAG,
+                    "Network call unsuccessful trying to checkAssociatedEmail: ${response.code()}",
+                )
+                throw HttpException(response)
+            }
+        }
+
+    /**
+     * Checks if the given email address is associated with the already authorized Gravatar account.
+     * This method will catch any exception that occurs during the execution and return it as a [Result.Failure].
+     *
+     * @param oauthToken The OAuth token to use for authentication
+     * @param email The email address to check
+     * @return True if the email is associated with the account, false otherwise
+     */
+    public suspend fun checkAssociatedEmailCatching(oauthToken: String, email: Email): Result<Boolean, ErrorType> =
+        runCatchingRequest {
+            checkAssociatedEmail(oauthToken, email)
+        }
 }

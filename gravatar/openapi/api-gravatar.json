@@ -676,6 +676,56 @@
         }
       }
     },
+    "/me/associated-email": {
+      "get": {
+        "summary": "Check if the email is associated with the authenticated user",
+        "description": "Checks if the provided email address is associated with the authenticated user.",
+        "tags": [
+          "profiles"
+        ],
+        "operationId": "associatedEmail",
+        "security": [
+          {
+            "oauth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "email_hash",
+            "in": "query",
+            "required": true,
+            "description": "The hash of the email address to check.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The email is associated with the authenticated user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "associated"
+                  ],
+                  "properties": {
+                    "associated": {
+                      "type": "boolean",
+                      "description": "Whether the email is associated with a Gravatar account.",
+                      "examples": [
+                        true
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/me/avatars": {
       "get": {
         "summary": "List avatars",
