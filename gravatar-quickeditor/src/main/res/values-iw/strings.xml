@@ -21,7 +21,6 @@ Language: he_IL
     <string name="avatar_picker_server_error_title">אופס</string>
     <string name="avatar_selection_error">אופס, אירעה שגיאה בבחירת צלמית המשתמש.</string>
     <string name="avatar_upload_error_action">לנסות שוב</string>
-    <string name="avatar_upload_error">אופס, אירעה שגיאה בהעלאת התמונה.</string>
     <string name="avatar_picker_title_empty_state">זה הזמן להגדיר את צלמית המשתמש שלך</string>
     <string name="capture_photo_icon_description">לצלם תמונה</string>
     <string name="photo_library_icon_description">ספריית תמונות</string>

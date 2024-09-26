@@ -21,7 +21,6 @@ Language: ar
     <string name="avatar_picker_server_error_title">عفوًا</string>
     <string name="avatar_selection_error">عفوًا، كان هناك خطأ في أثناء تحديد الصورة الرمزية.</string>
     <string name="avatar_upload_error_action">إعادة المحاولة</string>
-    <string name="avatar_upload_error">عفوًا، كان هناك خطأ في أثناء رفع الصورة.</string>
     <string name="avatar_picker_title_empty_state">لنقم بإعداد صورتك الرمزية</string>
     <string name="capture_photo_icon_description">التقاط صورة</string>
     <string name="photo_library_icon_description">مكتبة الصور</string>

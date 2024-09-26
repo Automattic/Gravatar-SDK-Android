@@ -21,7 +21,6 @@ Language: zh_TW
     <string name="avatar_picker_server_error_title">糟糕</string>
     <string name="avatar_selection_error">糟糕，在選取大頭貼時發生錯誤。</string>
     <string name="avatar_upload_error_action">重試</string>
-    <string name="avatar_upload_error">糟糕，在上傳圖片時發生錯誤。</string>
     <string name="avatar_picker_title_empty_state">立即設定你的大頭貼</string>
     <string name="capture_photo_icon_description">拍攝照片</string>
     <string name="photo_library_icon_description">照片庫</string>

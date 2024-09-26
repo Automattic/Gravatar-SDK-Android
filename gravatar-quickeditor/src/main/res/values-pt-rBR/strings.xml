@@ -21,7 +21,6 @@ Language: pt_BR
     <string name="avatar_picker_server_error_title">Ops!</string>
     <string name="avatar_selection_error">Ops! Ocorreu um erro ao selecionar o avatar.</string>
     <string name="avatar_upload_error_action">Tentar novamente</string>
-    <string name="avatar_upload_error">Ops! Ocorreu um erro ao fazer upload da imagem.</string>
     <string name="avatar_picker_title_empty_state">Vamos configurar seu avatar</string>
     <string name="capture_photo_icon_description">Capturar Foto</string>
     <string name="photo_library_icon_description">Biblioteca de fotos</string>

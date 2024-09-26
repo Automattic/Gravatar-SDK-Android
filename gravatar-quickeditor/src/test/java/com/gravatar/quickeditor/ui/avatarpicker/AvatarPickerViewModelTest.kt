@@ -49,6 +49,15 @@ class AvatarPickerViewModelTest {
     private val profile = defaultProfile(hash = "hash", displayName = "Display name")
     private val avatars = listOf(createAvatar("1"), createAvatar("2"))
     private val emailAvatars = EmailAvatars(emptyList(), null)
+    private val errorMessage = "errorMessage"
+    private val invalidRequest = QuickEditorError.Request(
+        ErrorType.InvalidRequest(
+            Error {
+                code = "code"
+                error = errorMessage
+            },
+        ),
+    )
 
     @Before
     fun setup() {
@@ -365,6 +374,7 @@ class AvatarPickerViewModelTest {
                     uploadingAvatar = uri,
                     scrollToIndex = 0,
                     avatarPickerContentLayout = AvatarPickerContentLayout.Horizontal,
+                    failedUploads = emptySet(),
                 ),
                 awaitItem(),
             )
@@ -395,21 +405,9 @@ class AvatarPickerViewModelTest {
     fun `given cropped image when upload failure then uiState is updated`() = runTest {
         val uri = mockk<Uri>()
         val emailAvatarsCopy = emailAvatars.copy(avatars = avatars, selectedAvatarId = "1")
-        val uploadErrorMessage = "Failed to upload avatar"
         every { fileUtils.deleteFile(any()) } returns Unit
         coEvery { profileService.retrieveCatching(email) } returns Result.Success(profile)
-        coEvery {
-            avatarRepository.uploadAvatar(any(), any())
-        } returns Result.Failure(
-            QuickEditorError.Request(
-                ErrorType.InvalidRequest(
-                    error = Error {
-                        code = "error"
-                        error = uploadErrorMessage
-                    },
-                ),
-            ),
-        )
+        coEvery { avatarRepository.uploadAvatar(any(), any()) } returns Result.Failure(invalidRequest)
 
         coEvery { avatarRepository.getAvatars(any()) } returns Result.Success(emailAvatarsCopy)
 
@@ -430,6 +428,7 @@ class AvatarPickerViewModelTest {
                 uploadingAvatar = uri,
                 scrollToIndex = 0,
                 avatarPickerContentLayout = avatarPickerContentLayout,
+                failedUploads = emptySet(),
             )
             assertEquals(
                 avatarPickerUiState,
@@ -439,12 +438,10 @@ class AvatarPickerViewModelTest {
                 avatarPickerUiState.copy(
                     uploadingAvatar = null,
                     scrollToIndex = null,
+                    failedUploads = setOf(AvatarUploadFailure(uri, errorMessage)),
                 ),
                 awaitItem(),
             )
-        }
-        viewModel.actions.test {
-            assertEquals(AvatarPickerAction.AvatarUploadFailed(uri, uploadErrorMessage), awaitItem())
         }
     }
 
@@ -516,6 +513,59 @@ class AvatarPickerViewModelTest {
         }
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `given multiple failed uploads when upload successful then uiState is updated`() = runTest {
+        val uriOne = mockk<Uri>()
+        val uriTwo = mockk<Uri>()
+        val emailAvatarsCopy = emailAvatars.copy(avatars = emptyList(), selectedAvatarId = null)
+        every { fileUtils.deleteFile(any()) } returns Unit
+        coEvery { profileService.retrieveCatching(email) } returns Result.Success(profile)
+        coEvery { avatarRepository.getAvatars(any()) } returns Result.Success(emailAvatarsCopy)
+        coEvery { avatarRepository.uploadAvatar(any(), any()) } returns Result.Failure(invalidRequest)
+
+        viewModel = initViewModel()
+        viewModel.onEvent(AvatarPickerEvent.ImageCropped(uriOne))
+        viewModel.onEvent(AvatarPickerEvent.ImageCropped(uriTwo))
+
+        advanceUntilIdle()
+
+        viewModel.uiState.test {
+            expectMostRecentItem()
+
+            coEvery {
+                avatarRepository.uploadAvatar(any(), any())
+            } returns Result.Success(createAvatar("1"))
+
+            viewModel.onEvent(AvatarPickerEvent.ImageCropped(uriTwo))
+            val avatarPickerUiState = AvatarPickerUiState(
+                email = email,
+                emailAvatars = emailAvatarsCopy,
+                error = null,
+                profile = ComponentState.Loaded(profile),
+                selectingAvatarId = null,
+                uploadingAvatar = uriTwo,
+                scrollToIndex = 0,
+                avatarPickerContentLayout = avatarPickerContentLayout,
+                failedUploads = setOf(
+                    AvatarUploadFailure(uriOne, errorMessage),
+                ),
+            )
+            assertEquals(
+                avatarPickerUiState,
+                awaitItem(),
+            )
+            assertEquals(
+                avatarPickerUiState.copy(
+                    emailAvatars = emailAvatarsCopy.copy(avatars = listOf(createAvatar("1"))),
+                    uploadingAvatar = null,
+                    scrollToIndex = null,
+                ),
+                awaitItem(),
+            )
+        }
+    }
+
     @Test
     fun `given view model when LoginUserTapped then LoginUser action sent`() = runTest {
         viewModel = initViewModel()
@@ -524,6 +574,109 @@ class AvatarPickerViewModelTest {
 
         viewModel.actions.test {
             assertEquals(AvatarPickerAction.InvokeAuthFailed, awaitItem())
+        }
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `given failed avatar upload when FailedAvatarTapped then UiState updated`() = runTest {
+        val uri = mockk<Uri>()
+        val identityAvatarsCopy = emailAvatars.copy(avatars = avatars, selectedAvatarId = "1")
+        coEvery { profileService.retrieveCatching(email) } returns Result.Success(profile)
+        coEvery { avatarRepository.uploadAvatar(any(), any()) } returns Result.Failure(invalidRequest)
+        coEvery { avatarRepository.getAvatars(any()) } returns Result.Success(identityAvatarsCopy)
+
+        viewModel = initViewModel()
+        viewModel.onEvent(AvatarPickerEvent.ImageCropped(uri))
+
+        advanceUntilIdle()
+
+        viewModel.uiState.test {
+            expectMostRecentItem()
+            viewModel.onEvent(AvatarPickerEvent.FailedAvatarTapped(uri))
+
+            assertEquals(AvatarUploadFailure(uri, errorMessage), awaitItem().failedUploadDialog)
+        }
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `given failed avatar upload dialog shown when FailedAvatarDismissed then UiState updated`() = runTest {
+        val uri = mockk<Uri>()
+        val identityAvatarsCopy = emailAvatars.copy(avatars = avatars, selectedAvatarId = "1")
+        coEvery { profileService.retrieveCatching(email) } returns Result.Success(profile)
+        coEvery {
+            avatarRepository.uploadAvatar(any(), any())
+        } returns Result.Failure(QuickEditorError.Request(ErrorType.Server))
+        coEvery { avatarRepository.getAvatars(any()) } returns Result.Success(identityAvatarsCopy)
+
+        viewModel = initViewModel()
+        viewModel.onEvent(AvatarPickerEvent.ImageCropped(uri))
+        viewModel.onEvent(AvatarPickerEvent.FailedAvatarTapped(uri))
+
+        advanceUntilIdle()
+
+        viewModel.uiState.test {
+            expectMostRecentItem()
+            viewModel.onEvent(AvatarPickerEvent.FailedAvatarDismissed(uri))
+
+            val awaitItem = awaitItem()
+            assertEquals(null, awaitItem.failedUploadDialog)
+            assertEquals(emptySet<AvatarUploadFailure>(), awaitItem.failedUploads)
+        }
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `given failed avatar upload dialog shown when FailedAvatarDialogDismissed then UiState updated`() = runTest {
+        val uri = mockk<Uri>()
+        val identityAvatarsCopy = emailAvatars.copy(avatars = avatars, selectedAvatarId = "1")
+        coEvery { profileService.retrieveCatching(email) } returns Result.Success(profile)
+        coEvery { avatarRepository.uploadAvatar(any(), any()) } returns Result.Failure(invalidRequest)
+        coEvery { avatarRepository.getAvatars(any()) } returns Result.Success(identityAvatarsCopy)
+
+        viewModel = initViewModel()
+        viewModel.onEvent(AvatarPickerEvent.ImageCropped(uri))
+        advanceUntilIdle()
+
+        viewModel.onEvent(AvatarPickerEvent.FailedAvatarTapped(uri))
+
+        viewModel.uiState.test {
+            expectMostRecentItem()
+            viewModel.onEvent(AvatarPickerEvent.FailedAvatarDialogDismissed)
+
+            val awaitItem = awaitItem()
+            assertEquals(null, awaitItem.failedUploadDialog)
+            assertEquals(setOf(AvatarUploadFailure(uri, errorMessage)), awaitItem.failedUploads)
+        }
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `given failed avatar upload dialog shown when ImageCropped then UiState updated`() = runTest {
+        val uri = mockk<Uri>()
+        val identityAvatarsCopy = emailAvatars.copy(avatars = avatars, selectedAvatarId = "1")
+        coEvery { profileService.retrieveCatching(email) } returns Result.Success(profile)
+        coEvery {
+            avatarRepository.uploadAvatar(any(), any())
+        } returns Result.Failure(QuickEditorError.Request(ErrorType.Server))
+        coEvery { avatarRepository.getAvatars(any()) } returns Result.Success(identityAvatarsCopy)
+
+        viewModel = initViewModel()
+        viewModel.onEvent(AvatarPickerEvent.ImageCropped(uri))
+        viewModel.onEvent(AvatarPickerEvent.FailedAvatarTapped(uri))
+
+        advanceUntilIdle()
+
+        viewModel.uiState.test {
+            expectMostRecentItem()
+            viewModel.onEvent(AvatarPickerEvent.ImageCropped(uri))
+
+            val awaitItem = awaitItem()
+            assertEquals(null, awaitItem.failedUploadDialog)
+            assertEquals(uri, awaitItem.uploadingAvatar)
+
+            skipItems(1)
         }
     }
 

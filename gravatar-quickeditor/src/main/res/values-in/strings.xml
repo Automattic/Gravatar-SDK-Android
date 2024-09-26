@@ -21,7 +21,6 @@ Language: id
     <string name="avatar_picker_server_error_title">Ups</string>
     <string name="avatar_selection_error">Ups, terjadi error saat memilih avatar.</string>
     <string name="avatar_upload_error_action">Coba lagi</string>
-    <string name="avatar_upload_error">Ups, terjadi error saat mengunggah gambar.</string>
     <string name="avatar_picker_title_empty_state">Mari siapkan avatar Anda</string>
     <string name="capture_photo_icon_description">Tangkap foto</string>
     <string name="photo_library_icon_description">Pustaka foto</string>

@@ -44,6 +44,17 @@ public final class com/gravatar/quickeditor/ui/components/ComposableSingletons$E
 	public final fun getLambda-2$gravatar_quickeditor_release ()Lkotlin/jvm/functions/Function2;
 }
 
+public final class com/gravatar/quickeditor/ui/components/ComposableSingletons$FailedAvatarUploadAlertDialogKt {
+	public static final field INSTANCE Lcom/gravatar/quickeditor/ui/components/ComposableSingletons$FailedAvatarUploadAlertDialogKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function3;
+	public static field lambda-2 Lkotlin/jvm/functions/Function3;
+	public static field lambda-3 Lkotlin/jvm/functions/Function2;
+	public fun <init> ()V
+	public final fun getLambda-1$gravatar_quickeditor_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda-2$gravatar_quickeditor_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda-3$gravatar_quickeditor_release ()Lkotlin/jvm/functions/Function2;
+}
+
 public final class com/gravatar/quickeditor/ui/components/ComposableSingletons$HorizontalAvatarsSectionKt {
 	public static final field INSTANCE Lcom/gravatar/quickeditor/ui/components/ComposableSingletons$HorizontalAvatarsSectionKt;
 	public static field lambda-1 Lkotlin/jvm/functions/Function2;
@@ -115,6 +126,15 @@ public final class com/gravatar/quickeditor/ui/components/ComposableSingletons$Q
 	public final fun getLambda-2$gravatar_quickeditor_release ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda-3$gravatar_quickeditor_release ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda-4$gravatar_quickeditor_release ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class com/gravatar/quickeditor/ui/components/ComposableSingletons$SelectableAvatarKt {
+	public static final field INSTANCE Lcom/gravatar/quickeditor/ui/components/ComposableSingletons$SelectableAvatarKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function3;
+	public static field lambda-2 Lkotlin/jvm/functions/Function3;
+	public fun <init> ()V
+	public final fun getLambda-1$gravatar_quickeditor_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda-2$gravatar_quickeditor_release ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class com/gravatar/quickeditor/ui/components/ComposableSingletons$UploadImageGridButtonKt {

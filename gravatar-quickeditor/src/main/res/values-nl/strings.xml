@@ -21,7 +21,6 @@ Language: nl
     <string name="avatar_picker_server_error_title">Oeps</string>
     <string name="avatar_selection_error">Oeps, er is een fout opgetreden bij het selecteren van de avatar.</string>
     <string name="avatar_upload_error_action">Opnieuw proberen</string>
-    <string name="avatar_upload_error">Oeps, er is een fout opgetreden bij het uploaden van de afbeelding.</string>
     <string name="avatar_picker_title_empty_state">Laten we je avatar instellen</string>
     <string name="capture_photo_icon_description">Foto vastleggen</string>
     <string name="photo_library_icon_description">Fotobibliotheek</string>

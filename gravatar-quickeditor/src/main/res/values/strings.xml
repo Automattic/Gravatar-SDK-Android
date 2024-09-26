@@ -7,7 +7,6 @@
     <string name="avatar_picker_title_empty_state">Let’s setup your avatar</string>
     <string name="avatar_picker_description">Choose or upload your favorite avatar images and connect them to your email address.</string>
     <string name="avatar_selected_confirmation">Avatar updated! May take a few minutes to appear everywhere.</string>
-    <string name="avatar_upload_error">Ooops, there was an error uploading the image.</string>
     <string name="avatar_upload_error_action">Retry</string>
     <string name="avatar_picker_upload_image">Upload image</string>
     <string name="avatar_picker_choose_a_photo">Choose a Photo</string>
@@ -30,4 +29,7 @@
     <string name="login_required_message">To modify your Gravatar profile you need to log&#160;in first</string>
     <string name="happy_face_image_content_description">Happy face image</string>
     <string name="upload_image_content_description">Upload image</string>
+    <string name="failed_to_load_avatar_content_description">Upload failed, tap to see actions.</string>
+    <string name="avatar_upload_failure_dialog_title">Couldn\'t upload image</string>
+    <string name="avatar_upload_failure_dialog_remove_upload">Remove upload</string>
 </resources>

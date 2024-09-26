@@ -19,7 +19,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -48,6 +47,7 @@ import com.gravatar.quickeditor.data.repository.EmailAvatars
 import com.gravatar.quickeditor.ui.components.AvatarsSection
 import com.gravatar.quickeditor.ui.components.EmailLabel
 import com.gravatar.quickeditor.ui.components.ErrorSection
+import com.gravatar.quickeditor.ui.components.FailedAvatarUploadAlertDialog
 import com.gravatar.quickeditor.ui.components.ProfileCard
 import com.gravatar.quickeditor.ui.copperlauncher.CropperLauncher
 import com.gravatar.quickeditor.ui.copperlauncher.UCropCropperLauncher
@@ -102,7 +102,6 @@ internal fun AvatarPicker(
                         snackState = snackState,
                         context = context,
                         uCropLauncher = uCropLauncher,
-                        viewModel = viewModel,
                     )
                 }
             }
@@ -176,7 +175,12 @@ internal fun AvatarPicker(uiState: AvatarPickerUiState, onEvent: (AvatarPickerEv
                 uiState.avatarsSectionUiState != null ->
                     AvatarsSection(
                         state = uiState.avatarsSectionUiState,
-                        onAvatarSelected = { onEvent(AvatarPickerEvent.AvatarSelected(it)) },
+                        onAvatarSelected = { avatarUi ->
+                            when (avatarUi) {
+                                is AvatarUi.Local -> onEvent(AvatarPickerEvent.FailedAvatarTapped(avatarUi.uri))
+                                is AvatarUi.Uploaded -> onEvent(AvatarPickerEvent.AvatarSelected(avatarUi.avatar))
+                            }
+                        },
                         onLocalImageSelected = { onEvent(AvatarPickerEvent.LocalImageSelected(it)) },
                         modifier = sectionModifier
                             .padding(horizontal = 16.dp)
@@ -187,6 +191,12 @@ internal fun AvatarPicker(uiState: AvatarPickerUiState, onEvent: (AvatarPickerEv
                     )
             }
         }
+        FailedAvatarUploadAlertDialog(
+            avatarUploadFailure = uiState.failedUploadDialog,
+            onRemoveUploadClicked = { onEvent(AvatarPickerEvent.FailedAvatarDismissed(it)) },
+            onRetryClicked = { onEvent(AvatarPickerEvent.ImageCropped(it)) },
+            onDismiss = { onEvent(AvatarPickerEvent.FailedAvatarDialogDismissed) },
+        )
     }
 }
 
@@ -198,7 +208,6 @@ private suspend fun AvatarPickerAction.handle(
     snackState: SnackbarHostState,
     context: Context,
     uCropLauncher: ManagedActivityResultLauncher<Intent, ActivityResult>,
-    viewModel: AvatarPickerViewModel,
 ) {
     when (this) {
         is AvatarPickerAction.AvatarSelected -> {
@@ -211,19 +220,6 @@ private suspend fun AvatarPickerAction.handle(
 
         is AvatarPickerAction.LaunchImageCropper -> {
             cropperLauncher.launch(uCropLauncher, imageUri, tempFile, context)
-        }
-
-        is AvatarPickerAction.AvatarUploadFailed -> {
-            val result = snackState.showQESnackbar(
-                message = this.message ?: context.getString(R.string.avatar_upload_error),
-                actionLabel = context.getString(R.string.avatar_upload_error_action),
-                snackbarType = SnackbarType.Error,
-                withDismissAction = true,
-            )
-            when (result) {
-                SnackbarResult.Dismissed -> Unit
-                SnackbarResult.ActionPerformed -> viewModel.onEvent(AvatarPickerEvent.ImageCropped(imageUri))
-            }
         }
 
         AvatarPickerAction.AvatarSelectionFailed -> {
@@ -307,7 +303,7 @@ private fun AvatarPickerPreview() {
                             imageId = "1"
                             rating = Avatar.Rating.G
                             altText = "alt"
-                            updatedDate = null
+                            updatedDate = ""
                         },
                     ),
                     selectedAvatarId = "1",

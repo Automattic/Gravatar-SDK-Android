@@ -21,7 +21,6 @@ Language: ja_JP
     <string name="avatar_picker_server_error_title">エラーが発生しました</string>
     <string name="avatar_selection_error">アバターの選択中にエラーが発生しました。</string>
     <string name="avatar_upload_error_action">再試行</string>
-    <string name="avatar_upload_error">画像のアップロード中にエラーが発生しました。</string>
     <string name="avatar_picker_title_empty_state">アバターを設定しましょう</string>
     <string name="capture_photo_icon_description">写真をキャプチャ</string>
     <string name="photo_library_icon_description">フォトライブラリ</string>

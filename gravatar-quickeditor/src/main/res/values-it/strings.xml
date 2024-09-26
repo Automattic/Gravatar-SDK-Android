@@ -21,7 +21,6 @@ Language: it
     <string name="avatar_picker_server_error_title">Ops</string>
     <string name="avatar_selection_error">Ops, si è verificato un errore durante la selezione dell\'avatar.</string>
     <string name="avatar_upload_error_action">Riprova</string>
-    <string name="avatar_upload_error">Ops, si è verificato un errore durante il caricamento dell\'immagine.</string>
     <string name="avatar_picker_title_empty_state">Imposta il tuo avatar</string>
     <string name="capture_photo_icon_description">Acquisisci foto</string>
     <string name="photo_library_icon_description">Libreria Foto</string>

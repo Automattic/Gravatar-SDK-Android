@@ -10,12 +10,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.gravatar.quickeditor.ui.avatarpicker.AvatarUi
-import com.gravatar.restapi.models.Avatar
 
 @Composable
 internal fun LazyAvatarRow(
     avatars: List<AvatarUi>,
-    onAvatarSelected: (Avatar) -> Unit,
+    onAvatarSelected: (AvatarUi) -> Unit,
     horizontalArrangement: Arrangement.Horizontal,
     state: LazyListState,
     contentPadding: PaddingValues,
@@ -30,7 +29,7 @@ internal fun LazyAvatarRow(
         items(items = avatars, key = { it.avatarId }) { avatarModel ->
             Avatar(
                 avatar = avatarModel,
-                onAvatarSelected = onAvatarSelected,
+                onAvatarSelected = { onAvatarSelected(avatarModel) },
                 modifier = Modifier.size(avatarSize),
             )
         }
@@ -40,22 +39,31 @@ internal fun LazyAvatarRow(
 internal val avatarSize = 96.dp
 
 @Composable
-internal fun Avatar(avatar: AvatarUi, onAvatarSelected: (Avatar) -> Unit, modifier: Modifier) {
+internal fun Avatar(avatar: AvatarUi, onAvatarSelected: (AvatarUi) -> Unit, modifier: Modifier) {
     when (avatar) {
         is AvatarUi.Uploaded -> SelectableAvatar(
             imageUrl = avatar.avatar.imageUrl.toString(),
             isSelected = avatar.isSelected,
-            isLoading = avatar.isLoading,
-            onAvatarClicked = {
-                onAvatarSelected(avatar.avatar)
-            },
+            loadingState = avatar.loadingState,
+            onAvatarClicked = { onAvatarSelected(avatar) },
             modifier = modifier,
         )
 
-        is AvatarUi.Local -> LocalAvatar(
-            imageUri = avatar.uri.toString(),
-            isLoading = true,
+        is AvatarUi.Local -> SelectableAvatar(
+            imageUrl = avatar.uri.toString(),
+            isSelected = false,
+            loadingState = avatar.loadingState,
+            onAvatarClicked = { onAvatarSelected(avatar) },
             modifier = modifier,
         )
     }
 }
+
+private val AvatarUi.Uploaded.loadingState: AvatarLoadingState
+    get() = if (isLoading) AvatarLoadingState.Loading else AvatarLoadingState.None
+
+private val AvatarUi.Local.loadingState: AvatarLoadingState
+    get() = when {
+        isLoading -> AvatarLoadingState.Loading
+        else -> AvatarLoadingState.Failure
+    }

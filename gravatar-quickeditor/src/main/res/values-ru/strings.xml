@@ -21,7 +21,6 @@ Language: ru
     <string name="avatar_picker_server_error_title">Ой-ой-ой</string>
     <string name="avatar_selection_error">Ошибка при выборе аватара.</string>
     <string name="avatar_upload_error_action">Повторить попытку</string>
-    <string name="avatar_upload_error">Ошибка при загрузке изображения.</string>
     <string name="avatar_picker_title_empty_state">Настройте свой аватар</string>
     <string name="capture_photo_icon_description">Сделать фотоснимок</string>
     <string name="photo_library_icon_description">Библиотека фотографий</string>

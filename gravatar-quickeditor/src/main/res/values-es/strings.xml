@@ -21,7 +21,6 @@ Language: es
     <string name="avatar_picker_server_error_title">¡Vaya!</string>
     <string name="avatar_selection_error">¡Vaya! Ha habido un error al seleccionar el avatar.</string>
     <string name="avatar_upload_error_action">Reintentar</string>
-    <string name="avatar_upload_error">¡Vaya! Ha habido un error al subir la imagen.</string>
     <string name="avatar_picker_title_empty_state">Vamos a configurar tu avatar</string>
     <string name="capture_photo_icon_description">Capturar foto</string>
     <string name="photo_library_icon_description">Biblioteca de fotos</string>

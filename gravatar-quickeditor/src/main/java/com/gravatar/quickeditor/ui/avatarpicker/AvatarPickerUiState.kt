@@ -18,6 +18,8 @@ internal data class AvatarPickerUiState(
     val selectingAvatarId: String? = null,
     val uploadingAvatar: Uri? = null,
     val scrollToIndex: Int? = null,
+    val failedUploads: Set<AvatarUploadFailure> = emptySet(),
+    val failedUploadDialog: AvatarUploadFailure? = null,
 ) {
     val avatarsSectionUiState: AvatarsSectionUiState? = emailAvatars?.mapToUiModel()?.let {
         AvatarsSectionUiState(
@@ -30,7 +32,22 @@ internal data class AvatarPickerUiState(
 
     private fun EmailAvatars.mapToUiModel(): List<AvatarUi> {
         return mutableListOf<AvatarUi>().apply {
-            if (uploadingAvatar != null) add(AvatarUi.Local(uploadingAvatar))
+            uploadingAvatar?.let {
+                add(
+                    AvatarUi.Local(
+                        uri = uploadingAvatar,
+                        isLoading = true,
+                    ),
+                )
+            }
+            addAll(
+                this@AvatarPickerUiState.failedUploads.reversed().map { localAvatar ->
+                    AvatarUi.Local(
+                        uri = localAvatar.uri,
+                        isLoading = false,
+                    )
+                },
+            )
             addAll(
                 this@mapToUiModel.avatars.map { avatar ->
                     AvatarUi.Uploaded(
@@ -61,6 +78,11 @@ internal data class AvatarsSectionUiState(
     val uploadButtonEnabled: Boolean,
 )
 
+internal data class AvatarUploadFailure(
+    val uri: Uri,
+    val error: String?,
+)
+
 internal sealed class AvatarUi(val avatarId: String) {
     data class Uploaded(
         val avatar: Avatar,
@@ -70,5 +92,6 @@ internal sealed class AvatarUi(val avatarId: String) {
 
     data class Local(
         val uri: Uri,
+        val isLoading: Boolean,
     ) : AvatarUi(uri.toString())
 }

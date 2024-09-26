@@ -42,7 +42,7 @@ import java.net.URI
 @Composable
 internal fun VerticalAvatarsSection(
     state: AvatarsSectionUiState,
-    onAvatarSelected: (Avatar) -> Unit,
+    onAvatarSelected: (AvatarUi) -> Unit,
     onChoosePhotoClick: () -> Unit,
     onTakePhotoClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -128,7 +128,7 @@ internal fun VerticalAvatarsSection(
                     items(items = state.avatars, key = { it.avatarId }) { avatarModel ->
                         Avatar(
                             avatar = avatarModel,
-                            onAvatarSelected = onAvatarSelected,
+                            onAvatarSelected = { onAvatarSelected(avatarModel) },
                             modifier = Modifier,
                         )
                     }
