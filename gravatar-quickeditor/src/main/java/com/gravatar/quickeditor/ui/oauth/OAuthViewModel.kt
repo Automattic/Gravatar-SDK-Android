@@ -36,9 +36,6 @@ internal class OAuthViewModel(
     fun startOAuth() {
         viewModelScope.launch {
             _actions.send(OAuthAction.StartOAuth)
-            _uiState.update { currentState ->
-                currentState.copy(status = OAuthStatus.LoginRequired)
-            }
         }
     }
 
