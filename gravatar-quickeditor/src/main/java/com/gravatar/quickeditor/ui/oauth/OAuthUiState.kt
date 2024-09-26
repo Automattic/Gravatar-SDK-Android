@@ -10,6 +10,8 @@ internal sealed class OAuthStatus {
     internal data object LoginRequired : OAuthStatus()
 
     internal data object WrongEmailAuthorized : OAuthStatus()
+
+    internal data class EmailAssociatedCheckError(val token: String) : OAuthStatus()
 }
 
 internal sealed class OAuthAction {

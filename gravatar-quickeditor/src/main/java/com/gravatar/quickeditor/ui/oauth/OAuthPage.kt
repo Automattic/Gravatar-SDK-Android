@@ -17,6 +17,7 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -91,7 +92,13 @@ internal fun OAuthPage(
         }
     }
 
-    OauthPage(uiState, email, { viewModel.startOAuth() }, modifier)
+    OauthPage(
+        uiState = uiState,
+        email = email,
+        onStartOAuthClicked = viewModel::startOAuth,
+        onEmailAssociationCheckClicked = remember { { viewModel.checkAuthorizedUserEmail(email, it) } },
+        modifier = modifier,
+    )
 }
 
 @Composable
@@ -99,10 +106,9 @@ internal fun OauthPage(
     uiState: OAuthUiState,
     email: Email,
     onStartOAuthClicked: () -> Unit,
+    onEmailAssociationCheckClicked: (String) -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
-    val context = LocalContext.current
-
     GravatarTheme {
         Surface {
             Box(
@@ -110,7 +116,7 @@ internal fun OauthPage(
                     .fillMaxWidth()
                     .height(DEFAULT_PAGE_HEIGHT),
             ) {
-                when (uiState.status) {
+                when (val status = uiState.status) {
                     OAuthStatus.Authorizing -> CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                     OAuthStatus.LoginRequired -> {
                         ErrorSection(
@@ -138,6 +144,19 @@ internal fun OauthPage(
                                 .align(Alignment.Center),
                         )
                     }
+
+                    is OAuthStatus.EmailAssociatedCheckError -> ErrorSection(
+                        title = stringResource(R.string.avatar_picker_server_error_title),
+                        message = stringResource(
+                            R.string.oauth_email_associated_error_message,
+                            email.toString(),
+                        ),
+                        buttonText = stringResource(id = R.string.avatar_picker_error_retry_cta),
+                        onButtonClick = { onEmailAssociationCheckClicked(status.token) },
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp)
+                            .align(Alignment.Center),
+                    )
                 }
             }
         }

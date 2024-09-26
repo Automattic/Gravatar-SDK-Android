@@ -41,7 +41,7 @@ internal class OAuthViewModel(
         checkAuthorizedUserEmail(email, token)
     }
 
-    private fun checkAuthorizedUserEmail(email: Email, token: String) {
+    fun checkAuthorizedUserEmail(email: Email, token: String) {
         viewModelScope.launch {
             _uiState.update { currentState ->
                 currentState.copy(status = OAuthStatus.Authorizing)
@@ -62,9 +62,8 @@ internal class OAuthViewModel(
 
                 is Result.Failure -> {
                     _uiState.update { currentState ->
-                        currentState.copy(status = OAuthStatus.LoginRequired)
+                        currentState.copy(status = OAuthStatus.EmailAssociatedCheckError(token))
                     }
-                    _actions.send(OAuthAction.AuthorizationFailure)
                 }
             }
         }

@@ -33,4 +33,5 @@
     <string name="failed_to_load_avatar_content_description">Upload failed, tap to see actions.</string>
     <string name="avatar_upload_failure_dialog_title">Couldn\'t upload image</string>
     <string name="avatar_upload_failure_dialog_remove_upload">Remove upload</string>
+    <string name="oauth_email_associated_error_message">Something went wrong when verifying your email.</string>
 </resources>
