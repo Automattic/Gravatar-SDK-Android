@@ -43,6 +43,7 @@ abstract class RoborazziTest {
             roborazziOptions = RoborazziOptions(
                 compareOptions = RoborazziOptions.CompareOptions(
                     imageComparator = SimpleImageComparator(maxDistance = 0.007F, hShift = 1),
+                    changeThreshold = 0.01f,
                 ),
             ),
         ),
