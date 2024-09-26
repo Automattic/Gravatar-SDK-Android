@@ -118,7 +118,7 @@ internal fun OauthPage(
 
                     OAuthStatus.WrongEmailAuthorized -> {
                         ErrorSection(
-                            title = stringResource(R.string.oauth_wrong_email_authenticated_error_title),
+                            title = stringResource(R.string.avatar_picker_server_error_title),
                             message = stringResource(
                                 R.string.oauth_wrong_email_authenticated_error_message,
                                 email.toString(),
