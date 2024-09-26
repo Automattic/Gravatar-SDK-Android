@@ -117,7 +117,7 @@ private fun GravatarModalBottomSheet(
             dragHandle = { QEDragHandle() },
             containerColor = MaterialTheme.colorScheme.surface,
             tonalElevation = 1.dp,
-            windowInsets = WindowInsets(0, 0, 0, 0),
+            contentWindowInsets = { WindowInsets(0, 0, 0, 0) },
         ) {
             Surface(
                 modifier = Modifier.navigationBarsPadding(),
