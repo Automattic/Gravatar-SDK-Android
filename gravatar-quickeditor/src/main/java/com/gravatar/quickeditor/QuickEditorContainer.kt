@@ -7,12 +7,9 @@ import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.emptyPreferences
-import com.google.gson.GsonBuilder
 import com.gravatar.quickeditor.data.FileUtils
 import com.gravatar.quickeditor.data.datastore.createEncryptedFileWithFallbackReset
 import com.gravatar.quickeditor.data.repository.AvatarRepository
-import com.gravatar.quickeditor.data.service.WordPressOAuthApi
-import com.gravatar.quickeditor.data.service.WordPressOAuthService
 import com.gravatar.quickeditor.data.storage.DataStoreTokenStorage
 import com.gravatar.quickeditor.data.storage.InMemoryTokenStorage
 import com.gravatar.quickeditor.data.storage.TokenStorage
@@ -20,8 +17,6 @@ import com.gravatar.services.AvatarService
 import com.gravatar.services.ProfileService
 import io.github.osipxd.security.crypto.createEncrypted
 import kotlinx.coroutines.Dispatchers
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 internal class QuickEditorContainer private constructor(
     private val context: Context,
@@ -62,13 +57,6 @@ internal class QuickEditorContainer private constructor(
     val tokenStorage: TokenStorage
         get() = if (useInMemoryTokenStorage) inMemoryTokenStorage else dataStoreTokenStorage
 
-    val wordPressOAuthService: WordPressOAuthService by lazy {
-        WordPressOAuthService(
-            wordPressOAuthApi = getWordpressOAuthApi(),
-            dispatcher = Dispatchers.IO,
-        )
-    }
-
     private val avatarService: AvatarService by lazy {
         AvatarService()
     }
@@ -94,13 +82,5 @@ internal class QuickEditorContainer private constructor(
 
     fun resetUseInMemoryTokenStorage() {
         useInMemoryTokenStorage = false
-    }
-
-    private fun getWordpressOAuthApi(): WordPressOAuthApi {
-        return Retrofit.Builder()
-            .baseUrl("https://public-api.wordpress.com")
-            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
-            .build()
-            .create(WordPressOAuthApi::class.java)
     }
 }

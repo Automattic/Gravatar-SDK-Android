@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.gravatar.quickeditor.QuickEditorContainer
-import com.gravatar.quickeditor.data.service.WordPressOAuthService
 import com.gravatar.quickeditor.data.storage.TokenStorage
 import com.gravatar.services.ProfileService
 import com.gravatar.services.Result
@@ -19,7 +18,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 internal class OAuthViewModel(
-    private val wordPressOAuthService: WordPressOAuthService,
     private val tokenStorage: TokenStorage,
     private val profileService: ProfileService,
 ) : ViewModel() {
@@ -39,31 +37,15 @@ internal class OAuthViewModel(
         }
     }
 
-    fun fetchAccessToken(code: String, oAuthParams: OAuthParams, email: Email) {
-        viewModelScope.launch {
-            _uiState.update { currentState -> currentState.copy(status = OAuthStatus.Authorizing) }
-            val result = wordPressOAuthService.getAccessToken(
-                code = code,
-                clientId = oAuthParams.clientId,
-                clientSecret = oAuthParams.clientSecret,
-                redirectUri = oAuthParams.redirectUri,
-            )
-
-            when (result) {
-                is Result.Success -> {
-                    checkAuthorizedUserEmail(email, result.value)
-                }
-
-                is Result.Failure -> {
-                    _actions.send(OAuthAction.AuthorizationFailure)
-                    _uiState.update { currentState -> currentState.copy(status = OAuthStatus.LoginRequired) }
-                }
-            }
-        }
+    fun tokenReceived(email: Email, token: String) {
+        checkAuthorizedUserEmail(email, token)
     }
 
-    private fun checkAuthorizedUserEmail(email: Email, token: String) {
+    fun checkAuthorizedUserEmail(email: Email, token: String) {
         viewModelScope.launch {
+            _uiState.update { currentState ->
+                currentState.copy(status = OAuthStatus.Authorizing)
+            }
             when (val result = profileService.checkAssociatedEmailCatching(token, email)) {
                 is Result.Success -> {
                     result.value.let {
@@ -79,7 +61,9 @@ internal class OAuthViewModel(
                 }
 
                 is Result.Failure -> {
-                    _actions.send(OAuthAction.AuthorizationFailure)
+                    _uiState.update { currentState ->
+                        currentState.copy(status = OAuthStatus.EmailAssociatedCheckError(token))
+                    }
                 }
             }
         }
@@ -90,7 +74,6 @@ internal class OAuthViewModel(
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
                 return OAuthViewModel(
-                    wordPressOAuthService = QuickEditorContainer.getInstance().wordPressOAuthService,
                     tokenStorage = QuickEditorContainer.getInstance().tokenStorage,
                     profileService = QuickEditorContainer.getInstance().profileService,
                 ) as T

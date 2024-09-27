@@ -297,10 +297,9 @@ public final class com/gravatar/quickeditor/ui/oauth/ComposableSingletons$OAuthP
 
 public final class com/gravatar/quickeditor/ui/oauth/OAuthParams {
 	public static final field $stable I
-	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getClientId ()Ljava/lang/String;
-	public final fun getClientSecret ()Ljava/lang/String;
 	public final fun getRedirectUri ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
@@ -311,12 +310,9 @@ public final class com/gravatar/quickeditor/ui/oauth/OAuthParams$Builder {
 	public fun <init> ()V
 	public final fun build ()Lcom/gravatar/quickeditor/ui/oauth/OAuthParams;
 	public final fun getClientId ()Ljava/lang/String;
-	public final fun getClientSecret ()Ljava/lang/String;
 	public final fun getRedirectUri ()Ljava/lang/String;
 	public final fun setClientId (Ljava/lang/String;)Lcom/gravatar/quickeditor/ui/oauth/OAuthParams$Builder;
 	public final synthetic fun setClientId (Ljava/lang/String;)V
-	public final fun setClientSecret (Ljava/lang/String;)Lcom/gravatar/quickeditor/ui/oauth/OAuthParams$Builder;
-	public final synthetic fun setClientSecret (Ljava/lang/String;)V
 	public final fun setRedirectUri (Ljava/lang/String;)Lcom/gravatar/quickeditor/ui/oauth/OAuthParams$Builder;
 	public final synthetic fun setRedirectUri (Ljava/lang/String;)V
 }

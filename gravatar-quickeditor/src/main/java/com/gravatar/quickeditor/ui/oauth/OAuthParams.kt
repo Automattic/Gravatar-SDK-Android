@@ -6,26 +6,22 @@ import java.util.Objects
  * This class holds all the information required to launch the OAuth flow.
  *
  * @property clientId The clientId of your WP.com application
- * @property clientSecret The client secret of your WP.com application
  * @property redirectUri The redirect URI configured for your WP.com application
  */
 public class OAuthParams private constructor(
     public val clientId: String,
-    public val clientSecret: String,
     public val redirectUri: String,
 ) {
-    override fun toString(): String =
-        "OAuthParams(clientId=$clientId, clientSecret=$clientSecret, redirectUri=$redirectUri)"
+    override fun toString(): String = "OAuthParams(clientId=$clientId, redirectUri=$redirectUri)"
 
     override fun equals(other: Any?): Boolean {
         return other is OAuthParams &&
             other.clientId == clientId &&
-            other.clientSecret == clientSecret &&
             other.redirectUri == redirectUri
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(clientId, clientSecret, redirectUri)
+        return Objects.hash(clientId, redirectUri)
     }
 
     /**
@@ -39,12 +35,6 @@ public class OAuthParams private constructor(
         public var clientId: String? = null
 
         /**
-         * The client secret of your WP.com application
-         */
-        @set:JvmSynthetic // Hide 'void' setter from Java
-        public var clientSecret: String? = null
-
-        /**
          * The redirect URI configured for your WP.com application
          */
         @set:JvmSynthetic // Hide 'void' setter from Java
@@ -56,11 +46,6 @@ public class OAuthParams private constructor(
         public fun setClientId(clientId: String): Builder = apply { this.clientId = clientId }
 
         /**
-         * Sets the client secret of your WP.com application
-         */
-        public fun setClientSecret(clientSecret: String): Builder = apply { this.clientSecret = clientSecret }
-
-        /**
          * Sets the redirect URI configured for your WP.com application
          */
         public fun setRedirectUri(redirectUri: String): Builder = apply { this.redirectUri = redirectUri }
@@ -68,7 +53,7 @@ public class OAuthParams private constructor(
         /**
          * Builds the OAuthParams object
          */
-        public fun build(): OAuthParams = OAuthParams(clientId!!, clientSecret!!, redirectUri!!)
+        public fun build(): OAuthParams = OAuthParams(clientId!!, redirectUri!!)
     }
 }
 

@@ -55,7 +55,6 @@ class QuickEditorTestActivity : AppCompatActivity() {
                 authenticationMethod = AuthenticationMethod.OAuth(
                     OAuthParams {
                         clientId = BuildConfig.DEMO_WORDPRESS_CLIENT_ID
-                        clientSecret = BuildConfig.DEMO_WORDPRESS_CLIENT_SECRET
                         redirectUri = BuildConfig.DEMO_WORDPRESS_REDIRECT_URI
                     },
                 ),
