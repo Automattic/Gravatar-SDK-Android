@@ -51,18 +51,18 @@ android {
             )
             buildConfigField(
                 "String",
-                "DEMO_WORDPRESS_CLIENT_ID",
-                "\"${properties["demo-app.wordpress.oauth.clientId"]?.toString() ?: ""}\"",
+                "DEMO_OAUTH_CLIENT_ID",
+                "\"${properties["demo-app.oauth.clientId"]?.toString() ?: ""}\"",
             )
             buildConfigField(
                 "String",
-                "DEMO_WORDPRESS_REDIRECT_URI",
-                "\"${properties["demo-app.wordpress.oauth.redirectUri"]?.toString() ?: ""}\"",
+                "DEMO_OAUTH_REDIRECT_URI",
+                "\"${properties["demo-app.oauth.redirectUri"]?.toString() ?: ""}\"",
             )
-            manifestPlaceholders["DEMO_WORDPRESS_REDIRECT_URI_HOST"] =
-                properties["demo-app.wordpress.oauth.redirectUri"]?.toString()?.split("://")?.get(1) ?: ""
-            manifestPlaceholders["DEMO_WORDPRESS_REDIRECT_URI_SCHEME"] =
-                properties["demo-app.wordpress.oauth.redirectUri"]?.toString()?.split("://")?.first() ?: ""
+            manifestPlaceholders["DEMO_OAUTH_REDIRECT_URI_HOST"] =
+                properties["demo-app.oauth.redirectUri"]?.toString()?.split("://")?.get(1) ?: ""
+            manifestPlaceholders["DEMO_OAUTH_REDIRECT_URI_SCHEME"] =
+                properties["demo-app.oauth.redirectUri"]?.toString()?.split("://")?.first() ?: ""
         }
     }
 
