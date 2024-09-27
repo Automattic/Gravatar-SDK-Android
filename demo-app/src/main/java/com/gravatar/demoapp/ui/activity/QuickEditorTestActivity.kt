@@ -54,8 +54,8 @@ class QuickEditorTestActivity : AppCompatActivity() {
                 },
                 authenticationMethod = AuthenticationMethod.OAuth(
                     OAuthParams {
-                        clientId = BuildConfig.DEMO_WORDPRESS_CLIENT_ID
-                        redirectUri = BuildConfig.DEMO_WORDPRESS_REDIRECT_URI
+                        clientId = BuildConfig.DEMO_OAUTH_CLIENT_ID
+                        redirectUri = BuildConfig.DEMO_OAUTH_REDIRECT_URI
                     },
                 ),
                 onAvatarSelected = {

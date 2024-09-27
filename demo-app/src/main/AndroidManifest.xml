@@ -33,8 +33,8 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="${DEMO_WORDPRESS_REDIRECT_URI_HOST}"
-                    android:scheme="${DEMO_WORDPRESS_REDIRECT_URI_SCHEME}" />
+                    android:host="${DEMO_OAUTH_REDIRECT_URI_HOST}"
+                    android:scheme="${DEMO_OAUTH_REDIRECT_URI_SCHEME}" />
             </intent-filter>
         </activity>
         <activity
@@ -50,8 +50,8 @@
 <!--                <category android:name="android.intent.category.BROWSABLE" />-->
 
 <!--                <data-->
-<!--                    android:host="${DEMO_WORDPRESS_REDIRECT_URI_HOST}"-->
-<!--                    android:scheme="${DEMO_WORDPRESS_REDIRECT_URI_SCHEME}" />-->
+<!--                    android:host="${DEMO_OAUTH_REDIRECT_URI_HOST}"-->
+<!--                    android:scheme="${DEMO_OAUTH_REDIRECT_URI_SCHEME}" />-->
 <!--            </intent-filter>-->
         </activity>
         <provider
