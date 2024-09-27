@@ -14,7 +14,7 @@ internal fun HttpException.errorTypeFromHttpCode(moshi: Moshi): ErrorType = when
     HttpResponseCode.UNAUTHORIZED -> ErrorType.Unauthorized
     HttpResponseCode.INVALID_REQUEST -> {
         val error: Error? = runCatching {
-            moshi.adapter(Error::class.java).fromJson(rawErrorBody)
+            rawErrorBody?.let { moshi.adapter(Error::class.java).fromJson(it) }
         }.getOrNull()
         ErrorType.InvalidRequest(error)
     }

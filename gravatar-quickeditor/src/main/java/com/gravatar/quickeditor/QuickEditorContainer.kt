@@ -15,8 +15,6 @@ import com.gravatar.quickeditor.data.storage.InMemoryTokenStorage
 import com.gravatar.quickeditor.data.storage.TokenStorage
 import com.gravatar.services.AvatarService
 import com.gravatar.services.ProfileService
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import io.github.osipxd.security.crypto.createEncrypted
 import kotlinx.coroutines.Dispatchers
 
@@ -39,10 +37,6 @@ internal class QuickEditorContainer private constructor(
             return instance
         }
     }
-
-    private val moshi = Moshi.Builder()
-        .add(KotlinJsonAdapterFactory())
-        .build()
 
     private val dataStore: DataStore<Preferences> = PreferenceDataStoreFactory.createEncrypted(
         corruptionHandler = ReplaceFileCorruptionHandler { emptyPreferences() },
