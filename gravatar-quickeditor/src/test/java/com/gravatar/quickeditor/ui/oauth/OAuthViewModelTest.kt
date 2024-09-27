@@ -127,6 +127,38 @@ class OAuthViewModelTest {
         }
 
     @Test
+    fun `given oAuth params when restarting OAuth flow after email error then UiState_Status keeps the error state`() =
+        runTest {
+            coEvery {
+                wordPressOAuthService.getAccessToken(
+                    any(),
+                    any(),
+                    any(),
+                    any(),
+                )
+            } returns Result.Success("access_token")
+
+            coEvery { profileService.checkAssociatedEmailCatching(any(), any()) } returns Result.Success(false)
+
+            viewModel.uiState.test {
+                assertEquals(OAuthUiState(OAuthStatus.LoginRequired), awaitItem())
+                viewModel.fetchAccessToken(
+                    "code",
+                    OAuthParams {
+                        clientId = "client_id"
+                        clientSecret = "client_secret"
+                        redirectUri = "redirect_uri"
+                    },
+                    Email("email"),
+                )
+                skipItems(1) // skipping the OAuthStatus.Authorizing state
+                assertEquals(OAuthUiState(OAuthStatus.WrongEmailAuthorized), awaitItem())
+                viewModel.startOAuth()
+                expectNoEvents()
+            }
+        }
+
+    @Test
     fun `given oAuth params when fetching token successful then OAuthAction_AuthorizationSuccess sent`() = runTest {
         coEvery {
             wordPressOAuthService.getAccessToken(
