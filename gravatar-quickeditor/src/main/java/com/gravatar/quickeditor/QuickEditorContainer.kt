@@ -7,6 +7,7 @@ import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.emptyPreferences
+import com.gravatar.quickeditor.data.AcceptedLanguageInterceptor
 import com.gravatar.quickeditor.data.FileUtils
 import com.gravatar.quickeditor.data.datastore.createEncryptedFileWithFallbackReset
 import com.gravatar.quickeditor.data.repository.AvatarRepository
@@ -17,6 +18,7 @@ import com.gravatar.services.AvatarService
 import com.gravatar.services.ProfileService
 import io.github.osipxd.security.crypto.createEncrypted
 import kotlinx.coroutines.Dispatchers
+import okhttp3.OkHttpClient
 
 internal class QuickEditorContainer private constructor(
     private val context: Context,
@@ -48,6 +50,12 @@ internal class QuickEditorContainer private constructor(
         DataStoreTokenStorage(dataStore = dataStore, dispatcher = Dispatchers.IO)
     }
 
+    private val okHttpClient: OkHttpClient by lazy {
+        OkHttpClient.Builder()
+            .addInterceptor(AcceptedLanguageInterceptor(context))
+            .build()
+    }
+
     private var useInMemoryTokenStorage = false
 
     public val inMemoryTokenStorage: InMemoryTokenStorage by lazy {
@@ -58,7 +66,7 @@ internal class QuickEditorContainer private constructor(
         get() = if (useInMemoryTokenStorage) inMemoryTokenStorage else dataStoreTokenStorage
 
     private val avatarService: AvatarService by lazy {
-        AvatarService()
+        AvatarService(okHttpClient)
     }
 
     val profileService: ProfileService by lazy {
