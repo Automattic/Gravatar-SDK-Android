@@ -27,18 +27,18 @@ internal class AcceptedLanguageInterceptor(private val context: Context) : Inter
                 "$accumulator,$language;q=${weight.toFloat()}"
             }
         }
-
-    private val LocaleListCompat.asLocaleList: List<Locale>
-        get() = buildList {
-            if (this@asLocaleList.size() > 0) {
-                for (index in 0 until this@asLocaleList.size()) {
-                    add(this@asLocaleList.get(index))
-                }
-            }
-        }.filterNotNull()
-
-    private val Context.languagesList: LocaleListCompat
-        get() = LocaleManagerCompat.getApplicationLocales(this).takeIf { localeListCompat ->
-            localeListCompat.size() > 0
-        } ?: LocaleManagerCompat.getSystemLocales(this)
 }
+
+internal val LocaleListCompat.asLocaleList: List<Locale>
+    get() = buildList {
+        if (this@asLocaleList.size() > 0) {
+            for (index in 0 until this@asLocaleList.size()) {
+                add(this@asLocaleList.get(index))
+            }
+        }
+    }.filterNotNull()
+
+internal val Context.languagesList: LocaleListCompat
+    get() = LocaleManagerCompat.getApplicationLocales(this).takeIf { localeListCompat ->
+        localeListCompat.size() > 0
+    } ?: LocaleManagerCompat.getSystemLocales(this)
