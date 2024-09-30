@@ -6,6 +6,7 @@ import androidx.core.os.LocaleListCompat
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
+import java.math.BigDecimal
 import java.util.Locale
 
 internal class AcceptedLanguageInterceptor(private val context: Context) : Interceptor {
@@ -20,10 +21,10 @@ internal class AcceptedLanguageInterceptor(private val context: Context) : Inter
 
     private val List<Locale>.acceptedLanguageHeader: String
         get() {
-            var weight = 1.0F
+            var weight = BigDecimal(1)
             return map { it.language }.reduce { accumulator, language ->
-                weight -= 0.1F
-                "$accumulator,$language;q=$weight"
+                weight -= BigDecimal(0.1)
+                "$accumulator,$language;q=${weight.toFloat()}"
             }
         }
 
