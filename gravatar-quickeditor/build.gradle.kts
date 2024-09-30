@@ -101,8 +101,6 @@ dependencies {
     implementation(project(":gravatar"))
     implementation(project(":gravatar-ui"))
 
-    implementation(libs.moshi)
-    implementation(libs.moshi.kotlin)
     implementation(libs.androidx.browser)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.viewmodel.compose)

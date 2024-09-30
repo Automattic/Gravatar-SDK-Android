@@ -69,7 +69,6 @@ android {
 
 dependencies {
     api(libs.okhttp)
-    implementation(libs.moshi)
     implementation(libs.moshi.kotlin)
     implementation(libs.retrofit)
     implementation(libs.retrofit.moshi.converter)
