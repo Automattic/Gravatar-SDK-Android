@@ -7,7 +7,7 @@
  */
 package com.gravatar.restapi.models
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
 import java.util.Objects
 
 /**
@@ -18,7 +18,7 @@ import java.util.Objects
 
 public class SetEmailAvatarRequest private constructor(
     // The email SHA256 hash to set the avatar for.
-    @SerializedName("email_hash")
+    @Json(name = "email_hash")
     public val emailHash: kotlin.String,
 ) {
     override fun toString(): String = "SetEmailAvatarRequest(emailHash=$emailHash)"

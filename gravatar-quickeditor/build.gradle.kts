@@ -110,7 +110,7 @@ dependencies {
 
     implementation(libs.coil.compose)
     implementation(libs.retrofit)
-    implementation(libs.retrofit.gson.converter)
+    implementation(libs.retrofit.moshi.converter)
     implementation(libs.ucrop)
 
     // Jetpack Compose

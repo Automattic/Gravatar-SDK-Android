@@ -7,7 +7,7 @@
  */
 package com.gravatar.restapi.models
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
 import java.util.Objects
 
 /**
@@ -19,10 +19,10 @@ import java.util.Objects
 
 public class GalleryImage private constructor(
     // The URL to the image.
-    @SerializedName("url")
+    @Json(name = "url")
     public val url: java.net.URI,
     // The image alt text.
-    @SerializedName("alt_text")
+    @Json(name = "alt_text")
     public val altText: kotlin.String? = null,
 ) {
     override fun toString(): String = "GalleryImage(url=$url, altText=$altText)"

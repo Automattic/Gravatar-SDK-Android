@@ -7,7 +7,7 @@
  */
 package com.gravatar.restapi.models
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
 import java.util.Objects
 
 /**
@@ -18,7 +18,7 @@ import java.util.Objects
 
 public class AssociatedEmail200Response private constructor(
     // Whether the email is associated with a Gravatar account.
-    @SerializedName("associated")
+    @Json(name = "associated")
     public val associated: kotlin.Boolean,
 ) {
     override fun toString(): String = "AssociatedEmail200Response(associated=$associated)"

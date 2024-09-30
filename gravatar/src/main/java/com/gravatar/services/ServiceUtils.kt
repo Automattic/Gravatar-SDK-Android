@@ -15,6 +15,6 @@ internal inline fun <T> runCatchingRequest(block: () -> T?): Result<T, ErrorType
     } catch (cancellationException: CancellationException) {
         throw cancellationException
     } catch (ex: Exception) {
-        Result.Failure(ex.errorType(GravatarSdkContainer.instance.gson))
+        Result.Failure(ex.errorType(GravatarSdkContainer.instance.moshi))
     }
 }
