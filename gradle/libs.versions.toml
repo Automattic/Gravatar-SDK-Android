@@ -32,6 +32,8 @@ turbine = "1.1.0"
 dataStore = "1.1.1-beta03"
 startup = "1.1.1"
 moshi = "1.15.1"
+testCoreKtx = "1.6.1"
+mockwebserver = "4.12.0"
 
 [libraries]
 kotlinx-coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinCoroutines" }
@@ -49,6 +51,7 @@ androidx-browser = { group = "androidx.browser", name = "browser", version.ref =
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-startup = { group = "androidx.startup", name = "startup-runtime", version.ref = "startup" }
+androidx-test-core-ktx = { group = "androidx.test", name = "core-ktx", version.ref = "testCoreKtx" }
 security-crypto-datastore = { group = "io.github.osipxd", name = "security-crypto-datastore-preferences", version.ref = "dataStore" }
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 compose-ui = { module = "androidx.compose.ui:ui" }
@@ -73,6 +76,7 @@ roborazzi = { group = "io.github.takahirom.roborazzi", name = "roborazzi", versi
 roborazzi-compose = { group = "io.github.takahirom.roborazzi", name = "roborazzi-compose", version.ref = "roborazzi" }
 roborazzi-junit-rule = { group = "io.github.takahirom.roborazzi", name = "roborazzi-junit-rule", version.ref = "roborazzi" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
+mockwebserver = { group = "com.squareup.okhttp3", name = "mockwebserver", version.ref = "mockwebserver"}
 
 
 [plugins]

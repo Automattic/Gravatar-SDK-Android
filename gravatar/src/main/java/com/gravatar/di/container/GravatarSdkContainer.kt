@@ -20,7 +20,7 @@ internal class GravatarSdkContainer private constructor() {
         }
     }
 
-    val moshi = Moshi.Builder()
+    internal val moshi = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
         .add(URIJsonAdapter())
         .build()
@@ -35,12 +35,12 @@ internal class GravatarSdkContainer private constructor() {
 
     fun getGravatarV3Service(okHttpClient: OkHttpClient? = null, oauthToken: String? = null): GravatarApi {
         return getRetrofitApiV3Builder().apply {
-            client(okHttpClient ?: buildOkHttpClient(oauthToken))
+            client(okHttpClient.buildOkHttpClient(oauthToken))
         }.addConverterFactory(MoshiConverterFactory.create(moshi))
             .build().create(GravatarApi::class.java)
     }
 
-    private fun buildOkHttpClient(oauthToken: String?) = OkHttpClient()
+    private fun OkHttpClient?.buildOkHttpClient(oauthToken: String?) = (this ?: OkHttpClient())
         .newBuilder()
         .addInterceptor(AuthenticationInterceptor(oauthToken))
         .addInterceptor(AvatarUploadTimeoutInterceptor())
