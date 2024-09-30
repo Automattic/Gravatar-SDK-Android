@@ -15,7 +15,7 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import retrofit2.Call
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 import java.util.Locale
 
@@ -37,7 +37,7 @@ class AcceptedLanguageInterceptorTest {
 
         api = Retrofit.Builder()
             .baseUrl(mockWebServer.url("/"))
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(MoshiConverterFactory.create())
             .client(client)
             .build()
             .create(TestApi::class.java)

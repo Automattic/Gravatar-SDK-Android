@@ -11,6 +11,9 @@ import com.gravatar.di.container.GravatarSdkContainer.Companion.instance as Grav
 
 /**
  * Service for managing Gravatar profiles.
+ *
+ * @param okHttpClient The OkHttp client to use for making network requests.
+ * This client will be extended with Gravatar interceptors to set either API key or OAuth token.
  */
 public class ProfileService(private val okHttpClient: OkHttpClient? = null) {
     private companion object {
