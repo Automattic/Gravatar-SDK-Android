@@ -203,7 +203,7 @@ Here is the most recent release of the [Gravatar-SDK-Android API documentation g
 
 ## Translations
 
-Gravatar Android SDK uses [GlotPress](https://translate.wordpress.com/projects/gravatar/gravatar-android-sdk/gravatar-quick-editor/) to translate strings in the project.
+Gravatar Android SDK uses [GlotPress](https://translate.wordpress.com/projects/gravatar/gravatar-android-sdk/) to translate strings in the project.
 This includes two modules with `strings.xml` files: `:gravatar-ui` and `:gravatar-quickeditor`.
 
 To fetch the latest translation run:
