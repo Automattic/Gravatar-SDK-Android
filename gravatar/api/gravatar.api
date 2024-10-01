@@ -28,6 +28,7 @@ public final class com/gravatar/AvatarQueryOptions$Builder {
 
 public final class com/gravatar/AvatarQueryOptionsKt {
 	public static final synthetic fun AvatarQueryOptions (Lkotlin/jvm/functions/Function1;)Lcom/gravatar/AvatarQueryOptions;
+	public static final fun asQueryParameters (Lcom/gravatar/AvatarQueryOptions;)Ljava/lang/String;
 }
 
 public final class com/gravatar/AvatarUrl {

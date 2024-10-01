@@ -11,6 +11,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.gravatar.AvatarQueryOptions
+import com.gravatar.asQueryParameters
 import com.gravatar.extensions.avatarUrl
 import com.gravatar.extensions.defaultProfile
 import com.gravatar.restapi.models.Profile
@@ -19,6 +20,8 @@ import com.gravatar.ui.components.ComponentState
 import com.gravatar.ui.components.LoadingToLoadedProfileStatePreview
 import com.gravatar.ui.components.isNightModeEnabled
 import com.gravatar.ui.skeletonEffect
+import java.net.URI
+import java.net.URL
 
 /**
  * [Avatar] is a composable that displays a user's avatar.
@@ -88,16 +91,24 @@ public fun Avatar(
  * @param state Avatar URL wrapped in ComponentState
  * @param size The size of the avatar
  * @param modifier Composable modifier
+ * @param avatarQueryOptions Options to customize the avatar query
  */
 @JvmName("AvatarWithURLComponentState")
 @Composable
-public fun Avatar(state: ComponentState<String>, size: Dp, modifier: Modifier = Modifier) {
+public fun Avatar(
+    state: ComponentState<URI>,
+    size: Dp,
+    modifier: Modifier = Modifier,
+    avatarQueryOptions: AvatarQueryOptions? = null,
+) {
     when (state) {
         is ComponentState.Loading -> SkeletonAvatar(size = size, modifier = modifier)
 
         is ComponentState.Loaded -> {
             Avatar(
-                model = state.loadedValue,
+                model = state.loadedValue.toURL()?.let { url ->
+                    URL(url.protocol, url.host, url.path.plus(avatarQueryOptions.asQueryParameters()))
+                }.toString(),
                 size = size,
                 modifier = modifier,
             )

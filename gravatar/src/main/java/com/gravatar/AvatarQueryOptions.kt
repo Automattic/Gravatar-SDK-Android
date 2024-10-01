@@ -107,6 +107,9 @@ public fun AvatarQueryOptions(initializer: AvatarQueryOptions.Builder.() -> Unit
     return AvatarQueryOptions.Builder().apply(initializer).build()
 }
 
+/**
+ * Function to convert the [AvatarQueryOptions] to a string with the query parameters.
+ */
 public fun AvatarQueryOptions?.asQueryParameters(): String {
     val queryList = mutableListOf<String>()
     this?.defaultAvatarOption?.let {

@@ -4,7 +4,6 @@ import com.gravatar.GravatarConstants.GRAVATAR_WWW_BASE_HOST
 import com.gravatar.types.Email
 import com.gravatar.types.Hash
 import java.net.URL
-import java.net.URLEncoder
 import java.util.Locale
 
 /**
@@ -30,23 +29,6 @@ public class AvatarUrl {
             // Only keep the protocol, host and path
             return URL(url.protocol, url.host, url.path)
         }
-    }
-
-    private fun queryParameters(avatarQueryOptions: AvatarQueryOptions?): String {
-        val queryList = mutableListOf<String>()
-        avatarQueryOptions?.defaultAvatarOption?.let {
-            queryList.add("d=${URLEncoder.encode(it.queryParam(), "UTF-8")}")
-        } // eg. default monster, "d=monsterid"
-        avatarQueryOptions?.preferredSize?.let {
-            queryList.add("s=$it")
-        } // eg. size 42, "s=42"
-        avatarQueryOptions?.rating?.let {
-            queryList.add("r=${it.rating}")
-        } // eg. rated pg, "r=pg"
-        avatarQueryOptions?.forceDefaultAvatar?.let {
-            queryList.add("f=${if (it) "y" else "n"}")
-        } // eg. force yes, "f=y"
-        return if (queryList.isEmpty()) "" else queryList.joinToString("&", "?")
     }
 
     /**
@@ -107,7 +89,7 @@ public class AvatarUrl {
         return URL(
             canonicalUrl.protocol,
             canonicalUrl.host,
-            canonicalUrl.path.plus(queryParameters(avatarQueryOptions)),
+            canonicalUrl.path.plus(avatarQueryOptions.asQueryParameters()),
         )
     }
 }

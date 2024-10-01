@@ -17,8 +17,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.gravatar.AvatarQueryOptions
 import com.gravatar.extensions.defaultProfile
 import com.gravatar.restapi.models.Profile
 import com.gravatar.ui.GravatarTheme
@@ -37,10 +39,13 @@ internal fun ProfileCard(profile: ComponentState<Profile>?, modifier: Modifier =
                     .background(backgroundColor)
                     .padding(horizontal = 16.dp, vertical = 11.dp),
                 avatar = {
+                    val size = 72.dp
+                    val sizePx = with(LocalDensity.current) { size.roundToPx() }
                     Avatar(
-                        state = profile.transform { profileValue -> profileValue.avatarUrl.toString() },
-                        size = 72.dp,
+                        state = profile.transform { profileValue -> profileValue.avatarUrl },
+                        size = size,
                         modifier = Modifier.clip(CircleShape),
+                        avatarQueryOptions = AvatarQueryOptions { preferredSize = sizePx },
                     )
                 },
             )
