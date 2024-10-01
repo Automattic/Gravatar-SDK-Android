@@ -1,5 +1,6 @@
 package com.gravatar
 
+import java.net.URLEncoder
 import java.util.Objects
 
 /**
@@ -104,4 +105,21 @@ public class AvatarQueryOptions private constructor(
 @JvmSynthetic // Hide from Java callers who should use Builder.
 public fun AvatarQueryOptions(initializer: AvatarQueryOptions.Builder.() -> Unit): AvatarQueryOptions {
     return AvatarQueryOptions.Builder().apply(initializer).build()
+}
+
+public fun AvatarQueryOptions?.asQueryParameters(): String {
+    val queryList = mutableListOf<String>()
+    this?.defaultAvatarOption?.let {
+        queryList.add("default=${URLEncoder.encode(it.queryParam(), "UTF-8")}")
+    } // eg. default monster, "d=monsterid"
+    this?.preferredSize?.let {
+        queryList.add("size=$it")
+    } // eg. size 42, "s=42"
+    this?.rating?.let {
+        queryList.add("rating=${it.rating}")
+    } // eg. rated pg, "r=pg"
+    this?.forceDefaultAvatar?.let {
+        queryList.add("forcedefault=${if (it) "y" else "n"}")
+    } // eg. force yes, "f=y"
+    return if (queryList.isEmpty()) "" else queryList.joinToString("&", "?")
 }
