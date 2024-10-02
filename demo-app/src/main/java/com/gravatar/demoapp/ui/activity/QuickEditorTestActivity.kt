@@ -21,6 +21,7 @@ import com.gravatar.demoapp.BuildConfig
 import com.gravatar.demoapp.R
 import com.gravatar.quickeditor.GravatarQuickEditor
 import com.gravatar.quickeditor.ui.editor.AuthenticationMethod
+import com.gravatar.quickeditor.ui.editor.AvatarPickerContentLayout
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
 import com.gravatar.quickeditor.ui.oauth.OAuthParams
 import com.gravatar.restapi.models.Profile
@@ -49,8 +50,8 @@ class QuickEditorTestActivity : AppCompatActivity() {
             GravatarQuickEditor.show(
                 activity = this,
                 gravatarQuickEditorParams = GravatarQuickEditorParams {
-                    appName = getString(R.string.app_name)
                     email = Email(BuildConfig.DEMO_EMAIL)
+                    avatarPickerContentLayout = AvatarPickerContentLayout.Horizontal
                 },
                 authenticationMethod = AuthenticationMethod.OAuth(
                     OAuthParams {

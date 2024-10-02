@@ -175,7 +175,6 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
         }
         GravatarQuickEditorBottomSheet(
             gravatarQuickEditorParams = GravatarQuickEditorParams {
-                appName = applicationName
                 email = Email(userEmail)
                 avatarPickerContentLayout = pickerContentLayout
             },

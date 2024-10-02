@@ -6,35 +6,28 @@ import java.util.Objects
 /**
  * All non-auth params required to launch the Gravatar Quick Editor
  *
- * @property appName The appName of the app that is launching the Quick Editor
  * @property email The email of the user
  * @property avatarPickerContentLayout The layout direction used in the Avatar Picker.
  */
 public class GravatarQuickEditorParams private constructor(
-    public val appName: String,
     public val email: Email,
     public val avatarPickerContentLayout: AvatarPickerContentLayout,
 ) {
-    override fun toString(): String = "GravatarQuickEditorParams(appName='$appName', email='$email')"
+    override fun toString(): String =
+        "GravatarQuickEditorParams(email='$email', avatarPickerContentLayout=$avatarPickerContentLayout)"
 
-    override fun hashCode(): Int = Objects.hash(appName, email)
+    override fun hashCode(): Int = Objects.hash(email, avatarPickerContentLayout)
 
     override fun equals(other: Any?): Boolean {
         return other is GravatarQuickEditorParams &&
-            appName == other.appName &&
-            email == other.email
+            email == other.email &&
+            avatarPickerContentLayout == other.avatarPickerContentLayout
     }
 
     /**
      * A type-safe builder for the GravatarQuickEditorParams class.
      */
     public class Builder {
-        /**
-         *  The appName of the app that is launching the Quick Editor
-         */
-        @set:JvmSynthetic // Hide 'void' setter from Java
-        public var appName: String? = null
-
         /**
          * The email of the user
          */
@@ -54,11 +47,6 @@ public class GravatarQuickEditorParams private constructor(
             apply { this.avatarPickerContentLayout = avatarPickerContentLayout }
 
         /**
-         * Sets the appName
-         */
-        public fun setAppName(appName: String): Builder = apply { this.appName = appName }
-
-        /**
          * Sets the email
          */
         public fun setEmail(email: Email): Builder = apply { this.email = email }
@@ -67,7 +55,6 @@ public class GravatarQuickEditorParams private constructor(
          * Builds the GravatarQuickEditorParams object
          */
         public fun build(): GravatarQuickEditorParams = GravatarQuickEditorParams(
-            appName!!,
             email!!,
             avatarPickerContentLayout,
         )
