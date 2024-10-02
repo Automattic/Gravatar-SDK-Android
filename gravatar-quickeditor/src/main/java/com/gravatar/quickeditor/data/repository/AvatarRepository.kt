@@ -6,7 +6,7 @@ import com.gravatar.quickeditor.data.models.QuickEditorError
 import com.gravatar.quickeditor.data.storage.TokenStorage
 import com.gravatar.restapi.models.Avatar
 import com.gravatar.services.AvatarService
-import com.gravatar.services.Result
+import com.gravatar.services.GravatarResult
 import com.gravatar.types.Email
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
@@ -16,13 +16,13 @@ internal class AvatarRepository(
     private val tokenStorage: TokenStorage,
     private val dispatcher: CoroutineDispatcher,
 ) {
-    suspend fun getAvatars(email: Email): Result<EmailAvatars, QuickEditorError> = withContext(dispatcher) {
+    suspend fun getAvatars(email: Email): GravatarResult<EmailAvatars, QuickEditorError> = withContext(dispatcher) {
         val token = tokenStorage.getToken(email.hash().toString())
         token?.let {
             when (val avatarsResult = avatarService.retrieveCatching(token, email.hash())) {
-                is Result.Success -> {
+                is GravatarResult.Success -> {
                     val avatars = avatarsResult.value
-                    Result.Success(
+                    GravatarResult.Success(
                         EmailAvatars(
                             avatars,
                             avatars.firstOrNull { it.selected == true }?.imageId,
@@ -30,31 +30,35 @@ internal class AvatarRepository(
                     )
                 }
 
-                is Result.Failure -> {
-                    Result.Failure(QuickEditorError.Request(avatarsResult.error))
+                is GravatarResult.Failure -> {
+                    GravatarResult.Failure(QuickEditorError.Request(avatarsResult.error))
                 }
             }
-        } ?: Result.Failure(QuickEditorError.TokenNotFound)
+        } ?: GravatarResult.Failure(QuickEditorError.TokenNotFound)
     }
 
-    suspend fun selectAvatar(email: Email, avatarId: String): Result<Unit, QuickEditorError> = withContext(dispatcher) {
+    suspend fun selectAvatar(email: Email, avatarId: String): GravatarResult<Unit, QuickEditorError> = withContext(
+        dispatcher,
+    ) {
         val token = tokenStorage.getToken(email.hash().toString())
         token?.let {
             when (val result = avatarService.setAvatarCatching(email.hash().toString(), avatarId, token)) {
-                is Result.Success -> Result.Success(Unit)
-                is Result.Failure -> Result.Failure(QuickEditorError.Request(result.error))
+                is GravatarResult.Success -> GravatarResult.Success(Unit)
+                is GravatarResult.Failure -> GravatarResult.Failure(QuickEditorError.Request(result.error))
             }
-        } ?: Result.Failure(QuickEditorError.TokenNotFound)
+        } ?: GravatarResult.Failure(QuickEditorError.TokenNotFound)
     }
 
-    suspend fun uploadAvatar(email: Email, avatarUri: Uri): Result<Avatar, QuickEditorError> = withContext(dispatcher) {
+    suspend fun uploadAvatar(email: Email, avatarUri: Uri): GravatarResult<Avatar, QuickEditorError> = withContext(
+        dispatcher,
+    ) {
         val token = tokenStorage.getToken(email.hash().toString())
         token?.let {
             when (val result = avatarService.uploadCatching(avatarUri.toFile(), token)) {
-                is Result.Success -> Result.Success(result.value)
-                is Result.Failure -> Result.Failure(QuickEditorError.Request(result.error))
+                is GravatarResult.Success -> GravatarResult.Success(result.value)
+                is GravatarResult.Failure -> GravatarResult.Failure(QuickEditorError.Request(result.error))
             }
-        } ?: Result.Failure(QuickEditorError.TokenNotFound)
+        } ?: GravatarResult.Failure(QuickEditorError.TokenNotFound)
     }
 }
 
