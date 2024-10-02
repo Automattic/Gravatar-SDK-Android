@@ -698,6 +698,32 @@ public abstract interface class com/gravatar/services/GravatarListener {
 	public abstract fun onSuccess (Ljava/lang/Object;)V
 }
 
+public abstract class com/gravatar/services/GravatarResult {
+	public final fun valueOrNull ()Ljava/lang/Object;
+}
+
+public final class com/gravatar/services/GravatarResult$Failure : com/gravatar/services/GravatarResult {
+	public fun <init> (Ljava/lang/Object;)V
+	public final fun component1 ()Ljava/lang/Object;
+	public final fun copy (Ljava/lang/Object;)Lcom/gravatar/services/GravatarResult$Failure;
+	public static synthetic fun copy$default (Lcom/gravatar/services/GravatarResult$Failure;Ljava/lang/Object;ILjava/lang/Object;)Lcom/gravatar/services/GravatarResult$Failure;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getError ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/gravatar/services/GravatarResult$Success : com/gravatar/services/GravatarResult {
+	public fun <init> (Ljava/lang/Object;)V
+	public final fun component1 ()Ljava/lang/Object;
+	public final fun copy (Ljava/lang/Object;)Lcom/gravatar/services/GravatarResult$Success;
+	public static synthetic fun copy$default (Lcom/gravatar/services/GravatarResult$Success;Ljava/lang/Object;ILjava/lang/Object;)Lcom/gravatar/services/GravatarResult$Success;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getValue ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
 public final class com/gravatar/services/HttpException : java/lang/RuntimeException {
 	public final fun getCode ()I
 	public fun getMessage ()Ljava/lang/String;
@@ -718,32 +744,6 @@ public final class com/gravatar/services/ProfileService {
 	public final fun retrieveCatching (Lcom/gravatar/types/Email;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun retrieveCatching (Lcom/gravatar/types/Hash;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun retrieveCatching (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-}
-
-public abstract class com/gravatar/services/Result {
-	public final fun valueOrNull ()Ljava/lang/Object;
-}
-
-public final class com/gravatar/services/Result$Failure : com/gravatar/services/Result {
-	public fun <init> (Ljava/lang/Object;)V
-	public final fun component1 ()Ljava/lang/Object;
-	public final fun copy (Ljava/lang/Object;)Lcom/gravatar/services/Result$Failure;
-	public static synthetic fun copy$default (Lcom/gravatar/services/Result$Failure;Ljava/lang/Object;ILjava/lang/Object;)Lcom/gravatar/services/Result$Failure;
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getError ()Ljava/lang/Object;
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class com/gravatar/services/Result$Success : com/gravatar/services/Result {
-	public fun <init> (Ljava/lang/Object;)V
-	public final fun component1 ()Ljava/lang/Object;
-	public final fun copy (Ljava/lang/Object;)Lcom/gravatar/services/Result$Success;
-	public static synthetic fun copy$default (Lcom/gravatar/services/Result$Success;Ljava/lang/Object;ILjava/lang/Object;)Lcom/gravatar/services/Result$Success;
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getValue ()Ljava/lang/Object;
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
 }
 
 public final class com/gravatar/types/Email {
