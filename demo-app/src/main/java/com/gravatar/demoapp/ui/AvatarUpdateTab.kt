@@ -162,7 +162,6 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
         }
     }
     if (showBottomSheet) {
-        val applicationName = stringResource(id = R.string.app_name)
         val authenticationMethod = if (useToken) {
             AuthenticationMethod.Bearer(userToken)
         } else {
@@ -175,7 +174,6 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
         }
         GravatarQuickEditorBottomSheet(
             gravatarQuickEditorParams = GravatarQuickEditorParams {
-                appName = applicationName
                 email = Email(userEmail)
                 avatarPickerContentLayout = pickerContentLayout
             },
