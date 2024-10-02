@@ -7,7 +7,7 @@
  */
 package com.gravatar.restapi.apis
 
-import com.gravatar.restapi.models.AssociatedEmail200Response
+import com.gravatar.restapi.models.AssociatedResponse
 import com.gravatar.restapi.models.Profile
 import retrofit2.Response
 import retrofit2.http.GET
@@ -22,12 +22,12 @@ internal interface ProfilesApi {
      *  - 200: The email is associated with the authenticated user
      *
      * @param emailHash The hash of the email address to check.
-     * @return [AssociatedEmail200Response]
+     * @return [AssociatedResponse]
      */
     @GET("me/associated-email")
     suspend fun associatedEmail(
         @Query("email_hash") emailHash: kotlin.String,
-    ): Response<AssociatedEmail200Response>
+    ): Response<AssociatedResponse>
 
     /**
      * Get profile by identifier
