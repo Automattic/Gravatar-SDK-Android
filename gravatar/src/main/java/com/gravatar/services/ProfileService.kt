@@ -49,14 +49,16 @@ public class ProfileService(private val okHttpClient: OkHttpClient? = null) {
 
     /**
      * Fetches a Gravatar profile for the given hash or username.
-     * This method will catch any exception that occurs during the execution and return it as a [Result.Failure].
+     * This method will catch any exception that occurs during
+     * the execution and return it as a [GravatarResult.Failure].
      *
      * @param hashOrUsername The hash or username to fetch the profile for
      * @return The fetched profile
      */
-    public suspend fun retrieveCatching(hashOrUsername: String): Result<Profile, ErrorType> = runCatchingRequest {
-        retrieve(hashOrUsername)
-    }
+    public suspend fun retrieveCatching(hashOrUsername: String): GravatarResult<Profile, ErrorType> =
+        runCatchingRequest {
+            retrieve(hashOrUsername)
+        }
 
     /**
      * Fetches a Gravatar profile for the given email address.
@@ -71,12 +73,13 @@ public class ProfileService(private val okHttpClient: OkHttpClient? = null) {
 
     /**
      * Fetches a Gravatar profile for the given email address.
-     * This method will catch any exception that occurs during the execution and return it as a [Result.Failure].
+     * This method will catch any exception that occurs during
+     * the execution and return it as a [GravatarResult.Failure].
      *
      * @param email The email address to fetch the profile for
      * @return The fetched profiles
      */
-    public suspend fun retrieveCatching(email: Email): Result<Profile, ErrorType> = runCatchingRequest {
+    public suspend fun retrieveCatching(email: Email): GravatarResult<Profile, ErrorType> = runCatchingRequest {
         retrieve(email.hash())
     }
 
@@ -93,12 +96,13 @@ public class ProfileService(private val okHttpClient: OkHttpClient? = null) {
 
     /**
      * Fetches a Gravatar profile for the given hash.
-     * This method will catch any exception that occurs during the execution and return it as a [Result.Failure].
+     * This method will catch any exception that occurs during
+     * the execution and return it as a [GravatarResult.Failure].
      *
      * @param hash The hash to fetch the profile for
      * @return The fetched profiles
      */
-    public suspend fun retrieveCatching(hash: Hash): Result<Profile, ErrorType> = runCatchingRequest {
+    public suspend fun retrieveCatching(hash: Hash): GravatarResult<Profile, ErrorType> = runCatchingRequest {
         retrieve(hash)
     }
 
@@ -115,14 +119,16 @@ public class ProfileService(private val okHttpClient: OkHttpClient? = null) {
 
     /**
      * Fetches a Gravatar profile for the given username.
-     * This method will catch any exception that occurs during the execution and return it as a [Result.Failure].
+     * This method will catch any exception that occurs during
+     * the execution and return it as a [GravatarResult.Failure].
      *
      * @param username The username to fetch the profile for
      * @return The fetched profiles
      */
-    public suspend fun retrieveByUsernameCatching(username: String): Result<Profile, ErrorType> = runCatchingRequest {
-        retrieveByUsername(username)
-    }
+    public suspend fun retrieveByUsernameCatching(username: String): GravatarResult<Profile, ErrorType> =
+        runCatchingRequest {
+            retrieveByUsername(username)
+        }
 
     /**
      * Checks if the given email address is associated with the already authorized Gravatar account.
@@ -151,14 +157,17 @@ public class ProfileService(private val okHttpClient: OkHttpClient? = null) {
 
     /**
      * Checks if the given email address is associated with the already authorized Gravatar account.
-     * This method will catch any exception that occurs during the execution and return it as a [Result.Failure].
+     * This method will catch any exception that occurs during
+     * the execution and return it as a [GravatarResult.Failure].
      *
      * @param oauthToken The OAuth token to use for authentication
      * @param email The email address to check
      * @return True if the email is associated with the account, false otherwise
      */
-    public suspend fun checkAssociatedEmailCatching(oauthToken: String, email: Email): Result<Boolean, ErrorType> =
-        runCatchingRequest {
-            checkAssociatedEmail(oauthToken, email)
-        }
+    public suspend fun checkAssociatedEmailCatching(
+        oauthToken: String,
+        email: Email,
+    ): GravatarResult<Boolean, ErrorType> = runCatchingRequest {
+        checkAssociatedEmail(oauthToken, email)
+    }
 }

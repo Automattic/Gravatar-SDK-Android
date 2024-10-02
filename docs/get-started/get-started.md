@@ -97,13 +97,13 @@ fun GravatarProfileSummary(emailAddress: String = "gravatar@automattic.com") {
         profileState = ComponentState.Loading
         // Fetch the user profile
         when (val result = profileService.retrieve(Email(emailAddress))) {
-            is Result.Success -> {
+            is GravatarResult.Success -> {
                 // Update the profile state with the loaded profile
                 result.value.let {
                     profileState = ComponentState.Loaded(it)
                 }
             }
-            is Result.Failure -> {
+            is GravatarResult.Failure -> {
                 // An error can occur when a profile doesn't exist, if the phone is in airplane mode, etc.
                 // Here we log the error, but ideally we should show an error to the user.
                 Log.e("Gravatar", result.error.name)
@@ -165,13 +165,13 @@ fun GravatarProfileSummary(emailAddress: String = "gravatar@automattic.com") {
         profileState = ComponentState.Loading
         // Fetch the user profile
         when (val result = profileService.retrieve(Email(emailAddress))) {
-            is Result.Success -> {
+            is GravatarResult.Success -> {
                 // Update the profile state with the loaded profile
                 result.value.let {
                     profileState = ComponentState.Loaded(it)
                 }
             }
-            is Result.Failure -> {
+            is GravatarResult.Failure -> {
                 // An error can occur when a profile doesn't exist, if the phone is in airplane mode, etc.
                 // Here we log the error, but ideally we should show an error to the user.
                 Log.e("Gravatar", result.error.name)
@@ -197,12 +197,12 @@ For example, using the user's email:
 ```kotlin
 coroutineScope.launch {
     when (val profile = ProfileService().retrieve(Email("gravatar@automattic.com"))) {
-        is Result.Success -> {
+        is GravatarResult.Success -> {
             Log.d("Gravatar", "Profile: ${profile.value}")
             // Do something with the profile
         }
 
-        is Result.Failure -> {
+        is GravatarResult.Failure -> {
             Log.e("Gravatar", "Error: ${profile.error}")
             // Handle the error
         }

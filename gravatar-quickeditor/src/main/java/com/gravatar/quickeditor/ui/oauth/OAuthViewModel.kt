@@ -6,8 +6,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.gravatar.quickeditor.QuickEditorContainer
 import com.gravatar.quickeditor.data.storage.TokenStorage
+import com.gravatar.services.GravatarResult
 import com.gravatar.services.ProfileService
-import com.gravatar.services.Result
 import com.gravatar.types.Email
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -47,7 +47,7 @@ internal class OAuthViewModel(
                 currentState.copy(status = OAuthStatus.Authorizing)
             }
             when (val result = profileService.checkAssociatedEmailCatching(token, email)) {
-                is Result.Success -> {
+                is GravatarResult.Success -> {
                     result.value.let {
                         if (it) {
                             tokenStorage.storeToken(email.hash().toString(), token)
@@ -60,7 +60,7 @@ internal class OAuthViewModel(
                     }
                 }
 
-                is Result.Failure -> {
+                is GravatarResult.Failure -> {
                     _uiState.update { currentState ->
                         currentState.copy(status = OAuthStatus.EmailAssociatedCheckError(token))
                     }

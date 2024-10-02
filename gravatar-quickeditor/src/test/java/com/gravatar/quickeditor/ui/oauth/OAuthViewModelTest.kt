@@ -4,8 +4,8 @@ import app.cash.turbine.test
 import com.gravatar.quickeditor.data.storage.TokenStorage
 import com.gravatar.quickeditor.ui.CoroutineTestRule
 import com.gravatar.services.ErrorType
+import com.gravatar.services.GravatarResult
 import com.gravatar.services.ProfileService
-import com.gravatar.services.Result
 import com.gravatar.types.Email
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -46,7 +46,7 @@ class OAuthViewModelTest {
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `given oAuth params when token stored then email association checked sent`() = runTest {
-        coEvery { profileService.checkAssociatedEmailCatching(token, email) } returns Result.Success(true)
+        coEvery { profileService.checkAssociatedEmailCatching(token, email) } returns GravatarResult.Success(true)
 
         viewModel.tokenReceived(
             email,
@@ -59,7 +59,7 @@ class OAuthViewModelTest {
 
     @Test
     fun `given token when email associated then OAuthAction_AuthorizationSuccess sent`() = runTest {
-        coEvery { profileService.checkAssociatedEmailCatching(token, email) } returns Result.Success(true)
+        coEvery { profileService.checkAssociatedEmailCatching(token, email) } returns GravatarResult.Success(true)
 
         viewModel.tokenReceived(
             email,
@@ -75,7 +75,7 @@ class OAuthViewModelTest {
     @Test
     fun `given wrong email when restarting OAuth flow after email error then UiState_Status keeps the error state`() =
         runTest {
-            coEvery { profileService.checkAssociatedEmailCatching(any(), any()) } returns Result.Success(false)
+            coEvery { profileService.checkAssociatedEmailCatching(any(), any()) } returns GravatarResult.Success(false)
 
             viewModel.uiState.test {
                 assertEquals(OAuthUiState(OAuthStatus.LoginRequired), awaitItem())
@@ -89,7 +89,9 @@ class OAuthViewModelTest {
 
     @Test
     fun `given token when association check failed then UiState_Status updated`() = runTest {
-        coEvery { profileService.checkAssociatedEmailCatching(token, email) } returns Result.Failure(ErrorType.Unknown)
+        coEvery {
+            profileService.checkAssociatedEmailCatching(token, email)
+        } returns GravatarResult.Failure(ErrorType.Unknown)
 
         viewModel.uiState.test {
             expectMostRecentItem()
@@ -104,7 +106,9 @@ class OAuthViewModelTest {
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `given token when association check failed then token stored`() = runTest {
-        coEvery { profileService.checkAssociatedEmailCatching(token, email) } returns Result.Failure(ErrorType.Unknown)
+        coEvery {
+            profileService.checkAssociatedEmailCatching(token, email)
+        } returns GravatarResult.Failure(ErrorType.Unknown)
 
         viewModel.tokenReceived(
             email,
@@ -119,7 +123,7 @@ class OAuthViewModelTest {
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `given token when email associated then token stored sent`() = runTest {
-        coEvery { profileService.checkAssociatedEmailCatching(token, email) } returns Result.Success(true)
+        coEvery { profileService.checkAssociatedEmailCatching(token, email) } returns GravatarResult.Success(true)
 
         viewModel.tokenReceived(
             email,
@@ -133,7 +137,7 @@ class OAuthViewModelTest {
 
     @Test
     fun `given token when email not associated then UiState updated`() = runTest {
-        coEvery { profileService.checkAssociatedEmailCatching(token, email) } returns Result.Success(false)
+        coEvery { profileService.checkAssociatedEmailCatching(token, email) } returns GravatarResult.Success(false)
 
         viewModel.tokenReceived(
             email,

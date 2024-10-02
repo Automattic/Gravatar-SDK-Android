@@ -14,8 +14,8 @@ import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
 import com.gravatar.restapi.models.Avatar
 import com.gravatar.restapi.models.Profile
 import com.gravatar.services.ErrorType
+import com.gravatar.services.GravatarResult
 import com.gravatar.services.ProfileService
-import com.gravatar.services.Result
 import com.gravatar.types.Email
 import com.gravatar.ui.components.ComponentState
 import kotlinx.coroutines.channels.Channel
@@ -98,7 +98,7 @@ internal class AvatarPickerViewModel(
                     currentState.copy(selectingAvatarId = avatarId)
                 }
                 when (avatarRepository.selectAvatar(email, avatarId)) {
-                    is Result.Success -> {
+                    is GravatarResult.Success -> {
                         _uiState.update { currentState ->
                             currentState.copy(
                                 emailAvatars = currentState.emailAvatars?.copy(selectedAvatarId = avatarId),
@@ -109,7 +109,7 @@ internal class AvatarPickerViewModel(
                         _actions.send(AvatarPickerAction.AvatarSelected(avatar))
                     }
 
-                    is Result.Failure -> {
+                    is GravatarResult.Failure -> {
                         _uiState.update { currentState ->
                             currentState.copy(selectingAvatarId = null)
                         }
@@ -137,7 +137,7 @@ internal class AvatarPickerViewModel(
                 )
             }
             when (val result = avatarRepository.uploadAvatar(email, uri)) {
-                is Result.Success -> {
+                is GravatarResult.Success -> {
                     fileUtils.deleteFile(uri)
                     _uiState.update { currentState ->
                         val avatar = result.value
@@ -154,7 +154,7 @@ internal class AvatarPickerViewModel(
                     }
                 }
 
-                is Result.Failure -> {
+                is GravatarResult.Failure -> {
                     _uiState.update { currentState ->
                         currentState.copy(
                             uploadingAvatar = null,
@@ -175,13 +175,13 @@ internal class AvatarPickerViewModel(
         viewModelScope.launch {
             _uiState.update { currentState -> currentState.copy(profile = ComponentState.Loading) }
             when (val result = profileService.retrieveCatching(email)) {
-                is Result.Success -> {
+                is GravatarResult.Success -> {
                     _uiState.update { currentState ->
                         currentState.copy(profile = ComponentState.Loaded(result.value))
                     }
                 }
 
-                is Result.Failure -> {
+                is GravatarResult.Failure -> {
                     _uiState.update { currentState ->
                         currentState.copy(profile = null)
                     }
@@ -204,7 +204,7 @@ internal class AvatarPickerViewModel(
             _uiState.update { currentState -> currentState.copy(isLoading = true) }
         }
         when (val result = avatarRepository.getAvatars(email)) {
-            is Result.Success -> {
+            is GravatarResult.Success -> {
                 _uiState.update { currentState ->
                     val emailAvatars = result.value
                     currentState.copy(
@@ -222,7 +222,7 @@ internal class AvatarPickerViewModel(
                 }
             }
 
-            is Result.Failure -> {
+            is GravatarResult.Failure -> {
                 _uiState.update { currentState ->
                     currentState.copy(emailAvatars = null, isLoading = false, error = result.error.asSectionError)
                 }
