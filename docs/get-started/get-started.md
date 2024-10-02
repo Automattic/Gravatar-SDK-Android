@@ -241,39 +241,14 @@ The `:gravatar-quickeditor` module provides a fully featured component that allo
 
 To do that the QuickEditor needs an authorization token to perform requests on behalf of the user. There are two ways for that:
 
-### 1. Obtain the token yourself and provide it to the Quick Editor
-
-Quick Editor can be launched with the provided token. To obtain it, you have to follow the [OAuth docs](https://docs.gravatar.com/?page_id=2555&preview=true) and implement the OAuth flow within your app.
-
-Once you have the token, here's how you can embed the QuickEditor in your Compose screen:
-
-```kotlin
-var showBottomSheet by rememberSaveable { mutableStateOf(false) }
-
-if (showBottomSheet) {
-    GravatarQuickEditorBottomSheet(
-        gravatarQuickEditorParams = GravatarQuickEditorParams {
-            email = Email("{USER_EMAIL}")
-            avatarPickerContentLayout = AvatarPickerContentLayout.Horizontal
-        },
-        authenticationMethod = AuthenticationMethod.Bearer("{TOKEN}"),
-        onAvatarSelected = { avatarUpdateResult -> ... },
-        onDismiss = { gravatarQuickEditorDismissReason ->
-            showBottomSheet = false
-            ...
-        },
-    )
-}
-```
-
-### 2. Leave the OAuth flow to Quick Editor
+### 1. Let the Quick Editor handle the OAuth flow
 
 Quick Editor can handle the heavy lifting of running the full OAuth flow, so you don't have to do that. We will still need a few things from you.
 First, you have to go to [OAuth docs](https://docs.gravatar.com/?page_id=2555&preview=true) and create your Application. Define the `Redirect URLs`.
 
 > Keep in mind that you need to use the `https` scheme. Internally, QuickEditor uses Implicit OAuth flow (`response_type=token`) and for security reasons, the server doesn't allow custom URL schemes.
 
-For the sake of this example let's assume the redirect URL is `https://gravatar.com/redirect-url`.
+For the sake of this example let's assume the redirect URL is `https://yourhost.com/redirect-url`.
 
 In your `AndroidManifest.xml` you need to add an `<intent-filter>` and the `android:launchMode="singleTask"` to the activity that will 
 launch the Quick Editor (or the last/main activity depending on your app architecture). This is important because the Quick Editor will be waiting for the `onNewIntent()` callback to handle OAuth redirection.
@@ -291,7 +266,7 @@ launch the Quick Editor (or the last/main activity depending on your app archite
 
         <data
             android:scheme="https"
-            android:host="gravatar.com"
+            android:host="yourhost.com"
             android:pathPrefix="/redirect-url"
         />
     </intent-filter>
@@ -314,7 +289,7 @@ if (showBottomSheet) {
         authenticationMethod = AuthenticationMethod.OAuth(
             OAuthParams {
                 clientId = "{YOUR_CLIENT_ID}"
-                redirectUri = "{YOUR_REDIRECT_URL}" // In our example this would be https://gravatar.com/redirect_url
+                redirectUri = "{YOUR_REDIRECT_URL}" // In our example this would be https://yourhost.com/redirect_url
             },
         ),
         onAvatarSelected = { avatarUpdateResult -> ... },
@@ -335,8 +310,13 @@ When the user logs out form the app, make sure to run:
 GravatarQuickEditor.logout(Email("{USER_EMAIL}"))
 ```
 
-Data Store files are subject to Android backups. Because we use encryption, this won't work when restoring the backup on a different device so we have to exclude those files.
+#### Exclude Data Store files from Android backup (optional, but recommended)
+
+Data Store files are subject to Android backups. Encrypted files from the backup won't work when restored on a different device so we have to exclude those files.
 If your app has backup rules configured, those that are provided in the SDK won't be used so you have to copy them to your files.
+
+<details>
+  <summary>Instructions</summary>
 
 In `AndroidManifest.xml` add those lines:
 
@@ -384,6 +364,33 @@ Content of the [@xml/backup_rules](https://github.com/Automattic/Gravatar-SDK-An
         domain="file"
         path="datastore/quick-editor-preferences.preferences_pb" />
 </full-backup-content>
+```
+
+</details>
+
+### 2. Obtain the token yourself and provide it to the Quick Editor
+
+Quick Editor can be launched with the provided token. To obtain it, you have to follow the [OAuth docs](https://docs.gravatar.com/?page_id=2555&preview=true) and implement the OAuth flow within your app.
+
+Once you have the token, here's how you can embed the QuickEditor in your Compose screen:
+
+```kotlin
+var showBottomSheet by rememberSaveable { mutableStateOf(false) }
+
+if (showBottomSheet) {
+    GravatarQuickEditorBottomSheet(
+        gravatarQuickEditorParams = GravatarQuickEditorParams {
+            email = Email("{USER_EMAIL}")
+            avatarPickerContentLayout = AvatarPickerContentLayout.Horizontal
+        },
+        authenticationMethod = AuthenticationMethod.Bearer("{TOKEN}"),
+        onAvatarSelected = { avatarUpdateResult -> ... },
+        onDismiss = { gravatarQuickEditorDismissReason ->
+            showBottomSheet = false
+            ...
+        },
+    )
+}
 ```
 
 ### Activity/Fragment compatibility
