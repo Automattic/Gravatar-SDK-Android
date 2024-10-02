@@ -25,8 +25,8 @@ import com.gravatar.quickeditor.ui.editor.AvatarPickerContentLayout
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
 import com.gravatar.quickeditor.ui.oauth.OAuthParams
 import com.gravatar.restapi.models.Profile
+import com.gravatar.services.GravatarResult
 import com.gravatar.services.ProfileService
-import com.gravatar.services.Result
 import com.gravatar.types.Email
 import com.gravatar.ui.components.ComponentState
 import com.gravatar.ui.components.ProfileSummary
@@ -79,13 +79,13 @@ fun GravatarProfileSummary(emailAddress: String = "gravatar@automattic.com") {
     LaunchedEffect(emailAddress) {
         profileState = ComponentState.Loading
         when (val result = profileService.retrieveCatching(Email(emailAddress))) {
-            is Result.Success -> {
+            is GravatarResult.Success -> {
                 result.value.let {
                     profileState = ComponentState.Loaded(it)
                 }
             }
 
-            is Result.Failure -> {
+            is GravatarResult.Failure -> {
                 Log.e("Gravatar", result.error.toString())
                 profileState = ComponentState.Empty
             }

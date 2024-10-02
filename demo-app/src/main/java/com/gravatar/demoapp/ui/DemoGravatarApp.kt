@@ -68,8 +68,8 @@ import com.gravatar.demoapp.ui.model.SettingsState
 import com.gravatar.demoapp.ui.utils.prettyPrint
 import com.gravatar.restapi.models.Profile
 import com.gravatar.services.ErrorType
+import com.gravatar.services.GravatarResult
 import com.gravatar.services.ProfileService
-import com.gravatar.services.Result
 import com.gravatar.types.Email
 import com.gravatar.ui.GravatarTheme
 import com.gravatar.ui.components.ComponentState
@@ -259,13 +259,13 @@ private fun ProfileTab(modifier: Modifier = Modifier, onError: (String?, Throwab
                             error = ""
                             profileState = ComponentState.Loading
                             when (val result = profileService.retrieveCatching(Email(email))) {
-                                is Result.Success -> {
+                                is GravatarResult.Success -> {
                                     result.value.let {
                                         profileState = ComponentState.Loaded(it)
                                     }
                                 }
 
-                                is Result.Failure -> {
+                                is GravatarResult.Failure -> {
                                     when (result.error) {
                                         ErrorType.NotFound -> {
                                             profileState = ComponentState.Empty
