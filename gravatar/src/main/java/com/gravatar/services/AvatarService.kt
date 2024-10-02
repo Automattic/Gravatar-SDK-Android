@@ -51,15 +51,17 @@ public class AvatarService(private val okHttpClient: OkHttpClient? = null) {
 
     /**
      * Uploads an image to be used as Gravatar avatar.
-     * This method will catch any exception that occurs during the execution and return it as a [Result.Failure].
+     * This method will catch any exception that occurs during
+     * the execution and return it as a [GravatarResult.Failure].
      *
      * @param file The image file to upload
      * @param oauthToken The OAuth token to use for authentication
      * @return The result of the operation
      */
-    public suspend fun uploadCatching(file: File, oauthToken: String): Result<Avatar, ErrorType> = runCatchingRequest {
-        upload(file, oauthToken)
-    }
+    public suspend fun uploadCatching(file: File, oauthToken: String): GravatarResult<Avatar, ErrorType> =
+        runCatchingRequest {
+            upload(file, oauthToken)
+        }
 
     /**
      * Retrieves a list of available avatars for the authenticated user.
@@ -88,13 +90,14 @@ public class AvatarService(private val okHttpClient: OkHttpClient? = null) {
 
     /**
      * Retrieves a list of available avatars for the authenticated user.
-     * This method will catch any exception that occurs during the execution and return it as a [Result.Failure].
+     * This method will catch any exception that occurs during
+     * the execution and return it as a [GravatarResult.Failure].
      *
      * @param oauthToken The OAuth token to use for authentication
      * @param hash The hash of the email to associate the avatars with
      * @return The list of avatars
      */
-    public suspend fun retrieveCatching(oauthToken: String, hash: Hash): Result<List<Avatar>, ErrorType> =
+    public suspend fun retrieveCatching(oauthToken: String, hash: Hash): GravatarResult<List<Avatar>, ErrorType> =
         runCatchingRequest {
             retrieve(oauthToken, hash)
         }
@@ -126,15 +129,19 @@ public class AvatarService(private val okHttpClient: OkHttpClient? = null) {
 
     /**
      * Sets the avatar for the given email (hash).
-     * This method will catch any exception that occurs during the execution and return it as a [Result.Failure].
+     * This method will catch any exception that occurs during
+     * the execution and return it as a [GravatarResult.Failure].
      *
      * @param hash The hash of the email to set the avatar for
      * @param avatarId The ID of the avatar to set
      * @param oauthToken The OAuth token to use for authentication
      * @return The result of the operation
      */
-    public suspend fun setAvatarCatching(hash: String, avatarId: String, oauthToken: String): Result<Unit, ErrorType> =
-        runCatchingRequest {
-            setAvatar(hash, avatarId, oauthToken)
-        }
+    public suspend fun setAvatarCatching(
+        hash: String,
+        avatarId: String,
+        oauthToken: String,
+    ): GravatarResult<Unit, ErrorType> = runCatchingRequest {
+        setAvatar(hash, avatarId, oauthToken)
+    }
 }

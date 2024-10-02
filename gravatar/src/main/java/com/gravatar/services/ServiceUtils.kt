@@ -3,18 +3,18 @@ package com.gravatar.services
 import com.gravatar.di.container.GravatarSdkContainer
 import kotlinx.coroutines.CancellationException
 
-internal inline fun <T> runCatchingRequest(block: () -> T?): Result<T, ErrorType> {
+internal inline fun <T> runCatchingRequest(block: () -> T?): GravatarResult<T, ErrorType> {
     @Suppress("TooGenericExceptionCaught")
     return try {
         val result = block()
         if (result != null) {
-            Result.Success(result)
+            GravatarResult.Success(result)
         } else {
-            Result.Failure(ErrorType.NotFound)
+            GravatarResult.Failure(ErrorType.NotFound)
         }
     } catch (cancellationException: CancellationException) {
         throw cancellationException
     } catch (ex: Exception) {
-        Result.Failure(ex.errorType(GravatarSdkContainer.instance.moshi))
+        GravatarResult.Failure(ex.errorType(GravatarSdkContainer.instance.moshi))
     }
 }

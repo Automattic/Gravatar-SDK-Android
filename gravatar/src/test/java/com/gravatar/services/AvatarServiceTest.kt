@@ -95,7 +95,7 @@ class AvatarServiceTest {
             )
         }
 
-        assertTrue(response is Result.Success)
+        assertTrue(response is GravatarResult.Success)
     }
 
     @Test
@@ -120,7 +120,7 @@ class AvatarServiceTest {
             )
         }
 
-        assertEquals(ErrorType.Server, (response as Result.Failure).error)
+        assertEquals(ErrorType.Server, (response as GravatarResult.Failure).error)
     }
 
     @Test
@@ -163,7 +163,7 @@ class AvatarServiceTest {
 
         val response = avatarService.setAvatarCatching(hash, avatarId, oauthToken)
 
-        assertEquals(Unit, (response as Result.Success).value)
+        assertEquals(Unit, (response as GravatarResult.Success).value)
     }
 
     @Test
@@ -180,6 +180,6 @@ class AvatarServiceTest {
 
             val response = avatarService.setAvatarCatching(hash, avatarId, oauthToken)
 
-            assertEquals(ErrorType.Server, (response as Result.Failure).error)
+            assertEquals(ErrorType.Server, (response as GravatarResult.Failure).error)
         }
 }

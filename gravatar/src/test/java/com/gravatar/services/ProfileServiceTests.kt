@@ -44,7 +44,7 @@ class ProfileServiceTests {
         val loadProfileResponse = profileService.retrieveByUsernameCatching(username)
 
         coVerify(exactly = 1) { containerRule.gravatarApiMock.getProfileById(username) }
-        assertTrue(loadProfileResponse is Result.Success)
+        assertTrue(loadProfileResponse is GravatarResult.Success)
     }
 
     @Test
@@ -60,7 +60,7 @@ class ProfileServiceTests {
             val loadProfileResponse = profileService.retrieveByUsernameCatching(username)
 
             coVerify(exactly = 1) { containerRule.gravatarApiMock.getProfileById(username) }
-            assertTrue((loadProfileResponse as Result.Failure).error == ErrorType.Unknown)
+            assertTrue((loadProfileResponse as GravatarResult.Failure).error == ErrorType.Unknown)
         }
 
     @Test
@@ -75,7 +75,7 @@ class ProfileServiceTests {
             val loadProfileResponse = profileService.retrieveByUsernameCatching(username)
 
             coVerify(exactly = 1) { containerRule.gravatarApiMock.getProfileById(username) }
-            assertTrue((loadProfileResponse as Result.Failure).error == ErrorType.Unknown)
+            assertTrue((loadProfileResponse as GravatarResult.Failure).error == ErrorType.Unknown)
         }
 
     @Test
@@ -92,7 +92,7 @@ class ProfileServiceTests {
         val loadProfileResponse = profileService.retrieveCatching(usernameHash)
 
         coVerify(exactly = 1) { containerRule.gravatarApiMock.getProfileById(usernameHash.toString()) }
-        assertTrue(loadProfileResponse is Result.Success)
+        assertTrue(loadProfileResponse is GravatarResult.Success)
     }
 
     @Test
@@ -109,7 +109,7 @@ class ProfileServiceTests {
         val loadProfileResponse = profileService.retrieveCatching(usernameEmail)
 
         coVerify(exactly = 1) { containerRule.gravatarApiMock.getProfileById(usernameEmail.hash().toString()) }
-        assertTrue(loadProfileResponse is Result.Success)
+        assertTrue(loadProfileResponse is GravatarResult.Success)
     }
 
     @Test
@@ -120,7 +120,7 @@ class ProfileServiceTests {
         val loadProfileResponse = profileService.retrieveByUsernameCatching(username)
 
         coVerify(exactly = 1) { containerRule.gravatarApiMock.getProfileById(username) }
-        assertTrue((loadProfileResponse as Result.Failure).error == ErrorType.Unknown)
+        assertTrue((loadProfileResponse as GravatarResult.Failure).error == ErrorType.Unknown)
     }
 
     @Test
@@ -132,7 +132,7 @@ class ProfileServiceTests {
 
         val loadProfileResponse = profileService.retrieveCatching(usernameEmail)
         coVerify(exactly = 1) { containerRule.gravatarApiMock.getProfileById(usernameEmail.hash().toString()) }
-        assertTrue((loadProfileResponse as Result.Failure).error == ErrorType.Unknown)
+        assertTrue((loadProfileResponse as GravatarResult.Failure).error == ErrorType.Unknown)
     }
 
     @Test
@@ -144,7 +144,7 @@ class ProfileServiceTests {
 
         val loadProfileResponse = profileService.retrieveCatching(usernameHash)
         coVerify(exactly = 1) { containerRule.gravatarApiMock.getProfileById(usernameHash.toString()) }
-        assertTrue((loadProfileResponse as Result.Failure).error == ErrorType.Unknown)
+        assertTrue((loadProfileResponse as GravatarResult.Failure).error == ErrorType.Unknown)
     }
 
     @Test
@@ -160,7 +160,7 @@ class ProfileServiceTests {
             containerRule.gravatarApiMock.getProfileById(username)
         } returns mockResponse
 
-        assertEquals(ErrorType.NotFound, (profileService.retrieveCatching(username) as Result.Failure).error)
+        assertEquals(ErrorType.NotFound, (profileService.retrieveCatching(username) as GravatarResult.Failure).error)
     }
 
     // Throwing Exception Version of the methods
@@ -255,7 +255,14 @@ class ProfileServiceTests {
                 containerRule.gravatarApiMock.associatedEmail(usernameEmail.hash().toString())
             } returns mockResponse
 
-            assertTrue((profileService.checkAssociatedEmailCatching(oauthToken, usernameEmail) as Result.Success).value)
+            assertTrue(
+                (
+                    profileService.checkAssociatedEmailCatching(
+                        oauthToken,
+                        usernameEmail,
+                    ) as GravatarResult.Success
+                ).value,
+            )
         }
 
     @Test
@@ -275,7 +282,12 @@ class ProfileServiceTests {
             } returns mockResponse
 
             assertFalse(
-                (profileService.checkAssociatedEmailCatching(oauthToken, usernameEmail) as Result.Success).value,
+                (
+                    profileService.checkAssociatedEmailCatching(
+                        oauthToken,
+                        usernameEmail,
+                    ) as GravatarResult.Success
+                ).value,
             )
         }
 
@@ -295,7 +307,7 @@ class ProfileServiceTests {
             } returns mockResponse
 
             val result = profileService.checkAssociatedEmailCatching(oauthToken, usernameEmail)
-            assertTrue((result as Result.Failure).error == ErrorType.Unknown)
+            assertTrue((result as GravatarResult.Failure).error == ErrorType.Unknown)
         }
 
     @Test(expected = IllegalStateException::class)
