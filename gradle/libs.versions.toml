@@ -15,7 +15,7 @@ junit = "4.13.2"
 mockk = "1.13.9"
 appcompat = "1.7.0"
 material = "1.12.0"
-ucrop = "2.2.9"
+ucrop = "2.2.10"
 coil = "2.7.0"
 activityCompose = "1.9.2"
 robolectric = "4.12.2"
@@ -64,7 +64,7 @@ moshi-kotlin = { group = "com.squareup.moshi", name = "moshi-kotlin", version.re
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-moshi-converter = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "retrofit" }
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
-ucrop = { group = "com.github.yalantis", name = "ucrop", version.ref = "ucrop" }
+ucrop = { group = "com.automattic", name = "ucrop", version.ref = "ucrop" }
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 coil-svg = { group = "io.coil-kt", name = "coil-svg", version.ref = "coil" }
 coil-test = { group = "io.coil-kt", name = "coil-test", version.ref = "coil" }
