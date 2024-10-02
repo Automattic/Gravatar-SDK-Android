@@ -557,6 +557,21 @@
           }
         }
       },
+      "AssociatedResponse": {
+        "type": "object",
+        "required": [
+          "associated"
+        ],
+        "properties": {
+          "associated": {
+            "type": "boolean",
+            "description": "Whether the entity is associated with the account.",
+            "examples": [
+              true
+            ]
+          }
+        }
+      },
       "Error": {
         "type": "object",
         "description": "An error response from the API.",
@@ -707,18 +722,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "required": [
-                    "associated"
-                  ],
-                  "properties": {
-                    "associated": {
-                      "type": "boolean",
-                      "description": "Whether the email is associated with a Gravatar account.",
-                      "examples": [
-                        true
-                      ]
-                    }
-                  }
+                  "$ref": "#/components/schemas/AssociatedResponse"
                 }
               }
             }

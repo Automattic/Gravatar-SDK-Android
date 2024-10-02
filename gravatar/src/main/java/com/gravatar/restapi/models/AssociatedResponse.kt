@@ -13,33 +13,33 @@ import java.util.Objects
 /**
  *
  *
- * @param associated Whether the email is associated with a Gravatar account.
+ * @param associated Whether the entity is associated with the account.
  */
 
-public class AssociatedEmail200Response private constructor(
-    // Whether the email is associated with a Gravatar account.
+public class AssociatedResponse private constructor(
+    // Whether the entity is associated with the account.
     @Json(name = "associated")
     public val associated: kotlin.Boolean,
 ) {
-    override fun toString(): String = "AssociatedEmail200Response(associated=$associated)"
+    override fun toString(): String = "AssociatedResponse(associated=$associated)"
 
-    override fun equals(other: Any?): Boolean = other is AssociatedEmail200Response &&
+    override fun equals(other: Any?): Boolean = other is AssociatedResponse &&
         associated == other.associated
 
     override fun hashCode(): Int = Objects.hash(associated)
 
     public class Builder {
-        // Whether the email is associated with a Gravatar account.
+        // Whether the entity is associated with the account.
         @set:JvmSynthetic // Hide 'void' setter from Java
         public var associated: kotlin.Boolean? = null
 
         public fun setAssociated(associated: kotlin.Boolean?): Builder = apply { this.associated = associated }
 
-        public fun build(): AssociatedEmail200Response = AssociatedEmail200Response(associated!!)
+        public fun build(): AssociatedResponse = AssociatedResponse(associated!!)
     }
 }
 
 @JvmSynthetic // Hide from Java callers who should use Builder.
-public fun AssociatedEmail200Response(initializer: AssociatedEmail200Response.Builder.() -> Unit): AssociatedEmail200Response {
-    return AssociatedEmail200Response.Builder().apply(initializer).build()
+public fun AssociatedResponse(initializer: AssociatedResponse.Builder.() -> Unit): AssociatedResponse {
+    return AssociatedResponse.Builder().apply(initializer).build()
 }

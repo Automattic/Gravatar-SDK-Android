@@ -165,7 +165,7 @@ public final class com/gravatar/extensions/UserProfileExtensionsKt {
 	public static final fun profileUrl (Lcom/gravatar/restapi/models/Profile;)Lcom/gravatar/ProfileUrl;
 }
 
-public final class com/gravatar/restapi/models/AssociatedEmail200Response {
+public final class com/gravatar/restapi/models/AssociatedResponse {
 	public synthetic fun <init> (ZLkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getAssociated ()Z
@@ -173,16 +173,16 @@ public final class com/gravatar/restapi/models/AssociatedEmail200Response {
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/gravatar/restapi/models/AssociatedEmail200Response$Builder {
+public final class com/gravatar/restapi/models/AssociatedResponse$Builder {
 	public fun <init> ()V
-	public final fun build ()Lcom/gravatar/restapi/models/AssociatedEmail200Response;
+	public final fun build ()Lcom/gravatar/restapi/models/AssociatedResponse;
 	public final fun getAssociated ()Ljava/lang/Boolean;
-	public final fun setAssociated (Ljava/lang/Boolean;)Lcom/gravatar/restapi/models/AssociatedEmail200Response$Builder;
+	public final fun setAssociated (Ljava/lang/Boolean;)Lcom/gravatar/restapi/models/AssociatedResponse$Builder;
 	public final synthetic fun setAssociated (Ljava/lang/Boolean;)V
 }
 
-public final class com/gravatar/restapi/models/AssociatedEmail200ResponseKt {
-	public static final synthetic fun AssociatedEmail200Response (Lkotlin/jvm/functions/Function1;)Lcom/gravatar/restapi/models/AssociatedEmail200Response;
+public final class com/gravatar/restapi/models/AssociatedResponseKt {
+	public static final synthetic fun AssociatedResponse (Lkotlin/jvm/functions/Function1;)Lcom/gravatar/restapi/models/AssociatedResponse;
 }
 
 public final class com/gravatar/restapi/models/Avatar {

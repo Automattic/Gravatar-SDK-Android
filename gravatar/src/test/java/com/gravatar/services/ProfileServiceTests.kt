@@ -1,7 +1,7 @@
 package com.gravatar.services
 
 import com.gravatar.GravatarSdkContainerRule
-import com.gravatar.restapi.models.AssociatedEmail200Response
+import com.gravatar.restapi.models.AssociatedResponse
 import com.gravatar.restapi.models.Profile
 import com.gravatar.types.Email
 import com.gravatar.types.Hash
@@ -245,8 +245,8 @@ class ProfileServiceTests {
             val oauthToken = "oauth"
             val usernameEmail = Email("username@automattic.com")
 
-            val body = AssociatedEmail200Response { associated = true }
-            val mockResponse = mockk<Response<AssociatedEmail200Response>> {
+            val body = AssociatedResponse { associated = true }
+            val mockResponse = mockk<Response<AssociatedResponse>> {
                 every { isSuccessful } returns true
                 every { body() } returns body
             }
@@ -264,8 +264,8 @@ class ProfileServiceTests {
             val oauthToken = "oauth"
             val usernameEmail = Email("username@automattic.com")
 
-            val body = AssociatedEmail200Response { associated = false }
-            val mockResponse = mockk<Response<AssociatedEmail200Response>> {
+            val body = AssociatedResponse { associated = false }
+            val mockResponse = mockk<Response<AssociatedResponse>> {
                 every { isSuccessful } returns true
                 every { body() } returns body
             }
@@ -285,7 +285,7 @@ class ProfileServiceTests {
             val oauthToken = "oauth"
             val usernameEmail = Email("username@automattic.com")
 
-            val mockResponse = mockk<Response<AssociatedEmail200Response>> {
+            val mockResponse = mockk<Response<AssociatedResponse>> {
                 every { isSuccessful } returns true
                 every { body() } returns null
             }
@@ -304,7 +304,7 @@ class ProfileServiceTests {
             val oauthToken = "oauth"
             val usernameEmail = Email("username@automattic.com")
 
-            val mockResponse = mockk<Response<AssociatedEmail200Response>> {
+            val mockResponse = mockk<Response<AssociatedResponse>> {
                 every { isSuccessful } returns true
                 every { body() } returns null
             }
