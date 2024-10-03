@@ -20,6 +20,8 @@ internal interface ProfilesApi {
      * Checks if the provided email address is associated with the authenticated user.
      * Responses:
      *  - 200: The email is associated with the authenticated user
+     *  - 401: Not Authorized
+     *  - 403: Insufficient Scope
      *
      * @param emailHash The hash of the email address to check.
      * @return [AssociatedResponse]

@@ -25,6 +25,8 @@ internal interface AvatarsApi {
      * Retrieves a list of available avatars for the authenticated user.
      * Responses:
      *  - 200: Successful retrieval of avatars
+     *  - 401: Not Authorized
+     *  - 403: Insufficient Scope
      *
      * @param selectedEmailHash The sha256 hash of the email address used to determine which avatar is selected. The &#39;selected&#39; attribute in the avatar list will be set to &#39;true&#39; for the avatar associated with this email. (optional, default to "null")
      * @return [kotlin.collections.List<Avatar>]
@@ -39,6 +41,8 @@ internal interface AvatarsApi {
      * Sets the avatar for the provided email hash.
      * Responses:
      *  - 204: Avatar successfully set
+     *  - 401: Not Authorized
+     *  - 403: Insufficient Scope
      *
      * @param imageId Image ID of the avatar to set as the provided hashed email avatar.
      * @param setEmailAvatarRequest Avatar selection details
@@ -56,6 +60,8 @@ internal interface AvatarsApi {
      * Responses:
      *  - 200: Avatar uploaded successfully
      *  - 400: Invalid request
+     *  - 401: Not Authorized
+     *  - 403: Insufficient Scope
      *
      * @param `data` The avatar image file
      * @return [Avatar]

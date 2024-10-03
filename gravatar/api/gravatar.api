@@ -590,13 +590,14 @@ public final class com/gravatar/restapi/models/SetEmailAvatarRequestKt {
 }
 
 public final class com/gravatar/restapi/models/VerifiedAccount {
-	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/net/URI;Ljava/net/URI;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/net/URI;Ljava/net/URI;ZLkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getServiceIcon ()Ljava/net/URI;
 	public final fun getServiceLabel ()Ljava/lang/String;
 	public final fun getServiceType ()Ljava/lang/String;
 	public final fun getUrl ()Ljava/net/URI;
 	public fun hashCode ()I
+	public final fun isHidden ()Z
 	public fun toString ()Ljava/lang/String;
 }
 
@@ -607,6 +608,9 @@ public final class com/gravatar/restapi/models/VerifiedAccount$Builder {
 	public final fun getServiceLabel ()Ljava/lang/String;
 	public final fun getServiceType ()Ljava/lang/String;
 	public final fun getUrl ()Ljava/net/URI;
+	public final fun isHidden ()Ljava/lang/Boolean;
+	public final synthetic fun setHidden (Ljava/lang/Boolean;)V
+	public final fun setIsHidden (Ljava/lang/Boolean;)Lcom/gravatar/restapi/models/VerifiedAccount$Builder;
 	public final fun setServiceIcon (Ljava/net/URI;)Lcom/gravatar/restapi/models/VerifiedAccount$Builder;
 	public final synthetic fun setServiceIcon (Ljava/net/URI;)V
 	public final fun setServiceLabel (Ljava/lang/String;)Lcom/gravatar/restapi/models/VerifiedAccount$Builder;
