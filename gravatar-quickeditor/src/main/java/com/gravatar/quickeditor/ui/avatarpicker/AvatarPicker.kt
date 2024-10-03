@@ -24,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -146,10 +147,13 @@ internal fun AvatarPicker(uiState: AvatarPickerUiState, onEvent: (AvatarPickerEv
                     .fillMaxWidth()
                     .padding(bottom = 10.dp),
             )
-            ProfileCard(
-                profile = uiState.profile,
-                modifier = Modifier.padding(horizontal = 16.dp),
-            )
+            key(uiState.emailAvatars?.selectedAvatarId) {
+                ProfileCard(
+                    profile = uiState.profile,
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                )
+            }
+
             val sectionModifier = Modifier.padding(top = 24.dp, bottom = 10.dp)
             when {
                 uiState.isLoading -> Box(

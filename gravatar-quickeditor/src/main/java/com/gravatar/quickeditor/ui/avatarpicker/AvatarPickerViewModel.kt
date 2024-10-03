@@ -12,7 +12,6 @@ import com.gravatar.quickeditor.data.repository.AvatarRepository
 import com.gravatar.quickeditor.ui.editor.AvatarPickerContentLayout
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
 import com.gravatar.restapi.models.Avatar
-import com.gravatar.restapi.models.Profile
 import com.gravatar.services.ErrorType
 import com.gravatar.services.GravatarResult
 import com.gravatar.services.ProfileService
@@ -103,7 +102,6 @@ internal class AvatarPickerViewModel(
                             currentState.copy(
                                 emailAvatars = currentState.emailAvatars?.copy(selectedAvatarId = avatarId),
                                 selectingAvatarId = null,
-                                profile = currentState.profile?.copy { copyAvatar(avatar) },
                             )
                         }
                         _actions.send(AvatarPickerAction.AvatarSelected(avatar))
@@ -262,38 +260,6 @@ internal class AvatarPickerViewModelFactory(
             avatarRepository = QuickEditorContainer.getInstance().avatarRepository,
             fileUtils = QuickEditorContainer.getInstance().fileUtils,
         ) as T
-    }
-}
-
-internal fun Profile.copyAvatar(avatar: Avatar): Profile {
-    return Profile {
-        hash = this@copyAvatar.hash
-        displayName = this@copyAvatar.displayName
-        profileUrl = this@copyAvatar.profileUrl
-        avatarUrl = avatar.imageUrl
-        avatarAltText = avatar.altText
-        location = this@copyAvatar.location
-        description = this@copyAvatar.description
-        jobTitle = this@copyAvatar.jobTitle
-        description = this@copyAvatar.description
-        jobTitle = this@copyAvatar.jobTitle
-        company = this@copyAvatar.company
-        verifiedAccounts = this@copyAvatar.verifiedAccounts
-        pronunciation = this@copyAvatar.pronunciation
-        pronouns = this@copyAvatar.pronouns
-        timezone = this@copyAvatar.timezone
-        languages = this@copyAvatar.languages
-        firstName = this@copyAvatar.firstName
-        lastName = this@copyAvatar.lastName
-        isOrganization = this@copyAvatar.isOrganization
-        links = this@copyAvatar.links
-        interests = this@copyAvatar.interests
-        payments = this@copyAvatar.payments
-        contactInfo = this@copyAvatar.contactInfo
-        gallery = this@copyAvatar.gallery
-        numberVerifiedAccounts = this@copyAvatar.numberVerifiedAccounts
-        lastProfileEdit = this@copyAvatar.lastProfileEdit
-        registrationDate = this@copyAvatar.registrationDate
     }
 }
 

@@ -43,7 +43,8 @@ public final class com/gravatar/AvatarUrl {
 	public final fun getHash ()Lcom/gravatar/types/Hash;
 	public final fun isAvatarUrl ()Z
 	public final fun setAvatarQueryOptions (Lcom/gravatar/AvatarQueryOptions;)V
-	public final fun url ()Ljava/net/URL;
+	public final fun url (Ljava/lang/String;)Ljava/net/URL;
+	public static synthetic fun url$default (Lcom/gravatar/AvatarUrl;Ljava/lang/String;ILjava/lang/Object;)Ljava/net/URL;
 }
 
 public final class com/gravatar/AvatarUrl$Companion {

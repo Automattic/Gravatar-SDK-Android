@@ -209,7 +209,6 @@ class AvatarPickerViewModelTest {
             assertEquals(
                 avatarPickerUiState.copy(
                     emailAvatars = emailAvatarsCopy.copy(selectedAvatarId = avatars.last().imageId),
-                    profile = ComponentState.Loaded(profile.copyAvatar(avatars.last())),
                     selectingAvatarId = null,
                     scrollToIndex = 0,
                 ),

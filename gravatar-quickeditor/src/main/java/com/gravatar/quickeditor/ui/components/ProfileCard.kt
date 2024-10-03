@@ -38,9 +38,10 @@ internal fun ProfileCard(profile: ComponentState<Profile>?, modifier: Modifier =
                     .padding(horizontal = 16.dp, vertical = 11.dp),
                 avatar = {
                     Avatar(
-                        state = profile.transform { profileValue -> profileValue.avatarUrl.toString() },
+                        state = profile,
                         size = 72.dp,
                         modifier = Modifier.clip(CircleShape),
+                        forceRefresh = true,
                     )
                 },
             )
@@ -83,10 +84,4 @@ private fun ProfileCardPreview() {
             modifier = Modifier.padding(20.dp),
         )
     }
-}
-
-private fun <T, O> ComponentState<T>.transform(transform: (T) -> O): ComponentState<O> = when (this) {
-    is ComponentState.Empty -> ComponentState.Empty
-    is ComponentState.Loading -> ComponentState.Loading
-    is ComponentState.Loaded -> ComponentState.Loaded(transform(loadedValue))
 }
