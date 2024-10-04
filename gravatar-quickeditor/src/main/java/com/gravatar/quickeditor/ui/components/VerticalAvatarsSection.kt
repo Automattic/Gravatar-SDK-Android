@@ -129,6 +129,7 @@ internal fun VerticalAvatarsSection(
                         Avatar(
                             avatar = avatarModel,
                             onAvatarSelected = { onAvatarSelected(avatarModel) },
+                            size = avatarSize,
                             modifier = Modifier,
                         )
                     }
