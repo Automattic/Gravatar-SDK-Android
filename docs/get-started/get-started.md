@@ -244,7 +244,7 @@ To do that the QuickEditor needs an authorization token to perform requests on b
 ### 1. Let the Quick Editor handle the OAuth flow
 
 Quick Editor can handle the heavy lifting of running the full OAuth flow, so you don't have to do that. We will still need a few things from you.
-First, you have to go to [OAuth docs](https://docs.gravatar.com/?page_id=2555&preview=true) and create your Application. Define the `Redirect URLs`.
+First, you have to go to [OAuth docs](https://docs.gravatar.com/oauth/) and create your Application. Define the `Redirect URLs`.
 
 > Keep in mind that you need to use the `https` scheme. Internally, QuickEditor uses Implicit OAuth flow (`response_type=token`) and for security reasons, the server doesn't allow custom URL schemes.
 
@@ -370,7 +370,7 @@ Content of the [@xml/backup_rules](https://github.com/Automattic/Gravatar-SDK-An
 
 ### 2. Obtain the token yourself and provide it to the Quick Editor
 
-Quick Editor can be launched with the provided token. To obtain it, you have to follow the [OAuth docs](https://docs.gravatar.com/?page_id=2555&preview=true) and implement the OAuth flow within your app.
+Quick Editor can be launched with the provided token. To obtain it, you have to follow the [OAuth docs](https://docs.gravatar.com/oauth/) and implement the OAuth flow within your app.
 
 Once you have the token, here's how you can embed the QuickEditor in your Compose screen:
 
