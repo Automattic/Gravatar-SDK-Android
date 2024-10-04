@@ -16,11 +16,13 @@ plugins {
 android {
     namespace = "com.gravatar"
     compileSdk = 34
+    buildFeatures.buildConfig = true
 
     defaultConfig {
         minSdk = 21
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+        buildConfigField("String", "SDK_VERSION", "\"1.1.0\"")
     }
 
     buildTypes {
