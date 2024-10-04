@@ -130,18 +130,21 @@ private fun LargeProfilePreview() {
                     serviceLabel = "Mastodon"
                     serviceIcon = URI("https://example.com")
                     url = URI("https://mastodon.social/@ddoe")
+                    isHidden = false
                 },
                 VerifiedAccount {
                     serviceType = "tumblr"
                     serviceLabel = "Tumblr"
                     serviceIcon = URI("https://example.com")
                     url = URI("https://ddoe.tumblr.com")
+                    isHidden = false
                 },
                 VerifiedAccount {
                     serviceType = "wordpress"
                     serviceLabel = "WordPress"
                     serviceIcon = URI("https://example.com")
                     url = URI("https://ddoe.wordpress.com")
+                    isHidden = false
                 },
             ),
             description = "I'm a farmer, I love to code. I ride my bicycle to work. One apple a day keeps the " +
@@ -167,18 +170,21 @@ private fun LargeProfileWithoutDescriptionPreview() {
                     serviceLabel = "Mastodon"
                     serviceIcon = URI("https://example.com")
                     url = URI("https://mastodon.social/@ddoe")
+                    isHidden = false
                 },
                 VerifiedAccount {
                     serviceType = "tumblr"
                     serviceLabel = "Tumblr"
                     serviceIcon = URI("https://example.com")
                     url = URI("https://ddoe.tumblr.com")
+                    isHidden = false
                 },
                 VerifiedAccount {
                     serviceType = "wordpress"
                     serviceLabel = "WordPress"
                     serviceIcon = URI("https://example.com")
                     url = URI("https://ddoe.wordpress.com")
+                    isHidden = false
                 },
             ),
         ),

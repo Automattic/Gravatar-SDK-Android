@@ -62,12 +62,14 @@ internal fun LoadingToLoadedProfileStatePreview(composable: @Composable (state: 
                         serviceLabel = "Mastodon"
                         url = URI("https://example.com")
                         serviceIcon = URI("https://example.com/icon.svg")
+                        isHidden = false
                     },
                     VerifiedAccount {
                         serviceType = "tumblr"
                         serviceLabel = "Tumblr"
                         url = URI("https://example.com")
                         serviceIcon = URI("https://example.com/icon.svg")
+                        isHidden = false
                     },
                     // Invalid url, should be ignored:
                     VerifiedAccount {
@@ -75,18 +77,21 @@ internal fun LoadingToLoadedProfileStatePreview(composable: @Composable (state: 
                         serviceLabel = "TikTok"
                         url = URI("https://example.com")
                         serviceIcon = URI("https://example.com/icon.svg")
+                        isHidden = false
                     },
                     VerifiedAccount {
                         serviceType = "wordpress"
                         serviceLabel = "WordPress"
                         url = URI("https://example.com")
                         serviceIcon = URI("https://example.com/icon.svg")
+                        isHidden = false
                     },
                     VerifiedAccount {
                         serviceType = "github"
                         serviceLabel = "GitHub"
                         url = URI("https://example.com")
                         serviceIcon = URI("https://example.com/icon.svg")
+                        isHidden = false
                     },
                 )
                 description = "I'm a farmer, I love to code. I ride my bicycle to work. One apple a day keeps the " +
