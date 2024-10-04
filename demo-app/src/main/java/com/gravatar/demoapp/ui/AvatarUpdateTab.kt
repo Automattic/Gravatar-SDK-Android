@@ -20,7 +20,6 @@ import androidx.compose.material.icons.rounded.AccountCircle
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
@@ -35,12 +34,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.gravatar.AvatarQueryOptions
+import com.gravatar.AvatarUrl
 import com.gravatar.demoapp.BuildConfig
 import com.gravatar.demoapp.R
 import com.gravatar.demoapp.ui.activity.QuickEditorTestActivity
@@ -66,7 +69,7 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
     val context = LocalContext.current
     var showBottomSheet by rememberSaveable { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
-    var avatarUrl: String? by remember { mutableStateOf(null) }
+    var cacheBuster: String? by remember { mutableStateOf(null) }
     val keyboardController = LocalSoftwareKeyboardController.current
     var pickerContentLayout: AvatarPickerContentLayout by rememberSaveable(
         stateSaver = AvatarPickerContentLayoutSaver,
@@ -129,7 +132,8 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
                     showBottomSheet = true
                 },
                 isUploading = false,
-                avatarUrl = avatarUrl,
+                email = Email(userEmail),
+                cacheBuster = cacheBuster,
             )
             Spacer(modifier = Modifier.height(20.dp))
         }
@@ -179,8 +183,8 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
             },
             authenticationMethod = authenticationMethod,
             onAvatarSelected = remember {
-                { result ->
-                    avatarUrl = result.avatarUri.toString()
+                {
+                    cacheBuster = System.currentTimeMillis().toString()
                 }
             },
             onDismiss = remember {
@@ -194,27 +198,32 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun UpdateAvatarComposable(isUploading: Boolean, avatarUrl: String?, modifier: Modifier = Modifier) {
+private fun UpdateAvatarComposable(
+    isUploading: Boolean,
+    email: Email,
+    cacheBuster: String?,
+    modifier: Modifier = Modifier,
+) {
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         if (isUploading) {
             CircularProgressIndicator()
         } else {
-            if (avatarUrl != null) {
-                AsyncImage(
-                    model = avatarUrl,
-                    contentDescription = "Avatar Image",
-                    modifier = Modifier
-                        .size(128.dp)
-                        .padding(8.dp)
-                        .clip(CircleShape),
-                )
-            } else {
-                Icon(
-                    Icons.Rounded.AccountCircle,
-                    contentDescription = "",
-                    modifier = Modifier.size(128.dp),
-                )
-            }
+            val size = 128.dp
+            val sizePx = with(LocalDensity.current) { size.roundToPx() }
+            AsyncImage(
+                model = AvatarUrl(
+                    email,
+                    AvatarQueryOptions {
+                        preferredSize = sizePx
+                    },
+                ).url(cacheBuster).toString(),
+                contentDescription = "Avatar Image",
+                modifier = Modifier
+                    .size(size)
+                    .padding(8.dp)
+                    .clip(CircleShape),
+                placeholder = rememberVectorPainter(Icons.Rounded.AccountCircle),
+            )
             Text(text = stringResource(R.string.update_avatar_button_label))
         }
     }
@@ -241,11 +250,12 @@ private val AvatarPickerContentLayoutSaver: Saver<AvatarPickerContentLayout, Str
 
 @Preview
 @Composable
-private fun UpdateAvatarComposablePreview() = UpdateAvatarComposable(false, null)
+private fun UpdateAvatarComposablePreview() = UpdateAvatarComposable(false, Email("gravatar@automattic.com"), null)
 
 @Preview
 @Composable
-private fun UpdateAvatarLoadingComposablePreview() = UpdateAvatarComposable(true, null)
+private fun UpdateAvatarLoadingComposablePreview() =
+    UpdateAvatarComposable(true, Email("gravatar@automattic.com"), null)
 
 @Preview
 @Composable

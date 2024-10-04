@@ -216,7 +216,7 @@ class AvatarPickerViewModelTest {
             )
         }
         viewModel.actions.test {
-            assertEquals(AvatarPickerAction.AvatarSelected(avatars.last()), awaitItem())
+            assertEquals(AvatarPickerAction.AvatarSelected, awaitItem())
         }
     }
 

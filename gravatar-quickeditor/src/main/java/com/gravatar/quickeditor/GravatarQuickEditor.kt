@@ -30,7 +30,7 @@ public object GravatarQuickEditor {
         activity: Activity,
         gravatarQuickEditorParams: GravatarQuickEditorParams,
         authenticationMethod: AuthenticationMethod,
-        onAvatarSelected: (AvatarUpdateResult) -> Unit,
+        onAvatarSelected: () -> Unit,
         onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit,
     ) {
         val viewGroup: ViewGroup = activity.findViewById(android.R.id.content)
@@ -54,7 +54,7 @@ public object GravatarQuickEditor {
         fragment: Fragment,
         gravatarQuickEditorParams: GravatarQuickEditorParams,
         authenticationMethod: AuthenticationMethod,
-        onAvatarSelected: (AvatarUpdateResult) -> Unit,
+        onAvatarSelected: () -> Unit,
         onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit,
     ) {
         val viewGroup: ViewGroup = fragment.requireActivity().findViewById(android.R.id.content)

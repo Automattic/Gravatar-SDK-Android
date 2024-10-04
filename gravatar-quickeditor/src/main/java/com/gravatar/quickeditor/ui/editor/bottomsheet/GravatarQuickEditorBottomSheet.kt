@@ -44,7 +44,7 @@ import kotlinx.coroutines.launch
 public fun GravatarQuickEditorBottomSheet(
     gravatarQuickEditorParams: GravatarQuickEditorParams,
     authenticationMethod: AuthenticationMethod,
-    onAvatarSelected: (AvatarUpdateResult) -> Unit,
+    onAvatarSelected: () -> Unit,
     onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit = {},
 ) {
     val windowHeightSizeClass = currentWindowAdaptiveInfo().windowSizeClass.windowHeightSizeClass
@@ -71,7 +71,7 @@ public fun GravatarQuickEditorBottomSheet(
 internal fun GravatarQuickEditorBottomSheet(
     gravatarQuickEditorParams: GravatarQuickEditorParams,
     authenticationMethod: AuthenticationMethod,
-    onAvatarSelected: (AvatarUpdateResult) -> Unit,
+    onAvatarSelected: () -> Unit,
     onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit = {},
     modalBottomSheetState: SheetState,
 ) {

@@ -29,7 +29,7 @@ import com.gravatar.quickeditor.ui.splash.SplashPage
 internal fun GravatarQuickEditorPage(
     gravatarQuickEditorParams: GravatarQuickEditorParams,
     oAuthParams: OAuthParams,
-    onAvatarSelected: (AvatarUpdateResult) -> Unit,
+    onAvatarSelected: () -> Unit,
     onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit = {},
 ) {
     val navController = rememberNavController()
@@ -83,7 +83,7 @@ internal fun GravatarQuickEditorPage(
 internal fun GravatarQuickEditorPage(
     gravatarQuickEditorParams: GravatarQuickEditorParams,
     authToken: String,
-    onAvatarSelected: (AvatarUpdateResult) -> Unit,
+    onAvatarSelected: () -> Unit,
     onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit = {},
 ) {
     val navController = rememberNavController()
