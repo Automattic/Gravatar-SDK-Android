@@ -132,18 +132,21 @@ private fun ProfilePreview() {
                     serviceLabel = "Mastodon"
                     url = URI("https://mastodon.social/@ddoe")
                     serviceIcon = URI("https://example.com/icon.svg")
+                    isHidden = false
                 },
                 VerifiedAccount {
                     serviceType = "tumblr"
                     serviceLabel = "Tumblr"
                     url = URI("https://ddoe.tumblr.com")
                     serviceIcon = URI("https://example.com/icon.svg")
+                    isHidden = false
                 },
                 VerifiedAccount {
                     serviceType = "wordpress"
                     serviceLabel = "WordPress"
                     url = URI("https://ddoe.wordpress.com")
                     serviceIcon = URI("https://example.com/icon.svg")
+                    isHidden = false
                 },
             ),
             description = "I'm a farmer, I love to code. I ride my bicycle to work. One apple a day keeps the " +
@@ -169,18 +172,21 @@ private fun ProfileEmptyDescriptionPreview() {
                     serviceLabel = "Mastodon"
                     url = URI("https://mastodon.social/@ddoe")
                     serviceIcon = URI("https://example.com/icon.svg")
+                    isHidden = false
                 },
                 VerifiedAccount {
                     serviceType = "tumblr"
                     serviceLabel = "Tumblr"
                     url = URI("https://ddoe.tumblr.com")
                     serviceIcon = URI("https://example.com/icon.svg")
+                    isHidden = false
                 },
                 VerifiedAccount {
                     serviceType = "wordpress"
                     serviceLabel = "WordPress"
                     url = URI("https://ddoe.wordpress.com")
                     serviceIcon = URI("https://example.com/icon.svg")
+                    isHidden = false
                 },
             ),
         ),

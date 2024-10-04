@@ -23,7 +23,7 @@ public class Error private constructor(
     public val error: kotlin.String,
     // The error code for the error message
     @Json(name = "code")
-    public val code: kotlin.String,
+    public val code: kotlin.String? = null,
 ) {
     override fun toString(): String = "Error(error=$error, code=$code)"
 
@@ -46,7 +46,7 @@ public class Error private constructor(
 
         public fun setCode(code: kotlin.String?): Builder = apply { this.code = code }
 
-        public fun build(): Error = Error(error!!, code!!)
+        public fun build(): Error = Error(error!!, code)
     }
 }
 
