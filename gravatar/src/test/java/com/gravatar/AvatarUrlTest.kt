@@ -282,4 +282,15 @@ class AvatarUrlTest {
             ).url().toString(),
         )
     }
+
+    @Test
+    fun `when cacheBuster is informed them cacheBuster is added when generating the avatar url`() {
+        assertEquals(
+            "https://www.gravatar.com/avatar/31c5543c1734d25c7206f5fd591525d0295bec6fe84ff82f946a34fe970a1e66" +
+                "?_=cacheBuster",
+            AvatarUrl(
+                Email("example@example.com"),
+            ).url(cacheBuster = "cacheBuster").toString(),
+        )
+    }
 }

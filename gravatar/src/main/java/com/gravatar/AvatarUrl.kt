@@ -32,7 +32,7 @@ public class AvatarUrl {
         }
     }
 
-    private fun queryParameters(avatarQueryOptions: AvatarQueryOptions?): String {
+    private fun queryParameters(avatarQueryOptions: AvatarQueryOptions?, cacheBuster: String?): String {
         val queryList = mutableListOf<String>()
         avatarQueryOptions?.defaultAvatarOption?.let {
             queryList.add("d=${URLEncoder.encode(it.queryParam(), "UTF-8")}")
@@ -46,6 +46,9 @@ public class AvatarUrl {
         avatarQueryOptions?.forceDefaultAvatar?.let {
             queryList.add("f=${if (it) "y" else "n"}")
         } // eg. force yes, "f=y"
+        cacheBuster?.let {
+            queryList.add("_=$it")
+        } // eg. cache buster, "cacheBuster=1234567890"
         return if (queryList.isEmpty()) "" else queryList.joinToString("&", "?")
     }
 
@@ -103,11 +106,11 @@ public class AvatarUrl {
      *
      * @return [URL] for the avatar
      */
-    public fun url(): URL {
+    public fun url(cacheBuster: String? = null): URL {
         return URL(
             canonicalUrl.protocol,
             canonicalUrl.host,
-            canonicalUrl.path.plus(queryParameters(avatarQueryOptions)),
+            canonicalUrl.path.plus(queryParameters(avatarQueryOptions, cacheBuster)),
         )
     }
 }

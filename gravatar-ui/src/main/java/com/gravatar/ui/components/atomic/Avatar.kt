@@ -4,6 +4,10 @@ import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,6 +31,7 @@ import com.gravatar.ui.skeletonEffect
  * @param size The size of the avatar
  * @param modifier Composable modifier
  * @param avatarQueryOptions Options to customize the avatar query
+ * @param forceRefresh While this is true, we'll force the refresh of the avatar in every recomposition
  */
 @Composable
 public fun Avatar(
@@ -34,8 +39,15 @@ public fun Avatar(
     size: Dp,
     modifier: Modifier = Modifier,
     avatarQueryOptions: AvatarQueryOptions? = null,
+    forceRefresh: Boolean = false,
 ) {
     val sizePx = with(LocalDensity.current) { size.roundToPx() }
+    var cacheBuster by rememberSaveable { mutableStateOf<String?>(null) }
+
+    if (forceRefresh) {
+        cacheBuster = System.currentTimeMillis().toString()
+    }
+
     Avatar(
         model = profile.avatarUrl(
             // Override the preferredSize
@@ -45,7 +57,7 @@ public fun Avatar(
                 forceDefaultAvatar = avatarQueryOptions?.forceDefaultAvatar
                 defaultAvatarOption = avatarQueryOptions?.defaultAvatarOption
             },
-        ).url().toString(),
+        ).url(cacheBuster).toString(),
         size = size,
         modifier = modifier,
     )
@@ -58,6 +70,7 @@ public fun Avatar(
  * @param size The size of the avatar
  * @param modifier Composable modifier
  * @param avatarQueryOptions Options to customize the avatar query
+ * @param forceRefresh While this is true, we'll force the refresh of the avatar in every recomposition
  */
 @Composable
 public fun Avatar(
@@ -65,6 +78,7 @@ public fun Avatar(
     size: Dp,
     modifier: Modifier = Modifier,
     avatarQueryOptions: AvatarQueryOptions? = null,
+    forceRefresh: Boolean = false,
 ) {
     when (state) {
         is ComponentState.Loading -> SkeletonAvatar(size = size, modifier = modifier)
@@ -75,31 +89,7 @@ public fun Avatar(
                 size = size,
                 modifier = modifier,
                 avatarQueryOptions = avatarQueryOptions,
-            )
-        }
-
-        ComponentState.Empty -> EmptyAvatar(size = size, modifier = modifier)
-    }
-}
-
-/**
- * [Avatar] is a composable that displays a user's avatar given the avatar URL.
- *
- * @param state Avatar URL wrapped in ComponentState
- * @param size The size of the avatar
- * @param modifier Composable modifier
- */
-@JvmName("AvatarWithURLComponentState")
-@Composable
-public fun Avatar(state: ComponentState<String>, size: Dp, modifier: Modifier = Modifier) {
-    when (state) {
-        is ComponentState.Loading -> SkeletonAvatar(size = size, modifier = modifier)
-
-        is ComponentState.Loaded -> {
-            Avatar(
-                model = state.loadedValue,
-                size = size,
-                modifier = modifier,
+                forceRefresh = forceRefresh,
             )
         }
 
