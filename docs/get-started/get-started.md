@@ -66,11 +66,36 @@ Then you can access the API key in your app's code like this:
 Gravatar.initialize(BuildConfig.GRAVATAR_API_KEY)
 ```
 
-## Usage
+# Usage
 
-### UI components
+The Gravatar SDK is separated into three modules: [`:gravatar`](#REST-API-Services), [`:gravatar-ui`](#UI-components) and [`:gravatar-quickeditor`](#Quick-Editor). They can be used all together or you can pick the one that suits your needs.
+Below you can find description of how to use each module.
 
-The Gravatar SDK provides various different types of Profile cards to suit your needs. They vary in size and the number of information presented to the user.
+## REST API Services
+
+The `:gravatar` module provides services that you can use to interact with Gravatar backend. It provides: `ProfileService` and `AvatarService` that correspond to the exposed public [REST API](https://docs.gravatar.com/api/).
+
+Here's an example how to fetch the user Profile with an email:
+
+```kotlin
+coroutineScope.launch {
+    when (val profile = ProfileService().retrieveCatching(Email("gravatar@automattic.com"))) {
+        is GravatarResult.Success -> {
+            Log.d("Gravatar", "Profile: ${profile.value}")
+            // Do something with the profile
+        }
+
+        is GravatarResult.Failure -> {
+            Log.e("Gravatar", "Error: ${profile.error}")
+            // Handle the error
+        }
+    }
+}
+```
+
+## UI components
+
+The `:gravatar-ui` module provides various different types of Profile cards to suit your needs. They vary in size and the number of information presented to the user.
 
 | Profile                                  | ProfileSummary                        | LargeProfile                        | LargeProfileSummary                         |
 |------------------------------------------|---------------------------------------|-------------------------------------|---------------------------------------------|
@@ -79,7 +104,7 @@ The Gravatar SDK provides various different types of Profile cards to suit your 
 
 ### Add a Profile Component to your Jetpack Compose App
 
-Then, you can use the following code snippet to integrate the Gravatar profile in your app. This is a very simple component that fetches a Gravatar profile and displays it in a `ProfileCard` composable.
+You can use the following code snippet to integrate the Gravatar profile in your app. This is a very simple component that fetches a Gravatar profile and displays it in a `ProfileCard` composable.
 
 ```kotlin
 @Composable
@@ -188,30 +213,6 @@ fun GravatarProfileSummary(emailAddress: String = "gravatar@automattic.com") {
 
 More information on the official documentation: [Using Compose in Views](https://developer.android.com/develop/ui/compose/migrate/interoperability-apis/compose-in-views).
 
-### Fetch user profile data
-
-It is possible that you want to use your own UI components with Gravatar data. In that case, you can use the SDK to fetch any user profile data given their username, email, or hash identifier. 
-
-For example, using the user's email:
-
-```kotlin
-coroutineScope.launch {
-    when (val profile = ProfileService().retrieve(Email("gravatar@automattic.com"))) {
-        is GravatarResult.Success -> {
-            Log.d("Gravatar", "Profile: ${profile.value}")
-            // Do something with the profile
-        }
-
-        is GravatarResult.Failure -> {
-            Log.e("Gravatar", "Error: ${profile.error}")
-            // Handle the error
-        }
-    }
-}
-```
-
-## Customization
-
 ### Override the GravatarTheme
 
 You're free to customize the Gravatar profile component to fit your app's design. You can do this by overriding the `GravatarTheme` in your app's theme.
@@ -232,4 +233,179 @@ CompositionLocalProvider(LocalGravatarTheme provides object : GravatarTheme {
 }) {
     LargeProfileSummary(profile = userProfile)
 }
+```
+
+## Quick Editor
+
+The `:gravatar-quickeditor` module provides a fully featured component that allows the user to modify their avatar without leaving your app. 
+
+To do that the QuickEditor needs an authorization token to perform requests on behalf of the user. There are two ways for that:
+
+### 1. Let the Quick Editor handle the OAuth flow
+
+Quick Editor can handle the heavy lifting of running the full OAuth flow, so you don't have to do that. We will still need a few things from you.
+First, you have to go to [OAuth docs](https://docs.gravatar.com/oauth/) and create your Application. Define the `Redirect URLs`.
+
+> Keep in mind that you need to use the `https` scheme. Internally, QuickEditor uses Implicit OAuth flow (`response_type=token`) and for security reasons, the server doesn't allow custom URL schemes.
+
+For the sake of this example let's assume the redirect URL is `https://yourhost.com/redirect-url`.
+
+In your `AndroidManifest.xml` you need to add an `<intent-filter>` and the `android:launchMode="singleTask"` to the activity that will 
+launch the Quick Editor (or the last/main activity depending on your app architecture). This is important because the Quick Editor will be waiting for the `onNewIntent()` callback to handle OAuth redirection.
+
+```xml
+<activity
+    android:name=".YourActivity"
+    android:launchMode="singleTask"
+    ...>
+    <intent-filter android:autoVerify="true">
+        <action android:name="android.intent.action.VIEW" />
+
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+
+        <data
+            android:scheme="https"
+            android:host="yourhost.com"
+            android:pathPrefix="/redirect-url"
+        />
+    </intent-filter>
+</activity>
+```
+
+> Make sure to follow official [Android App Links documentation](https://developer.android.com/training/app-links#android-app-links) to properly setup App Link.
+
+Once you've added that you can add the Quick Editor to your Compose screen:
+
+```kotlin
+var showBottomSheet by rememberSaveable { mutableStateOf(false) }
+
+if (showBottomSheet) {
+    GravatarQuickEditorBottomSheet(
+        gravatarQuickEditorParams = GravatarQuickEditorParams {
+            email = Email("{USER_EMAIL}")
+            avatarPickerContentLayout = AvatarPickerContentLayout.Horizontal
+        },
+        authenticationMethod = AuthenticationMethod.OAuth(
+            OAuthParams {
+                clientId = "{YOUR_CLIENT_ID}"
+                redirectUri = "{YOUR_REDIRECT_URL}" // In our example this would be https://yourhost.com/redirect_url
+            },
+        ),
+        onAvatarSelected = { avatarUpdateResult -> ... },
+        onDismiss = { gravatarQuickEditorDismissReason ->
+            showBottomSheet = false
+            ...
+        },
+    )
+}
+```
+
+With the provided `clientId` and the `redirectUrl` Quick Editor can launch and handle the full OAuth flow. Once obtained the token will be stored in an encrypted Data Store.
+This token will be later used in subsequent Quick Editor launches to make the user experience more seamless by not having to go through the OAuth flow each time.
+
+When the user logs out form the app, make sure to run:
+
+```kotlin
+GravatarQuickEditor.logout(Email("{USER_EMAIL}"))
+```
+
+#### Exclude Data Store files from Android backup (optional, but recommended)
+
+Data Store files are subject to Android backups. Encrypted files from the backup won't work when restored on a different device so we have to exclude those files.
+If your app has backup rules configured, those that are provided in the SDK won't be used so you have to copy them to your files.
+
+<details>
+  <summary>Instructions</summary>
+
+In `AndroidManifest.xml` add those lines:
+
+```xml
+<application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        ...>
+```
+
+Content of the [@xml/data_extraction_rules](https://github.com/Automattic/Gravatar-SDK-Android/blob/trunk/gravatar-quickeditor/src/main/res/xml/data_extraction_rules.xml)
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<data-extraction-rules>
+    <cloud-backup>
+        <exclude
+            domain="sharedpref"
+            path="__androidx_security_crypto_encrypted_file_pref__.xml" />
+        <exclude
+            domain="file"
+            path="datastore/quick-editor-preferences.preferences_pb" />
+    </cloud-backup>
+    <device-transfer>
+        <exclude
+            domain="sharedpref"
+            path="__androidx_security_crypto_encrypted_file_pref__.xml" />
+        <exclude
+            domain="file"
+            path="datastore/quick-editor-preferences.preferences_pb" />
+    </device-transfer>
+</data-extraction-rules>
+```
+
+Content of the [@xml/backup_rules](https://github.com/Automattic/Gravatar-SDK-Android/blob/trunk/gravatar-quickeditor/src/main/res/xml/backup_rules.xml)
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <exclude
+        domain="sharedpref"
+        path="__androidx_security_crypto_encrypted_file_pref__.xml" />
+    <exclude
+        domain="file"
+        path="datastore/quick-editor-preferences.preferences_pb" />
+</full-backup-content>
+```
+
+</details>
+
+### 2. Obtain the token yourself and provide it to the Quick Editor
+
+Quick Editor can be launched with the provided token. To obtain it, you have to follow the [OAuth docs](https://docs.gravatar.com/oauth/) and implement the OAuth flow within your app.
+
+Once you have the token, here's how you can embed the QuickEditor in your Compose screen:
+
+```kotlin
+var showBottomSheet by rememberSaveable { mutableStateOf(false) }
+
+if (showBottomSheet) {
+    GravatarQuickEditorBottomSheet(
+        gravatarQuickEditorParams = GravatarQuickEditorParams {
+            email = Email("{USER_EMAIL}")
+            avatarPickerContentLayout = AvatarPickerContentLayout.Horizontal
+        },
+        authenticationMethod = AuthenticationMethod.Bearer("{TOKEN}"),
+        onAvatarSelected = { avatarUpdateResult -> ... },
+        onDismiss = { gravatarQuickEditorDismissReason ->
+            showBottomSheet = false
+            ...
+        },
+    )
+}
+```
+
+### Activity/Fragment compatibility
+
+Gravatar SDK is built with Compose but we do provide some helper functions to launch the Quick Editor from an Activity or Fragment. Here's an example an Activity:
+
+```kotlin
+GravatarQuickEditor.show(
+    activity = this,
+    gravatarQuickEditorParams = GravatarQuickEditorParams {
+        email = Email("{USER_EMAIL}")
+        avatarPickerContentLayout = AvatarPickerContentLayout.Horizontal
+    },
+    authenticationMethod = AuthenticationMethod.Bearer("{TOKEN}"),
+    onAvatarSelected = { avatarUpdateResult -> ... },
+    onDismiss = { gravatarQuickEditorDismissReason -> ... },
+)
 ```
