@@ -13,14 +13,20 @@ plugins {
     alias(libs.plugins.openapi.generator)
 }
 
+val sdkVersion = providers.exec {
+    commandLine("git", "describe", "--tags", "--abbrev=0")
+}.standardOutput.asText.get().trim()
+
 android {
     namespace = "com.gravatar"
     compileSdk = 34
+    buildFeatures.buildConfig = true
 
     defaultConfig {
         minSdk = 21
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+        buildConfigField("String", "SDK_VERSION", "\"$sdkVersion\"")
     }
 
     buildTypes {

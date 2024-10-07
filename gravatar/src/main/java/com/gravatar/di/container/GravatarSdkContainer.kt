@@ -2,9 +2,10 @@ package com.gravatar.di.container
 
 import com.gravatar.GravatarConstants.GRAVATAR_API_BASE_URL_V3
 import com.gravatar.moshiadapers.URIJsonAdapter
-import com.gravatar.services.AuthenticationInterceptor
-import com.gravatar.services.AvatarUploadTimeoutInterceptor
 import com.gravatar.services.GravatarApi
+import com.gravatar.services.interceptors.AuthenticationInterceptor
+import com.gravatar.services.interceptors.AvatarUploadTimeoutInterceptor
+import com.gravatar.services.interceptors.SdkVersionInterceptor
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.CoroutineDispatcher
@@ -44,5 +45,6 @@ internal class GravatarSdkContainer private constructor() {
         .newBuilder()
         .addInterceptor(AuthenticationInterceptor(oauthToken))
         .addInterceptor(AvatarUploadTimeoutInterceptor())
+        .addInterceptor(SdkVersionInterceptor())
         .build()
 }
