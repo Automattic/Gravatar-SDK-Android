@@ -37,7 +37,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.core.net.toUri
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
@@ -53,7 +52,6 @@ import com.gravatar.quickeditor.ui.components.ProfileCard
 import com.gravatar.quickeditor.ui.copperlauncher.CropperLauncher
 import com.gravatar.quickeditor.ui.copperlauncher.UCropCropperLauncher
 import com.gravatar.quickeditor.ui.editor.AvatarPickerContentLayout
-import com.gravatar.quickeditor.ui.editor.AvatarUpdateResult
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
 import com.gravatar.quickeditor.ui.editor.bottomsheet.DEFAULT_PAGE_HEIGHT
 import com.gravatar.quickeditor.ui.extensions.QESnackbarHost
@@ -72,7 +70,7 @@ import java.net.URI
 internal fun AvatarPicker(
     gravatarQuickEditorParams: GravatarQuickEditorParams,
     handleExpiredSession: Boolean,
-    onAvatarSelected: (AvatarUpdateResult) -> Unit,
+    onAvatarSelected: () -> Unit,
     onSessionExpired: () -> Unit,
     viewModel: AvatarPickerViewModel = viewModel(
         factory = AvatarPickerViewModelFactory(gravatarQuickEditorParams, handleExpiredSession),
@@ -207,7 +205,7 @@ internal fun AvatarPicker(uiState: AvatarPickerUiState, onEvent: (AvatarPickerEv
 @Suppress("LongParameterList")
 private suspend fun AvatarPickerAction.handle(
     cropperLauncher: CropperLauncher,
-    onAvatarSelected: (AvatarUpdateResult) -> Unit,
+    onAvatarSelected: () -> Unit,
     onSessionExpired: () -> Unit,
     snackState: SnackbarHostState,
     context: Context,
@@ -215,7 +213,7 @@ private suspend fun AvatarPickerAction.handle(
 ) {
     when (this) {
         is AvatarPickerAction.AvatarSelected -> {
-            onAvatarSelected(AvatarUpdateResult(avatar.imageUrl.toString().toUri()))
+            onAvatarSelected()
             snackState.showQESnackbar(
                 message = context.getString(R.string.avatar_selected_confirmation),
                 withDismissAction = true,

@@ -4,7 +4,6 @@ import android.app.Activity
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.gravatar.quickeditor.ui.editor.AuthenticationMethod
-import com.gravatar.quickeditor.ui.editor.AvatarUpdateResult
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorDismissReason
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
 import com.gravatar.quickeditor.ui.editor.extensions.addQuickEditorToView
@@ -20,7 +19,7 @@ public object GravatarQuickEditor {
      * @param activity The activity to launch the Gravatar Quick Editor from.
      * @param gravatarQuickEditorParams The parameters to configure the Quick Editor.
      * @param authenticationMethod The method used for authentication with the Gravatar REST API.
-     * @param onAvatarSelected The callback for the avatar update result, check [AvatarUpdateResult].
+     * @param onAvatarSelected The callback for the avatar update.
      *                       Can be invoked multiple times while the Quick Editor is open.
      * @param onDismiss The callback for the dismiss action.
      *                  [GravatarQuickEditorError] will be non-null if the dismiss was caused by an error.
@@ -30,7 +29,7 @@ public object GravatarQuickEditor {
         activity: Activity,
         gravatarQuickEditorParams: GravatarQuickEditorParams,
         authenticationMethod: AuthenticationMethod,
-        onAvatarSelected: (AvatarUpdateResult) -> Unit,
+        onAvatarSelected: () -> Unit,
         onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit,
     ) {
         val viewGroup: ViewGroup = activity.findViewById(android.R.id.content)
@@ -44,7 +43,7 @@ public object GravatarQuickEditor {
      * @param fragment The fragment to launch the Gravatar Quick Editor from.
      * @param gravatarQuickEditorParams The parameters to configure the Quick Editor.
      * @param authenticationMethod The method used for authentication with the Gravatar REST API.
-     * @param onAvatarSelected The callback for the avatar update result, check [AvatarUpdateResult].
+     * @param onAvatarSelected The callback for the avatar update.
      *                       Can be invoked multiple times while the Quick Editor is open.
      * @param onDismiss The callback for the dismiss action.
      *                  [GravatarQuickEditorError] will be non-null if the dismiss was caused by an error.
@@ -54,7 +53,7 @@ public object GravatarQuickEditor {
         fragment: Fragment,
         gravatarQuickEditorParams: GravatarQuickEditorParams,
         authenticationMethod: AuthenticationMethod,
-        onAvatarSelected: (AvatarUpdateResult) -> Unit,
+        onAvatarSelected: () -> Unit,
         onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit,
     ) {
         val viewGroup: ViewGroup = fragment.requireActivity().findViewById(android.R.id.content)

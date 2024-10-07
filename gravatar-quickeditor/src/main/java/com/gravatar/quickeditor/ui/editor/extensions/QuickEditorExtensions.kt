@@ -14,7 +14,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.ComposeView
 import com.gravatar.quickeditor.ui.editor.AuthenticationMethod
-import com.gravatar.quickeditor.ui.editor.AvatarUpdateResult
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorDismissReason
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
 import com.gravatar.quickeditor.ui.editor.bottomsheet.GravatarQuickEditorBottomSheet
@@ -24,7 +23,7 @@ internal fun addQuickEditorToView(
     viewGroup: ViewGroup,
     gravatarQuickEditorParams: GravatarQuickEditorParams,
     authenticationMethod: AuthenticationMethod,
-    onAvatarUpdateResult: (AvatarUpdateResult) -> Unit,
+    onAvatarUpdate: () -> Unit,
     onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit,
 ) {
     viewGroup.addView(
@@ -35,7 +34,7 @@ internal fun addQuickEditorToView(
                     composeView = this,
                     gravatarQuickEditorParams = gravatarQuickEditorParams,
                     authenticationMethod = authenticationMethod,
-                    onAvatarUpdateResult = onAvatarUpdateResult,
+                    onAvatarUpdate = onAvatarUpdate,
                     onDismiss = onDismiss,
                 )
             }
@@ -50,7 +49,7 @@ private fun GravatarQuickEditorBottomSheetWrapper(
     composeView: ComposeView,
     gravatarQuickEditorParams: GravatarQuickEditorParams,
     authenticationMethod: AuthenticationMethod,
-    onAvatarUpdateResult: (AvatarUpdateResult) -> Unit,
+    onAvatarUpdate: () -> Unit,
     onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -61,7 +60,7 @@ private fun GravatarQuickEditorBottomSheetWrapper(
     GravatarQuickEditorBottomSheet(
         gravatarQuickEditorParams = gravatarQuickEditorParams,
         authenticationMethod = authenticationMethod,
-        onAvatarSelected = onAvatarUpdateResult,
+        onAvatarSelected = onAvatarUpdate,
         onDismiss = onDismiss,
         modalBottomSheetState = modalBottomSheetState,
     )

@@ -20,7 +20,7 @@ import com.gravatar.quickeditor.ui.splash.SplashPage
  *
  * @param gravatarQuickEditorParams The Quick Editor parameters.
  * @param oAuthParams The OAuth parameters.
- * @param onAvatarSelected The callback for the avatar update result, check [AvatarUpdateResult].
+ * @param onAvatarSelected The callback for the avatar update.
  *                       Can be invoked multiple times while the Quick Editor is open
  * @param onDismiss The callback for the dismiss action.
  *                  [GravatarQuickEditorError] will be non-null if the dismiss was caused by an error.
@@ -29,7 +29,7 @@ import com.gravatar.quickeditor.ui.splash.SplashPage
 internal fun GravatarQuickEditorPage(
     gravatarQuickEditorParams: GravatarQuickEditorParams,
     oAuthParams: OAuthParams,
-    onAvatarSelected: (AvatarUpdateResult) -> Unit,
+    onAvatarSelected: () -> Unit,
     onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit = {},
 ) {
     val navController = rememberNavController()
@@ -74,7 +74,7 @@ internal fun GravatarQuickEditorPage(
  *
  * @param gravatarQuickEditorParams The Quick Editor parameters.
  * @param authToken The authentication token.
- * @param onAvatarSelected The callback for the avatar update result, check [AvatarUpdateResult].
+ * @param onAvatarSelected The callback for the avatar update.
  *                       Can be invoked multiple times while the Quick Editor is open
  * @param onDismiss The callback for the dismiss action.
  *                  [GravatarQuickEditorError] will be non-null if the dismiss was caused by an error.
@@ -83,7 +83,7 @@ internal fun GravatarQuickEditorPage(
 internal fun GravatarQuickEditorPage(
     gravatarQuickEditorParams: GravatarQuickEditorParams,
     authToken: String,
-    onAvatarSelected: (AvatarUpdateResult) -> Unit,
+    onAvatarSelected: () -> Unit,
     onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit = {},
 ) {
     val navController = rememberNavController()

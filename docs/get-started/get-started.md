@@ -292,7 +292,7 @@ if (showBottomSheet) {
                 redirectUri = "{YOUR_REDIRECT_URL}" // In our example this would be https://yourhost.com/redirect_url
             },
         ),
-        onAvatarSelected = { avatarUpdateResult -> ... },
+        onAvatarSelected = { ... },
         onDismiss = { gravatarQuickEditorDismissReason ->
             showBottomSheet = false
             ...
@@ -384,7 +384,7 @@ if (showBottomSheet) {
             avatarPickerContentLayout = AvatarPickerContentLayout.Horizontal
         },
         authenticationMethod = AuthenticationMethod.Bearer("{TOKEN}"),
-        onAvatarSelected = { avatarUpdateResult -> ... },
+        onAvatarSelected = { ... },
         onDismiss = { gravatarQuickEditorDismissReason ->
             showBottomSheet = false
             ...
@@ -405,7 +405,40 @@ GravatarQuickEditor.show(
         avatarPickerContentLayout = AvatarPickerContentLayout.Horizontal
     },
     authenticationMethod = AuthenticationMethod.Bearer("{TOKEN}"),
-    onAvatarSelected = { avatarUpdateResult -> ... },
+    onAvatarSelected = {  ... },
     onDismiss = { gravatarQuickEditorDismissReason -> ... },
 )
 ```
+
+### Cache busting
+
+When an avatar is modified, the change is applied immediately, but it may take a few seconds to propagate through the Gravatar servers. As a result, requesting the avatar quickly using the usual URL might sometimes return the previous avatar. 
+
+To ensure you receive the updated avatar after a change, you can use a cache buster. Our SDK provides methods to assist you in this process.
+
+#### Using AvatarUrl
+
+The `AvatarUrl` method accepts an optional parameter that we'll add as a cache buster:
+
+```kotlin
+public fun url(cacheBuster: String? = null): URL
+```
+
+You can use any string as a cache buster, but ensure that you don't repeat the value when you want to refresh the avatar. A timestamp is a good example of a unique cache buster.
+
+#### Using the Avatar UI Component
+
+If you're using our UI Avatar component, you can simply enable the `forceRefresh` parameter when you want to use the cache buster. We'll manage everything for you, updating the cache buster in every recomposition while the `forceRefresh` parameter remains true.
+
+```kotlin
+@Composable
+public fun Avatar(
+    profile: Profile,
+    size: Dp,
+    modifier: Modifier = Modifier,
+    avatarQueryOptions: AvatarQueryOptions? = null,
+    forceRefresh: Boolean = false,
+)
+```
+
+By setting `forceRefresh` to true, you ensure that the avatar is always fetched with the latest changes.

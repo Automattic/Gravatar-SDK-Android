@@ -112,7 +112,7 @@ internal class AvatarPickerViewModel(
                                 selectingAvatarId = null,
                             )
                         }
-                        _actions.send(AvatarPickerAction.AvatarSelected(avatar))
+                        _actions.send(AvatarPickerAction.AvatarSelected)
                     }
 
                     is GravatarResult.Failure -> {
