@@ -145,7 +145,7 @@ internal fun AvatarPicker(uiState: AvatarPickerUiState, onEvent: (AvatarPickerEv
                     .fillMaxWidth()
                     .padding(bottom = 10.dp),
             )
-            key(uiState.emailAvatars?.selectedAvatarId) {
+            key(uiState.avatarUpdates) {
                 ProfileCard(
                     profile = uiState.profile,
                     modifier = Modifier.padding(horizontal = 16.dp),

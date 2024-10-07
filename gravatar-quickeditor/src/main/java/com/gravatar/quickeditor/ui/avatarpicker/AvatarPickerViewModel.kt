@@ -110,6 +110,7 @@ internal class AvatarPickerViewModel(
                             currentState.copy(
                                 emailAvatars = currentState.emailAvatars?.copy(selectedAvatarId = avatarId),
                                 selectingAvatarId = null,
+                                avatarUpdates = currentState.avatarUpdates.inc(),
                             )
                         }
                         _actions.send(AvatarPickerAction.AvatarSelected)
