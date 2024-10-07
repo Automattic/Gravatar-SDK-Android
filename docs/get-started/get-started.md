@@ -292,7 +292,7 @@ if (showBottomSheet) {
                 redirectUri = "{YOUR_REDIRECT_URL}" // In our example this would be https://yourhost.com/redirect_url
             },
         ),
-        onAvatarSelected = { avatarUpdateResult -> ... },
+        onAvatarSelected = { ... },
         onDismiss = { gravatarQuickEditorDismissReason ->
             showBottomSheet = false
             ...
@@ -384,7 +384,7 @@ if (showBottomSheet) {
             avatarPickerContentLayout = AvatarPickerContentLayout.Horizontal
         },
         authenticationMethod = AuthenticationMethod.Bearer("{TOKEN}"),
-        onAvatarSelected = { avatarUpdateResult -> ... },
+        onAvatarSelected = { ... },
         onDismiss = { gravatarQuickEditorDismissReason ->
             showBottomSheet = false
             ...
@@ -405,7 +405,7 @@ GravatarQuickEditor.show(
         avatarPickerContentLayout = AvatarPickerContentLayout.Horizontal
     },
     authenticationMethod = AuthenticationMethod.Bearer("{TOKEN}"),
-    onAvatarSelected = { avatarUpdateResult -> ... },
+    onAvatarSelected = {  ... },
     onDismiss = { gravatarQuickEditorDismissReason -> ... },
 )
 ```

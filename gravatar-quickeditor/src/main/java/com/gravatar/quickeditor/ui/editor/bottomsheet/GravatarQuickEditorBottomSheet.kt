@@ -19,7 +19,6 @@ import com.gravatar.quickeditor.ui.components.QEDragHandle
 import com.gravatar.quickeditor.ui.components.QETopBar
 import com.gravatar.quickeditor.ui.editor.AuthenticationMethod
 import com.gravatar.quickeditor.ui.editor.AvatarPickerContentLayout
-import com.gravatar.quickeditor.ui.editor.AvatarUpdateResult
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorDismissReason
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorPage
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
@@ -34,7 +33,7 @@ import kotlinx.coroutines.launch
  *
  * @param gravatarQuickEditorParams The Quick Editor parameters.
  * @param authenticationMethod The method used for authentication with the Gravatar REST API.
- * @param onAvatarSelected The callback for the avatar update result, check [AvatarUpdateResult].
+ * @param onAvatarSelected The callback for the avatar update.
  *                       Can be invoked multiple times while the Quick Editor is open.
  * @param onDismiss The callback for the dismiss action.
  *                  [GravatarQuickEditorError] will be non-null if the dismiss was caused by an error.

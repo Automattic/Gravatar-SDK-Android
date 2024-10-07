@@ -23,7 +23,7 @@ internal fun addQuickEditorToView(
     viewGroup: ViewGroup,
     gravatarQuickEditorParams: GravatarQuickEditorParams,
     authenticationMethod: AuthenticationMethod,
-    onAvatarUpdateResult: () -> Unit,
+    onAvatarUpdate: () -> Unit,
     onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit,
 ) {
     viewGroup.addView(
@@ -34,7 +34,7 @@ internal fun addQuickEditorToView(
                     composeView = this,
                     gravatarQuickEditorParams = gravatarQuickEditorParams,
                     authenticationMethod = authenticationMethod,
-                    onAvatarUpdateResult = onAvatarUpdateResult,
+                    onAvatarUpdate = onAvatarUpdate,
                     onDismiss = onDismiss,
                 )
             }
@@ -49,7 +49,7 @@ private fun GravatarQuickEditorBottomSheetWrapper(
     composeView: ComposeView,
     gravatarQuickEditorParams: GravatarQuickEditorParams,
     authenticationMethod: AuthenticationMethod,
-    onAvatarUpdateResult: () -> Unit,
+    onAvatarUpdate: () -> Unit,
     onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -60,7 +60,7 @@ private fun GravatarQuickEditorBottomSheetWrapper(
     GravatarQuickEditorBottomSheet(
         gravatarQuickEditorParams = gravatarQuickEditorParams,
         authenticationMethod = authenticationMethod,
-        onAvatarSelected = onAvatarUpdateResult,
+        onAvatarSelected = onAvatarUpdate,
         onDismiss = onDismiss,
         modalBottomSheetState = modalBottomSheetState,
     )

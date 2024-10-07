@@ -203,15 +203,6 @@ public final class com/gravatar/quickeditor/ui/editor/AvatarPickerContentLayout$
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/gravatar/quickeditor/ui/editor/AvatarUpdateResult {
-	public static final field $stable I
-	public fun <init> (Landroid/net/Uri;)V
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getAvatarUri ()Landroid/net/Uri;
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
 public abstract class com/gravatar/quickeditor/ui/editor/GravatarQuickEditorDismissReason {
 	public static final field $stable I
 }
