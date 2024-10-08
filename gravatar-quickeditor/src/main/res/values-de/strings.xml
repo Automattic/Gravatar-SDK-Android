@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: 2024-09-13 09:54:03+0000
+Translation-Revision-Date: 2024-10-04 14:54:03+0000
 Plural-Forms: nplurals=2; plural=n != 1;
 Generator: GlotPress/2.4.0-alpha
 Language: de
 -->
 <resources>
+    <string name="oauth_email_associated_error_message">Beim Verifizieren deiner E-Mail-Adresse ist ein Fehler aufgetreten.</string>
+    <string name="avatar_upload_failure_dialog_remove_upload">Upload entfernen</string>
+    <string name="avatar_upload_failure_dialog_title">Bild konnte nicht hochgeladen werden</string>
+    <string name="failed_to_load_avatar_content_description">Upload fehlgeschlagen. Tippen, um Aktionen anzuzeigen.</string>
+    <string name="oauth_wrong_email_authenticated_error_message">Scheinbar hast du beim Anmelden die falsche E-Mail-Adresse verwendet. Bitte versuche es mit %s noch einmal. Danke!</string>
+    <string name="upload_image_content_description">Bild hochladen</string>
+    <string name="happy_face_image_content_description">Bild mit fröhlichem Gesicht</string>
     <string name="avatar_picker_session_error_close_cta">Schließen</string>
     <string name="avatar_picker_session_error_no_login_message">Die Sitzung ist aus Sicherheitsgründen abgelaufen.</string>
     <string name="login_required_message">Du musst dich anmelden, um dein Gravatar-Profil ändern zu können</string>

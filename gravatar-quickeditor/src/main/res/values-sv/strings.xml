@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: 2024-09-11 11:54:03+0000
+Translation-Revision-Date: 2024-10-01 15:54:05+0000
 Plural-Forms: nplurals=2; plural=n != 1;
 Generator: GlotPress/2.4.0-alpha
 Language: sv_SE
 -->
 <resources>
+    <string name="oauth_email_associated_error_message">Ett fel uppstod när din e-post verifierades.</string>
+    <string name="avatar_upload_failure_dialog_remove_upload">Ta bort uppladdning</string>
+    <string name="avatar_upload_failure_dialog_title">Det gick inte att ladda upp bilden</string>
+    <string name="failed_to_load_avatar_content_description">Uppladdning misslyckades. Klicka för att se åtgärder.</string>
+    <string name="oauth_wrong_email_authenticated_error_message">Det verkar som att du använde fel e-postadress för att logga in. Försök igen, och använd %s den här gången. Tack!</string>
+    <string name="upload_image_content_description">Ladda upp bild</string>
+    <string name="happy_face_image_content_description">Bild med glatt ansikte</string>
     <string name="avatar_picker_session_error_close_cta">Stäng</string>
     <string name="avatar_picker_session_error_no_login_message">Sessionen har löpt ut av säkerhetsskäl.</string>
     <string name="login_required_message">För att ändra din Gravatar-profilbild måste du först logga in</string>

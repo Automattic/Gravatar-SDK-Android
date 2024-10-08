@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: 2024-09-12 09:54:03+0000
+Translation-Revision-Date: 2024-10-04 09:54:03+0000
 Plural-Forms: nplurals=1; plural=0;
 Generator: GlotPress/2.4.0-alpha
 Language: ko_KR
 -->
 <resources>
+    <string name="oauth_email_associated_error_message">이메일 확인 중 문제가 발생했습니다.</string>
+    <string name="avatar_upload_failure_dialog_remove_upload">업로드 제거</string>
+    <string name="avatar_upload_failure_dialog_title">이미지 업로드 불가</string>
+    <string name="failed_to_load_avatar_content_description">업로드하지 못했습니다. 눌러서 작업을 확인하세요.</string>
+    <string name="oauth_wrong_email_authenticated_error_message">잘못된 이메일을 사용하여 로그인하신 것 같습니다. 이번에는 %s을(를) 사용하여 시도해 보세요. 감사합니다!</string>
+    <string name="upload_image_content_description">이미지 업로드</string>
+    <string name="happy_face_image_content_description">행복한 얼굴 이미지</string>
     <string name="avatar_picker_session_error_close_cta">닫기</string>
     <string name="avatar_picker_session_error_no_login_message">보안상의 이유로 세션이 만료되었습니다.</string>
     <string name="login_required_message">그라바타 프로필을 수정하려면 먼저 로그인해야 합니다.</string>

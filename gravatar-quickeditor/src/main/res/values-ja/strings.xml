@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: 2024-09-11 09:54:03+0000
+Translation-Revision-Date: 2024-10-03 09:54:03+0000
 Plural-Forms: nplurals=1; plural=0;
 Generator: GlotPress/2.4.0-alpha
 Language: ja_JP
 -->
 <resources>
+    <string name="oauth_email_associated_error_message">メールアドレスを確認中にエラーが発生しました。</string>
+    <string name="avatar_upload_failure_dialog_remove_upload">アップロードを削除</string>
+    <string name="avatar_upload_failure_dialog_title">画像をアップロードできませんでした</string>
+    <string name="failed_to_load_avatar_content_description">アップロードに失敗しました。タップしてアクションを確認してください。</string>
+    <string name="oauth_wrong_email_authenticated_error_message">間違ったメールアドレスを使用してログインしたようです。 今回は %s を使用してもう一度お試しください。 ありがとうございます。</string>
+    <string name="upload_image_content_description">画像をアップロード</string>
+    <string name="happy_face_image_content_description">幸せそうな顔の画像</string>
     <string name="avatar_picker_session_error_close_cta">閉じる</string>
     <string name="avatar_picker_session_error_no_login_message">セキュリティ上の理由でセッションの有効期限が切れました。</string>
     <string name="login_required_message">Gravatar プロフィールを変更するには、まずログインする必要があります</string>

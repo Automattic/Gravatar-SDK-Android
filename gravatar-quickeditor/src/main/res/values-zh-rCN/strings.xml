@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: 2024-09-12 09:54:03+0000
+Translation-Revision-Date: 2024-10-03 16:54:03+0000
 Plural-Forms: nplurals=1; plural=0;
 Generator: GlotPress/2.4.0-alpha
 Language: zh_CN
 -->
 <resources>
+    <string name="oauth_email_associated_error_message">验证您的电子邮件地址时出错。</string>
+    <string name="avatar_upload_failure_dialog_remove_upload">移除上传内容</string>
+    <string name="avatar_upload_failure_dialog_title">无法上传图片</string>
+    <string name="failed_to_load_avatar_content_description">上传失败，轻点以查看操作。</string>
+    <string name="oauth_wrong_email_authenticated_error_message">您在登录时似乎使用了错误的电子邮件地址。 这次请使用 %s 再试一次。 谢谢！</string>
+    <string name="upload_image_content_description">上传图片</string>
+    <string name="happy_face_image_content_description">笑脸图片</string>
     <string name="avatar_picker_session_error_close_cta">关闭</string>
     <string name="avatar_picker_session_error_no_login_message">出于安全原因，会话已过期。</string>
     <string name="login_required_message">要修改您的 Gravatar 个人资料，请先登录</string>
