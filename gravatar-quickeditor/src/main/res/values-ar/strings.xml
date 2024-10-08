@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: 2024-09-12 11:54:03+0000
+Translation-Revision-Date: 2024-10-04 14:54:03+0000
 Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;
 Generator: GlotPress/2.4.0-alpha
 Language: ar
 -->
 <resources>
+    <string name="oauth_email_associated_error_message">حدث خطأ ما عند التحقق من بريدك الإلكتروني.</string>
+    <string name="avatar_upload_failure_dialog_remove_upload">إزالة الرفع</string>
+    <string name="avatar_upload_failure_dialog_title">تعذر رفع الصورة</string>
+    <string name="failed_to_load_avatar_content_description">فشل الرفع، اضغط للوصول إلى الإجراءات.</string>
+    <string name="oauth_wrong_email_authenticated_error_message">يبدو أنك تستخدم البريد الإلكتروني الخطأ لتسجيل الدخول. يرجى المحاولة مجددًا باستخدام %s في هذه المرة. شكرًا!</string>
+    <string name="upload_image_content_description">رفع صورة</string>
+    <string name="happy_face_image_content_description">صورة وجه سعيد</string>
     <string name="avatar_picker_session_error_close_cta">إغلاق</string>
     <string name="avatar_picker_session_error_no_login_message">انتهت صلاحية الجلسة لأسباب تتعلق بالأمان.</string>
     <string name="login_required_message">لتعديل ملفك الشخصي على جرافتار، يجب عليك تسجيل الدخول أولاً</string>

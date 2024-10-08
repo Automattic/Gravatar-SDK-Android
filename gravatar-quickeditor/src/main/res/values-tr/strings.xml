@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: 2024-09-12 11:54:03+0000
+Translation-Revision-Date: 2024-10-03 16:54:03+0000
 Plural-Forms: nplurals=2; plural=(n > 1);
 Generator: GlotPress/2.4.0-alpha
 Language: tr
 -->
 <resources>
+    <string name="oauth_email_associated_error_message">E-posta adresiniz doğrulanırken bir sorun yaşandı.</string>
+    <string name="avatar_upload_failure_dialog_remove_upload">Karşıya yüklemeyi kaldır</string>
+    <string name="avatar_upload_failure_dialog_title">Görsel karşıya yüklenemedi</string>
+    <string name="failed_to_load_avatar_content_description">Karşıya yükleme başarısız oldu, işlemleri görmek için dokunun.</string>
+    <string name="oauth_wrong_email_authenticated_error_message">Görünüşe göre oturum açmak için yanlış e-posta adresini kullandınız. Lütfen şu anda %s adresini kullanmayı yeniden deneyin. Teşekkürler!</string>
+    <string name="upload_image_content_description">Görseli karşıya yükle</string>
+    <string name="happy_face_image_content_description">Mutlu yüz görseli</string>
     <string name="avatar_picker_session_error_close_cta">Kapat</string>
     <string name="avatar_picker_session_error_no_login_message">Güvenlik nedeniyle oturum süresi doldu.</string>
     <string name="login_required_message">Gravatar profilinizi değiştirmek için önce oturum açmalısınız</string>

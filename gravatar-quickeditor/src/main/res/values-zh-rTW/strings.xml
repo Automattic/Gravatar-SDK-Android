@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: 2024-09-12 13:54:02+0000
+Translation-Revision-Date: 2024-10-03 11:54:02+0000
 Plural-Forms: nplurals=1; plural=0;
 Generator: GlotPress/2.4.0-alpha
 Language: zh_TW
 -->
 <resources>
+    <string name="oauth_email_associated_error_message">驗證電子郵件地址時發生錯誤。</string>
+    <string name="avatar_upload_failure_dialog_remove_upload">移除上傳內容</string>
+    <string name="avatar_upload_failure_dialog_title">無法上傳圖片</string>
+    <string name="failed_to_load_avatar_content_description">上傳失敗，點選以查看動作。</string>
+    <string name="oauth_wrong_email_authenticated_error_message">你的登入用電子郵件地址似乎有誤。 這次請使用「%s」再試一次。 謝謝！</string>
+    <string name="upload_image_content_description">上傳圖片</string>
+    <string name="happy_face_image_content_description">笑臉圖片</string>
     <string name="avatar_picker_session_error_close_cta">關閉</string>
     <string name="avatar_picker_session_error_no_login_message">基於安全考量，工作階段已過期。</string>
     <string name="login_required_message">請先登入，才可修改 Gravatar 個人檔案</string>

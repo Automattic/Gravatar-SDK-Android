@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: 2024-09-13 16:54:03+0000
+Translation-Revision-Date: 2024-10-04 11:54:07+0000
 Plural-Forms: nplurals=2; plural=n != 1;
 Generator: GlotPress/2.4.0-alpha
 Language: nl
 -->
 <resources>
+    <string name="oauth_email_associated_error_message">Er is iets misgegaan tijdens de verificatie van je e-mailadres.</string>
+    <string name="avatar_upload_failure_dialog_remove_upload">Upload verwijderen</string>
+    <string name="avatar_upload_failure_dialog_title">Afbeelding kon niet worden geüpload</string>
+    <string name="failed_to_load_avatar_content_description">Upload mislukt. Klik voor opties.</string>
+    <string name="oauth_wrong_email_authenticated_error_message">Het lijkt erop dat je het verkeerde e-mailadres hebt gebruikt om in te loggen. Probeer opnieuw met %s. Bedankt!</string>
+    <string name="upload_image_content_description">Afbeelding uploaden</string>
+    <string name="happy_face_image_content_description">Afbeelding van een blij gezicht</string>
     <string name="avatar_picker_session_error_close_cta">Sluiten</string>
     <string name="avatar_picker_session_error_no_login_message">Sessie verlopen vanwege beveiligingsredenen.</string>
     <string name="login_required_message">Je moet eerst inloggen om je Gravatar-profiel aan te passen</string>

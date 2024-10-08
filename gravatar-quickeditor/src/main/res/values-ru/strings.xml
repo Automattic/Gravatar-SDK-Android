@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: 2024-09-12 15:54:03+0000
+Translation-Revision-Date: 2024-10-03 16:54:03+0000
 Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);
 Generator: GlotPress/2.4.0-alpha
 Language: ru
 -->
 <resources>
+    <string name="oauth_email_associated_error_message">Что-то пошло не так при проверке адреса эл. почты.</string>
+    <string name="avatar_upload_failure_dialog_remove_upload">Удалить загрузку</string>
+    <string name="avatar_upload_failure_dialog_title">Не удалось загрузить изображение</string>
+    <string name="failed_to_load_avatar_content_description">Загрузка прервана. Нажмите, чтобы выбрать действие.</string>
+    <string name="oauth_wrong_email_authenticated_error_message">По-видимому, вы указали неверный адрес эл. почты при входе. Повторите попытку, используя %s. Спасибо!</string>
+    <string name="upload_image_content_description">Загрузить изображение</string>
+    <string name="happy_face_image_content_description">Изображение весёлого лица</string>
     <string name="avatar_picker_session_error_close_cta">Закрыть</string>
     <string name="avatar_picker_session_error_no_login_message">В целях безопасности время сеанса истекло.</string>
     <string name="login_required_message">Необходимо войти в учётную запись, чтобы изменить профиль Gravatar</string>

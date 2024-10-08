@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: 2024-09-11 14:54:03+0000
+Translation-Revision-Date: 2024-10-02 20:54:05+0000
 Plural-Forms: nplurals=2; plural=(n > 1);
 Generator: GlotPress/2.4.0-alpha
 Language: pt_BR
 -->
 <resources>
+    <string name="oauth_email_associated_error_message">Ocorreu um erro ao verificar seu e-mail.</string>
+    <string name="avatar_upload_failure_dialog_remove_upload">Remover upload</string>
+    <string name="avatar_upload_failure_dialog_title">Não foi possível fazer upload da imagem</string>
+    <string name="failed_to_load_avatar_content_description">Falha no envio. Toque para ver o que você pode fazer.</string>
+    <string name="oauth_wrong_email_authenticated_error_message">Parece que você usou o e-mail errado para fazer login. Experimente usar %s desta vez. Obrigado!</string>
+    <string name="upload_image_content_description">Faça upload da imagem</string>
+    <string name="happy_face_image_content_description">Imagem de um rosto feliz</string>
     <string name="avatar_picker_session_error_close_cta">Fechar</string>
     <string name="avatar_picker_session_error_no_login_message">A sessão expirou por motivos de segurança.</string>
     <string name="login_required_message">Para alterar seu perfil no Gravatar, você precisa fazer login primeiro</string>
