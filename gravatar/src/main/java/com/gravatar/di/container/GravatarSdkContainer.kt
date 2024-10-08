@@ -33,6 +33,7 @@ internal class GravatarSdkContainer private constructor() {
     val dispatcherIO = Dispatchers.IO
 
     var apiKey: String? = null
+    var appName: String? = null
 
     fun getGravatarV3Service(okHttpClient: OkHttpClient? = null, oauthToken: String? = null): GravatarApi {
         return getRetrofitApiV3Builder().apply {
