@@ -136,7 +136,8 @@ public final class com/gravatar/DefaultAvatarOption$Wavatar : com/gravatar/Defau
 
 public final class com/gravatar/Gravatar {
 	public static final field INSTANCE Lcom/gravatar/Gravatar;
-	public final fun initialize (Ljava/lang/String;)V
+	public final fun apiKey (Ljava/lang/String;)Lcom/gravatar/Gravatar;
+	public final fun context (Landroid/content/Context;)Lcom/gravatar/Gravatar;
 }
 
 public final class com/gravatar/GravatarConstants {

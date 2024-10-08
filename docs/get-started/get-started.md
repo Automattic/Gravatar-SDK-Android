@@ -63,7 +63,8 @@ android {
 Then you can access the API key in your app's code like this:
 
 ```kotlin
-Gravatar.initialize(BuildConfig.GRAVATAR_API_KEY)
+Gravatar.apiKey(BuildConfig.GRAVATAR_API_KEY)
+    .context(appContext) // Optional but highly encouraged.
 ```
 
 # Usage
