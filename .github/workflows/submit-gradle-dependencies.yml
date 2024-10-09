@@ -11,13 +11,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '17'
       - name: Setup Gradle to generate and submit dependency graphs
-        uses: gradle/gradle-build-action@v2
-        with:
-          dependency-graph: generate-and-submit
-      - name: Generate the dependency graph which will be submitted post-job
-        run: ./gradlew :gravatar:dependencies :gravatar-ui:dependencies :gravatar-quickeditor:dependencies
+        uses: gradle/actions/dependency-submission@v3
