@@ -4,10 +4,6 @@ import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,7 +27,8 @@ import com.gravatar.ui.skeletonEffect
  * @param size The size of the avatar
  * @param modifier Composable modifier
  * @param avatarQueryOptions Options to customize the avatar query
- * @param forceRefresh While this is true, we'll force the refresh of the avatar in every recomposition
+ * @param forceRefresh While this is true, we'll force the refresh of the avatar in every recomposition.
+ *              When false, we'll use the default URL for that profile (without cache buster) to fetch the avatar.
  */
 @Composable
 public fun Avatar(
@@ -42,10 +39,10 @@ public fun Avatar(
     forceRefresh: Boolean = false,
 ) {
     val sizePx = with(LocalDensity.current) { size.roundToPx() }
-    var cacheBuster by rememberSaveable { mutableStateOf<String?>(null) }
-
-    if (forceRefresh) {
-        cacheBuster = System.currentTimeMillis().toString()
+    val cacheBuster = if (forceRefresh) {
+        System.currentTimeMillis().toString()
+    } else {
+        null
     }
 
     Avatar(
