@@ -1,15 +1,19 @@
 package com.gravatar.quickeditor.ui.components
 
-import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -19,12 +23,10 @@ import androidx.compose.ui.unit.dp
 import com.gravatar.quickeditor.R
 import com.gravatar.ui.GravatarTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun QETopBar(onDoneClick: () -> Unit, modifier: Modifier = Modifier) {
-    CenterAlignedTopAppBar(
+    GravatarCenterAlignedTopAppBar(
         modifier = modifier,
-        windowInsets = WindowInsets(0, 0, 0, 0),
         title = {
             Text(
                 style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
@@ -52,6 +54,53 @@ internal fun QETopBar(onDoneClick: () -> Unit, modifier: Modifier = Modifier) {
             )
         },
     )
+}
+
+private val AppBarHeight = 64.dp
+
+/*
+ *  We can replace this Composable with CenterAlignedTopAppBar from the Material3 library
+ *  when it removes the experimental annotation
+ */
+@Composable
+private fun GravatarCenterAlignedTopAppBar(
+    title: @Composable () -> Unit,
+    modifier: Modifier = Modifier,
+    navigationIcon: @Composable (() -> Unit)? = null,
+    actions: @Composable RowScope.() -> Unit = {},
+) {
+    Surface(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(AppBarHeight),
+    ) {
+        Box {
+            if (navigationIcon != null) {
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.CenterStart)
+                        .padding(start = 8.dp),
+                ) {
+                    navigationIcon()
+                }
+            }
+
+            Box(
+                modifier = Modifier
+                    .align(Alignment.Center),
+            ) {
+                title()
+            }
+
+            Row(
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .padding(end = 8.dp),
+            ) {
+                actions()
+            }
+        }
+    }
 }
 
 @Preview
