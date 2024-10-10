@@ -519,7 +519,7 @@ class AvatarPickerViewModelTest {
     fun `given multiple failed uploads when upload successful then uiState is updated`() = runTest {
         val uriOne = mockk<Uri>()
         val uriTwo = mockk<Uri>()
-        val emailAvatarsCopy = emailAvatars.copy(avatars = emptyList(), selectedAvatarId = null)
+        val emailAvatarsCopy = emailAvatars.copy(avatars = listOf(createAvatar("3")), selectedAvatarId = "3")
         every { fileUtils.deleteFile(any()) } returns Unit
         coEvery { profileService.retrieveCatching(email) } returns GravatarResult.Success(profile)
         coEvery { avatarRepository.getAvatars(any()) } returns GravatarResult.Success(emailAvatarsCopy)
@@ -558,7 +558,7 @@ class AvatarPickerViewModelTest {
             )
             assertEquals(
                 avatarPickerUiState.copy(
-                    emailAvatars = emailAvatarsCopy.copy(avatars = listOf(createAvatar("1"))),
+                    emailAvatars = emailAvatarsCopy.copy(avatars = listOf(createAvatar("1"), createAvatar("3"))),
                     uploadingAvatar = null,
                     scrollToIndex = null,
                 ),

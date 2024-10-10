@@ -146,18 +146,26 @@ internal class AvatarPickerViewModel(
             when (val result = avatarRepository.uploadAvatar(email, uri)) {
                 is GravatarResult.Success -> {
                     fileUtils.deleteFile(uri)
-                    _uiState.update { currentState ->
-                        val avatar = result.value
-                        currentState.copy(
-                            uploadingAvatar = null,
-                            emailAvatars = currentState.emailAvatars?.copy(
-                                avatars = buildList {
-                                    add(avatar)
-                                    addAll(currentState.emailAvatars.avatars.filter { it.imageId != avatar.imageId })
-                                },
-                            ),
-                            scrollToIndex = null,
-                        )
+                    val isAutoSelected = _uiState.value.emailAvatars?.selectedAvatarId == null
+                    if (isAutoSelected) {
+                        _uiState.update { AvatarPickerUiState(email, avatarPickerContentLayout) }
+                        refresh()
+                    } else {
+                        _uiState.update { currentState ->
+                            val avatar = result.value
+                            currentState.copy(
+                                uploadingAvatar = null,
+                                emailAvatars = currentState.emailAvatars?.copy(
+                                    avatars = buildList {
+                                        add(avatar)
+                                        addAll(
+                                            currentState.emailAvatars.avatars.filter { it.imageId != avatar.imageId },
+                                        )
+                                    },
+                                ),
+                                scrollToIndex = null,
+                            )
+                        }
                     }
                 }
 
