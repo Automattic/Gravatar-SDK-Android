@@ -1,5 +1,6 @@
 package com.gravatar.quickeditor.ui.editor.bottomsheet
 
+import android.graphics.Color
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -23,7 +24,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.window.core.layout.WindowHeightSizeClass
+import com.composables.core.LocalModalWindow
 import com.composables.core.ModalBottomSheet
 import com.composables.core.ModalBottomSheetState
 import com.composables.core.Scrim
@@ -141,6 +144,11 @@ private fun GravatarModalBottomSheet(
                             .asPaddingValues(),
                     ),
             ) {
+                val window = LocalModalWindow.current
+                LaunchedEffect(Unit) {
+                    window.navigationBarColor = Color.TRANSPARENT
+                    WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightNavigationBars = true
+                }
                 Surface(
                     modifier = Modifier
                         .fillMaxWidth(),
