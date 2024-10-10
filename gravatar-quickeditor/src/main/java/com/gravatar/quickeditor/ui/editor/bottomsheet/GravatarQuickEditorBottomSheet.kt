@@ -1,20 +1,37 @@
 package com.gravatar.quickeditor.ui.editor.bottomsheet
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.SheetState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
-import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.window.core.layout.WindowHeightSizeClass
+import com.composables.core.ModalBottomSheet
+import com.composables.core.ModalBottomSheetState
+import com.composables.core.Scrim
+import com.composables.core.Sheet
+import com.composables.core.SheetDetent
+import com.composables.core.SheetDetent.Companion.FullyExpanded
+import com.composables.core.SheetDetent.Companion.Hidden
+import com.composables.core.rememberModalBottomSheetState
 import com.gravatar.quickeditor.ui.components.QEDragHandle
 import com.gravatar.quickeditor.ui.components.QETopBar
 import com.gravatar.quickeditor.ui.editor.AuthenticationMethod
@@ -38,7 +55,6 @@ import kotlinx.coroutines.launch
  * @param onDismiss The callback for the dismiss action.
  *                  [GravatarQuickEditorError] will be non-null if the dismiss was caused by an error.
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 public fun GravatarQuickEditorBottomSheet(
     gravatarQuickEditorParams: GravatarQuickEditorParams,
@@ -46,33 +62,24 @@ public fun GravatarQuickEditorBottomSheet(
     onAvatarSelected: () -> Unit,
     onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit = {},
 ) {
-    val windowHeightSizeClass = currentWindowAdaptiveInfo().windowSizeClass.windowHeightSizeClass
     GravatarQuickEditorBottomSheet(
         gravatarQuickEditorParams = gravatarQuickEditorParams,
         authenticationMethod = authenticationMethod,
         onAvatarSelected = onAvatarSelected,
         onDismiss = onDismiss,
-        modalBottomSheetState = if (windowHeightSizeClass == WindowHeightSizeClass.COMPACT) {
-            rememberModalBottomSheetState(
-                skipPartiallyExpanded = true,
-            )
-        } else {
-            rememberModalBottomSheetState(
-                skipPartiallyExpanded =
-                    gravatarQuickEditorParams.avatarPickerContentLayout == AvatarPickerContentLayout.Horizontal,
-            )
-        },
+        modalBottomSheetState = rememberGravatarModalBottomSheetState(
+            avatarPickerContentLayout = gravatarQuickEditorParams.avatarPickerContentLayout,
+        ),
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun GravatarQuickEditorBottomSheet(
     gravatarQuickEditorParams: GravatarQuickEditorParams,
     authenticationMethod: AuthenticationMethod,
     onAvatarSelected: () -> Unit,
     onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit = {},
-    modalBottomSheetState: SheetState,
+    modalBottomSheetState: ModalBottomSheetState,
 ) {
     GravatarModalBottomSheet(
         onDismiss = onDismiss,
@@ -100,41 +107,96 @@ internal fun GravatarQuickEditorBottomSheet(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun GravatarModalBottomSheet(
     onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit = {},
-    modalBottomSheetState: SheetState,
+    modalBottomSheetState: ModalBottomSheetState,
     content: @Composable () -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
 
+    LaunchedEffect(modalBottomSheetState.currentDetent) {
+        if (modalBottomSheetState.currentDetent == Hidden) {
+            onDismiss(GravatarQuickEditorDismissReason.Finished)
+        }
+    }
+
     GravatarTheme {
         ModalBottomSheet(
-            onDismissRequest = { onDismiss(GravatarQuickEditorDismissReason.Finished) },
-            sheetState = modalBottomSheetState,
-            dragHandle = { QEDragHandle() },
-            containerColor = MaterialTheme.colorScheme.surface,
-            tonalElevation = 1.dp,
-            contentWindowInsets = { WindowInsets(0, 0, 0, 0) },
+            state = modalBottomSheetState,
         ) {
-            Surface(
-                modifier = Modifier.navigationBarsPadding(),
+            Scrim(
+                modifier = Modifier.clickable { modalBottomSheetState.currentDetent = Hidden },
+                scrimColor = MaterialTheme.colorScheme.scrim.copy(alpha = 0.32f),
+            )
+            Sheet(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp))
+                    .background(MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp))
+                    .widthIn(max = 640.dp)
+                    .fillMaxWidth()
+                    .padding(
+                        WindowInsets.navigationBars
+                            .only(WindowInsetsSides.Vertical)
+                            .asPaddingValues(),
+                    ),
             ) {
-                Column {
-                    QETopBar(
-                        onDoneClick = {
-                            coroutineScope.launch {
-                                modalBottomSheetState.hide()
-                                onDismiss(GravatarQuickEditorDismissReason.Finished)
-                            }
-                        },
-                    )
-                    content()
+                Surface(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    tonalElevation = 1.dp,
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                    ) {
+                        QEDragHandle()
+                        QETopBar(
+                            onDoneClick = {
+                                coroutineScope.launch {
+                                    modalBottomSheetState.currentDetent = Hidden
+                                }
+                            },
+                        )
+                        content()
+                    }
                 }
             }
         }
     }
+}
+
+@Composable
+internal fun rememberGravatarModalBottomSheetState(
+    avatarPickerContentLayout: AvatarPickerContentLayout,
+): ModalBottomSheetState {
+    val windowHeightSizeClass = currentWindowAdaptiveInfo().windowSizeClass.windowHeightSizeClass
+    val peek = SheetDetent(identifier = "peek") { containerHeight, _ ->
+        containerHeight * 0.6f
+    }
+
+    val initialDetent =
+        if (windowHeightSizeClass == WindowHeightSizeClass.COMPACT) {
+            FullyExpanded
+        } else {
+            when (avatarPickerContentLayout) {
+                AvatarPickerContentLayout.Horizontal -> FullyExpanded
+                AvatarPickerContentLayout.Vertical -> peek
+            }
+        }
+
+    val detents = buildList {
+        add(Hidden)
+        if (avatarPickerContentLayout == AvatarPickerContentLayout.Horizontal) {
+            add(FullyExpanded)
+        } else {
+            add(peek)
+            add(FullyExpanded)
+        }
+    }
+    return rememberModalBottomSheetState(
+        initialDetent = initialDetent,
+        detents = detents,
+    )
 }
 
 internal val DEFAULT_PAGE_HEIGHT = 250.dp

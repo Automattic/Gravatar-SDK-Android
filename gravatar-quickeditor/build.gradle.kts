@@ -121,6 +121,7 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.compose.adaptive)
     debugImplementation(libs.androidx.compose.ui.tooling)
+    implementation(libs.composables.core)
 
     testImplementation(libs.junit)
     testImplementation(libs.mockk.android)

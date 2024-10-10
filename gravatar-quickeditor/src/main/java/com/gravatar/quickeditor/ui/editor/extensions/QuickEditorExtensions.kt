@@ -2,21 +2,18 @@ package com.gravatar.quickeditor.ui.editor.extensions
 
 import android.view.ViewGroup
 import androidx.activity.compose.BackHandler
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.SheetValue
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.ComposeView
+import com.composables.core.SheetDetent.Companion.Hidden
 import com.gravatar.quickeditor.ui.editor.AuthenticationMethod
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorDismissReason
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
 import com.gravatar.quickeditor.ui.editor.bottomsheet.GravatarQuickEditorBottomSheet
+import com.gravatar.quickeditor.ui.editor.bottomsheet.rememberGravatarModalBottomSheetState
 import kotlinx.coroutines.launch
 
 internal fun addQuickEditorToView(
@@ -42,7 +39,6 @@ internal fun addQuickEditorToView(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun GravatarQuickEditorBottomSheetWrapper(
     parent: ViewGroup,
@@ -53,9 +49,10 @@ private fun GravatarQuickEditorBottomSheetWrapper(
     onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
-    var isSheetOpened by remember { mutableStateOf(false) }
 
-    val modalBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val modalBottomSheetState = rememberGravatarModalBottomSheetState(
+        avatarPickerContentLayout = gravatarQuickEditorParams.avatarPickerContentLayout,
+    )
 
     GravatarQuickEditorBottomSheet(
         gravatarQuickEditorParams = gravatarQuickEditorParams,
@@ -67,23 +64,15 @@ private fun GravatarQuickEditorBottomSheetWrapper(
 
     BackHandler {
         coroutineScope.launch {
-            modalBottomSheetState.hide()
+            modalBottomSheetState.currentDetent = Hidden
         }
-        onDismiss(GravatarQuickEditorDismissReason.Finished)
     }
 
-    LaunchedEffect(modalBottomSheetState.currentValue) {
-        when (modalBottomSheetState.currentValue) {
-            SheetValue.Hidden -> {
-                if (isSheetOpened) {
-                    parent.removeView(composeView)
-                } else {
-                    isSheetOpened = true
-                    modalBottomSheetState.show()
-                }
+    LaunchedEffect(modalBottomSheetState.currentDetent) {
+        when (modalBottomSheetState.currentDetent) {
+            Hidden -> {
+                parent.removeView(composeView)
             }
-
-            else -> Unit
         }
     }
 }
