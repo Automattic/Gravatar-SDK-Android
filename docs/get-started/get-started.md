@@ -314,12 +314,12 @@ GravatarQuickEditor.logout(Email("{USER_EMAIL}"))
 #### Exclude Data Store files from Android backup (optional, but recommended)
 
 Data Store files are subject to Android backups. Encrypted files from the backup won't work when restored on a different device so we have to exclude those files.
-It is encouraged to add the below rules to your own files.
+It is encouraged to create those files or copy paste below rules to your own respective files.
 
 <details>
   <summary>Instructions</summary>
 
-In `AndroidManifest.xml` add those lines:
+In `AndroidManifest.xml` add the below lines. If you already have them, you can skip this step.
 
 ```xml
 <application
@@ -329,7 +329,7 @@ In `AndroidManifest.xml` add those lines:
         ...>
 ```
 
-Content of the [@xml/data_extraction_rules](https://github.com/Automattic/Gravatar-SDK-Android/blob/trunk/gravatar-quickeditor/src/main/res/xml/data_extraction_rules.xml)
+Create [@xml/data_extraction_rules](https://github.com/Automattic/Gravatar-SDK-Android/blob/trunk/gravatar-quickeditor/src/main/res/xml/data_extraction_rules.xml) or modify your file with the below rules.
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -353,7 +353,7 @@ Content of the [@xml/data_extraction_rules](https://github.com/Automattic/Gravat
 </data-extraction-rules>
 ```
 
-Content of the [@xml/backup_rules](https://github.com/Automattic/Gravatar-SDK-Android/blob/trunk/gravatar-quickeditor/src/main/res/xml/backup_rules.xml)
+Create [@xml/backup_rules](https://github.com/Automattic/Gravatar-SDK-Android/blob/trunk/gravatar-quickeditor/src/main/res/xml/backup_rules.xml) or modify your file with the below rules.
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
