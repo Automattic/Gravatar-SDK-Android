@@ -58,6 +58,7 @@ public class AvatarUrl {
      * @param hash Gravatar hash
      * @param avatarQueryOptions Avatar query options
      */
+    @JvmOverloads
     public constructor(hash: Hash, avatarQueryOptions: AvatarQueryOptions? = null) {
         this.hash = hash
         this.avatarQueryOptions = avatarQueryOptions
@@ -70,6 +71,7 @@ public class AvatarUrl {
      * @param email Email address
      * @param avatarQueryOptions Avatar query options
      */
+    @JvmOverloads
     public constructor(
         email: Email,
         avatarQueryOptions: AvatarQueryOptions? = null,
@@ -81,6 +83,7 @@ public class AvatarUrl {
      * @param url Gravatar URL
      * @param avatarQueryOptions Avatar query options
      */
+    @JvmOverloads
     public constructor(url: URL, avatarQueryOptions: AvatarQueryOptions? = null) {
         this.hash = hashFromUrl(url)
         // Force the removal of query parameters as we can't be sure they are valid and won't interfere with
