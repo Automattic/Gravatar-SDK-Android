@@ -94,13 +94,6 @@ public final class com/gravatar/quickeditor/ui/components/ComposableSingletons$Q
 	public final fun getLambda-2$gravatar_quickeditor_release ()Lkotlin/jvm/functions/Function2;
 }
 
-public final class com/gravatar/quickeditor/ui/components/ComposableSingletons$QEDragHandleKt {
-	public static final field INSTANCE Lcom/gravatar/quickeditor/ui/components/ComposableSingletons$QEDragHandleKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public fun <init> ()V
-	public final fun getLambda-1$gravatar_quickeditor_release ()Lkotlin/jvm/functions/Function2;
-}
-
 public final class com/gravatar/quickeditor/ui/components/ComposableSingletons$QESectionMessageKt {
 	public static final field INSTANCE Lcom/gravatar/quickeditor/ui/components/ComposableSingletons$QESectionMessageKt;
 	public static field lambda-1 Lkotlin/jvm/functions/Function2;
@@ -257,13 +250,6 @@ public final class com/gravatar/quickeditor/ui/editor/GravatarQuickEditorParams$
 
 public final class com/gravatar/quickeditor/ui/editor/GravatarQuickEditorParamsKt {
 	public static final synthetic fun GravatarQuickEditorParams (Lkotlin/jvm/functions/Function1;)Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorParams;
-}
-
-public final class com/gravatar/quickeditor/ui/editor/bottomsheet/ComposableSingletons$GravatarQuickEditorBottomSheetKt {
-	public static final field INSTANCE Lcom/gravatar/quickeditor/ui/editor/bottomsheet/ComposableSingletons$GravatarQuickEditorBottomSheetKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public fun <init> ()V
-	public final fun getLambda-1$gravatar_quickeditor_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/gravatar/quickeditor/ui/editor/bottomsheet/GravatarQuickEditorBottomSheetKt {
