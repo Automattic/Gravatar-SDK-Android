@@ -32,10 +32,13 @@ public final class com/gravatar/AvatarQueryOptionsKt {
 
 public final class com/gravatar/AvatarUrl {
 	public static final field Companion Lcom/gravatar/AvatarUrl$Companion;
+	public fun <init> (Lcom/gravatar/types/Email;)V
 	public fun <init> (Lcom/gravatar/types/Email;Lcom/gravatar/AvatarQueryOptions;)V
 	public synthetic fun <init> (Lcom/gravatar/types/Email;Lcom/gravatar/AvatarQueryOptions;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Lcom/gravatar/types/Hash;)V
 	public fun <init> (Lcom/gravatar/types/Hash;Lcom/gravatar/AvatarQueryOptions;)V
 	public synthetic fun <init> (Lcom/gravatar/types/Hash;Lcom/gravatar/AvatarQueryOptions;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Ljava/net/URL;)V
 	public fun <init> (Ljava/net/URL;Lcom/gravatar/AvatarQueryOptions;)V
 	public synthetic fun <init> (Ljava/net/URL;Lcom/gravatar/AvatarQueryOptions;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun getAvatarQueryOptions ()Lcom/gravatar/AvatarQueryOptions;
@@ -43,6 +46,7 @@ public final class com/gravatar/AvatarUrl {
 	public final fun getHash ()Lcom/gravatar/types/Hash;
 	public final fun isAvatarUrl ()Z
 	public final fun setAvatarQueryOptions (Lcom/gravatar/AvatarQueryOptions;)V
+	public final fun url ()Ljava/net/URL;
 	public final fun url (Ljava/lang/String;)Ljava/net/URL;
 	public static synthetic fun url$default (Lcom/gravatar/AvatarUrl;Ljava/lang/String;ILjava/lang/Object;)Ljava/net/URL;
 }
