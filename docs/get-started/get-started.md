@@ -314,7 +314,7 @@ GravatarQuickEditor.logout(Email("{USER_EMAIL}"))
 #### Exclude Data Store files from Android backup (optional, but recommended)
 
 Data Store files are subject to Android backups. Encrypted files from the backup won't work when restored on a different device so we have to exclude those files.
-If your app has backup rules configured, those that are provided in the SDK won't be used so you have to copy them to your files.
+It is encouraged to add the below rules to your own files.
 
 <details>
   <summary>Instructions</summary>
