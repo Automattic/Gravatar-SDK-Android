@@ -3,6 +3,7 @@ package com.gravatar.quickeditor.ui.editor.bottomsheet
 import android.graphics.Color
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
@@ -145,9 +146,11 @@ private fun GravatarModalBottomSheet(
                     ),
             ) {
                 val window = LocalModalWindow.current
+                val isDarkTheme = isSystemInDarkTheme()
                 LaunchedEffect(Unit) {
                     window.navigationBarColor = Color.TRANSPARENT
-                    WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightNavigationBars = true
+                    WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightNavigationBars =
+                        !isDarkTheme
                 }
                 Surface(
                     modifier = Modifier
