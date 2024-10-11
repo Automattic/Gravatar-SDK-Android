@@ -27,6 +27,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -62,7 +63,9 @@ import com.gravatar.types.Email
 import com.gravatar.ui.GravatarTheme
 import com.gravatar.ui.components.ComponentState
 import com.yalantis.ucrop.UCrop
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.net.URI
 
@@ -81,6 +84,7 @@ internal fun AvatarPicker(
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsState()
+    val scope = rememberCoroutineScope()
 
     val uCropLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         it.data?.let { intentData ->
@@ -101,6 +105,7 @@ internal fun AvatarPicker(
                         snackState = snackState,
                         context = context,
                         uCropLauncher = uCropLauncher,
+                        scope = scope,
                     )
                 }
             }
@@ -203,21 +208,24 @@ internal fun AvatarPicker(uiState: AvatarPickerUiState, onEvent: (AvatarPickerEv
 }
 
 @Suppress("LongParameterList")
-private suspend fun AvatarPickerAction.handle(
+private fun AvatarPickerAction.handle(
     cropperLauncher: CropperLauncher,
     onAvatarSelected: () -> Unit,
     onSessionExpired: () -> Unit,
     snackState: SnackbarHostState,
     context: Context,
     uCropLauncher: ManagedActivityResultLauncher<Intent, ActivityResult>,
+    scope: CoroutineScope,
 ) {
     when (this) {
         is AvatarPickerAction.AvatarSelected -> {
             onAvatarSelected()
-            snackState.showQESnackbar(
-                message = context.getString(R.string.avatar_selected_confirmation),
-                withDismissAction = true,
-            )
+            scope.launch {
+                snackState.showQESnackbar(
+                    message = context.getString(R.string.avatar_selected_confirmation),
+                    withDismissAction = true,
+                )
+            }
         }
 
         is AvatarPickerAction.LaunchImageCropper -> {
@@ -225,11 +233,13 @@ private suspend fun AvatarPickerAction.handle(
         }
 
         AvatarPickerAction.AvatarSelectionFailed -> {
-            snackState.showQESnackbar(
-                message = context.getString(R.string.avatar_selection_error),
-                withDismissAction = true,
-                snackbarType = SnackbarType.Error,
-            )
+            scope.launch {
+                snackState.showQESnackbar(
+                    message = context.getString(R.string.avatar_selection_error),
+                    withDismissAction = true,
+                    snackbarType = SnackbarType.Error,
+                )
+            }
         }
 
         AvatarPickerAction.InvokeAuthFailed -> onSessionExpired()
