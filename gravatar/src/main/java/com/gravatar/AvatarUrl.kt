@@ -104,8 +104,10 @@ public class AvatarUrl {
     /**
      * Get the [URL] for the avatar.
      *
+     * @param cacheBuster Random string value to force a cache bust
      * @return [URL] for the avatar
      */
+    @JvmOverloads
     public fun url(cacheBuster: String? = null): URL {
         return URL(
             canonicalUrl.protocol,
