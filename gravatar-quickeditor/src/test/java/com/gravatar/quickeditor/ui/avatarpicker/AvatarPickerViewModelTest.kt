@@ -32,6 +32,7 @@ import org.junit.Test
 import java.io.File
 import java.net.URI
 
+@Suppress("LargeClass")
 class AvatarPickerViewModelTest {
     private val testDispatcher = StandardTestDispatcher()
 
@@ -519,7 +520,7 @@ class AvatarPickerViewModelTest {
     fun `given multiple failed uploads when upload successful then uiState is updated`() = runTest {
         val uriOne = mockk<Uri>()
         val uriTwo = mockk<Uri>()
-        val emailAvatarsCopy = emailAvatars.copy(avatars = emptyList(), selectedAvatarId = null)
+        val emailAvatarsCopy = emailAvatars.copy(avatars = listOf(createAvatar("3")), selectedAvatarId = "3")
         every { fileUtils.deleteFile(any()) } returns Unit
         coEvery { profileService.retrieveCatching(email) } returns GravatarResult.Success(profile)
         coEvery { avatarRepository.getAvatars(any()) } returns GravatarResult.Success(emailAvatarsCopy)
@@ -558,7 +559,7 @@ class AvatarPickerViewModelTest {
             )
             assertEquals(
                 avatarPickerUiState.copy(
-                    emailAvatars = emailAvatarsCopy.copy(avatars = listOf(createAvatar("1"))),
+                    emailAvatars = emailAvatarsCopy.copy(avatars = listOf(createAvatar("1"), createAvatar("3"))),
                     uploadingAvatar = null,
                     scrollToIndex = null,
                 ),
@@ -695,6 +696,93 @@ class AvatarPickerViewModelTest {
         coVerify(exactly = 1) { profileService.retrieveCatching(email) }
     }
 
+    @Suppress("LongMethod")
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `given avatar upload when no avatar selected then avatars are fetched - uiState is updated`() = runTest {
+        val uriOne = mockk<Uri>()
+        val emailAvatarsCopy = emailAvatars.copy(
+            avatars = listOf(createAvatar("3", isSelected = false)),
+            selectedAvatarId = null,
+        )
+        every { fileUtils.deleteFile(any()) } returns Unit
+        coEvery { profileService.retrieveCatching(email) } returns GravatarResult.Success(profile)
+        coEvery { avatarRepository.getAvatars(any()) } returns GravatarResult.Success(emailAvatarsCopy)
+        val uploadedAvatar = createAvatar(id = "1", isSelected = true)
+        coEvery { avatarRepository.uploadAvatar(any(), any()) } returns GravatarResult.Success(uploadedAvatar)
+
+        viewModel = initViewModel()
+
+        advanceUntilIdle()
+
+        viewModel.uiState.test {
+            expectMostRecentItem()
+
+            val emailAvatarsUpdated = emailAvatars.copy(
+                avatars = listOf(createAvatar("1"), createAvatar("3")),
+                selectedAvatarId = "1",
+            )
+            coEvery { avatarRepository.getAvatars(any()) } returns GravatarResult.Success(emailAvatarsUpdated)
+            viewModel.onEvent(AvatarPickerEvent.ImageCropped(uriOne))
+
+            // State before upload starts
+            var avatarPickerUiState = AvatarPickerUiState(
+                email = email,
+                emailAvatars = emailAvatarsCopy,
+                error = null,
+                profile = ComponentState.Loaded(profile),
+                selectingAvatarId = null,
+                uploadingAvatar = uriOne,
+                scrollToIndex = 0,
+                avatarPickerContentLayout = avatarPickerContentLayout,
+                avatarUpdates = 0,
+            )
+            assertEquals(
+                avatarPickerUiState,
+                awaitItem(),
+            )
+
+            // State produced by fetchAvatars within Upload.Success
+            avatarPickerUiState = AvatarPickerUiState(
+                email = email,
+                emailAvatars = emailAvatarsUpdated,
+                error = null,
+                profile = ComponentState.Loaded(profile),
+                selectingAvatarId = null,
+                uploadingAvatar = uriOne,
+                scrollToIndex = 0,
+                avatarPickerContentLayout = avatarPickerContentLayout,
+                avatarUpdates = 0,
+            )
+
+            assertEquals(
+                avatarPickerUiState,
+                awaitItem(),
+            )
+
+            // State produced before finishing uploadAvatar, just after fetchAvatars has finished
+            avatarPickerUiState = AvatarPickerUiState(
+                email = email,
+                emailAvatars = emailAvatarsUpdated,
+                error = null,
+                profile = ComponentState.Loaded(profile),
+                selectingAvatarId = null,
+                uploadingAvatar = null,
+                scrollToIndex = 0,
+                avatarPickerContentLayout = avatarPickerContentLayout,
+                avatarUpdates = 1,
+            )
+
+            assertEquals(
+                avatarPickerUiState,
+                awaitItem(),
+            )
+        }
+        viewModel.actions.test {
+            assertEquals(AvatarPickerAction.AvatarSelected, awaitItem())
+        }
+    }
+
     private fun initViewModel(handleExpiredSession: Boolean = true) = AvatarPickerViewModel(
         email,
         handleExpiredSession,
@@ -704,11 +792,12 @@ class AvatarPickerViewModelTest {
         fileUtils,
     )
 
-    private fun createAvatar(id: String) = Avatar {
+    private fun createAvatar(id: String, isSelected: Boolean? = null) = Avatar {
         imageUrl = URI.create("https://gravatar.com/avatar/test")
         imageId = id
         rating = Avatar.Rating.G
         altText = "alt"
         updatedDate = ""
+        selected = isSelected
     }
 }
