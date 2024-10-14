@@ -778,6 +778,9 @@ class AvatarPickerViewModelTest {
                 awaitItem(),
             )
         }
+        viewModel.actions.test {
+            assertEquals(AvatarPickerAction.AvatarSelected, awaitItem())
+        }
     }
 
     private fun initViewModel(handleExpiredSession: Boolean = true) = AvatarPickerViewModel(

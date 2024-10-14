@@ -155,6 +155,9 @@ internal class AvatarPickerViewModel(
                                 avatarUpdates = currentState.avatarUpdates.inc(),
                             )
                         }
+                        if (_uiState.value.emailAvatars?.selectedAvatarId != null) {
+                            _actions.send(AvatarPickerAction.AvatarSelected)
+                        }
                     } else {
                         _uiState.update { currentState ->
                             val avatar = result.value
