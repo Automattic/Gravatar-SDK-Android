@@ -32,7 +32,7 @@ class ErrorTypeTest {
         HTTP_CLIENT_TIMEOUT to ErrorType.Timeout,
         HTTP_NOT_FOUND to ErrorType.NotFound,
         HTTP_TOO_MANY_REQUESTS to ErrorType.RateLimitExceeded,
-        600 to ErrorType.Unknown,
+        600 to ErrorType.Unknown("HTTP Code 600 - ErrorBody $errorBody"),
         INVALID_REQUEST to ErrorType.InvalidRequest(
             error = Error {
                 code = "uncropped_image"
@@ -67,7 +67,7 @@ class ErrorTypeTest {
         val exceptionToErrorTypeRelation = mutableListOf(
             SocketTimeoutException() to ErrorType.Timeout,
             UnknownHostException() to ErrorType.Network,
-            Exception() to ErrorType.Unknown,
+            Exception() to ErrorType.Unknown(),
         ).apply {
             httpCodeToErrorTypeRelation.forEach { (code, errorType) ->
                 val exception = mockk<HttpException>(relaxed = true) {

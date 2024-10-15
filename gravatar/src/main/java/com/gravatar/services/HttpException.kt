@@ -5,11 +5,10 @@ import retrofit2.Response
 /**
  * Exception thrown when an HTTP error occurs in a non-cathing method.
  *
+ * [rawErrorBody] The raw error body of the response.
  * [code] The HTTP status code.
- * [message] The HTTP status message.
  */
-public class HttpException internal constructor(response: Response<*>) : RuntimeException() {
-    internal val rawErrorBody: String? = response.errorBody()?.string()
-    public val code: Int = response.code()
-    public override val message: String = "HTTP ${response.code()} $rawErrorBody"
+internal class HttpException internal constructor(response: Response<*>) : RuntimeException() {
+    val rawErrorBody: String? = response.errorBody()?.string()
+    val code: Int = response.code()
 }

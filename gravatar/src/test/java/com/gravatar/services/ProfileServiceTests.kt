@@ -18,7 +18,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import retrofit2.Response
-import java.util.concurrent.TimeoutException
+import java.net.SocketTimeoutException
 
 class ProfileServiceTests {
     @get:Rule
@@ -60,7 +60,10 @@ class ProfileServiceTests {
             val loadProfileResponse = profileService.retrieveByUsernameCatching(username)
 
             coVerify(exactly = 1) { containerRule.gravatarApiMock.getProfileById(username) }
-            assertTrue((loadProfileResponse as GravatarResult.Failure).error == ErrorType.Unknown)
+            assertTrue(
+                (loadProfileResponse as GravatarResult.Failure).error ==
+                    ErrorType.Unknown("Response body is null"),
+            )
         }
 
     @Test
@@ -69,13 +72,15 @@ class ProfileServiceTests {
             val username = "username"
             val mockResponse = mockk<Response<Profile>> {
                 every { isSuccessful } returns false
+                every { code() } returns 418
+                every { errorBody() } returns mockk(relaxed = true)
             }
             coEvery { containerRule.gravatarApiMock.getProfileById(username) } returns mockResponse
 
             val loadProfileResponse = profileService.retrieveByUsernameCatching(username)
 
             coVerify(exactly = 1) { containerRule.gravatarApiMock.getProfileById(username) }
-            assertTrue((loadProfileResponse as GravatarResult.Failure).error == ErrorType.Unknown)
+            assertTrue((loadProfileResponse as GravatarResult.Failure).error is ErrorType.Unknown)
         }
 
     @Test
@@ -120,19 +125,19 @@ class ProfileServiceTests {
         val loadProfileResponse = profileService.retrieveByUsernameCatching(username)
 
         coVerify(exactly = 1) { containerRule.gravatarApiMock.getProfileById(username) }
-        assertTrue((loadProfileResponse as GravatarResult.Failure).error == ErrorType.Unknown)
+        assertTrue((loadProfileResponse as GravatarResult.Failure).error == ErrorType.Unknown())
     }
 
     @Test
     fun `given a hash when retrieving its profile and an exception is thrown then result is failure`() = runTest {
         val usernameEmail = Email("username@automattic.com")
         coEvery {
-            containerRule.gravatarApiMock.getProfileById(usernameEmail.toString())
+            containerRule.gravatarApiMock.getProfileById(usernameEmail.hash().toString())
         } throws Exception()
 
         val loadProfileResponse = profileService.retrieveCatching(usernameEmail)
         coVerify(exactly = 1) { containerRule.gravatarApiMock.getProfileById(usernameEmail.hash().toString()) }
-        assertTrue((loadProfileResponse as GravatarResult.Failure).error == ErrorType.Unknown)
+        assertTrue((loadProfileResponse as GravatarResult.Failure).error == ErrorType.Unknown())
     }
 
     @Test
@@ -144,7 +149,7 @@ class ProfileServiceTests {
 
         val loadProfileResponse = profileService.retrieveCatching(usernameHash)
         coVerify(exactly = 1) { containerRule.gravatarApiMock.getProfileById(usernameHash.toString()) }
-        assertTrue((loadProfileResponse as GravatarResult.Failure).error == ErrorType.Unknown)
+        assertTrue((loadProfileResponse as GravatarResult.Failure).error == ErrorType.Unknown())
     }
 
     @Test
@@ -164,37 +169,43 @@ class ProfileServiceTests {
     }
 
     // Throwing Exception Version of the methods
-    @Test(expected = TimeoutException::class)
-    fun `given a username when retrieving its profile and a timeout occurs then exception is thrown`() = runTest {
-        val username = "username"
-        coEvery { containerRule.gravatarApiMock.getProfileById(username) } throws TimeoutException()
+    @Test
+    fun `given a username when retrieving its profile and a timeout occurs then exception is thrown`() =
+        runTestExpectingGravatarException(ErrorType.Timeout, SocketTimeoutException::class.java) {
+            val username = "username"
+            coEvery { containerRule.gravatarApiMock.getProfileById(username) } throws SocketTimeoutException()
 
-        profileService.retrieveByUsername(username)
-    }
+            profileService.retrieveByUsername(username)
+        }
 
-    @Test(expected = TimeoutException::class)
-    fun `given a hash when retrieving its profile and a timeout occurs then exception is thrown`() = runTest {
-        val usernameHash = Hash("username")
-        coEvery {
-            containerRule.gravatarApiMock.getProfileById(usernameHash.toString())
-        } throws TimeoutException()
+    @Test
+    fun `given a hash when retrieving its profile and a timeout occurs then exception is thrown`() =
+        runTestExpectingGravatarException(ErrorType.Timeout, SocketTimeoutException::class.java) {
+            val usernameHash = Hash("username")
+            coEvery {
+                containerRule.gravatarApiMock.getProfileById(usernameHash.toString())
+            } throws SocketTimeoutException()
 
-        profileService.retrieve(usernameHash)
-    }
+            profileService.retrieve(usernameHash)
+        }
 
-    @Test(expected = TimeoutException::class)
-    fun `given an email when retrieving its profile and a timeout occurs then exception is thrown`() = runTest {
-        val usernameEmail = Email("username@automattic.com")
-        coEvery {
-            containerRule.gravatarApiMock.getProfileById(usernameEmail.hash().toString())
-        } throws TimeoutException()
+    @Test
+    fun `given an email when retrieving its profile and a timeout occurs then exception is thrown`() =
+        runTestExpectingGravatarException(ErrorType.Timeout, SocketTimeoutException::class.java) {
+            val usernameEmail = Email("username@automattic.com")
+            coEvery {
+                containerRule.gravatarApiMock.getProfileById(usernameEmail.hash().toString())
+            } throws SocketTimeoutException()
 
-        profileService.retrieve(usernameEmail)
-    }
+            profileService.retrieve(usernameEmail)
+        }
 
-    @Test(expected = IllegalStateException::class)
+    @Test
     fun `given an email when retrieving its profile and the body is null then IllegalStateException is thrown`() =
-        runTest {
+        runTestExpectingGravatarException(
+            ErrorType.Unknown("Response body is null"),
+            IllegalStateException::class.java,
+        ) {
             val usernameEmail = Email("username@automattic.com")
             val mockResponse = mockk<Response<Profile>> {
                 every { isSuccessful } returns true
@@ -207,21 +218,22 @@ class ProfileServiceTests {
             profileService.retrieve(usernameEmail)
         }
 
-    @Test(expected = HttpException::class)
-    fun `given an email when retrieving its profile and a http error occurs then HttpException is thrown`() = runTest {
-        val usernameEmail = Email("username@automattic.com")
-        val mockResponse = mockk<Response<Profile>> {
-            every { isSuccessful } returns false
-            every { errorBody() } returns mockk(relaxed = true)
-            every { code() } returns 401
-            every { message() } returns "Unauthorized"
-        }
-        coEvery {
-            containerRule.gravatarApiMock.getProfileById(usernameEmail.hash().toString())
-        } returns mockResponse
+    @Test
+    fun `given an email when retrieving its profile and a http error occurs then HttpException is thrown`() =
+        runTestExpectingGravatarException(ErrorType.Unauthorized, HttpException::class.java) {
+            val usernameEmail = Email("username@automattic.com")
+            val mockResponse = mockk<Response<Profile>> {
+                every { isSuccessful } returns false
+                every { errorBody() } returns mockk(relaxed = true)
+                every { code() } returns 401
+                every { message() } returns "Unauthorized"
+            }
+            coEvery {
+                containerRule.gravatarApiMock.getProfileById(usernameEmail.hash().toString())
+            } returns mockResponse
 
-        profileService.retrieve(usernameEmail)
-    }
+            profileService.retrieve(usernameEmail)
+        }
 
     @Test
     fun `given a username when retrieving its profile which is not found then null is returned`() = runTest {
@@ -307,12 +319,15 @@ class ProfileServiceTests {
             } returns mockResponse
 
             val result = profileService.checkAssociatedEmailCatching(oauthToken, usernameEmail)
-            assertTrue((result as GravatarResult.Failure).error == ErrorType.Unknown)
+            assertTrue((result as GravatarResult.Failure).error == ErrorType.Unknown("Response body is null"))
         }
 
-    @Test(expected = IllegalStateException::class)
+    @Test
     fun `given oauthToken and email when checking associated email and null body then IllegalStateException thrown`() =
-        runTest {
+        runTestExpectingGravatarException(
+            ErrorType.Unknown("Response body is null"),
+            IllegalStateException::class.java,
+        ) {
             val oauthToken = "oauth"
             val usernameEmail = Email("username@automattic.com")
 

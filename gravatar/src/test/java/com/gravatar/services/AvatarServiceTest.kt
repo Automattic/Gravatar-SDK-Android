@@ -62,16 +62,17 @@ class AvatarServiceTest {
         }
     }
 
-    @Test(expected = HttpException::class)
-    fun `given an avatar upload when an error occurs then an exception is thrown`() = runTest {
-        val mockResponse = mockk<Response<Avatar>>(relaxed = true) {
-            every { isSuccessful } returns false
-            every { code() } returns 500
-        }
-        coEvery { containerRule.gravatarApiMock.uploadAvatar(any()) } returns mockResponse
+    @Test
+    fun `given an avatar upload when an error occurs then an exception is thrown`() =
+        runTestExpectingGravatarException(ErrorType.Server, HttpException::class.java) {
+            val mockResponse = mockk<Response<Avatar>>(relaxed = true) {
+                every { isSuccessful } returns false
+                every { code() } returns 500
+            }
+            coEvery { containerRule.gravatarApiMock.uploadAvatar(any()) } returns mockResponse
 
-        avatarService.upload(File("avatarFile"), oauthToken)
-    }
+            avatarService.upload(File("avatarFile"), oauthToken)
+        }
 
     @Test
     fun `given a file when uploadCatching avatar then Gravatar service is invoked`() = runTest {
@@ -136,9 +137,9 @@ class AvatarServiceTest {
         avatarService.setAvatar(hash, avatarId, oauthToken)
     }
 
-    @Test(expected = HttpException::class)
+    @Test
     fun `given a hash and an avatarId when setting an avatar and an error occurs then an exception is thrown`() =
-        runTest {
+        runTestExpectingGravatarException(ErrorType.Server, HttpException::class.java) {
             val hash = "hash"
             val avatarId = "avatarId"
             val mockResponse = mockk<Response<Unit>>(relaxed = true) {

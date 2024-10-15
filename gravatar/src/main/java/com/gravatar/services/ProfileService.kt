@@ -1,6 +1,7 @@
 package com.gravatar.services
 
 import com.gravatar.HttpResponseCode
+import com.gravatar.di.container.GravatarSdkContainer
 import com.gravatar.logger.Logger
 import com.gravatar.restapi.models.Profile
 import com.gravatar.types.Email
@@ -29,23 +30,29 @@ public class ProfileService(private val okHttpClient: OkHttpClient? = null) {
      * @param hashOrUsername The hash or username to fetch the profile for
      * @return The fetched profile or null if profile not found
      */
-    public suspend fun retrieve(hashOrUsername: String): Profile? = withContext(GravatarSdkDI.dispatcherIO) {
-        val response = service.getProfileById(hashOrUsername)
-        if (response.isSuccessful) {
-            response.body() ?: error("Response body is null")
-        } else {
-            // Log the response body for debugging purposes if the response is not successful
-            Logger.w(
-                LOG_TAG,
-                "Network call unsuccessful trying to get Gravatar profile: ${response.code()}",
-            )
-            if (response.code() == HttpResponseCode.HTTP_NOT_FOUND) {
-                return@withContext null
-            } else {
-                throw HttpException(response)
+    public suspend fun retrieve(hashOrUsername: String): Profile? =
+        @Suppress("TooGenericExceptionCaught")
+        try {
+            withContext(GravatarSdkDI.dispatcherIO) {
+                val response = service.getProfileById(hashOrUsername)
+                if (response.isSuccessful) {
+                    response.body() ?: error("Response body is null")
+                } else {
+                    // Log the response body for debugging purposes if the response is not successful
+                    Logger.w(
+                        LOG_TAG,
+                        "Network call unsuccessful trying to get Gravatar profile: ${response.code()}",
+                    )
+                    if (response.code() == HttpResponseCode.HTTP_NOT_FOUND) {
+                        return@withContext null
+                    } else {
+                        throw HttpException(response)
+                    }
+                }
             }
+        } catch (ex: Exception) {
+            throw GravatarException(ex.errorType(GravatarSdkContainer.instance.moshi), ex)
         }
-    }
 
     /**
      * Fetches a Gravatar profile for the given hash or username.
@@ -138,7 +145,7 @@ public class ProfileService(private val okHttpClient: OkHttpClient? = null) {
      * @param email The email address to check
      * @return True if the email is associated with the account, false otherwise
      */
-    public suspend fun checkAssociatedEmail(oauthToken: String, email: Email): Boolean =
+    public suspend fun checkAssociatedEmail(oauthToken: String, email: Email): Boolean = runThrowingExceptionRequest {
         withContext(GravatarSdkDI.dispatcherIO) {
             val service = GravatarSdkDI.getGravatarV3Service(okHttpClient, oauthToken)
 
@@ -154,6 +161,7 @@ public class ProfileService(private val okHttpClient: OkHttpClient? = null) {
                 throw HttpException(response)
             }
         }
+    }
 
     /**
      * Checks if the given email address is associated with the already authorized Gravatar account.
