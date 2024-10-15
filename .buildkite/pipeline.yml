@@ -88,7 +88,6 @@ steps:
 
   - label: "Dependency Tree Diff"
     command: |
-      cp gradle.properties-example gradle.properties
       comment_with_dependency_diff 'gravatar-quickeditor' 'releaseRuntimeClasspath'
     if: build.pull_request.id != null
     plugins: [ $CI_TOOLKIT ]
