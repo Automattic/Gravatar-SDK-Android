@@ -85,3 +85,9 @@ steps:
     plugins: [ $CI_TOOLKIT ]
     artifact_paths:
       - "**/build/outputs/apk/**/*"
+
+  - label: "Dependency Tree Diff"
+    command: |
+      comment_with_dependency_diff 'gravatar-quickeditor' 'releaseRuntimeClasspath'
+    if: build.pull_request.id != null
+    plugins: [ $CI_TOOLKIT ]
