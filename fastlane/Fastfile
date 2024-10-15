@@ -70,7 +70,7 @@ platform :android do
 
     gradle(
       task: ':demo-app:assemble',
-      build_type: 'debug'
+      build_type: 'release'
     )
 
     upload_path = upload_to_s3(
