@@ -750,6 +750,11 @@ public final class com/gravatar/services/GravatarResult$Success : com/gravatar/s
 	public fun toString ()Ljava/lang/String;
 }
 
+public final class com/gravatar/services/HttpException : java/lang/RuntimeException {
+	public final fun getCode ()I
+	public fun getMessage ()Ljava/lang/String;
+}
+
 public final class com/gravatar/services/ProfileService {
 	public static final field LOG_TAG Ljava/lang/String;
 	public fun <init> ()V
