@@ -172,7 +172,7 @@ private fun launchCustomTab(context: Context, oauthParams: OAuthParams, email: E
     )
 }
 
-private fun Context.findComponentActivity(): ComponentActivity? = when (this) {
+internal fun Context.findComponentActivity(): ComponentActivity? = when (this) {
     is ComponentActivity -> this
     is ContextWrapper -> baseContext.findComponentActivity()
     else -> null
