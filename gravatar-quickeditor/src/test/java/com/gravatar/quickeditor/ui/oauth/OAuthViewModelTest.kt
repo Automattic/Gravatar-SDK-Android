@@ -91,7 +91,7 @@ class OAuthViewModelTest {
     fun `given token when association check failed then UiState_Status updated`() = runTest {
         coEvery {
             profileService.checkAssociatedEmailCatching(token, email)
-        } returns GravatarResult.Failure(ErrorType.Unknown)
+        } returns GravatarResult.Failure(ErrorType.Unknown())
 
         viewModel.uiState.test {
             expectMostRecentItem()
@@ -108,7 +108,7 @@ class OAuthViewModelTest {
     fun `given token when association check failed then token stored`() = runTest {
         coEvery {
             profileService.checkAssociatedEmailCatching(token, email)
-        } returns GravatarResult.Failure(ErrorType.Unknown)
+        } returns GravatarResult.Failure(ErrorType.Unknown())
 
         viewModel.tokenReceived(
             email,

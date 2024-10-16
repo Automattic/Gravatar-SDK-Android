@@ -20,7 +20,7 @@ internal fun HttpException.errorTypeFromHttpCode(moshi: Moshi): ErrorType = when
     }
 
     in HttpResponseCode.SERVER_ERRORS -> ErrorType.Server
-    else -> ErrorType.Unknown
+    else -> ErrorType.Unknown("HTTP Code $code - ErrorBody $rawErrorBody")
 }
 
 internal fun Throwable.errorType(moshi: Moshi): ErrorType {
@@ -28,7 +28,7 @@ internal fun Throwable.errorType(moshi: Moshi): ErrorType {
         is SocketTimeoutException -> ErrorType.Timeout
         is UnknownHostException -> ErrorType.Network
         is HttpException -> this.errorTypeFromHttpCode(moshi)
-        else -> ErrorType.Unknown
+        else -> ErrorType.Unknown(message)
     }
 }
 
@@ -54,8 +54,18 @@ public sealed class ErrorType {
     /** User not authorized to perform given action **/
     public data object Unauthorized : ErrorType()
 
-    /** An unknown error occurred */
-    public data object Unknown : ErrorType()
+    /**
+     * An unknown error occurred
+     *
+     * @property errorMsg The error message, if available.
+     */
+    public class Unknown(public val errorMsg: String? = null) : ErrorType() {
+        override fun toString(): String = "Unknown(errorMsg=$errorMsg)"
+
+        override fun equals(other: Any?): Boolean = other is Unknown && errorMsg == other.errorMsg
+
+        override fun hashCode(): Int = Objects.hash(errorMsg)
+    }
 
     /**
      * An error occurred while processing the request.

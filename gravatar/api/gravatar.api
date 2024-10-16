@@ -705,10 +705,18 @@ public final class com/gravatar/services/ErrorType$Unauthorized : com/gravatar/s
 }
 
 public final class com/gravatar/services/ErrorType$Unknown : com/gravatar/services/ErrorType {
-	public static final field INSTANCE Lcom/gravatar/services/ErrorType$Unknown;
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun equals (Ljava/lang/Object;)Z
+	public final fun getErrorMsg ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/gravatar/services/GravatarException : java/lang/RuntimeException {
+	public final fun getErrorType ()Lcom/gravatar/services/ErrorType;
+	public final fun getOriginalException ()Ljava/lang/Exception;
 }
 
 public abstract interface class com/gravatar/services/GravatarListener {

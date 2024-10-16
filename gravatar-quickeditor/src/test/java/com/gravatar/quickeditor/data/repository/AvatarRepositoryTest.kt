@@ -97,12 +97,12 @@ class AvatarRepositoryTest {
         coEvery { tokenStorage.getToken(any()) } returns "token"
         coEvery {
             avatarService.setAvatarCatching(any(), any(), any())
-        } returns GravatarResult.Failure(ErrorType.Unknown)
+        } returns GravatarResult.Failure(ErrorType.Unknown())
 
         val result = avatarRepository.selectAvatar(email, "avatarId")
 
         assertEquals(
-            GravatarResult.Failure<String, QuickEditorError>(QuickEditorError.Request(ErrorType.Unknown)),
+            GravatarResult.Failure<String, QuickEditorError>(QuickEditorError.Request(ErrorType.Unknown())),
             result,
         )
     }

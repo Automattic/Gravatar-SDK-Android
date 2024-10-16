@@ -62,7 +62,7 @@ class AvatarPickerViewModelTest {
 
     @Before
     fun setup() {
-        coEvery { profileService.retrieveCatching(email) } returns GravatarResult.Failure(ErrorType.Unknown)
+        coEvery { profileService.retrieveCatching(email) } returns GravatarResult.Failure(ErrorType.Unknown())
         coEvery { avatarRepository.getAvatars(email) } returns GravatarResult.Success(emailAvatars)
     }
 

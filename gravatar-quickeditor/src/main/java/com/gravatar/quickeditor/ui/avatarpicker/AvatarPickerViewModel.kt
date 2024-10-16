@@ -264,7 +264,7 @@ internal class AvatarPickerViewModel(
                 ErrorType.NotFound,
                 ErrorType.RateLimitExceeded,
                 ErrorType.Timeout,
-                ErrorType.Unknown,
+                is ErrorType.Unknown,
                 is ErrorType.InvalidRequest,
                 -> SectionError.Unknown
             }
