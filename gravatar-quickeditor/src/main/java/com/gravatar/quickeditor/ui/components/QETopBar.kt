@@ -1,5 +1,6 @@
 package com.gravatar.quickeditor.ui.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
@@ -15,6 +16,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -24,7 +26,9 @@ import com.gravatar.quickeditor.R
 import com.gravatar.ui.GravatarTheme
 
 @Composable
-internal fun QETopBar(onDoneClick: () -> Unit, modifier: Modifier = Modifier) {
+internal fun QETopBar(onDoneClick: () -> Unit, gravatarIconUrl: String, modifier: Modifier = Modifier) {
+    val uriHandler = LocalUriHandler.current
+
     GravatarCenterAlignedTopAppBar(
         modifier = modifier,
         title = {
@@ -49,6 +53,9 @@ internal fun QETopBar(onDoneClick: () -> Unit, modifier: Modifier = Modifier) {
                 tint = MaterialTheme.colorScheme.primary,
                 contentDescription = stringResource(id = R.string.gravatar),
                 modifier = Modifier
+                    .clickable(onClick = {
+                        uriHandler.openUri(gravatarIconUrl)
+                    })
                     .size(34.dp)
                     .padding(end = 8.dp),
             )
@@ -107,6 +114,6 @@ private fun GravatarCenterAlignedTopAppBar(
 @Composable
 private fun QETopBarPreview() {
     GravatarTheme {
-        QETopBar(onDoneClick = {})
+        QETopBar(onDoneClick = {}, "")
     }
 }

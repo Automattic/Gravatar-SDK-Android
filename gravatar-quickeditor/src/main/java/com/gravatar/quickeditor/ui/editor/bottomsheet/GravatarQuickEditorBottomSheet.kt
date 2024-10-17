@@ -36,6 +36,7 @@ import com.composables.core.SheetDetent
 import com.composables.core.SheetDetent.Companion.FullyExpanded
 import com.composables.core.SheetDetent.Companion.Hidden
 import com.composables.core.rememberModalBottomSheetState
+import com.gravatar.ProfileUrl
 import com.gravatar.quickeditor.ui.components.QEDragHandle
 import com.gravatar.quickeditor.ui.components.QETopBar
 import com.gravatar.quickeditor.ui.editor.AuthenticationMethod
@@ -84,8 +85,10 @@ internal fun GravatarQuickEditorBottomSheet(
     onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit = {},
     modalBottomSheetState: ModalBottomSheetState,
 ) {
+
     GravatarModalBottomSheet(
         onDismiss = onDismiss,
+        gravatarIconUrl = ProfileUrl(gravatarQuickEditorParams.email.hash()).url.toString(),
         modalBottomSheetState = modalBottomSheetState,
     ) {
         when (authenticationMethod) {
@@ -113,6 +116,7 @@ internal fun GravatarQuickEditorBottomSheet(
 @Composable
 private fun GravatarModalBottomSheet(
     onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit = {},
+    gravatarIconUrl: String,
     modalBottomSheetState: ModalBottomSheetState,
     content: @Composable () -> Unit,
 ) {
@@ -166,6 +170,7 @@ private fun GravatarModalBottomSheet(
                                     modalBottomSheetState.currentDetent = Hidden
                                 }
                             },
+                            gravatarIconUrl = gravatarIconUrl
                         )
                         content()
                     }
