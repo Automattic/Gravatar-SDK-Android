@@ -1,4 +1,4 @@
-package com.gravatar.quickeditor.ui.copperlauncher
+package com.gravatar.quickeditor.ui.cropperlauncher
 
 import android.content.Context
 import android.content.Intent
@@ -24,7 +24,21 @@ internal class UCropCropperLauncher : CropperLauncher {
             setCircleDimmedLayer(true)
         }
         launcher.launch(
-            UCrop.of(image, Uri.fromFile(tempFile)).withAspectRatio(1f, 1f).withOptions(options).getIntent(context),
+            UCrop.of(image, Uri.fromFile(tempFile))
+                .withAspectRatio(1f, 1f)
+                .withOptions(options)
+                .getGravatarIntent(context),
         )
     }
 }
+
+private fun UCrop.getGravatarIntent(context: Context): Intent {
+    return getIntent(context).apply {
+        setClass(context, GravatarUCropActivity::class.java)
+    }
+}
+
+/**
+ * Empty Activity to not cause conflicts with UCropActivity when third-party apps depend on it already
+ */
+internal class GravatarUCropActivity : UCropActivity()

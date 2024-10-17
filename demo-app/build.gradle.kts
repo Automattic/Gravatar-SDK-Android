@@ -117,6 +117,7 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.ucrop)
     implementation(project(":gravatar"))
     implementation(project(":gravatar-ui"))
     implementation(project(":gravatar-quickeditor"))

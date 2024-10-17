@@ -55,6 +55,12 @@
 <!--                    android:scheme="${DEMO_OAUTH_REDIRECT_URI_SCHEME}" />-->
 <!--            </intent-filter>-->
         </activity>
+
+        <!-- Lib activities -->
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:theme="@style/Theme.AppCompat" />
+
         <provider
             android:name=".DemoFileProvider"
             android:authorities="${applicationId}.fileprovider"

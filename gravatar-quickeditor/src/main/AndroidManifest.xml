@@ -26,7 +26,7 @@
 
         <!-- Lib activities-->
         <activity
-            android:name="com.yalantis.ucrop.UCropActivity"
+            android:name=".ui.cropperlauncher.GravatarUCropActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
     </application>
 
