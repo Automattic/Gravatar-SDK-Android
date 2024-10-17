@@ -56,8 +56,7 @@ import kotlinx.coroutines.launch
  * @param authenticationMethod The method used for authentication with the Gravatar REST API.
  * @param onAvatarSelected The callback for the avatar update.
  *                       Can be invoked multiple times while the Quick Editor is open.
- * @param onDismiss The callback for the dismiss action.
- *                  [GravatarQuickEditorError] will be non-null if the dismiss was caused by an error.
+ * @param onDismiss The callback for the dismiss action containing [GravatarQuickEditorDismissReason]
  */
 @Composable
 public fun GravatarQuickEditorBottomSheet(

@@ -21,16 +21,16 @@ public object GravatarQuickEditor {
      * @param authenticationMethod The method used for authentication with the Gravatar REST API.
      * @param onAvatarSelected The callback for the avatar update.
      *                       Can be invoked multiple times while the Quick Editor is open.
-     * @param onDismiss The callback for the dismiss action.
-     *                  [GravatarQuickEditorError] will be non-null if the dismiss was caused by an error.
+     * @param onDismiss The callback for the dismiss action containing [GravatarQuickEditorDismissReason]
      */
     @JvmStatic
+    @JvmOverloads
     public fun show(
         activity: Activity,
         gravatarQuickEditorParams: GravatarQuickEditorParams,
         authenticationMethod: AuthenticationMethod,
         onAvatarSelected: () -> Unit,
-        onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit,
+        onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit = {},
     ) {
         val viewGroup: ViewGroup = activity.findViewById(android.R.id.content)
         addQuickEditorToView(viewGroup, gravatarQuickEditorParams, authenticationMethod, onAvatarSelected, onDismiss)
@@ -45,16 +45,16 @@ public object GravatarQuickEditor {
      * @param authenticationMethod The method used for authentication with the Gravatar REST API.
      * @param onAvatarSelected The callback for the avatar update.
      *                       Can be invoked multiple times while the Quick Editor is open.
-     * @param onDismiss The callback for the dismiss action.
-     *                  [GravatarQuickEditorError] will be non-null if the dismiss was caused by an error.
+     * @param onDismiss The callback for the dismiss action containing [GravatarQuickEditorDismissReason]
      */
     @JvmStatic
+    @JvmOverloads
     public fun show(
         fragment: Fragment,
         gravatarQuickEditorParams: GravatarQuickEditorParams,
         authenticationMethod: AuthenticationMethod,
         onAvatarSelected: () -> Unit,
-        onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit,
+        onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit = {},
     ) {
         val viewGroup: ViewGroup = fragment.requireActivity().findViewById(android.R.id.content)
         addQuickEditorToView(viewGroup, gravatarQuickEditorParams, authenticationMethod, onAvatarSelected, onDismiss)
