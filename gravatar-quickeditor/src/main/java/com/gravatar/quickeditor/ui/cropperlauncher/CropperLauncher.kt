@@ -1,4 +1,4 @@
-package com.gravatar.quickeditor.ui.copperlauncher
+package com.gravatar.quickeditor.ui.cropperlauncher
 
 import android.content.Context
 import android.content.Intent

@@ -50,8 +50,8 @@ import com.gravatar.quickeditor.ui.components.EmailLabel
 import com.gravatar.quickeditor.ui.components.ErrorSection
 import com.gravatar.quickeditor.ui.components.FailedAvatarUploadAlertDialog
 import com.gravatar.quickeditor.ui.components.ProfileCard
-import com.gravatar.quickeditor.ui.copperlauncher.CropperLauncher
-import com.gravatar.quickeditor.ui.copperlauncher.UCropCropperLauncher
+import com.gravatar.quickeditor.ui.cropperlauncher.CropperLauncher
+import com.gravatar.quickeditor.ui.cropperlauncher.UCropCropperLauncher
 import com.gravatar.quickeditor.ui.editor.AvatarPickerContentLayout
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
 import com.gravatar.quickeditor.ui.editor.bottomsheet.DEFAULT_PAGE_HEIGHT
