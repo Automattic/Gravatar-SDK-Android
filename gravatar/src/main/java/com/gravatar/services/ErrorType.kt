@@ -82,4 +82,10 @@ public sealed class ErrorType {
 
         override fun hashCode(): Int = Objects.hash(error)
     }
+
+    /**
+     * Future errors that may be added in the future will extend this class to ensure that all errors are handled.
+     * When a new major release is made, all [FutureError] should extend directly from [ErrorType].
+     */
+    public abstract class FutureError : ErrorType()
 }
