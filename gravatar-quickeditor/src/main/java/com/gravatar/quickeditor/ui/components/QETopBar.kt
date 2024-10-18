@@ -1,5 +1,6 @@
 package com.gravatar.quickeditor.ui.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
@@ -24,7 +25,7 @@ import com.gravatar.quickeditor.R
 import com.gravatar.ui.GravatarTheme
 
 @Composable
-internal fun QETopBar(onDoneClick: () -> Unit, modifier: Modifier = Modifier) {
+internal fun QETopBar(onDoneClick: () -> Unit, modifier: Modifier = Modifier, onGravatarIconClick: () -> Unit = {}) {
     GravatarCenterAlignedTopAppBar(
         modifier = modifier,
         title = {
@@ -49,6 +50,7 @@ internal fun QETopBar(onDoneClick: () -> Unit, modifier: Modifier = Modifier) {
                 tint = MaterialTheme.colorScheme.primary,
                 contentDescription = stringResource(id = R.string.gravatar),
                 modifier = Modifier
+                    .clickable(onClick = onGravatarIconClick)
                     .size(34.dp)
                     .padding(end = 8.dp),
             )
@@ -107,6 +109,6 @@ private fun GravatarCenterAlignedTopAppBar(
 @Composable
 private fun QETopBarPreview() {
     GravatarTheme {
-        QETopBar(onDoneClick = {})
+        QETopBar(onDoneClick = {}, onGravatarIconClick = {})
     }
 }
