@@ -85,7 +85,6 @@ internal fun GravatarQuickEditorBottomSheet(
     onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit = {},
     modalBottomSheetState: ModalBottomSheetState,
 ) {
-
     GravatarModalBottomSheet(
         onDismiss = onDismiss,
         modalBottomSheetState = modalBottomSheetState,
@@ -168,7 +167,7 @@ private fun GravatarModalBottomSheet(
                                     modalBottomSheetState.currentDetent = Hidden
                                 }
                             },
-                            gravatarIconUrl = GravatarConstants.GRAVATAR_SIGN_IN_URL
+                            gravatarIconUrl = GravatarConstants.GRAVATAR_SIGN_IN_URL,
                         )
                         content()
                     }
