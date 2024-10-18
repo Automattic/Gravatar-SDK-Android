@@ -654,6 +654,13 @@ public final class com/gravatar/services/AvatarService {
 public abstract class com/gravatar/services/ErrorType {
 }
 
+public final class com/gravatar/services/ErrorType$ContentLengthExceeded : com/gravatar/services/ErrorType {
+	public static final field INSTANCE Lcom/gravatar/services/ErrorType$ContentLengthExceeded;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
 public final class com/gravatar/services/ErrorType$InvalidRequest : com/gravatar/services/ErrorType {
 	public fun <init> (Lcom/gravatar/restapi/models/Error;)V
 	public fun equals (Ljava/lang/Object;)Z

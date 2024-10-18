@@ -184,8 +184,7 @@ internal class AvatarPickerViewModel(
                             scrollToIndex = null,
                             failedUploads = currentState.failedUploads + AvatarUploadFailure(
                                 uri,
-                                error = ((result.error as? QuickEditorError.Request)?.type as? ErrorType.InvalidRequest)
-                                    ?.error?.error,
+                                error = (result.error as? QuickEditorError.Request)?.type,
                             ),
                         )
                     }
@@ -266,6 +265,7 @@ internal class AvatarPickerViewModel(
                 ErrorType.Timeout,
                 is ErrorType.Unknown,
                 is ErrorType.InvalidRequest,
+                ErrorType.ContentLengthExceeded,
                 -> SectionError.Unknown
             }
         }

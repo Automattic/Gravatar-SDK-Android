@@ -7,6 +7,7 @@ internal object HttpResponseCode {
     const val HTTP_TOO_MANY_REQUESTS = 429
     const val UNAUTHORIZED = 401
     const val INVALID_REQUEST = 400
+    const val CONTENT_TOO_LARGE = 413
 
     private const val HTTP_INTERNAL_ERROR = 500
     private const val NETWORK_CONNECT_TIMEOUT_ERROR = 599
