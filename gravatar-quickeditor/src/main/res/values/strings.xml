@@ -33,6 +33,7 @@
     <string name="failed_to_load_avatar_content_description">Upload failed, tap to see actions.</string>
     <string name="avatar_upload_failure_dialog_title">Couldn\'t upload image</string>
     <string name="avatar_upload_failure_dialog_remove_upload">Remove upload</string>
+    <string name="gravatar_avatar_upload_failure_image_too_big">The provided image exceeds the maximum size: 10MB</string>
     <string name="oauth_email_associated_error_message">Something went wrong when verifying your email.</string>
     <string name="gravatar_qe_permission_required_alert_title">Permission required</string>
     <string name="gravatar_qe_camera_permission_rationale_message">To take a picture, you need to grant camera permission. You can grant it in the app settings.</string>

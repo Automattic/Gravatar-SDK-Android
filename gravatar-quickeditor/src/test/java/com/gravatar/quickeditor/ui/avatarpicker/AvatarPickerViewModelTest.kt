@@ -440,7 +440,7 @@ class AvatarPickerViewModelTest {
                 avatarPickerUiState.copy(
                     uploadingAvatar = null,
                     scrollToIndex = null,
-                    failedUploads = setOf(AvatarUploadFailure(uri, errorMessage)),
+                    failedUploads = setOf(AvatarUploadFailure(uri, invalidRequest.type)),
                 ),
                 awaitItem(),
             )
@@ -550,7 +550,7 @@ class AvatarPickerViewModelTest {
                 scrollToIndex = 0,
                 avatarPickerContentLayout = avatarPickerContentLayout,
                 failedUploads = setOf(
-                    AvatarUploadFailure(uriOne, errorMessage),
+                    AvatarUploadFailure(uriOne, invalidRequest.type),
                 ),
             )
             assertEquals(
@@ -597,7 +597,7 @@ class AvatarPickerViewModelTest {
             expectMostRecentItem()
             viewModel.onEvent(AvatarPickerEvent.FailedAvatarTapped(uri))
 
-            assertEquals(AvatarUploadFailure(uri, errorMessage), awaitItem().failedUploadDialog)
+            assertEquals(AvatarUploadFailure(uri, invalidRequest.type), awaitItem().failedUploadDialog)
         }
     }
 
@@ -649,7 +649,7 @@ class AvatarPickerViewModelTest {
 
             val awaitItem = awaitItem()
             assertEquals(null, awaitItem.failedUploadDialog)
-            assertEquals(setOf(AvatarUploadFailure(uri, errorMessage)), awaitItem.failedUploads)
+            assertEquals(setOf(AvatarUploadFailure(uri, invalidRequest.type)), awaitItem.failedUploads)
         }
     }
 

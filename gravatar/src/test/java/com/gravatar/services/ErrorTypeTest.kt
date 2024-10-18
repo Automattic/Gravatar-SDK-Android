@@ -1,5 +1,6 @@
 package com.gravatar.services
 
+import com.gravatar.HttpResponseCode.CONTENT_TOO_LARGE
 import com.gravatar.HttpResponseCode.HTTP_CLIENT_TIMEOUT
 import com.gravatar.HttpResponseCode.HTTP_NOT_FOUND
 import com.gravatar.HttpResponseCode.HTTP_TOO_MANY_REQUESTS
@@ -39,6 +40,7 @@ class ErrorTypeTest {
                 error = "Only square images are accepted"
             },
         ),
+        CONTENT_TOO_LARGE to ErrorType.ContentLengthExceeded,
     ).apply {
         SERVER_ERRORS.forEach { code ->
             add(code to ErrorType.Server)
