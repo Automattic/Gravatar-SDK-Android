@@ -266,6 +266,7 @@ internal class AvatarPickerViewModel(
                 is ErrorType.Unknown,
                 is ErrorType.InvalidRequest,
                 ErrorType.ContentLengthExceeded,
+                is ErrorType.FutureError,
                 -> SectionError.Unknown
             }
         }

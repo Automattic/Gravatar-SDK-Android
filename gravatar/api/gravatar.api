@@ -661,6 +661,10 @@ public final class com/gravatar/services/ErrorType$ContentLengthExceeded : com/g
 	public fun toString ()Ljava/lang/String;
 }
 
+public abstract class com/gravatar/services/ErrorType$FutureError : com/gravatar/services/ErrorType {
+	public fun <init> ()V
+}
+
 public final class com/gravatar/services/ErrorType$InvalidRequest : com/gravatar/services/ErrorType {
 	public fun <init> (Lcom/gravatar/restapi/models/Error;)V
 	public fun equals (Ljava/lang/Object;)Z
