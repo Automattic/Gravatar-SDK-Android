@@ -651,7 +651,7 @@ public final class com/gravatar/services/AvatarService {
 	public final fun uploadCatching (Ljava/io/File;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
-public abstract class com/gravatar/services/ErrorType {
+public abstract interface class com/gravatar/services/ErrorType {
 }
 
 public final class com/gravatar/services/ErrorType$ContentLengthExceeded : com/gravatar/services/ErrorType {
