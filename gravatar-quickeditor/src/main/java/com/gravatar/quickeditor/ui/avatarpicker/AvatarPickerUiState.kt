@@ -5,6 +5,7 @@ import com.gravatar.quickeditor.data.repository.EmailAvatars
 import com.gravatar.quickeditor.ui.editor.AvatarPickerContentLayout
 import com.gravatar.restapi.models.Avatar
 import com.gravatar.restapi.models.Profile
+import com.gravatar.services.ErrorType
 import com.gravatar.types.Email
 import com.gravatar.ui.components.ComponentState
 
@@ -81,7 +82,7 @@ internal data class AvatarsSectionUiState(
 
 internal data class AvatarUploadFailure(
     val uri: Uri,
-    val error: String?,
+    val error: ErrorType?,
 )
 
 internal sealed class AvatarUi(val avatarId: String) {

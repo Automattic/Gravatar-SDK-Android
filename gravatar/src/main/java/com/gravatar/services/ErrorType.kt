@@ -18,7 +18,7 @@ internal fun HttpException.errorTypeFromHttpCode(moshi: Moshi): ErrorType = when
         }.getOrNull()
         ErrorType.InvalidRequest(error)
     }
-
+    HttpResponseCode.CONTENT_TOO_LARGE -> ErrorType.ContentLengthExceeded
     in HttpResponseCode.SERVER_ERRORS -> ErrorType.Server
     else -> ErrorType.Unknown("HTTP Code $code - ErrorBody $rawErrorBody")
 }
@@ -53,6 +53,9 @@ public sealed class ErrorType {
 
     /** User not authorized to perform given action **/
     public data object Unauthorized : ErrorType()
+
+    /** Content length exceeded **/
+    public data object ContentLengthExceeded : ErrorType()
 
     /**
      * An unknown error occurred

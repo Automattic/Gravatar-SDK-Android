@@ -9,6 +9,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.gravatar.quickeditor.R
 import com.gravatar.quickeditor.ui.avatarpicker.AvatarUploadFailure
+import com.gravatar.services.ErrorType
 import com.gravatar.ui.GravatarTheme
 
 @Composable
@@ -26,7 +27,15 @@ internal fun FailedAvatarUploadAlertDialog(
                     Text(text = stringResource(id = R.string.avatar_upload_failure_dialog_title))
                 },
                 text = {
-                    avatarUploadFailure.error?.let { Text(text = it) }
+                    avatarUploadFailure.error?.let {
+                        when (it) {
+                            is ErrorType.InvalidRequest -> it.error?.error
+                            is ErrorType.ContentLengthExceeded -> stringResource(
+                                id = R.string.gravatar_avatar_upload_failure_image_too_big,
+                            )
+                            else -> null
+                        }?.let { errorString -> Text(text = errorString) }
+                    }
                 },
                 confirmButton = {
                     TextButton(
@@ -47,7 +56,7 @@ internal fun FailedAvatarUploadAlertDialog(
 @Composable
 private fun FailedAvatarUploadAlertDialogPreview() {
     FailedAvatarUploadAlertDialog(
-        avatarUploadFailure = AvatarUploadFailure(Uri.EMPTY, "Error message"),
+        avatarUploadFailure = AvatarUploadFailure(Uri.EMPTY, ErrorType.ContentLengthExceeded),
         onRemoveUploadClicked = {},
         onRetryClicked = {},
         onDismiss = {},
