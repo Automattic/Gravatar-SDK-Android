@@ -20,10 +20,12 @@ import androidx.compose.material.icons.rounded.AccountCircle
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,6 +36,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -56,6 +59,8 @@ import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
 import com.gravatar.quickeditor.ui.editor.bottomsheet.GravatarQuickEditorBottomSheet
 import com.gravatar.quickeditor.ui.oauth.OAuthParams
 import com.gravatar.types.Email
+import com.gravatar.ui.GravatarTheme
+import com.gravatar.ui.LocalGravatarTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -176,24 +181,35 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
                 },
             )
         }
-        GravatarQuickEditorBottomSheet(
-            gravatarQuickEditorParams = GravatarQuickEditorParams {
-                email = Email(userEmail)
-                avatarPickerContentLayout = pickerContentLayout
+        // CompositionLocalProvider is not required, it's added here
+        // to test that the QuickEditor theme can't be overridden
+        CompositionLocalProvider(
+            LocalGravatarTheme provides object : GravatarTheme {
+                // Override theme colors
+                override val colorScheme: ColorScheme
+                    @Composable
+                    get() = MaterialTheme.colorScheme.copy(surface = Color.Red)
             },
-            authenticationMethod = authenticationMethod,
-            onAvatarSelected = remember {
-                {
-                    cacheBuster = System.currentTimeMillis().toString()
-                }
-            },
-            onDismiss = remember {
-                {
-                    Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()
-                    showBottomSheet = false
-                }
-            },
-        )
+        ) {
+            GravatarQuickEditorBottomSheet(
+                gravatarQuickEditorParams = GravatarQuickEditorParams {
+                    email = Email(userEmail)
+                    avatarPickerContentLayout = pickerContentLayout
+                },
+                authenticationMethod = authenticationMethod,
+                onAvatarSelected = remember {
+                    {
+                        cacheBuster = System.currentTimeMillis().toString()
+                    }
+                },
+                onDismiss = remember {
+                    {
+                        Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()
+                        showBottomSheet = false
+                    }
+                },
+            )
+        }
     }
 }
 
