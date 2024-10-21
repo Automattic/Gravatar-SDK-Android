@@ -33,36 +33,36 @@ internal fun Throwable.errorType(moshi: Moshi): ErrorType {
 }
 
 /**
- * Error types for Gravatar image upload
+ * Error types for Gravatar API requests.
  */
-public sealed class ErrorType {
+public interface ErrorType {
     /** server returned an error */
-    public data object Server : ErrorType()
+    public data object Server : ErrorType
 
     /** network request timed out */
-    public data object Timeout : ErrorType()
+    public data object Timeout : ErrorType
 
     /** network is not available */
-    public data object Network : ErrorType()
+    public data object Network : ErrorType
 
     /** User or hash not found */
-    public data object NotFound : ErrorType()
+    public data object NotFound : ErrorType
 
     /** User or hash not found */
-    public data object RateLimitExceeded : ErrorType()
+    public data object RateLimitExceeded : ErrorType
 
     /** User not authorized to perform given action **/
-    public data object Unauthorized : ErrorType()
+    public data object Unauthorized : ErrorType
 
     /** Content length exceeded **/
-    public data object ContentLengthExceeded : ErrorType()
+    public data object ContentLengthExceeded : ErrorType
 
     /**
      * An unknown error occurred
      *
      * @property errorMsg The error message, if available.
      */
-    public class Unknown(public val errorMsg: String? = null) : ErrorType() {
+    public class Unknown(public val errorMsg: String? = null) : ErrorType {
         override fun toString(): String = "Unknown(errorMsg=$errorMsg)"
 
         override fun equals(other: Any?): Boolean = other is Unknown && errorMsg == other.errorMsg
@@ -75,7 +75,7 @@ public sealed class ErrorType {
      *
      * @property error The detailed error that occurred, if returned from the server.
      */
-    public class InvalidRequest(public val error: Error?) : ErrorType() {
+    public class InvalidRequest(public val error: Error?) : ErrorType {
         override fun toString(): String = "InvalidRequest(error=$error)"
 
         override fun equals(other: Any?): Boolean = other is InvalidRequest && error == other.error

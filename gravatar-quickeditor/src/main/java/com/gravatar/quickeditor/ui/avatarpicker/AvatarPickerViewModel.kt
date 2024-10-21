@@ -260,13 +260,7 @@ internal class AvatarPickerViewModel(
                 ErrorType.Server -> SectionError.ServerError
                 ErrorType.Network -> SectionError.NoInternetConnection
                 ErrorType.Unauthorized -> SectionError.InvalidToken(handleExpiredSession)
-                ErrorType.NotFound,
-                ErrorType.RateLimitExceeded,
-                ErrorType.Timeout,
-                is ErrorType.Unknown,
-                is ErrorType.InvalidRequest,
-                ErrorType.ContentLengthExceeded,
-                -> SectionError.Unknown
+                else -> SectionError.Unknown
             }
         }
 }
