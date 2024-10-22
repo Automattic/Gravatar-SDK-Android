@@ -95,8 +95,8 @@ private fun mediaList(profile: Profile): List<SocialMedia> {
     val mediaList = mutableListOf<SocialMedia>()
     // Force the Gravatar icon
     mediaList.add(SocialMedia(profile.profileUrl().url, LocalIcon.Gravatar.name, icon = LocalIcon.Gravatar))
-    // List and filter the other accounts from the profile, keep the same order coming from UserProfile.accounts list
-    profile.verifiedAccounts.forEach { account ->
+    // List and filter non hidden accounts from the profile, keep the same order coming from UserProfile.accounts list
+    profile.verifiedAccounts.filter { !it.isHidden }.forEach { account ->
         try {
             if (LocalIcon.valueForLabel(account.serviceLabel) != null) {
                 // Add local icon if the shortname exists in our predefined list
@@ -245,6 +245,13 @@ private fun SocialIconRowPreview() {
                 url = URI("https://example.com")
                 serviceIcon = URI("https://example.com/icon.svg")
                 isHidden = false
+            },
+            VerifiedAccount {
+                serviceType = "twitch"
+                serviceLabel = "Twitch"
+                url = URI("https://example.com")
+                serviceIcon = URI("https://example.com/icon.svg")
+                isHidden = true
             },
             VerifiedAccount {
                 serviceType = "tumblr"
