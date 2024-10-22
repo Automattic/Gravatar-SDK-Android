@@ -139,9 +139,9 @@ internal fun Context.withCameraPermission(
 
 internal val AvatarsSectionUiState.titleRes: Int
     @StringRes get() = if (avatars.isNotEmpty()) {
-        R.string.avatar_picker_title
+        R.string.gravatar_avatar_picker_title
     } else {
-        R.string.avatar_picker_title_empty_state
+        R.string.gravatar_avatar_picker_title_empty_state
     }
 
 @Composable

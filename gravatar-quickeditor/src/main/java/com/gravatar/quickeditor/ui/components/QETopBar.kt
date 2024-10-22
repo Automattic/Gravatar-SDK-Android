@@ -40,7 +40,7 @@ internal fun QETopBar(onDoneClick: () -> Unit, modifier: Modifier = Modifier, on
             ) {
                 Text(
                     style = MaterialTheme.typography.labelLarge,
-                    text = stringResource(R.string.bottom_sheet_done),
+                    text = stringResource(R.string.gravatar_bottom_sheet_done),
                 )
             }
         },

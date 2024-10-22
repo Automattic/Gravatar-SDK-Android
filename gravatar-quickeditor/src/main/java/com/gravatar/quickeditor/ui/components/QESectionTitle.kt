@@ -24,6 +24,6 @@ internal fun QESectionTitle(title: String, modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 private fun QESectionTitlePreview() {
     GravatarTheme {
-        QESectionTitle(title = stringResource(id = R.string.avatar_picker_title))
+        QESectionTitle(title = stringResource(id = R.string.gravatar_avatar_picker_title))
     }
 }

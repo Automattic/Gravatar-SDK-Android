@@ -99,17 +99,17 @@ private fun MediaPickerPopup(
                     ) {
                         Column {
                             PopupButton(
-                                text = stringResource(R.string.avatar_picker_choose_a_photo),
+                                text = stringResource(R.string.gravatar_avatar_picker_choose_a_photo),
                                 iconRes = R.drawable.photo_library,
-                                contentDescription = stringResource(R.string.photo_library_icon_description),
+                                contentDescription = stringResource(R.string.gravatar_photo_library_icon_description),
                                 shape = RoundedCornerShape(topStart = cornerRadius, topEnd = cornerRadius),
                                 onClick = onChoosePhotoClick,
                             )
                             HorizontalDivider()
                             PopupButton(
-                                text = stringResource(R.string.avatar_picker_take_photo),
+                                text = stringResource(R.string.gravatar_avatar_picker_take_photo),
                                 iconRes = R.drawable.capture_photo,
-                                contentDescription = stringResource(R.string.capture_photo_icon_description),
+                                contentDescription = stringResource(R.string.gravatar_capture_photo_icon_description),
                                 shape = RoundedCornerShape(bottomStart = cornerRadius, bottomEnd = cornerRadius),
                                 onClick = onTakePhotoClick,
                             )

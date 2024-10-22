@@ -61,7 +61,7 @@ public fun DisplayName(
         }
 
         ComponentState.Empty -> DisplayName(
-            displayName = stringResource(id = R.string.empty_state_display_name),
+            displayName = stringResource(id = R.string.gravatar_empty_state_display_name),
             modifier,
             textStyle,
         )

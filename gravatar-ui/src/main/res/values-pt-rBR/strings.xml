@@ -6,9 +6,9 @@ Generator: GlotPress/2.4.0-alpha
 Language: pt_BR
 -->
 <resources>
-    <string name="empty_state_view_profile_button">Reivindicar perfil</string>
-    <string name="empty_state_user_info">Adicione sua localização, pronomes, etc</string>
-    <string name="empty_state_display_name">Seu Nome</string>
-    <string name="empty_state_about_me">Diga ao mundo quem você é. Seu avatar e bio que te acompanham pela web.</string>
-    <string name="view_profile_button">Ver Perfil</string>
+    <string name="gravatar_empty_state_view_profile_button">Reivindicar perfil</string>
+    <string name="gravatar_empty_state_user_info">Adicione sua localização, pronomes, etc</string>
+    <string name="gravatar_empty_state_display_name">Seu Nome</string>
+    <string name="gravatar_empty_state_about_me">Diga ao mundo quem você é. Seu avatar e bio que te acompanham pela web.</string>
+    <string name="gravatar_view_profile_button">Ver Perfil</string>
 </resources>

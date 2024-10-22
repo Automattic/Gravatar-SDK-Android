@@ -120,9 +120,9 @@ internal fun OauthPage(
                     OAuthStatus.Authorizing -> CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                     OAuthStatus.LoginRequired -> {
                         ErrorSection(
-                            title = stringResource(R.string.login_required),
-                            message = stringResource(R.string.login_required_message),
-                            buttonText = stringResource(id = R.string.avatar_picker_session_error_cta),
+                            title = stringResource(R.string.gravatar_login_required),
+                            message = stringResource(R.string.gravatar_login_required_message),
+                            buttonText = stringResource(id = R.string.gravatar_avatar_picker_session_error_cta),
                             onButtonClick = onStartOAuthClicked,
                             modifier = Modifier
                                 .padding(horizontal = 16.dp)
@@ -132,12 +132,12 @@ internal fun OauthPage(
 
                     OAuthStatus.WrongEmailAuthorized -> {
                         ErrorSection(
-                            title = stringResource(R.string.avatar_picker_server_error_title),
+                            title = stringResource(R.string.gravatar_avatar_picker_server_error_title),
                             message = stringResource(
-                                R.string.oauth_wrong_email_authenticated_error_message,
+                                R.string.gravatar_oauth_wrong_email_authenticated_error_message,
                                 email.toString(),
                             ),
-                            buttonText = stringResource(id = R.string.avatar_picker_session_error_cta),
+                            buttonText = stringResource(id = R.string.gravatar_avatar_picker_session_error_cta),
                             onButtonClick = onStartOAuthClicked,
                             modifier = Modifier
                                 .padding(horizontal = 16.dp)
@@ -146,12 +146,12 @@ internal fun OauthPage(
                     }
 
                     is OAuthStatus.EmailAssociatedCheckError -> ErrorSection(
-                        title = stringResource(R.string.avatar_picker_server_error_title),
+                        title = stringResource(R.string.gravatar_avatar_picker_server_error_title),
                         message = stringResource(
-                            R.string.oauth_email_associated_error_message,
+                            R.string.gravatar_oauth_email_associated_error_message,
                             email.toString(),
                         ),
-                        buttonText = stringResource(id = R.string.avatar_picker_error_retry_cta),
+                        buttonText = stringResource(id = R.string.gravatar_avatar_picker_error_retry_cta),
                         onButtonClick = { onEmailAssociationCheckClicked(status.token) },
                         modifier = Modifier
                             .padding(horizontal = 16.dp)

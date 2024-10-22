@@ -80,7 +80,7 @@ internal fun VerticalAvatarsSection(
                     span = { GridItemSpan(maxLineSpan) },
                 ) {
                     QESectionMessage(
-                        message = stringResource(R.string.avatar_picker_description),
+                        message = stringResource(R.string.gravatar_avatar_picker_description),
                         modifier = Modifier
                             .padding(top = 4.dp),
                     )
@@ -95,7 +95,7 @@ internal fun VerticalAvatarsSection(
                         span = { GridItemSpan(maxLineSpan) },
                     ) {
                         QEButton(
-                            buttonText = stringResource(id = R.string.avatar_picker_upload_image),
+                            buttonText = stringResource(id = R.string.gravatar_avatar_picker_upload_image),
                             onClick = { popupVisible = true },
                             enabled = state.uploadButtonEnabled,
                             modifier = Modifier
