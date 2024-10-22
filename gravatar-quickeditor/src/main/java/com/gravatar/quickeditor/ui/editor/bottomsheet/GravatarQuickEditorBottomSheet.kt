@@ -70,17 +70,15 @@ public fun GravatarQuickEditorBottomSheet(
     onAvatarSelected: () -> Unit,
     onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit = {},
 ) {
-    CompositionLocalProvider(LocalGravatarTheme provides mainGravatarTheme) {
-        GravatarQuickEditorBottomSheet(
-            gravatarQuickEditorParams = gravatarQuickEditorParams,
-            authenticationMethod = authenticationMethod,
-            onAvatarSelected = onAvatarSelected,
-            onDismiss = onDismiss,
-            modalBottomSheetState = rememberGravatarModalBottomSheetState(
-                avatarPickerContentLayout = gravatarQuickEditorParams.avatarPickerContentLayout,
-            ),
-        )
-    }
+    GravatarQuickEditorBottomSheet(
+        gravatarQuickEditorParams = gravatarQuickEditorParams,
+        authenticationMethod = authenticationMethod,
+        onAvatarSelected = onAvatarSelected,
+        onDismiss = onDismiss,
+        modalBottomSheetState = rememberGravatarModalBottomSheetState(
+            avatarPickerContentLayout = gravatarQuickEditorParams.avatarPickerContentLayout,
+        ),
+    )
 }
 
 @Composable
@@ -91,27 +89,29 @@ internal fun GravatarQuickEditorBottomSheet(
     onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit = {},
     modalBottomSheetState: ModalBottomSheetState,
 ) {
-    GravatarModalBottomSheet(
-        onDismiss = onDismiss,
-        modalBottomSheetState = modalBottomSheetState,
-    ) {
-        when (authenticationMethod) {
-            is AuthenticationMethod.Bearer -> {
-                GravatarQuickEditorPage(
-                    gravatarQuickEditorParams = gravatarQuickEditorParams,
-                    authToken = authenticationMethod.token,
-                    onDismiss = onDismiss,
-                    onAvatarSelected = onAvatarSelected,
-                )
-            }
+    CompositionLocalProvider(LocalGravatarTheme provides mainGravatarTheme) {
+        GravatarModalBottomSheet(
+            onDismiss = onDismiss,
+            modalBottomSheetState = modalBottomSheetState,
+        ) {
+            when (authenticationMethod) {
+                is AuthenticationMethod.Bearer -> {
+                    GravatarQuickEditorPage(
+                        gravatarQuickEditorParams = gravatarQuickEditorParams,
+                        authToken = authenticationMethod.token,
+                        onDismiss = onDismiss,
+                        onAvatarSelected = onAvatarSelected,
+                    )
+                }
 
-            is AuthenticationMethod.OAuth -> {
-                GravatarQuickEditorPage(
-                    gravatarQuickEditorParams = gravatarQuickEditorParams,
-                    oAuthParams = authenticationMethod.oAuthParams,
-                    onDismiss = onDismiss,
-                    onAvatarSelected = onAvatarSelected,
-                )
+                is AuthenticationMethod.OAuth -> {
+                    GravatarQuickEditorPage(
+                        gravatarQuickEditorParams = gravatarQuickEditorParams,
+                        oAuthParams = authenticationMethod.oAuthParams,
+                        onDismiss = onDismiss,
+                        onAvatarSelected = onAvatarSelected,
+                    )
+                }
             }
         }
     }
