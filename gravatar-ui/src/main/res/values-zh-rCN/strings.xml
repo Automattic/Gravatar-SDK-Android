@@ -6,9 +6,9 @@ Generator: GlotPress/2.4.0-alpha
 Language: zh_CN
 -->
 <resources>
-    <string name="gravatar_empty_state_view_profile_button">申请个人资料</string>
-    <string name="gravatar_empty_state_user_info">添加您的位置、性别代词等信息</string>
-    <string name="gravatar_empty_state_display_name">您的姓名</string>
-    <string name="gravatar_empty_state_about_me">让大家认识您。 应用于整个网络的头像和简介。</string>
-    <string name="gravatar_view_profile_button">查看个人资料</string>
+    <string name="gravatar_ui_empty_state_view_profile_button">申请个人资料</string>
+    <string name="gravatar_ui_empty_state_user_info">添加您的位置、性别代词等信息</string>
+    <string name="gravatar_ui_empty_state_display_name">您的姓名</string>
+    <string name="gravatar_ui_empty_state_about_me">让大家认识您。 应用于整个网络的头像和简介。</string>
+    <string name="gravatar_ui_view_profile_button">查看个人资料</string>
 </resources>

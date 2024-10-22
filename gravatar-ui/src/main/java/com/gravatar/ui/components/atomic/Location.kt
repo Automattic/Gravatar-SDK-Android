@@ -69,7 +69,7 @@ public fun Location(
         }
 
         ComponentState.Empty -> {
-            content.invoke(stringResource(id = R.string.gravatar_empty_state_user_info), modifier)
+            content.invoke(stringResource(id = R.string.gravatar_ui_empty_state_user_info), modifier)
         }
     }
 }

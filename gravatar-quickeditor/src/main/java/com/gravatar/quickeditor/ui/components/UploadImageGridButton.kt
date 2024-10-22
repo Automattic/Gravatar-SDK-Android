@@ -37,7 +37,7 @@ internal fun UploadImageGridButton(onClick: () -> Unit, enabled: Boolean, modifi
     ) {
         Icon(
             imageVector = Icons.Filled.Add,
-            contentDescription = stringResource(R.string.gravatar_upload_image_content_description),
+            contentDescription = stringResource(R.string.gravatar_qe_upload_image_content_description),
         )
     }
 }

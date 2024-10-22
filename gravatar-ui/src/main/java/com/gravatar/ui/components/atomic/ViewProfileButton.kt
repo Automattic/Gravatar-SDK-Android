@@ -38,7 +38,7 @@ import com.gravatar.ui.components.ComponentState
 import com.gravatar.ui.components.LoadingToLoadedProfileStatePreview
 
 @Composable
-private fun defaultViewProfileButtonText(): String = stringResource(R.string.gravatar_view_profile_button)
+private fun defaultViewProfileButtonText(): String = stringResource(R.string.gravatar_ui_view_profile_button)
 
 /**
  * ViewProfileButton is a composable that displays a button to view a user's profile.
@@ -126,7 +126,7 @@ public fun ViewProfileButton(
 
         ComponentState.Empty -> {
             ViewProfileButton(
-                buttonText = stringResource(id = R.string.gravatar_empty_state_view_profile_button),
+                buttonText = stringResource(id = R.string.gravatar_ui_empty_state_view_profile_button),
                 url = GravatarConstants.GRAVATAR_SIGN_IN_URL,
                 textStyle = textStyle,
                 inlineContent = inlineContent,

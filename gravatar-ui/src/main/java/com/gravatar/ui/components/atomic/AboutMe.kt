@@ -89,7 +89,7 @@ public fun AboutMe(
         ComponentState.Empty -> {
             DashedBorder(modifier) {
                 content.invoke(
-                    stringResource(id = R.string.gravatar_empty_state_about_me),
+                    stringResource(id = R.string.gravatar_ui_empty_state_about_me),
                     Modifier.padding(8.dp),
                 )
             }

@@ -24,6 +24,6 @@ internal fun QESectionMessage(message: String, modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 private fun QESectionMessagePreview() {
     GravatarTheme {
-        QESectionMessage(message = stringResource(id = R.string.gravatar_avatar_picker_description))
+        QESectionMessage(message = stringResource(id = R.string.gravatar_qe_avatar_picker_description))
     }
 }

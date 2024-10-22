@@ -6,9 +6,9 @@ Generator: GlotPress/2.4.0-alpha
 Language: tr
 -->
 <resources>
-    <string name="gravatar_empty_state_view_profile_button">Profili sahiplen</string>
-    <string name="gravatar_empty_state_user_info">Konumunuzu, zamirlerinizi vb. ekleyin</string>
-    <string name="gravatar_empty_state_display_name">Adınız</string>
-    <string name="gravatar_empty_state_about_me">Kim olduğunuzu dünyaya anlatın. Web\'de gösterilen avatarınız ve biyografiniz.</string>
-    <string name="gravatar_view_profile_button">Profili Görüntüle</string>
+    <string name="gravatar_ui_empty_state_view_profile_button">Profili sahiplen</string>
+    <string name="gravatar_ui_empty_state_user_info">Konumunuzu, zamirlerinizi vb. ekleyin</string>
+    <string name="gravatar_ui_empty_state_display_name">Adınız</string>
+    <string name="gravatar_ui_empty_state_about_me">Kim olduğunuzu dünyaya anlatın. Web\'de gösterilen avatarınız ve biyografiniz.</string>
+    <string name="gravatar_ui_view_profile_button">Profili Görüntüle</string>
 </resources>

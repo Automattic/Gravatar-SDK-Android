@@ -6,9 +6,9 @@ Generator: GlotPress/2.4.0-alpha
 Language: zh_TW
 -->
 <resources>
-    <string name="gravatar_empty_state_view_profile_button">登記個人檔案</string>
-    <string name="gravatar_empty_state_user_info">新增你的位置、性別認同代稱等</string>
-    <string name="gravatar_empty_state_display_name">你的姓名</string>
-    <string name="gravatar_empty_state_about_me">讓全世界認識你。 網路世界的隨身大頭貼與簡介。</string>
-    <string name="gravatar_view_profile_button">檢視個人檔案</string>
+    <string name="gravatar_ui_empty_state_view_profile_button">登記個人檔案</string>
+    <string name="gravatar_ui_empty_state_user_info">新增你的位置、性別認同代稱等</string>
+    <string name="gravatar_ui_empty_state_display_name">你的姓名</string>
+    <string name="gravatar_ui_empty_state_about_me">讓全世界認識你。 網路世界的隨身大頭貼與簡介。</string>
+    <string name="gravatar_ui_view_profile_button">檢視個人檔案</string>
 </resources>
