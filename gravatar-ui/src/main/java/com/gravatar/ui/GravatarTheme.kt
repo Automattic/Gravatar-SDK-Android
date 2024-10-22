@@ -53,16 +53,19 @@ public interface GravatarTheme {
 }
 
 /**
+ * [mainGravatarTheme] is the default [GravatarTheme] to be used in the Gravatar UI components.
+ */
+public val mainGravatarTheme: GravatarTheme = object : GravatarTheme {
+    override val colorScheme: ColorScheme
+        @Composable
+        get() = if (isSystemInDarkTheme()) DarkColorScheme else LightColorScheme
+}
+
+/**
  * [LocalGravatarTheme] is a CompositionLocal that provides the current [GravatarTheme].
  */
 public val LocalGravatarTheme: ProvidableCompositionLocal<GravatarTheme> =
-    staticCompositionLocalOf {
-        object : GravatarTheme {
-            override val colorScheme: ColorScheme
-                @Composable
-                get() = if (isSystemInDarkTheme()) DarkColorScheme else LightColorScheme
-        }
-    }
+    staticCompositionLocalOf { mainGravatarTheme }
 
 /** The current [GravatarTheme]. */
 public val gravatarTheme: GravatarTheme

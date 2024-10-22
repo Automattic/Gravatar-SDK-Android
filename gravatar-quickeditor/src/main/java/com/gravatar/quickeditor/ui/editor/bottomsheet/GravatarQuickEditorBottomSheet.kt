@@ -19,6 +19,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -46,6 +47,8 @@ import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorDismissReason
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorPage
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
 import com.gravatar.ui.GravatarTheme
+import com.gravatar.ui.LocalGravatarTheme
+import com.gravatar.ui.mainGravatarTheme
 import kotlinx.coroutines.launch
 
 /**
@@ -86,27 +89,29 @@ internal fun GravatarQuickEditorBottomSheet(
     onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit = {},
     modalBottomSheetState: ModalBottomSheetState,
 ) {
-    GravatarModalBottomSheet(
-        onDismiss = onDismiss,
-        modalBottomSheetState = modalBottomSheetState,
-    ) {
-        when (authenticationMethod) {
-            is AuthenticationMethod.Bearer -> {
-                GravatarQuickEditorPage(
-                    gravatarQuickEditorParams = gravatarQuickEditorParams,
-                    authToken = authenticationMethod.token,
-                    onDismiss = onDismiss,
-                    onAvatarSelected = onAvatarSelected,
-                )
-            }
+    CompositionLocalProvider(LocalGravatarTheme provides mainGravatarTheme) {
+        GravatarModalBottomSheet(
+            onDismiss = onDismiss,
+            modalBottomSheetState = modalBottomSheetState,
+        ) {
+            when (authenticationMethod) {
+                is AuthenticationMethod.Bearer -> {
+                    GravatarQuickEditorPage(
+                        gravatarQuickEditorParams = gravatarQuickEditorParams,
+                        authToken = authenticationMethod.token,
+                        onDismiss = onDismiss,
+                        onAvatarSelected = onAvatarSelected,
+                    )
+                }
 
-            is AuthenticationMethod.OAuth -> {
-                GravatarQuickEditorPage(
-                    gravatarQuickEditorParams = gravatarQuickEditorParams,
-                    oAuthParams = authenticationMethod.oAuthParams,
-                    onDismiss = onDismiss,
-                    onAvatarSelected = onAvatarSelected,
-                )
+                is AuthenticationMethod.OAuth -> {
+                    GravatarQuickEditorPage(
+                        gravatarQuickEditorParams = gravatarQuickEditorParams,
+                        oAuthParams = authenticationMethod.oAuthParams,
+                        onDismiss = onDismiss,
+                        onAvatarSelected = onAvatarSelected,
+                    )
+                }
             }
         }
     }

@@ -4,9 +4,7 @@ import android.view.ViewGroup
 import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.ComposeView
 import com.composables.core.SheetDetent.Companion.Hidden
 import com.gravatar.quickeditor.ui.editor.AuthenticationMethod

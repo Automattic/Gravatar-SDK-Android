@@ -14,6 +14,7 @@ public final class com/gravatar/ui/GravatarThemeKt {
 	public static final fun GravatarTheme (Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;I)V
 	public static final fun getGravatarTheme (Landroidx/compose/runtime/Composer;I)Lcom/gravatar/ui/GravatarTheme;
 	public static final fun getLocalGravatarTheme ()Landroidx/compose/runtime/ProvidableCompositionLocal;
+	public static final fun getMainGravatarTheme ()Lcom/gravatar/ui/GravatarTheme;
 }
 
 public abstract class com/gravatar/ui/components/ComponentState {
