@@ -6,9 +6,9 @@ Generator: GlotPress/2.4.0-alpha
 Language: id
 -->
 <resources>
-    <string name="empty_state_view_profile_button">Klaim profil</string>
-    <string name="empty_state_user_info">Masukkan lokasi, kata ganti Anda, dll.</string>
-    <string name="empty_state_display_name">Nama Anda</string>
-    <string name="empty_state_about_me">Perkenalkan diri Anda. Avatar dan bio yang mengikuti Anda di internet.</string>
-    <string name="view_profile_button">Lihat Profil</string>
+    <string name="gravatar_ui_empty_state_view_profile_button">Klaim profil</string>
+    <string name="gravatar_ui_empty_state_user_info">Masukkan lokasi, kata ganti Anda, dll.</string>
+    <string name="gravatar_ui_empty_state_display_name">Nama Anda</string>
+    <string name="gravatar_ui_empty_state_about_me">Perkenalkan diri Anda. Avatar dan bio yang mengikuti Anda di internet.</string>
+    <string name="gravatar_ui_view_profile_button">Lihat Profil</string>
 </resources>

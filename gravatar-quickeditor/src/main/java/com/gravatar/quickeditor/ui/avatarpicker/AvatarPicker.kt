@@ -222,7 +222,7 @@ private fun AvatarPickerAction.handle(
             onAvatarSelected()
             scope.launch {
                 snackState.showQESnackbar(
-                    message = context.getString(R.string.avatar_selected_confirmation),
+                    message = context.getString(R.string.gravatar_qe_avatar_selected_confirmation),
                     withDismissAction = true,
                 )
             }
@@ -235,7 +235,7 @@ private fun AvatarPickerAction.handle(
         AvatarPickerAction.AvatarSelectionFailed -> {
             scope.launch {
                 snackState.showQESnackbar(
-                    message = context.getString(R.string.avatar_selection_error),
+                    message = context.getString(R.string.gravatar_qe_avatar_selection_error),
                     withDismissAction = true,
                     snackbarType = SnackbarType.Error,
                 )
@@ -251,38 +251,38 @@ private fun Int.pxToDp(context: Context): Dp =
 
 private val SectionError.titleRes: Int
     @StringRes get() = when (this) {
-        is SectionError.InvalidToken -> R.string.avatar_picker_session_error_title
-        SectionError.NoInternetConnection -> R.string.avatar_picker_network_error_title
+        is SectionError.InvalidToken -> R.string.gravatar_qe_avatar_picker_session_error_title
+        SectionError.NoInternetConnection -> R.string.gravatar_qe_avatar_picker_network_error_title
         SectionError.ServerError,
         SectionError.Unknown,
-        -> R.string.avatar_picker_server_error_title
+        -> R.string.gravatar_qe_avatar_picker_server_error_title
     }
 
 private val SectionError.messageRes: Int
     @StringRes get() = when (this) {
         is SectionError.InvalidToken -> if (showLogin) {
-            R.string.avatar_picker_session_error_message
+            R.string.gravatar_qe_avatar_picker_session_error_message
         } else {
-            R.string.avatar_picker_session_error_no_login_message
+            R.string.gravatar_qe_avatar_picker_session_error_no_login_message
         }
 
-        SectionError.NoInternetConnection -> R.string.avatar_picker_network_error_message
-        SectionError.ServerError -> R.string.avatar_picker_server_error_message
-        SectionError.Unknown -> R.string.avatar_picker_unknown_error_message
+        SectionError.NoInternetConnection -> R.string.gravatar_qe_avatar_picker_network_error_message
+        SectionError.ServerError -> R.string.gravatar_qe_avatar_picker_server_error_message
+        SectionError.Unknown -> R.string.gravatar_qe_avatar_picker_unknown_error_message
     }
 
 private val SectionError.buttonTextRes: Int
     @StringRes get() = when (this) {
         is SectionError.InvalidToken -> if (showLogin) {
-            R.string.avatar_picker_session_error_cta
+            R.string.gravatar_qe_avatar_picker_session_error_cta
         } else {
-            R.string.avatar_picker_session_error_close_cta
+            R.string.gravatar_qe_avatar_picker_session_error_close_cta
         }
 
         SectionError.NoInternetConnection,
         SectionError.ServerError,
         SectionError.Unknown,
-        -> R.string.avatar_picker_error_retry_cta
+        -> R.string.gravatar_qe_avatar_picker_error_retry_cta
     }
 
 private val SectionError.event: AvatarPickerEvent

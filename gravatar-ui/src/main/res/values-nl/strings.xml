@@ -6,9 +6,9 @@ Generator: GlotPress/2.4.0-alpha
 Language: nl
 -->
 <resources>
-    <string name="empty_state_view_profile_button">Profiel claimen</string>
-    <string name="empty_state_user_info">Je locatie, persoonlijk voornaamwoorden, etc. toevoegen</string>
-    <string name="empty_state_display_name">Je naam</string>
-    <string name="empty_state_about_me">Vertel de wereld wie je bent: Je avatar en bio die jou door het hele web volgen.</string>
-    <string name="view_profile_button">Profiel bekijken</string>
+    <string name="gravatar_ui_empty_state_view_profile_button">Profiel claimen</string>
+    <string name="gravatar_ui_empty_state_user_info">Je locatie, persoonlijk voornaamwoorden, etc. toevoegen</string>
+    <string name="gravatar_ui_empty_state_display_name">Je naam</string>
+    <string name="gravatar_ui_empty_state_about_me">Vertel de wereld wie je bent: Je avatar en bio die jou door het hele web volgen.</string>
+    <string name="gravatar_ui_view_profile_button">Profiel bekijken</string>
 </resources>

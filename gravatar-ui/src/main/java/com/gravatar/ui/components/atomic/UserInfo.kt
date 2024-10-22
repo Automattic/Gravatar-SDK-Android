@@ -74,7 +74,7 @@ public fun UserInfo(
             UserInfo(state.loadedValue, modifier, textStyle, content)
         }
 
-        ComponentState.Empty -> content.invoke(stringResource(R.string.empty_state_user_info), modifier)
+        ComponentState.Empty -> content.invoke(stringResource(R.string.gravatar_ui_empty_state_user_info), modifier)
     }
 }
 

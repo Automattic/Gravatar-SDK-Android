@@ -6,9 +6,9 @@ Generator: GlotPress/2.4.0-alpha
 Language: fr
 -->
 <resources>
-    <string name="empty_state_view_profile_button">Obtenir un profil</string>
-    <string name="empty_state_user_info">Ajoutez votre lieu de résidence, vos pronoms, etc.</string>
-    <string name="empty_state_display_name">Votre Nom</string>
-    <string name="empty_state_about_me">Révélez au monde entier qui vous êtes. L\'avatar et la biographie qui vous suivront partout sur le web.</string>
-    <string name="view_profile_button">Voir le profil</string>
+    <string name="gravatar_ui_empty_state_view_profile_button">Obtenir un profil</string>
+    <string name="gravatar_ui_empty_state_user_info">Ajoutez votre lieu de résidence, vos pronoms, etc.</string>
+    <string name="gravatar_ui_empty_state_display_name">Votre Nom</string>
+    <string name="gravatar_ui_empty_state_about_me">Révélez au monde entier qui vous êtes. L\'avatar et la biographie qui vous suivront partout sur le web.</string>
+    <string name="gravatar_ui_view_profile_button">Voir le profil</string>
 </resources>

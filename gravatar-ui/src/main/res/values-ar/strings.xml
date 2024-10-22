@@ -6,9 +6,9 @@ Generator: GlotPress/2.4.0-alpha
 Language: ar
 -->
 <resources>
-    <string name="empty_state_view_profile_button">المطالبة بالملف الشخصي</string>
-    <string name="empty_state_user_info">إضافة موقعك وضمائرك وما إلى ذلك</string>
-    <string name="empty_state_display_name">اسمك</string>
-    <string name="empty_state_about_me">أخبر العالم مَن أنت. صورتك الرمزية وسيرتك الذاتية التي تتبعك عبر الويب.</string>
-    <string name="view_profile_button">عرض الملف الشخصي</string>
+    <string name="gravatar_ui_empty_state_view_profile_button">المطالبة بالملف الشخصي</string>
+    <string name="gravatar_ui_empty_state_user_info">إضافة موقعك وضمائرك وما إلى ذلك</string>
+    <string name="gravatar_ui_empty_state_display_name">اسمك</string>
+    <string name="gravatar_ui_empty_state_about_me">أخبر العالم مَن أنت. صورتك الرمزية وسيرتك الذاتية التي تتبعك عبر الويب.</string>
+    <string name="gravatar_ui_view_profile_button">عرض الملف الشخصي</string>
 </resources>

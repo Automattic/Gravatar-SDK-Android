@@ -56,7 +56,7 @@ internal fun SelectableAvatar(
     ) {
         AsyncImage(
             model = imageUrl,
-            contentDescription = stringResource(id = R.string.selectable_avatar_content_description),
+            contentDescription = stringResource(id = R.string.gravatar_qe_selectable_avatar_content_description),
             modifier = Modifier
                 .fillMaxSize()
                 .clip(RoundedCornerShape(cornerRadius)),
@@ -86,7 +86,7 @@ private fun FailureOverlay(modifier: Modifier = Modifier) {
     Overlay(modifier) {
         Icon(
             imageVector = Icons.Rounded.Warning,
-            contentDescription = stringResource(R.string.failed_to_load_avatar_content_description),
+            contentDescription = stringResource(R.string.gravatar_qe_failed_to_load_avatar_content_description),
             tint = Color.White,
             modifier = Modifier
                 .size(50.dp)

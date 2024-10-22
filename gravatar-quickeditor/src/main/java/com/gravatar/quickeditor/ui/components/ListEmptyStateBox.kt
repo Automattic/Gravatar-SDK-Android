@@ -20,7 +20,7 @@ internal fun ListEmptyStateBox(modifier: Modifier = Modifier) {
                 .align(Alignment.Center)
                 .padding(vertical = 24.dp),
             painter = painterResource(id = R.drawable.gravatar_face_image),
-            contentDescription = stringResource(R.string.happy_face_image_content_description),
+            contentDescription = stringResource(R.string.gravatar_qe_happy_face_image_content_description),
         )
     }
 }

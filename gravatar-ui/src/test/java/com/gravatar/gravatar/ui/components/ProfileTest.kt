@@ -39,7 +39,7 @@ class ProfileTest : RoborazziTest() {
         Profile(
             state = ComponentState.Loaded(completeProfile()),
             avatar = { _ ->
-                Image(painter = painterResource(id = R.drawable.gravatar_icon), contentDescription = "")
+                Image(painter = painterResource(id = R.drawable.gravatar_gravatar_icon), contentDescription = "")
             },
             viewProfile = { _ -> Text(text = "Custom Profile Button", color = gravatarTheme.colorScheme.primary) },
         )

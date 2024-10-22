@@ -23,7 +23,7 @@ class PopupButtonTest : RoborazziTest() {
                     text = "Choose a Photo",
                     shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
                     contentDescription = "Content description",
-                    iconRes = com.gravatar.quickeditor.R.drawable.photo_library,
+                    iconRes = com.gravatar.quickeditor.R.drawable.gravatar_photo_library,
                     onClick = {},
                 )
             }
@@ -41,7 +41,7 @@ class PopupButtonTest : RoborazziTest() {
                     text = "Choose a Photo",
                     shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
                     contentDescription = "Content description",
-                    iconRes = com.gravatar.quickeditor.R.drawable.photo_library,
+                    iconRes = com.gravatar.quickeditor.R.drawable.gravatar_photo_library,
                     onClick = {},
                     modifier = Modifier.width(120.dp),
                 )
@@ -61,7 +61,7 @@ class PopupButtonTest : RoborazziTest() {
                     text = "Choose a Photo",
                     shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
                     contentDescription = "Content description",
-                    iconRes = com.gravatar.quickeditor.R.drawable.photo_library,
+                    iconRes = com.gravatar.quickeditor.R.drawable.gravatar_photo_library,
                     onClick = {},
                 )
             }

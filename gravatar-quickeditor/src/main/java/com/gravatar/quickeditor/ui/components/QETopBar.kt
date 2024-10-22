@@ -31,7 +31,7 @@ internal fun QETopBar(onDoneClick: () -> Unit, modifier: Modifier = Modifier, on
         title = {
             Text(
                 style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
-                text = stringResource(id = R.string.gravatar),
+                text = stringResource(id = R.string.gravatar_qe_gravatar),
             )
         },
         navigationIcon = {
@@ -40,15 +40,15 @@ internal fun QETopBar(onDoneClick: () -> Unit, modifier: Modifier = Modifier, on
             ) {
                 Text(
                     style = MaterialTheme.typography.labelLarge,
-                    text = stringResource(R.string.bottom_sheet_done),
+                    text = stringResource(R.string.gravatar_qe_bottom_sheet_done),
                 )
             }
         },
         actions = {
             Icon(
-                painter = painterResource(id = com.gravatar.ui.R.drawable.gravatar_icon),
+                painter = painterResource(id = com.gravatar.ui.R.drawable.gravatar_gravatar_icon),
                 tint = MaterialTheme.colorScheme.primary,
-                contentDescription = stringResource(id = R.string.gravatar),
+                contentDescription = stringResource(id = R.string.gravatar_qe_gravatar),
                 modifier = Modifier
                     .clickable(onClick = onGravatarIconClick)
                     .size(34.dp)

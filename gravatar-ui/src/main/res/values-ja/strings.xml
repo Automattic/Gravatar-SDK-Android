@@ -6,9 +6,9 @@ Generator: GlotPress/2.4.0-alpha
 Language: ja_JP
 -->
 <resources>
-    <string name="empty_state_view_profile_button">プロフィールを取得</string>
-    <string name="empty_state_user_info">場所や代名詞などを追加</string>
-    <string name="empty_state_display_name">あなたの名前</string>
-    <string name="empty_state_about_me">あなたのことを紹介しましょう。 ウェブ全体であなたを表すアバターとプロフィールです。</string>
-    <string name="view_profile_button">プロフィールを表示</string>
+    <string name="gravatar_ui_empty_state_view_profile_button">プロフィールを取得</string>
+    <string name="gravatar_ui_empty_state_user_info">場所や代名詞などを追加</string>
+    <string name="gravatar_ui_empty_state_display_name">あなたの名前</string>
+    <string name="gravatar_ui_empty_state_about_me">あなたのことを紹介しましょう。 ウェブ全体であなたを表すアバターとプロフィールです。</string>
+    <string name="gravatar_ui_view_profile_button">プロフィールを表示</string>
 </resources>

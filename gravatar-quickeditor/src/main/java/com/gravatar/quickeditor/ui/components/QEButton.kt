@@ -45,7 +45,7 @@ private fun QEButtonPreview() {
         Surface {
             QEButton(
                 modifier = Modifier.padding(20.dp),
-                buttonText = stringResource(id = R.string.avatar_picker_upload_image),
+                buttonText = stringResource(id = R.string.gravatar_qe_avatar_picker_upload_image),
                 onClick = { },
                 enabled = true,
             )

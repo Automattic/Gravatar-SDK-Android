@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="view_profile_button">View Profile</string>
-    <string name="empty_state_about_me">Tell the world who you are. Your avatar and bio that follows you across the web.</string>
-    <string name="empty_state_display_name">Your Name</string>
-    <string name="empty_state_user_info">Add your location, pronouns, etc</string>
-    <string name="empty_state_view_profile_button">Claim profile</string>
+    <string name="gravatar_ui_view_profile_button">View Profile</string>
+    <string name="gravatar_ui_empty_state_about_me">Tell the world who you are. Your avatar and bio that follows you across the web.</string>
+    <string name="gravatar_ui_empty_state_display_name">Your Name</string>
+    <string name="gravatar_ui_empty_state_user_info">Add your location, pronouns, etc</string>
+    <string name="gravatar_ui_empty_state_view_profile_button">Claim profile</string>
 </resources>

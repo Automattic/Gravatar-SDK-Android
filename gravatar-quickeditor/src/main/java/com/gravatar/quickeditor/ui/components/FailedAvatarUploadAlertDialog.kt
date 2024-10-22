@@ -24,14 +24,14 @@ internal fun FailedAvatarUploadAlertDialog(
             AlertDialog(
                 onDismissRequest = onDismiss,
                 title = {
-                    Text(text = stringResource(id = R.string.avatar_upload_failure_dialog_title))
+                    Text(text = stringResource(id = R.string.gravatar_qe_avatar_upload_failure_dialog_title))
                 },
                 text = {
                     avatarUploadFailure.error?.let {
                         when (it) {
                             is ErrorType.InvalidRequest -> it.error?.error
                             is ErrorType.ContentLengthExceeded -> stringResource(
-                                id = R.string.gravatar_avatar_upload_failure_image_too_big,
+                                id = R.string.gravatar_qe_avatar_upload_failure_image_too_big,
                             )
                             else -> null
                         }?.let { errorString -> Text(text = errorString) }
@@ -40,12 +40,12 @@ internal fun FailedAvatarUploadAlertDialog(
                 confirmButton = {
                     TextButton(
                         onClick = { onRetryClicked(avatarUploadFailure.uri) },
-                    ) { Text(stringResource(R.string.avatar_upload_error_action)) }
+                    ) { Text(stringResource(R.string.gravatar_qe_avatar_upload_error_action)) }
                 },
                 dismissButton = {
                     TextButton(
                         onClick = { onRemoveUploadClicked(avatarUploadFailure.uri) },
-                    ) { Text(stringResource(R.string.avatar_upload_failure_dialog_remove_upload)) }
+                    ) { Text(stringResource(R.string.gravatar_qe_avatar_upload_failure_dialog_remove_upload)) }
                 },
             )
         }

@@ -6,9 +6,9 @@ Generator: GlotPress/2.4.0-alpha
 Language: sv_SE
 -->
 <resources>
-    <string name="empty_state_view_profile_button">Gör anspråk på profil</string>
-    <string name="empty_state_user_info">Lägg till din plats, dina pronomen, osv.</string>
-    <string name="empty_state_display_name">Ditt namn</string>
-    <string name="empty_state_about_me">Berätta för världen vem du är. Din profilbild och biografi som följer med dig på webben.</string>
-    <string name="view_profile_button">Visa profil</string>
+    <string name="gravatar_ui_empty_state_view_profile_button">Gör anspråk på profil</string>
+    <string name="gravatar_ui_empty_state_user_info">Lägg till din plats, dina pronomen, osv.</string>
+    <string name="gravatar_ui_empty_state_display_name">Ditt namn</string>
+    <string name="gravatar_ui_empty_state_about_me">Berätta för världen vem du är. Din profilbild och biografi som följer med dig på webben.</string>
+    <string name="gravatar_ui_view_profile_button">Visa profil</string>
 </resources>
