@@ -212,7 +212,7 @@ private fun ViewProfileButtonWithCustomizedInlineContentPreview() {
         ),
         inlineContent = {
             Icon(
-                painter = painterResource(R.drawable.gravatar_icon),
+                painter = painterResource(R.drawable.gravatar_gravatar_icon),
                 contentDescription = "",
             )
         },

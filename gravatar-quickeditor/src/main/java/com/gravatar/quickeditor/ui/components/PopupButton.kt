@@ -65,7 +65,7 @@ private fun PopupButtonPreview() {
         Box(modifier = Modifier.fillMaxWidth()) {
             PopupButton(
                 text = "Choose a Photo",
-                iconRes = R.drawable.photo_library,
+                iconRes = R.drawable.gravatar_photo_library,
                 contentDescription = "Content description",
                 shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
                 onClick = { },

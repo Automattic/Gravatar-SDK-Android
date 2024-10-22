@@ -46,7 +46,7 @@ internal fun QETopBar(onDoneClick: () -> Unit, modifier: Modifier = Modifier, on
         },
         actions = {
             Icon(
-                painter = painterResource(id = com.gravatar.ui.R.drawable.gravatar_icon),
+                painter = painterResource(id = com.gravatar.ui.R.drawable.gravatar_gravatar_icon),
                 tint = MaterialTheme.colorScheme.primary,
                 contentDescription = stringResource(id = R.string.gravatar),
                 modifier = Modifier

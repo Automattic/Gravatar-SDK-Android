@@ -107,9 +107,9 @@ private fun SkeletonAvatar(size: Dp, modifier: Modifier = Modifier) {
 private fun EmptyAvatar(size: Dp, modifier: Modifier = Modifier) {
     Avatar(
         model = if (isNightModeEnabled()) {
-            R.drawable.empty_profile_avatar_dark
+            R.drawable.gravatar_empty_profile_avatar_dark
         } else {
-            R.drawable.empty_profile_avatar
+            R.drawable.gravatar_empty_profile_avatar
         },
         size = size,
         modifier = modifier,
