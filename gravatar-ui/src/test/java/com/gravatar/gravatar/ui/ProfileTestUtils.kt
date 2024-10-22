@@ -21,6 +21,13 @@ internal fun completeProfile(
             isHidden = false
         },
         VerifiedAccount {
+            serviceType = "twitch"
+            serviceLabel = "Twitch"
+            url = URI("https://example.com")
+            serviceIcon = URI("https://example.com/icon.svg")
+            isHidden = true
+        },
+        VerifiedAccount {
             serviceType = "tumblr"
             serviceLabel = "Tumblr"
             url = URI("https://example.com")
