@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -19,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -62,10 +64,35 @@ internal fun SelectableAvatar(
                 .clip(RoundedCornerShape(cornerRadius)),
         )
         when (loadingState) {
-            AvatarLoadingState.None -> Unit
+            AvatarLoadingState.None -> LoadedOverlay({}, Modifier.align(Alignment.BottomEnd))
             AvatarLoadingState.Loading -> LoadingOverlay()
             is AvatarLoadingState.Failure -> FailureOverlay()
         }
+    }
+}
+
+@Composable
+private fun LoadedOverlay(onMoreOptionsClicked: () -> Unit, modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier
+            .padding(8.dp)
+            .clickable(
+                onClick = onMoreOptionsClicked,
+            )
+            .size(24.dp)
+            .background(
+                color = Color.Black.copy(alpha = 0.3f),
+                shape = RoundedCornerShape(2.dp),
+            )
+            .padding(5.dp),
+    ) {
+        Icon(
+            painter = painterResource(id = R.drawable.gravatar_avatar_more_options_dots),
+            contentDescription =
+                stringResource(id = R.string.gravatar_qe_selectable_avatar_more_options_content_description),
+            tint = Color.White,
+            modifier = Modifier.align(Alignment.Center),
+        )
     }
 }
 
