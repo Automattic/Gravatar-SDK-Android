@@ -13,24 +13,19 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.layout.positionInRoot
-import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.round
 import com.gravatar.quickeditor.R
 import com.gravatar.quickeditor.ui.avatarpicker.AvatarUi
 import com.gravatar.quickeditor.ui.avatarpicker.AvatarsSectionUiState
@@ -48,8 +43,7 @@ internal fun HorizontalAvatarsSection(
     modifier: Modifier = Modifier,
 ) {
     var popupVisible by remember { mutableStateOf(false) }
-    var popupAnchorPosition by remember { mutableStateOf(IntOffset(0, 0)) }
-    var popupAnchorHeight by remember { mutableIntStateOf(0) }
+    var popupAnchorBounds: Rect by remember { mutableStateOf(Rect(Offset.Zero, Size.Zero)) }
     val listState = rememberLazyListState()
 
     LaunchedEffect(state.scrollToIndex) {
@@ -100,19 +94,18 @@ internal fun HorizontalAvatarsSection(
                     enabled = state.uploadButtonEnabled,
                     modifier = Modifier
                         .padding(horizontal = sectionPadding)
-                        .onSizeChanged { intSize: IntSize -> popupAnchorHeight = intSize.height }
                         .onGloballyPositioned { layoutCoordinates ->
-                            popupAnchorPosition = layoutCoordinates
-                                .positionInRoot()
-                                .round()
+                            popupAnchorBounds = layoutCoordinates.boundsInRoot()
                         },
                 )
             }
             if (popupVisible) {
                 MediaPickerPopup(
-                    alignment = Alignment.BottomCenter,
-                    onDismissRequest = { popupVisible = false },
-                    offset = calculatePopupOffsetForFullWidthButton(popupAnchorPosition, popupAnchorHeight),
+                    anchorAlignment = Alignment.CenterHorizontally,
+                    onDismissRequest = {
+                        popupVisible = false
+                    },
+                    anchorBounds = popupAnchorBounds,
                     onChoosePhotoClick = {
                         popupVisible = false
                         onChoosePhotoClick()
@@ -126,17 +119,6 @@ internal fun HorizontalAvatarsSection(
         }
     }
 }
-
-@Composable
-internal fun calculatePopupOffsetForFullWidthButton(popupAnchorPosition: IntOffset, popupAnchorHeight: Int): IntOffset {
-    val configuration = LocalConfiguration.current
-    val screenHeight = configuration.screenHeightDp.dp
-
-    return IntOffset(0, -(screenHeight.dpToPx().toInt() - popupAnchorPosition.y + popupAnchorHeight / 1.5).toInt())
-}
-
-@Composable
-internal fun Dp.dpToPx() = with(LocalDensity.current) { this@dpToPx.toPx() }
 
 @Composable
 @Preview(showBackground = true)
