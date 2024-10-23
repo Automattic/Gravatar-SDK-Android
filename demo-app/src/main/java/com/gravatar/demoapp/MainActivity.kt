@@ -13,6 +13,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         // Initialize the Gravatar SDK with the API key if it is available
+        @Suppress("UNNECESSARY_SAFE_CALL")
         BuildConfig.DEMO_GRAVATAR_API_KEY?.let { Gravatar.apiKey(it).context(applicationContext) }
 
         setContent {
