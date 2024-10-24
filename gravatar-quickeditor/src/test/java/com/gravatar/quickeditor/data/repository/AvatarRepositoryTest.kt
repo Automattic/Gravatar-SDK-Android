@@ -121,7 +121,9 @@ class AvatarRepositoryTest {
     fun `given token not stored when avatar upload then Failure result`() = runTest {
         val uri = mockk<Uri>()
         coEvery { tokenStorage.getToken(any()) } returns null
-        coEvery { avatarService.uploadCatching(any(), any()) } returns GravatarResult.Success(createAvatar("1"))
+        coEvery {
+            avatarService.uploadCatching(any(), any(), any(), any())
+        } returns GravatarResult.Success(createAvatar("1"))
 
         val result = avatarRepository.uploadAvatar(email, uri)
 
@@ -137,7 +139,7 @@ class AvatarRepositoryTest {
             every { toFile() } returns file
         }
         coEvery { tokenStorage.getToken(any()) } returns "token"
-        coEvery { avatarService.uploadCatching(any(), any()) } returns GravatarResult.Success(avatar)
+        coEvery { avatarService.uploadCatching(any(), any(), any(), any()) } returns GravatarResult.Success(avatar)
 
         val result = avatarRepository.uploadAvatar(email, uri)
 
@@ -152,7 +154,9 @@ class AvatarRepositoryTest {
             every { toFile() } returns file
         }
         coEvery { tokenStorage.getToken(any()) } returns "token"
-        coEvery { avatarService.uploadCatching(any(), any()) } returns GravatarResult.Failure(ErrorType.Server)
+        coEvery {
+            avatarService.uploadCatching(any(), any(), any(), any())
+        } returns GravatarResult.Failure(ErrorType.Server)
 
         val result = avatarRepository.uploadAvatar(email, uri)
 

@@ -28,12 +28,12 @@ internal interface AvatarsApi {
      *  - 401: Not Authorized
      *  - 403: Insufficient Scope
      *
-     * @param selectedEmailHash The sha256 hash of the email address used to determine which avatar is selected. The &#39;selected&#39; attribute in the avatar list will be set to &#39;true&#39; for the avatar associated with this email. (optional, default to "null")
+     * @param selectedEmailHash The SHA256 hash of the email address used to determine which avatar is selected. The &#39;selected&#39; attribute in the avatar list will be set to &#39;true&#39; for the avatar associated with this email. (optional, default to "")
      * @return [kotlin.collections.List<Avatar>]
      */
     @GET("me/avatars")
     suspend fun getAvatars(
-        @Query("selected_email_hash") selectedEmailHash: kotlin.String? = "null",
+        @Query("selected_email_hash") selectedEmailHash: kotlin.String? = "",
     ): Response<kotlin.collections.List<Avatar>>
 
     /**
@@ -64,11 +64,15 @@ internal interface AvatarsApi {
      *  - 403: Insufficient Scope
      *
      * @param `data` The avatar image file
+     * @param selectedEmailHash The SHA256 hash of email. If provided, the uploaded image will be selected as the avatar for this email. (optional)
+     * @param selectAvatar Determines if the uploaded image should be set as the avatar for the email. If not passed, the image is only selected as the email&#39;s avatar if no previous avatar has been set. Accepts &#39;1&#39;/&#39;true&#39; to always set the avatar or &#39;0&#39;/&#39;false&#39; to never set the avatar. (optional, default to null)
      * @return [Avatar]
      */
     @Multipart
     @POST("me/avatars")
     suspend fun uploadAvatar(
         @Part `data`: MultipartBody.Part,
+        @Query("selected_email_hash") selectedEmailHash: kotlin.String? = null,
+        @Query("select_avatar") selectAvatar: kotlin.Boolean? = null,
     ): Response<Avatar>
 }
