@@ -22,6 +22,7 @@ class AvatarsSectionTest : RoborazziTest() {
             ),
             onLocalImageSelected = { },
             onAvatarSelected = { },
+            onAltTextSelected = { },
         )
     }
 
@@ -36,7 +37,8 @@ class AvatarsSectionTest : RoborazziTest() {
                 avatarPickerContentLayout = AvatarPickerContentLayout.Horizontal,
             ),
             onLocalImageSelected = { },
-            onAvatarSelected = {},
+            onAvatarSelected = { },
+            onAltTextSelected = { },
         )
     }
 
@@ -50,7 +52,8 @@ class AvatarsSectionTest : RoborazziTest() {
                 avatarPickerContentLayout = AvatarPickerContentLayout.Horizontal,
             ),
             onLocalImageSelected = { },
-            onAvatarSelected = {},
+            onAvatarSelected = { },
+            onAltTextSelected = { },
         )
     }
 
@@ -64,7 +67,8 @@ class AvatarsSectionTest : RoborazziTest() {
                 avatarPickerContentLayout = AvatarPickerContentLayout.Horizontal,
             ),
             onLocalImageSelected = { },
-            onAvatarSelected = {},
+            onAvatarSelected = { },
+            onAltTextSelected = { },
         )
     }
 
@@ -78,7 +82,8 @@ class AvatarsSectionTest : RoborazziTest() {
                 avatarPickerContentLayout = AvatarPickerContentLayout.Vertical,
             ),
             onLocalImageSelected = { },
-            onAvatarSelected = {},
+            onAvatarSelected = { },
+            onAltTextSelected = { },
         )
     }
 }

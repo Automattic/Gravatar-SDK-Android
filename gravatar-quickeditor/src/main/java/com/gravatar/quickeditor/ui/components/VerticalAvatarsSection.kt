@@ -40,6 +40,7 @@ import java.net.URI
 internal fun VerticalAvatarsSection(
     state: AvatarsSectionUiState,
     onAvatarSelected: (AvatarUi) -> Unit,
+    onAltTextSelected: (AvatarUi) -> Unit,
     onChoosePhotoClick: () -> Unit,
     onTakePhotoClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -119,6 +120,7 @@ internal fun VerticalAvatarsSection(
                         Avatar(
                             avatar = avatarModel,
                             onAvatarSelected = { onAvatarSelected(avatarModel) },
+                            onAltTextSelected = { onAltTextSelected(avatarModel) },
                             size = avatarSize,
                             modifier = Modifier,
                         )
@@ -171,6 +173,7 @@ private fun VerticalAvatarSectionPreview() {
             onTakePhotoClick = { },
             onChoosePhotoClick = { },
             onAvatarSelected = { },
+            onAltTextSelected = { },
         )
     }
 }
@@ -189,6 +192,7 @@ private fun VerticalAvatarSectionEmptyPreview() {
             onTakePhotoClick = { },
             onChoosePhotoClick = { },
             onAvatarSelected = { },
+            onAltTextSelected = { },
         )
     }
 }

@@ -18,6 +18,7 @@ import java.net.URL
 internal fun LazyAvatarRow(
     avatars: List<AvatarUi>,
     onAvatarSelected: (AvatarUi) -> Unit,
+    onAltTextSelected: (AvatarUi) -> Unit,
     horizontalArrangement: Arrangement.Horizontal,
     state: LazyListState,
     contentPadding: PaddingValues,
@@ -33,6 +34,7 @@ internal fun LazyAvatarRow(
             Avatar(
                 avatar = avatarModel,
                 onAvatarSelected = { onAvatarSelected(avatarModel) },
+                onAltTextSelected = { onAltTextSelected(avatarModel) },
                 size = avatarSize,
                 modifier = Modifier.size(avatarSize),
             )
@@ -43,7 +45,13 @@ internal fun LazyAvatarRow(
 internal val avatarSize = 96.dp
 
 @Composable
-internal fun Avatar(avatar: AvatarUi, size: Dp, onAvatarSelected: (AvatarUi) -> Unit, modifier: Modifier) {
+internal fun Avatar(
+    avatar: AvatarUi,
+    size: Dp,
+    onAvatarSelected: (AvatarUi) -> Unit,
+    onAltTextSelected: (AvatarUi) -> Unit,
+    modifier: Modifier,
+) {
     when (avatar) {
         is AvatarUi.Uploaded -> {
             val sizePx = with(LocalDensity.current) { size.roundToPx() }
@@ -52,6 +60,7 @@ internal fun Avatar(avatar: AvatarUi, size: Dp, onAvatarSelected: (AvatarUi) -> 
                 isSelected = avatar.isSelected,
                 loadingState = avatar.loadingState,
                 onAvatarClicked = { onAvatarSelected(avatar) },
+                onAltTextClicked = { onAltTextSelected(avatar) },
                 modifier = modifier,
             )
         }
@@ -61,6 +70,7 @@ internal fun Avatar(avatar: AvatarUi, size: Dp, onAvatarSelected: (AvatarUi) -> 
             isSelected = false,
             loadingState = avatar.loadingState,
             onAvatarClicked = { onAvatarSelected(avatar) },
+            onAltTextClicked = { onAltTextSelected(avatar) },
             modifier = modifier,
         )
     }

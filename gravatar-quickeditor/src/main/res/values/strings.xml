@@ -3,6 +3,7 @@
     <string name="gravatar_qe_gravatar">Gravatar</string>
     <string name="gravatar_qe_selectable_avatar_content_description">Avatar Image</string>
     <string name="gravatar_qe_selectable_avatar_more_options_content_description">More Options</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_alt_text">Alt Text</string>
     <string name="gravatar_qe_bottom_sheet_done">Done</string>
     <string name="gravatar_qe_avatar_picker_title">Avatars</string>
     <string name="gravatar_qe_avatar_picker_title_empty_state">Let’s setup your avatar</string>

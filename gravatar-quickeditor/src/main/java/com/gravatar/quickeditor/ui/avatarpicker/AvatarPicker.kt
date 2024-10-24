@@ -188,6 +188,7 @@ internal fun AvatarPicker(uiState: AvatarPickerUiState, onEvent: (AvatarPickerEv
                                 is AvatarUi.Uploaded -> onEvent(AvatarPickerEvent.AvatarSelected(avatarUi.avatar))
                             }
                         },
+                        onAltTextSelected = { /* Future implementation */ },
                         onLocalImageSelected = { onEvent(AvatarPickerEvent.LocalImageSelected(it)) },
                         modifier = sectionModifier
                             .padding(horizontal = 16.dp)

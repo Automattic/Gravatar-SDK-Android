@@ -21,6 +21,13 @@ public final class com/gravatar/quickeditor/ui/avatarpicker/ComposableSingletons
 	public final fun getLambda-3$gravatar_quickeditor_release ()Lkotlin/jvm/functions/Function2;
 }
 
+public final class com/gravatar/quickeditor/ui/components/ComposableSingletons$AvatarMoreOptionsPickerPopupKt {
+	public static final field INSTANCE Lcom/gravatar/quickeditor/ui/components/ComposableSingletons$AvatarMoreOptionsPickerPopupKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public fun <init> ()V
+	public final fun getLambda-1$gravatar_quickeditor_release ()Lkotlin/jvm/functions/Function2;
+}
+
 public final class com/gravatar/quickeditor/ui/components/ComposableSingletons$AvatarsSectionKt {
 	public static final field INSTANCE Lcom/gravatar/quickeditor/ui/components/ComposableSingletons$AvatarsSectionKt;
 	public static field lambda-1 Lkotlin/jvm/functions/Function2;
