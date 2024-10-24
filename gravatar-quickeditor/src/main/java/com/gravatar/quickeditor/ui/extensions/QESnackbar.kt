@@ -51,16 +51,21 @@ internal suspend fun SnackbarHostState.showQESnackbar(
     snackbarType: SnackbarType = SnackbarType.Info,
     duration: SnackbarDuration =
         if (actionLabel == null) SnackbarDuration.Short else SnackbarDuration.Indefinite,
-): SnackbarResult {
-    return showSnackbar(
-        QESnackbarVisuals(
-            message = message,
-            withDismissAction = withDismissAction,
-            actionLabel = actionLabel,
-            duration = duration,
-            snackbarType = snackbarType,
-        ),
+): QESnackbarResult {
+    val visuals = QESnackbarVisuals(
+        message = message,
+        withDismissAction = withDismissAction,
+        actionLabel = actionLabel,
+        duration = duration,
+        snackbarType = snackbarType,
     )
+
+    // Only show the snackbar if the visuals are different from the current snackbar
+    return if (currentSnackbarData?.visuals != visuals) {
+        QESnackbarResult.fromSnackbarResult(showSnackbar(visuals))
+    } else {
+        QESnackbarResult.Skipped
+    }
 }
 
 internal val SnackbarType.containerColor: Color
@@ -78,4 +83,20 @@ internal val SnackbarType.contentColor: Color
 internal enum class SnackbarType {
     Info,
     Error,
+}
+
+internal enum class QESnackbarResult {
+    Dismissed,
+    ActionPerformed,
+    Skipped,
+    ;
+
+    companion object {
+        fun fromSnackbarResult(snackbarResult: SnackbarResult): QESnackbarResult {
+            return when (snackbarResult) {
+                SnackbarResult.Dismissed -> Dismissed
+                SnackbarResult.ActionPerformed -> ActionPerformed
+            }
+        }
+    }
 }
