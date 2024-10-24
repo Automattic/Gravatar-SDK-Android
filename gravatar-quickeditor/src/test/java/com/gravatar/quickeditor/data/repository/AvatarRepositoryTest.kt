@@ -125,7 +125,7 @@ class AvatarRepositoryTest {
             avatarService.uploadCatching(any(), any(), any(), any())
         } returns GravatarResult.Success(createAvatar("1"))
 
-        val result = avatarRepository.uploadAvatar(email, uri)
+        val result = avatarRepository.uploadAvatar(email, uri, false)
 
         assertEquals(GravatarResult.Failure<Unit, QuickEditorError>(QuickEditorError.TokenNotFound), result)
     }
@@ -141,7 +141,7 @@ class AvatarRepositoryTest {
         coEvery { tokenStorage.getToken(any()) } returns "token"
         coEvery { avatarService.uploadCatching(any(), any(), any(), any()) } returns GravatarResult.Success(avatar)
 
-        val result = avatarRepository.uploadAvatar(email, uri)
+        val result = avatarRepository.uploadAvatar(email, uri, false)
 
         assertEquals(GravatarResult.Success<Avatar, QuickEditorError>(avatar), result)
     }
@@ -158,7 +158,7 @@ class AvatarRepositoryTest {
             avatarService.uploadCatching(any(), any(), any(), any())
         } returns GravatarResult.Failure(ErrorType.Server)
 
-        val result = avatarRepository.uploadAvatar(email, uri)
+        val result = avatarRepository.uploadAvatar(email, uri, false)
 
         assertEquals(GravatarResult.Failure<Unit, QuickEditorError>(QuickEditorError.Request(ErrorType.Server)), result)
     }
