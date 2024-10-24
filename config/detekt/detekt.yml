@@ -77,7 +77,7 @@ comments:
     searchProtectedProperty: false
   OutdatedDocumentation:
     active: true
-    excludes: [ '**/test/**', '**/androidTest/**', '**/demoapp/**', '**/api/models/**', '**/restapi/models/**' ]
+    excludes: [ '**/test/**', '**/androidTest/**', '**/demoapp/**', '**/restapi/models/**', '**/restapi/apis/**' ]
     matchTypeParameters: true
     matchDeclarationsOrder: true
     allowParamOnConstructorProperties: false

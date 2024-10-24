@@ -2,6 +2,7 @@ package com.gravatar.services
 
 import com.gravatar.GravatarSdkContainerRule
 import com.gravatar.restapi.models.Avatar
+import com.gravatar.types.Hash
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -44,10 +45,15 @@ class AvatarServiceTest {
             every { isSuccessful } returns true
             every { body() } returns avatar
         }
-        coEvery { containerRule.gravatarApiMock.uploadAvatar(any()) } returns mockResponse
+        coEvery { containerRule.gravatarApiMock.uploadAvatar(any(), any(), any()) } returns mockResponse
         every { mockResponse.isSuccessful } returns true
 
-        avatarService.upload(File("avatarFile"), oauthToken)
+        avatarService.upload(
+            File("avatarFile"),
+            Hash("hash"),
+            selectAvatar = false,
+            oauthToken,
+        )
 
         coVerify(exactly = 1) {
             containerRule.gravatarApiMock.uploadAvatar(
@@ -58,6 +64,8 @@ class AvatarServiceTest {
                         },
                     )
                 },
+                withArg { },
+                withArg { },
             )
         }
     }
@@ -69,9 +77,14 @@ class AvatarServiceTest {
                 every { isSuccessful } returns false
                 every { code() } returns 500
             }
-            coEvery { containerRule.gravatarApiMock.uploadAvatar(any()) } returns mockResponse
+            coEvery { containerRule.gravatarApiMock.uploadAvatar(any(), any(), any()) } returns mockResponse
 
-            avatarService.upload(File("avatarFile"), oauthToken)
+            avatarService.upload(
+                File("avatarFile"),
+                Hash("hash"),
+                selectAvatar = false,
+                oauthToken,
+            )
         }
 
     @Test
@@ -80,9 +93,14 @@ class AvatarServiceTest {
             every { isSuccessful } returns true
             every { body() } returns avatar
         }
-        coEvery { containerRule.gravatarApiMock.uploadAvatar(any()) } returns mockResponse
+        coEvery { containerRule.gravatarApiMock.uploadAvatar(any(), any(), any()) } returns mockResponse
 
-        val response = avatarService.uploadCatching(File("avatarFile"), oauthToken)
+        val response = avatarService.uploadCatching(
+            File("avatarFile"),
+            Hash("hash"),
+            selectAvatar = false,
+            oauthToken,
+        )
 
         coVerify(exactly = 1) {
             containerRule.gravatarApiMock.uploadAvatar(
@@ -93,6 +111,8 @@ class AvatarServiceTest {
                         },
                     )
                 },
+                withArg { },
+                withArg { },
             )
         }
 
@@ -105,9 +125,14 @@ class AvatarServiceTest {
             every { isSuccessful } returns false
             every { code() } returns 500
         }
-        coEvery { containerRule.gravatarApiMock.uploadAvatar(any()) } returns mockResponse
+        coEvery { containerRule.gravatarApiMock.uploadAvatar(any(), any(), any()) } returns mockResponse
 
-        val response = avatarService.uploadCatching(File("avatarFile"), oauthToken)
+        val response = avatarService.uploadCatching(
+            File("avatarFile"),
+            Hash("hash"),
+            selectAvatar = false,
+            oauthToken,
+        )
 
         coVerify(exactly = 1) {
             containerRule.gravatarApiMock.uploadAvatar(
@@ -118,6 +143,8 @@ class AvatarServiceTest {
                         },
                     )
                 },
+                withArg { },
+                withArg { },
             )
         }
 

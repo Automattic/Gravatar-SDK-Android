@@ -27,29 +27,36 @@ public class AvatarService(private val okHttpClient: OkHttpClient? = null) {
      * Uploads an image to be used as Gravatar avatar.
      *
      * @param file The image file to upload
+     * @param hash The hash of the email to associate the avatar with
+     * @param selectAvatar Determines if the uploaded image should be set automatically as the avatar for the given hash
      * @param oauthToken The OAuth token to use for authentication
      */
-    public suspend fun upload(file: File, oauthToken: String): Avatar = runThrowingExceptionRequest {
-        withContext(GravatarSdkDI.dispatcherIO) {
-            val service = instance.getGravatarV3Service(okHttpClient, oauthToken)
+    public suspend fun upload(file: File, hash: Hash, selectAvatar: Boolean, oauthToken: String): Avatar =
+        runThrowingExceptionRequest {
+            withContext(GravatarSdkDI.dispatcherIO) {
+                val service = instance.getGravatarV3Service(okHttpClient, oauthToken)
 
-            val filePart =
-                MultipartBody.Part.createFormData("image", file.name, file.asRequestBody())
+                val filePart =
+                    MultipartBody.Part.createFormData("image", file.name, file.asRequestBody())
 
-            val response = service.uploadAvatar(filePart)
-
-            if (response.isSuccessful && response.body() != null) {
-                response.body()!!
-            } else {
-                // Log the response body for debugging purposes if the response is not successful
-                Logger.w(
-                    LOG_TAG,
-                    "Network call unsuccessful trying to upload Gravatar: $response.body",
+                val response = service.uploadAvatar(
+                    data = filePart,
+                    selectedEmailHash = hash.toString(),
+                    selectAvatar = selectAvatar,
                 )
-                throw HttpException(response)
+
+                if (response.isSuccessful && response.body() != null) {
+                    response.body()!!
+                } else {
+                    // Log the response body for debugging purposes if the response is not successful
+                    Logger.w(
+                        LOG_TAG,
+                        "Network call unsuccessful trying to upload Gravatar: $response.body",
+                    )
+                    throw HttpException(response)
+                }
             }
         }
-    }
 
     /**
      * Uploads an image to be used as Gravatar avatar.
@@ -57,13 +64,19 @@ public class AvatarService(private val okHttpClient: OkHttpClient? = null) {
      * the execution and return it as a [GravatarResult.Failure].
      *
      * @param file The image file to upload
+     * @param hash The hash of the email to associate the avatar with
+     * @param selectAvatar Determines if the uploaded image should be set automatically as the avatar for the given hash
      * @param oauthToken The OAuth token to use for authentication
      * @return The result of the operation
      */
-    public suspend fun uploadCatching(file: File, oauthToken: String): GravatarResult<Avatar, ErrorType> =
-        runCatchingRequest {
-            upload(file, oauthToken)
-        }
+    public suspend fun uploadCatching(
+        file: File,
+        hash: Hash,
+        selectAvatar: Boolean,
+        oauthToken: String,
+    ): GravatarResult<Avatar, ErrorType> = runCatchingRequest {
+        upload(file, hash, selectAvatar, oauthToken)
+    }
 
     /**
      * Retrieves a list of available avatars for the authenticated user.
