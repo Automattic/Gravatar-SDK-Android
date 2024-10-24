@@ -1,6 +1,5 @@
 package com.gravatar.quickeditor.ui.components
 
-import android.view.WindowManager
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.Spring
@@ -17,7 +16,6 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
@@ -40,7 +39,7 @@ import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
 import com.composables.core.Dialog
 import com.composables.core.DialogPanel
-import com.composables.core.LocalModalWindow
+import com.composables.core.Scrim
 import com.composables.core.rememberDialogState
 import com.gravatar.quickeditor.R
 import com.gravatar.ui.GravatarTheme
@@ -80,17 +79,11 @@ private fun MediaPickerPopup(
     val cornerRadius = 8.dp
     // full screen background
     Dialog(state = rememberDialogState(initiallyVisible = true)) {
+        Scrim(scrimColor = Color.Black.copy(alpha = 0.2f))
         DialogPanel(
             modifier = Modifier
                 .fillMaxSize(),
         ) {
-            val window = LocalModalWindow.current
-            LaunchedEffect(Unit) {
-                window.apply {
-                    addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
-                    setDimAmount(0.2f)
-                }
-            }
             val configuration = LocalConfiguration.current
             val screenWidth = configuration.screenWidthDp.dp.dpToPx()
             var popupSize by remember { mutableStateOf(IntSize.Zero) }
