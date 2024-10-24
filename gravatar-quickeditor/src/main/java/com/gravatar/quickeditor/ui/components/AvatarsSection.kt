@@ -33,6 +33,7 @@ import java.net.URI
 internal fun AvatarsSection(
     state: AvatarsSectionUiState,
     onAvatarSelected: (AvatarUi) -> Unit,
+    onAltTextSelected: (AvatarUi) -> Unit,
     onLocalImageSelected: (Uri) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -79,6 +80,7 @@ internal fun AvatarsSection(
                 state = state,
                 modifier = modifier,
                 onAvatarSelected = onAvatarSelected,
+                onAltTextSelected = onAltTextSelected,
                 onChoosePhotoClick = {
                     pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
                 },
@@ -91,6 +93,7 @@ internal fun AvatarsSection(
                 state = state,
                 modifier = modifier,
                 onAvatarSelected = onAvatarSelected,
+                onAltTextSelected = onAltTextSelected,
                 onTakePhotoClick = permissionAwareTakePhotoCallback,
                 onChoosePhotoClick = {
                     pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
@@ -168,6 +171,7 @@ private fun AvatarSectionPreview() {
                 avatarPickerContentLayout = AvatarPickerContentLayout.Horizontal,
             ),
             onAvatarSelected = { },
+            onAltTextSelected = { },
             onLocalImageSelected = { },
         )
     }
@@ -197,6 +201,7 @@ private fun AvatarSectionGridPreview() {
                 avatarPickerContentLayout = AvatarPickerContentLayout.Vertical,
             ),
             onAvatarSelected = { },
+            onAltTextSelected = { },
             onLocalImageSelected = { },
         )
     }
@@ -214,6 +219,7 @@ private fun AvatarSectionEmptyPreview() {
                 avatarPickerContentLayout = AvatarPickerContentLayout.Horizontal,
             ),
             onAvatarSelected = { },
+            onAltTextSelected = { },
             onLocalImageSelected = { },
         )
     }

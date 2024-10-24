@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -15,10 +16,20 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.boundsInRoot
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -33,9 +44,12 @@ internal fun SelectableAvatar(
     isSelected: Boolean,
     loadingState: AvatarLoadingState,
     onAvatarClicked: () -> Unit,
+    onAltTextClicked: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val cornerRadius = 8.dp
+    var moreOptionsPopupVisible by remember { mutableStateOf(false) }
+    var popupAnchorBounds: Rect by remember { mutableStateOf(Rect(Offset.Zero, Size.Zero)) }
     Box(
         modifier = modifier
             .aspectRatio(1f)
@@ -52,6 +66,10 @@ internal fun SelectableAvatar(
             )
             .clickable {
                 onAvatarClicked()
+            }
+            .onGloballyPositioned { layoutCoordinates ->
+                popupAnchorBounds = layoutCoordinates
+                    .boundsInRoot()
             },
     ) {
         AsyncImage(
@@ -62,10 +80,50 @@ internal fun SelectableAvatar(
                 .clip(RoundedCornerShape(cornerRadius)),
         )
         when (loadingState) {
-            AvatarLoadingState.None -> Unit
+            AvatarLoadingState.None -> LoadedOverlay({
+                moreOptionsPopupVisible = true
+            }, Modifier.align(Alignment.BottomEnd))
+
             AvatarLoadingState.Loading -> LoadingOverlay()
             is AvatarLoadingState.Failure -> FailureOverlay()
         }
+
+        if (moreOptionsPopupVisible) {
+            AvatarMoreOptionsPickerPopup(
+                anchorAlignment = Alignment.CenterHorizontally,
+                anchorBounds = popupAnchorBounds,
+                onDismissRequest = { moreOptionsPopupVisible = false },
+                onAltTextClick = {
+                    moreOptionsPopupVisible = false
+                    onAltTextClicked()
+                },
+            )
+        }
+    }
+}
+
+@Composable
+private fun LoadedOverlay(onMoreOptionsClicked: () -> Unit, modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier
+            .padding(8.dp)
+            .clickable(
+                onClick = onMoreOptionsClicked,
+            )
+            .size(24.dp)
+            .background(
+                color = Color.Black.copy(alpha = 0.3f),
+                shape = RoundedCornerShape(2.dp),
+            )
+            .padding(5.dp),
+    ) {
+        Icon(
+            painter = painterResource(id = R.drawable.gravatar_avatar_more_options_dots),
+            contentDescription =
+                stringResource(id = R.string.gravatar_qe_selectable_avatar_more_options_content_description),
+            tint = Color.White,
+            modifier = Modifier.align(Alignment.Center),
+        )
     }
 }
 
@@ -125,6 +183,7 @@ private fun SelectableAvatarNotSelectedPreview() {
         isSelected = false,
         loadingState = AvatarLoadingState.None,
         onAvatarClicked = { },
+        onAltTextClicked = { },
         modifier = Modifier.size(150.dp),
     )
 }
@@ -137,6 +196,7 @@ private fun SelectableAvatarSelectedPreview() {
         isSelected = true,
         loadingState = AvatarLoadingState.None,
         onAvatarClicked = { },
+        onAltTextClicked = { },
         modifier = Modifier.size(150.dp),
     )
 }
@@ -149,6 +209,7 @@ private fun SelectableAvatarLoadingPreview() {
         isSelected = false,
         loadingState = AvatarLoadingState.Loading,
         onAvatarClicked = { },
+        onAltTextClicked = { },
         modifier = Modifier.size(150.dp),
     )
 }
@@ -161,6 +222,7 @@ private fun SelectableAvatarFailurePreview() {
         isSelected = false,
         loadingState = AvatarLoadingState.Failure,
         onAvatarClicked = { },
+        onAltTextClicked = { },
         modifier = Modifier.size(150.dp),
     )
 }

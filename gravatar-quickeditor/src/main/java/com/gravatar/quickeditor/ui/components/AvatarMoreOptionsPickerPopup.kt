@@ -18,59 +18,44 @@ import com.gravatar.quickeditor.R
 import com.gravatar.ui.GravatarTheme
 
 @Composable
-internal fun MediaPickerPopup(
+internal fun AvatarMoreOptionsPickerPopup(
     anchorAlignment: Alignment.Horizontal,
     anchorBounds: Rect,
     onDismissRequest: () -> Unit,
-    onChoosePhotoClick: () -> Unit,
-    onTakePhotoClick: () -> Unit,
+    onAltTextClick: () -> Unit,
 ) {
     PickerPopup(
         anchorAlignment = anchorAlignment,
         anchorBounds = anchorBounds,
         onDismissRequest = onDismissRequest,
-        popupButtons = listOf(
-            {
-                PopupButton(
-                    text = stringResource(R.string.gravatar_qe_avatar_picker_choose_a_photo),
-                    iconRes = R.drawable.gravatar_photo_library,
-                    contentDescription = stringResource(
-                        R.string.gravatar_qe_photo_library_icon_description,
-                    ),
-                    shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
-                    onClick = onChoosePhotoClick,
-                )
-            },
-            {
-                PopupButton(
-                    text = stringResource(R.string.gravatar_qe_avatar_picker_take_photo),
-                    iconRes = R.drawable.gravatar_capture_photo,
-                    contentDescription = stringResource(
-                        R.string.gravatar_qe_capture_photo_icon_description,
-                    ),
-                    shape = RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp),
-                    onClick = onTakePhotoClick,
-                )
-            },
-        ),
+        popupButtons = listOf {
+            PopupButton(
+                text = stringResource(R.string.gravatar_qe_selectable_avatar_more_options_alt_text),
+                iconRes = R.drawable.gravatar_avatar_more_options_alt_text,
+                contentDescription = stringResource(
+                    R.string.gravatar_qe_selectable_avatar_more_options_alt_text,
+                ),
+                shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
+                onClick = onAltTextClick,
+            )
+        },
     )
 }
 
 @Preview
 @Composable
-private fun MediaPickerPopupPreview() {
+private fun AvatarMoreOptionsPickerPopupPreview() {
     GravatarTheme {
         Box(
             modifier = Modifier
                 .size(300.dp)
                 .background(MaterialTheme.colorScheme.background),
         ) {
-            MediaPickerPopup(
+            AvatarMoreOptionsPickerPopup(
                 anchorAlignment = Alignment.Start,
                 onDismissRequest = {},
                 anchorBounds = Rect(Offset(0f, 300f), Size(1f, 1f)),
-                onChoosePhotoClick = {},
-                onTakePhotoClick = {},
+                onAltTextClick = {},
             )
         }
     }
