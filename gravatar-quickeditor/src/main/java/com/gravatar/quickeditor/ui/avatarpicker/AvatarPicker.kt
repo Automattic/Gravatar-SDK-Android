@@ -66,7 +66,6 @@ import com.yalantis.ucrop.UCrop
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withContext
 import java.net.URI
 
@@ -86,8 +85,6 @@ internal fun AvatarPicker(
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsState()
     val scope = rememberCoroutineScope()
-    val avatarSelectedSnackbarMutex by remember { mutableStateOf(Mutex()) }
-    val avatarSelectedFailureSnackbarMutex by remember { mutableStateOf(Mutex()) }
 
     val uCropLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         it.data?.let { intentData ->
@@ -109,8 +106,6 @@ internal fun AvatarPicker(
                         context = context,
                         uCropLauncher = uCropLauncher,
                         scope = scope,
-                        avatarSelectedSnackbarMutex = avatarSelectedSnackbarMutex,
-                        avatarSelectedFailureSnackbarMutex = avatarSelectedFailureSnackbarMutex,
                     )
                 }
             }
@@ -221,23 +216,15 @@ private fun AvatarPickerAction.handle(
     context: Context,
     uCropLauncher: ManagedActivityResultLauncher<Intent, ActivityResult>,
     scope: CoroutineScope,
-    avatarSelectedSnackbarMutex: Mutex,
-    avatarSelectedFailureSnackbarMutex: Mutex,
 ) {
     when (this) {
         is AvatarPickerAction.AvatarSelected -> {
             onAvatarSelected()
-            if (avatarSelectedSnackbarMutex.tryLock()) {
-                scope.launch {
-                    try {
-                        snackState.showQESnackbar(
-                            message = context.getString(R.string.gravatar_qe_avatar_selected_confirmation),
-                            withDismissAction = true,
-                        )
-                    } finally {
-                        avatarSelectedSnackbarMutex.unlock()
-                    }
-                }
+            scope.launch {
+                snackState.showQESnackbar(
+                    message = context.getString(R.string.gravatar_qe_avatar_selected_confirmation),
+                    withDismissAction = true,
+                )
             }
         }
 
@@ -246,18 +233,12 @@ private fun AvatarPickerAction.handle(
         }
 
         AvatarPickerAction.AvatarSelectionFailed -> {
-            if (avatarSelectedFailureSnackbarMutex.tryLock()) {
-                scope.launch {
-                    try {
-                        snackState.showQESnackbar(
-                            message = context.getString(R.string.gravatar_qe_avatar_selection_error),
-                            withDismissAction = true,
-                            snackbarType = SnackbarType.Error,
-                        )
-                    } finally {
-                        avatarSelectedFailureSnackbarMutex.unlock()
-                    }
-                }
+            scope.launch {
+                snackState.showQESnackbar(
+                    message = context.getString(R.string.gravatar_qe_avatar_selection_error),
+                    withDismissAction = true,
+                    snackbarType = SnackbarType.Error,
+                )
             }
         }
 
