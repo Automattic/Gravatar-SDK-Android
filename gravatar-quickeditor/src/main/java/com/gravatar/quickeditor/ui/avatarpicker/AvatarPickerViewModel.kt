@@ -143,8 +143,7 @@ internal class AvatarPickerViewModel(
                     failedUploadDialog = null,
                 )
             }
-            val selectAvatar = _uiState.value.emailAvatars?.selectedAvatarId == null
-            when (val result = avatarRepository.uploadAvatar(email, uri, selectAvatar)) {
+            when (val result = avatarRepository.uploadAvatar(email, uri)) {
                 is GravatarResult.Success -> {
                     fileUtils.deleteFile(uri)
                     val avatar = result.value

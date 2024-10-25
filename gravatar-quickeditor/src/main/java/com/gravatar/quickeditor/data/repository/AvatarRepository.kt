@@ -49,23 +49,19 @@ internal class AvatarRepository(
         } ?: GravatarResult.Failure(QuickEditorError.TokenNotFound)
     }
 
-    suspend fun uploadAvatar(
-        email: Email,
-        avatarUri: Uri,
-        selectAvatar: Boolean,
-    ): GravatarResult<Avatar, QuickEditorError> = withContext(dispatcher) {
-        val hash = email.hash()
-        val token = tokenStorage.getToken(hash.toString())
-        token?.let {
-            when (
-                val result =
-                    avatarService.uploadCatching(avatarUri.toFile(), hash, selectAvatar, token)
-            ) {
-                is GravatarResult.Success -> GravatarResult.Success(result.value)
-                is GravatarResult.Failure -> GravatarResult.Failure(QuickEditorError.Request(result.error))
-            }
-        } ?: GravatarResult.Failure(QuickEditorError.TokenNotFound)
-    }
+    suspend fun uploadAvatar(email: Email, avatarUri: Uri): GravatarResult<Avatar, QuickEditorError> =
+        withContext(dispatcher) {
+            val hash = email.hash()
+            val token = tokenStorage.getToken(hash.toString())
+            token?.let {
+                when (
+                    val result = avatarService.uploadCatching(avatarUri.toFile(), token, hash)
+                ) {
+                    is GravatarResult.Success -> GravatarResult.Success(result.value)
+                    is GravatarResult.Failure -> GravatarResult.Failure(QuickEditorError.Request(result.error))
+                }
+            } ?: GravatarResult.Failure(QuickEditorError.TokenNotFound)
+        }
 }
 
 internal data class EmailAvatars(
