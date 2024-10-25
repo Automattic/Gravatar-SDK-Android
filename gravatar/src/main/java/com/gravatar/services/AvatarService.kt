@@ -47,7 +47,7 @@ public class AvatarService(private val okHttpClient: OkHttpClient? = null) {
 
             val response = service.uploadAvatar(
                 data = filePart,
-                selectedEmailHash = hash.toString(),
+                selectedEmailHash = hash?.toString(),
                 selectAvatar = selectAvatar,
             )
 
