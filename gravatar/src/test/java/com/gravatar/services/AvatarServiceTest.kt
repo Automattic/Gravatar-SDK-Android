@@ -16,6 +16,7 @@ import org.junit.Test
 import retrofit2.Response
 import java.io.File
 import java.net.URI
+import kotlin.test.assertNull
 
 class AvatarServiceTest {
     @get:Rule
@@ -66,6 +67,37 @@ class AvatarServiceTest {
                 },
                 withArg { },
                 withArg { },
+            )
+        }
+    }
+
+    @Test
+    fun `given null optional params when uploading avatar then null values passed`() = runTest {
+        val mockResponse = mockk<Response<Avatar>>(relaxed = true) {
+            every { isSuccessful } returns true
+            every { body() } returns avatar
+        }
+        coEvery { containerRule.gravatarApiMock.uploadAvatar(any(), any(), any()) } returns mockResponse
+        every { mockResponse.isSuccessful } returns true
+
+        avatarService.upload(
+            File("avatarFile"),
+            oauthToken,
+            null,
+            null,
+        )
+
+        coVerify(exactly = 1) {
+            containerRule.gravatarApiMock.uploadAvatar(
+                withArg {
+                    assertTrue(
+                        with(it.headers?.values("Content-Disposition").toString()) {
+                            contains("image") && contains("avatarFile")
+                        },
+                    )
+                },
+                withNullableArg { assertNull(it) },
+                withNullableArg { assertNull(it) },
             )
         }
     }
