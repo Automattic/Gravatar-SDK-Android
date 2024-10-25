@@ -50,9 +50,9 @@ class AvatarServiceTest {
 
         avatarService.upload(
             File("avatarFile"),
+            oauthToken,
             Hash("hash"),
             selectAvatar = false,
-            oauthToken,
         )
 
         coVerify(exactly = 1) {
@@ -81,9 +81,9 @@ class AvatarServiceTest {
 
             avatarService.upload(
                 File("avatarFile"),
+                oauthToken,
                 Hash("hash"),
                 selectAvatar = false,
-                oauthToken,
             )
         }
 
@@ -97,9 +97,9 @@ class AvatarServiceTest {
 
         val response = avatarService.uploadCatching(
             File("avatarFile"),
+            oauthToken,
             Hash("hash"),
             selectAvatar = false,
-            oauthToken,
         )
 
         coVerify(exactly = 1) {
@@ -129,9 +129,9 @@ class AvatarServiceTest {
 
         val response = avatarService.uploadCatching(
             File("avatarFile"),
+            oauthToken,
             Hash("hash"),
             selectAvatar = false,
-            oauthToken,
         )
 
         coVerify(exactly = 1) {
