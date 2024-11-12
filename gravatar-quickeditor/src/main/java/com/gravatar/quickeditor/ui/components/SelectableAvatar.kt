@@ -133,8 +133,9 @@ private fun LoadingOverlay(modifier: Modifier = Modifier) {
         CircularProgressIndicator(
             modifier = Modifier
                 .align(Alignment.Center)
-                .size(20.dp),
+                .size(30.dp),
             strokeWidth = 2.dp,
+            color = Color.White,
         )
     }
 }
