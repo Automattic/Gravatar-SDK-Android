@@ -223,7 +223,7 @@ private fun AvatarPickerAction.handle(
             onAvatarSelected()
             scope.launch {
                 snackState.showQESnackbar(
-                    message = context.getString(R.string.gravatar_qe_avatar_selected_confirmation),
+                    message = context.getString(R.string.gravatar_qe_avatar_selected_confirmation_v2),
                     withDismissAction = true,
                 )
             }
