@@ -24,13 +24,22 @@ internal fun CameraPermissionRationaleDialog(
                 )
             },
             onDismissRequest = onDismiss,
+            dismissButton = {
+                TextButton(
+                    onClick = {
+                        onDismiss()
+                    },
+                ) {
+                    Text(stringResource(R.string.gravatar_qe_dismiss))
+                }
+            },
             confirmButton = {
                 TextButton(
                     onClick = {
                         onConfirmation()
                     },
                 ) {
-                    Text(stringResource(R.string.gravatar_qe_dismiss))
+                    Text(stringResource(R.string.gravatar_qe_permission_rationale_open_settings))
                 }
             },
         )
