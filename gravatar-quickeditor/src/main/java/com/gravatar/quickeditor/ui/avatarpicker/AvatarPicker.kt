@@ -198,6 +198,9 @@ internal fun AvatarPicker(uiState: AvatarPickerUiState, onEvent: (AvatarPickerEv
                                 AvatarOption.DELETE -> {
                                     onEvent(AvatarPickerEvent.AvatarDeleteSelected(avatar))
                                 }
+                                AvatarOption.DOWNLOAD_IMAGE -> {
+//                                    onEvent(AvatarPickerEvent.DownloadImageClicked(avatarModel))
+                                }
                             }
                         },
                         onLocalImageSelected = { onEvent(AvatarPickerEvent.LocalImageSelected(it)) },

@@ -36,6 +36,14 @@ internal fun AvatarMoreOptionsPickerPopup(
                 },
             ),
             PickerPopupItem(
+                text = R.string.gravatar_qe_selectable_avatar_more_options_download_image,
+                iconRes = R.drawable.gravatar_avatar_more_options_download,
+                contentDescription = R.string.gravatar_qe_selectable_avatar_more_options_download_image,
+                onClick = {
+                    onAvatarOptionClicked(AvatarOption.DOWNLOAD_IMAGE)
+                },
+            ),
+            PickerPopupItem(
                 text = R.string.gravatar_qe_selectable_avatar_more_options_delete,
                 iconRes = R.drawable.gravatar_avatar_more_options_delete,
                 contentDescription = R.string.gravatar_qe_selectable_avatar_more_options_delete_content_description,
@@ -51,6 +59,7 @@ internal fun AvatarMoreOptionsPickerPopup(
 internal enum class AvatarOption {
     ALT_TEXT,
     DELETE,
+    DOWNLOAD_IMAGE,
 }
 
 @Preview
