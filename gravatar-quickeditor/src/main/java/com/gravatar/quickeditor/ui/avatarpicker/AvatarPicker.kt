@@ -1,7 +1,10 @@
 package com.gravatar.quickeditor.ui.avatarpicker
 
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
 import android.util.DisplayMetrics
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -17,10 +20,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -48,6 +54,7 @@ import com.gravatar.quickeditor.R
 import com.gravatar.quickeditor.data.repository.EmailAvatars
 import com.gravatar.quickeditor.ui.components.AvatarOption
 import com.gravatar.quickeditor.ui.components.AvatarsSection
+import com.gravatar.quickeditor.ui.components.DownloadManagerDisabledAlertDialog
 import com.gravatar.quickeditor.ui.components.EmailLabel
 import com.gravatar.quickeditor.ui.components.ErrorSection
 import com.gravatar.quickeditor.ui.components.FailedAvatarUploadAlertDialog
@@ -71,6 +78,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.net.URI
+
 
 @Composable
 internal fun AvatarPicker(
@@ -199,7 +207,7 @@ internal fun AvatarPicker(uiState: AvatarPickerUiState, onEvent: (AvatarPickerEv
                                     onEvent(AvatarPickerEvent.AvatarDeleteSelected(avatar))
                                 }
                                 AvatarOption.DOWNLOAD_IMAGE -> {
-//                                    onEvent(AvatarPickerEvent.DownloadImageClicked(avatarModel))
+                                    onEvent(AvatarPickerEvent.DownloadAvatarTapped(avatar))
                                 }
                             }
                         },
@@ -219,6 +227,28 @@ internal fun AvatarPicker(uiState: AvatarPickerUiState, onEvent: (AvatarPickerEv
             onRetryClicked = { onEvent(AvatarPickerEvent.ImageCropped(it)) },
             onDismiss = { onEvent(AvatarPickerEvent.FailedAvatarDialogDismissed) },
         )
+        DownloadManagerDisabledAlertDialog(
+            isVisible = uiState.downloadManagerDisabled,
+            onDismiss = { onEvent(AvatarPickerEvent.DownloadManagerDisabledDialogDismissed) },
+            onConfirm = {
+                onEvent(AvatarPickerEvent.DownloadManagerDisabledDialogDismissed)
+                openDownloadManagerSettings(context)
+            },
+        )
+    }
+}
+
+private fun openDownloadManagerSettings(context: Context) {
+    try {
+        //Open the specific App Info page:
+        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+        intent.setData(Uri.parse("package:com.android.providers.downloads"))
+        context.startActivity(intent)
+    } catch (e: ActivityNotFoundException) {
+
+        //Open the generic Apps page:
+        val intent = Intent(Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS)
+        context.startActivity(intent)
     }
 }
 
@@ -272,6 +302,26 @@ private fun AvatarPickerAction.handle(
                 ) {
                     viewModel.onEvent(AvatarPickerEvent.AvatarDeleteSelected(avatar))
                 }
+            }
+        }
+
+        AvatarPickerAction.AvatarDownloadStarted -> {
+            scope.launch {
+                snackState.showQESnackbar(
+                    message = context.getString(R.string.gravatar_qe_image_download_queued),
+                    withDismissAction = true,
+                    snackbarType = SnackbarType.Info,
+                )
+            }
+        }
+
+        AvatarPickerAction.DownloadManagerNotAvailable -> {
+            scope.launch {
+                snackState.showQESnackbar(
+                    message = context.getString(R.string.gravatar_qe_download_manager_not_available),
+                    withDismissAction = true,
+                    snackbarType = SnackbarType.Error,
+                )
             }
         }
     }

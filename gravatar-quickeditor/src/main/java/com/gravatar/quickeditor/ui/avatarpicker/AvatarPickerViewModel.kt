@@ -6,7 +6,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.gravatar.quickeditor.QuickEditorContainer
+import com.gravatar.quickeditor.data.DownloadManagerError
 import com.gravatar.quickeditor.data.FileUtils
+import com.gravatar.quickeditor.data.ImageDownloader
 import com.gravatar.quickeditor.data.models.QuickEditorError
 import com.gravatar.quickeditor.data.repository.AvatarRepository
 import com.gravatar.quickeditor.ui.editor.AvatarPickerContentLayout
@@ -32,6 +34,7 @@ internal class AvatarPickerViewModel(
     private val avatarPickerContentLayout: AvatarPickerContentLayout,
     private val profileService: ProfileService,
     private val avatarRepository: AvatarRepository,
+    private val imageDownloader: ImageDownloader,
     private val fileUtils: FileUtils,
 ) : ViewModel() {
     private companion object {
@@ -64,6 +67,38 @@ internal class AvatarPickerViewModel(
             is AvatarPickerEvent.FailedAvatarTapped -> showFailedUploadDialog(event.uri)
             is AvatarPickerEvent.FailedAvatarDismissed -> removedFailedUpload(event.uri)
             is AvatarPickerEvent.AvatarDeleteSelected -> deleteAvatar(event.avatar)
+            is AvatarPickerEvent.DownloadAvatarTapped -> downloadAvatar(event.avatar)
+            AvatarPickerEvent.DownloadManagerDisabledDialogDismissed -> hideDownloadManagerAlert()
+        }
+    }
+
+    private fun hideDownloadManagerAlert() {
+        _uiState.update { currentState ->
+            currentState.copy(downloadManagerDisabled = false)
+        }
+    }
+
+    private fun downloadAvatar(avatar: Avatar) {
+        viewModelScope.launch {
+            when (val result = imageDownloader.downloadImage(avatar.imageUrl)) {
+                is GravatarResult.Failure -> {
+                    when (result.error) {
+                        DownloadManagerError.DOWNLOAD_MANAGER_NOT_AVAILABLE -> {
+                            _actions.send(AvatarPickerAction.DownloadManagerNotAvailable)
+                        }
+
+                        DownloadManagerError.DOWNLOAD_MANAGER_DISABLED -> {
+                            _uiState.update { currentState ->
+                                currentState.copy(
+                                    downloadManagerDisabled = true,
+                                )
+                            }
+                        }
+                    }
+                }
+
+                is GravatarResult.Success -> _actions.send(AvatarPickerAction.AvatarDownloadStarted)
+            }
         }
     }
 
@@ -329,6 +364,7 @@ internal class AvatarPickerViewModelFactory(
             avatarPickerContentLayout = gravatarQuickEditorParams.avatarPickerContentLayout,
             profileService = QuickEditorContainer.getInstance().profileService,
             avatarRepository = QuickEditorContainer.getInstance().avatarRepository,
+            imageDownloader = QuickEditorContainer.getInstance().imageDownloader,
             fileUtils = QuickEditorContainer.getInstance().fileUtils,
         ) as T
     }

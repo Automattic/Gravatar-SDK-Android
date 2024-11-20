@@ -9,6 +9,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.emptyPreferences
 import com.gravatar.quickeditor.data.AcceptedLanguageInterceptor
 import com.gravatar.quickeditor.data.FileUtils
+import com.gravatar.quickeditor.data.ImageDownloader
 import com.gravatar.quickeditor.data.datastore.createEncryptedFileWithFallbackReset
 import com.gravatar.quickeditor.data.repository.AvatarRepository
 import com.gravatar.quickeditor.data.storage.DataStoreTokenStorage
@@ -83,6 +84,8 @@ internal class QuickEditorContainer private constructor(
             tokenStorage = tokenStorage,
             dispatcher = Dispatchers.IO,
         )
+
+    val imageDownloader: ImageDownloader by lazy { ImageDownloader(context = context) }
 
     fun useInMemoryTokenStorage() {
         useInMemoryTokenStorage = true

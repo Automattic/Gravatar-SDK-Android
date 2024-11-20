@@ -46,4 +46,7 @@
     <string name="gravatar_qe_camera_permission_rationale_message">To take a picture, you need to grant camera permission. You can grant it in the app settings.</string>
     <string name="gravatar_qe_dismiss">Dismiss</string>
     <string name="gravatar_qe_permission_rationale_open_settings">Open settings</string>
+    <string name="gravatar_qe_image_download_queued">Image download has been queued. You\'ll receive a notification when it\'s complete.</string>
+    <string name="gravatar_qe_download_manager_not_available">DownloadManager is not available</string>
+    <string name="gravatar_qe_download_manager_disabled_title">DownloadManager is disabled. Please enable it to download Avatars.</string>
 </resources>

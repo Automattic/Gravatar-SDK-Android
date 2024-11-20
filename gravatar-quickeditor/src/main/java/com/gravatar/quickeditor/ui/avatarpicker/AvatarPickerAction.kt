@@ -14,4 +14,8 @@ internal sealed class AvatarPickerAction {
     data object InvokeAuthFailed : AvatarPickerAction()
 
     data class AvatarDeletionFailed(val avatar: Avatar) : AvatarPickerAction()
+
+    data object AvatarDownloadStarted : AvatarPickerAction()
+
+    data object DownloadManagerNotAvailable : AvatarPickerAction()
 }
