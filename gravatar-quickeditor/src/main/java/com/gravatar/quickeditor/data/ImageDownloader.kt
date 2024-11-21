@@ -22,24 +22,24 @@ internal class ImageDownloader(
     }
 
     fun downloadImage(imageUrl: URI): GravatarResult<Unit, DownloadManagerError> {
-        if (downloadManager == null) {
-            return GravatarResult.Failure(DownloadManagerError.DOWNLOAD_MANAGER_NOT_AVAILABLE)
+        return when {
+            downloadManager == null -> GravatarResult.Failure(DownloadManagerError.DOWNLOAD_MANAGER_NOT_AVAILABLE)
+            !isDownloadManagerEnabled() -> GravatarResult.Failure(DownloadManagerError.DOWNLOAD_MANAGER_DISABLED)
+            else -> {
+                val request = DownloadManager.Request(Uri.parse(imageUrl.withMaxSizeQueryParam().toString()))
+                    .addRequestHeader("X-Platform", "Android")
+                    .addRequestHeader("X-SDK-Version", BuildConfig.SDK_VERSION)
+                    .addRequestHeader("X-Source", appName)
+                    .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                    .setMimeType("image/*")
+                    .setDestinationInExternalPublicDir(
+                        Environment.DIRECTORY_DOWNLOADS,
+                        "gravatar_image_${System.currentTimeMillis()}.png",
+                    )
+                downloadManager.enqueue(request)
+                GravatarResult.Success(Unit)
+            }
         }
-        if (!isDownloadManagerEnabled()) {
-            return GravatarResult.Failure(DownloadManagerError.DOWNLOAD_MANAGER_DISABLED)
-        }
-        val request = DownloadManager.Request(Uri.parse(imageUrl.withMaxSizeQueryParam().toString()))
-            .addRequestHeader("X-Platform", "Android")
-            .addRequestHeader("X-SDK-Version", BuildConfig.SDK_VERSION)
-            .addRequestHeader("X-Source", appName)
-            .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-            .setMimeType("image/*")
-            .setDestinationInExternalPublicDir(
-                Environment.DIRECTORY_DOWNLOADS,
-                "gravatar_image_${System.currentTimeMillis()}.png",
-            )
-        downloadManager.enqueue(request)
-        return GravatarResult.Success(Unit)
     }
 
     private fun isDownloadManagerEnabled(): Boolean {

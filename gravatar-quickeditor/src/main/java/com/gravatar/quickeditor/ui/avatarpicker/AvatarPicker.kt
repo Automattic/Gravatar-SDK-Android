@@ -239,6 +239,7 @@ internal fun AvatarPicker(uiState: AvatarPickerUiState, onEvent: (AvatarPickerEv
                                 AvatarOption.DELETE -> {
                                     onEvent(AvatarPickerEvent.AvatarDeleteSelected(avatar))
                                 }
+
                                 AvatarOption.DOWNLOAD_IMAGE -> {
                                     permissionAwareDownloadImageCallback(avatar)
                                 }
@@ -280,6 +281,7 @@ internal fun AvatarPicker(uiState: AvatarPickerUiState, onEvent: (AvatarPickerEv
     }
 }
 
+@Suppress("SwallowedException")
 private fun openDownloadManagerSettings(context: Context) {
     try {
         // Open the specific App Info page:

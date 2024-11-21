@@ -28,6 +28,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+@Suppress("LongParameterList")
 internal class AvatarPickerViewModel(
     private val email: Email,
     private val handleExpiredSession: Boolean,
