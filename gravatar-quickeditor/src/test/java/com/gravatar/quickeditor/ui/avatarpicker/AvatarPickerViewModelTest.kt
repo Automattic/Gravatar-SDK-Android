@@ -3,7 +3,9 @@ package com.gravatar.quickeditor.ui.avatarpicker
 import android.net.Uri
 import app.cash.turbine.test
 import com.gravatar.extensions.defaultProfile
+import com.gravatar.quickeditor.data.DownloadManagerError
 import com.gravatar.quickeditor.data.FileUtils
+import com.gravatar.quickeditor.data.ImageDownloader
 import com.gravatar.quickeditor.data.models.QuickEditorError
 import com.gravatar.quickeditor.data.repository.AvatarRepository
 import com.gravatar.quickeditor.data.repository.EmailAvatars
@@ -42,6 +44,7 @@ class AvatarPickerViewModelTest {
     private val profileService = mockk<ProfileService>()
     private val avatarRepository = mockk<AvatarRepository>()
     private val fileUtils = mockk<FileUtils>()
+    private val imageDownloader = mockk<ImageDownloader>()
 
     private lateinit var viewModel: AvatarPickerViewModel
 
@@ -905,13 +908,78 @@ class AvatarPickerViewModelTest {
         }
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `given avatar when download queued then AvatarDownloadStarted sent`() = runTest {
+        val emailAvatarsCopy = emailAvatars.copy(avatars = avatars, selectedAvatarId = "1")
+        coEvery { avatarRepository.getAvatars(email) } returns GravatarResult.Success(emailAvatarsCopy)
+        coEvery { profileService.retrieveCatching(email) } returns GravatarResult.Success(profile)
+        coEvery { avatarRepository.selectAvatar(any(), any()) } returns GravatarResult.Success(Unit)
+        coEvery { imageDownloader.downloadImage(any()) } returns GravatarResult.Success(Unit)
+
+        viewModel = initViewModel()
+
+        advanceUntilIdle()
+
+        viewModel.onEvent(AvatarPickerEvent.DownloadAvatarTapped(avatars.first()))
+
+        viewModel.actions.test {
+            assertEquals(AvatarPickerAction.AvatarDownloadStarted, awaitItem())
+        }
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `given avatar when download manager disabled then uiState updated`() = runTest {
+        val emailAvatarsCopy = emailAvatars.copy(avatars = avatars, selectedAvatarId = "1")
+        coEvery { avatarRepository.getAvatars(email) } returns GravatarResult.Success(emailAvatarsCopy)
+        coEvery { profileService.retrieveCatching(email) } returns GravatarResult.Success(profile)
+        coEvery { avatarRepository.selectAvatar(any(), any()) } returns GravatarResult.Success(Unit)
+        coEvery {
+            imageDownloader.downloadImage(any())
+        } returns GravatarResult.Failure(DownloadManagerError.DOWNLOAD_MANAGER_DISABLED)
+
+        viewModel = initViewModel()
+
+        advanceUntilIdle()
+
+        viewModel.uiState.test {
+            expectMostRecentItem()
+            viewModel.onEvent(AvatarPickerEvent.DownloadAvatarTapped(avatars.first()))
+            assertEquals(true, awaitItem().downloadManagerDisabled)
+        }
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `given avatar when download manager not available then DownloadManagerNotAvailable sent`() = runTest {
+        val emailAvatarsCopy = emailAvatars.copy(avatars = avatars, selectedAvatarId = "1")
+        coEvery { avatarRepository.getAvatars(email) } returns GravatarResult.Success(emailAvatarsCopy)
+        coEvery { profileService.retrieveCatching(email) } returns GravatarResult.Success(profile)
+        coEvery { avatarRepository.selectAvatar(any(), any()) } returns GravatarResult.Success(Unit)
+        coEvery {
+            imageDownloader.downloadImage(any())
+        } returns GravatarResult.Failure(DownloadManagerError.DOWNLOAD_MANAGER_NOT_AVAILABLE)
+
+        viewModel = initViewModel()
+
+        advanceUntilIdle()
+
+        viewModel.onEvent(AvatarPickerEvent.DownloadAvatarTapped(avatars.first()))
+
+        viewModel.actions.test {
+            assertEquals(AvatarPickerAction.DownloadManagerNotAvailable, awaitItem())
+        }
+    }
+
     private fun initViewModel(handleExpiredSession: Boolean = true) = AvatarPickerViewModel(
-        email,
-        handleExpiredSession,
-        avatarPickerContentLayout,
-        profileService,
-        avatarRepository,
-        fileUtils,
+        email = email,
+        handleExpiredSession = handleExpiredSession,
+        avatarPickerContentLayout = avatarPickerContentLayout,
+        profileService = profileService,
+        avatarRepository = avatarRepository,
+        fileUtils = fileUtils,
+        imageDownloader = imageDownloader,
     )
 
     private fun createAvatar(id: String, isSelected: Boolean? = null) = Avatar {
