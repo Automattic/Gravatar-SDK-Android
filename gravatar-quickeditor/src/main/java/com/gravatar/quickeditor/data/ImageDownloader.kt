@@ -28,7 +28,7 @@ internal class ImageDownloader(
         if (!isDownloadManagerEnabled()) {
             return GravatarResult.Failure(DownloadManagerError.DOWNLOAD_MANAGER_DISABLED)
         }
-        val request = DownloadManager.Request(Uri.parse(imageUrl.toString()))
+        val request = DownloadManager.Request(Uri.parse(imageUrl.withMaxSizeQueryParam().toString()))
             .addRequestHeader("X-Platform", "Android")
             .addRequestHeader("X-SDK-Version", BuildConfig.SDK_VERSION)
             .addRequestHeader("X-Source", appName)
@@ -36,7 +36,7 @@ internal class ImageDownloader(
             .setMimeType("image/*")
             .setDestinationInExternalPublicDir(
                 Environment.DIRECTORY_DOWNLOADS,
-                "gravatar_image_${System.currentTimeMillis()}.jpg",
+                "gravatar_image_${System.currentTimeMillis()}.png",
             )
         downloadManager.enqueue(request)
         return GravatarResult.Success(Unit)
@@ -49,6 +49,18 @@ internal class ImageDownloader(
         return !(
             state == PackageManager.COMPONENT_ENABLED_STATE_DISABLED ||
                 state == PackageManager.COMPONENT_ENABLED_STATE_DISABLED_USER
+        )
+    }
+
+    private fun URI.withMaxSizeQueryParam(): URI {
+        return URI(
+            scheme,
+            userInfo,
+            host,
+            port,
+            path,
+            "size=max",
+            fragment,
         )
     }
 }
