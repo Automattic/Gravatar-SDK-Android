@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.Settings
 import android.util.DisplayMetrics
@@ -45,8 +44,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
@@ -71,8 +68,8 @@ import com.gravatar.quickeditor.ui.extensions.QESnackbarHost
 import com.gravatar.quickeditor.ui.extensions.QESnackbarResult
 import com.gravatar.quickeditor.ui.extensions.SnackbarType
 import com.gravatar.quickeditor.ui.extensions.showQESnackbar
-import com.gravatar.quickeditor.ui.oauth.findComponentActivity
 import com.gravatar.quickeditor.ui.openAppPermissionSettings
+import com.gravatar.quickeditor.ui.withPermission
 import com.gravatar.restapi.models.Avatar
 import com.gravatar.types.Email
 import com.gravatar.ui.GravatarTheme
@@ -162,16 +159,21 @@ internal fun AvatarPicker(uiState: AvatarPickerUiState, onEvent: (AvatarPickerEv
     }
 
     val permissionAwareDownloadImageCallback: (Avatar) -> Unit = { avatar ->
-        context.withWriteExternalStoragePermission(
-            onRequestPermission = {
-                avatarToDownload = avatar
-                writeExternalStoragePermissionLauncher.launch(it)
-            },
-            onShowRationale = { storagePermissionRationaleDialogVisible = true },
-            grantedCallback = {
-                onEvent(AvatarPickerEvent.DownloadAvatarTapped(avatar))
-            },
-        )
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.Q) {
+            context.withPermission(
+                permission = Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                onRequestPermission = {
+                    avatarToDownload = avatar
+                    writeExternalStoragePermissionLauncher.launch(it)
+                },
+                onShowRationale = { storagePermissionRationaleDialogVisible = true },
+                grantedCallback = {
+                    onEvent(AvatarPickerEvent.DownloadAvatarTapped(avatar))
+                },
+            )
+        } else {
+            onEvent(AvatarPickerEvent.DownloadAvatarTapped(avatar))
+        }
     }
 
     Surface(
@@ -363,32 +365,6 @@ private fun AvatarPickerAction.handle(
                 )
             }
         }
-    }
-}
-
-internal fun Context.withWriteExternalStoragePermission(
-    onRequestPermission: (String) -> Unit,
-    onShowRationale: () -> Unit = {},
-    grantedCallback: () -> Unit,
-) {
-    if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.Q) {
-        val permission = Manifest.permission.WRITE_EXTERNAL_STORAGE
-        val activity = findComponentActivity()
-        when {
-            ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED -> {
-                grantedCallback()
-            }
-
-            activity != null && ActivityCompat.shouldShowRequestPermissionRationale(activity, permission) -> {
-                onShowRationale()
-            }
-
-            else -> {
-                onRequestPermission(permission)
-            }
-        }
-    } else {
-        grantedCallback()
     }
 }
 
