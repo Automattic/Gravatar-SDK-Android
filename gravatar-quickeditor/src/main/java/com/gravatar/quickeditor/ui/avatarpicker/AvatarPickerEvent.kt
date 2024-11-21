@@ -24,5 +24,5 @@ internal sealed class AvatarPickerEvent {
 
     data class DownloadAvatarTapped(val avatar: Avatar) : AvatarPickerEvent()
 
-    data object DownloadManagerDisabledDialogDismissed: AvatarPickerEvent()
+    data object DownloadManagerDisabledDialogDismissed : AvatarPickerEvent()
 }

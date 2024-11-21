@@ -8,18 +8,14 @@ import androidx.compose.ui.res.stringResource
 import com.gravatar.quickeditor.R
 
 @Composable
-internal fun DownloadManagerDisabledAlertDialog(
-    isVisible: Boolean,
-    onDismiss: () -> Unit,
-    onConfirm: () -> Unit,
-) {
+internal fun DownloadManagerDisabledAlertDialog(isVisible: Boolean, onDismiss: () -> Unit, onConfirm: () -> Unit) {
     if (isVisible) {
         AlertDialog(
             onDismissRequest = onDismiss,
             text = { Text(text = stringResource(id = R.string.gravatar_qe_download_manager_disabled_title)) },
             confirmButton = {
                 TextButton(
-                    onClick = onConfirm
+                    onClick = onConfirm,
                 ) {
                     Text(text = stringResource(id = R.string.gravatar_qe_permission_rationale_open_settings))
                 }

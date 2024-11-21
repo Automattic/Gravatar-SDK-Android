@@ -9,11 +9,9 @@ import com.gravatar.BuildConfig
 import com.gravatar.services.GravatarResult
 import java.net.URI
 
-
 internal class ImageDownloader(
     private val context: Context,
 ) {
-
     private val downloadManager: DownloadManager? = context.getSystemService(DownloadManager::class.java)
     private val appName: String by lazy {
         val applicationInfo = context.packageManager.getApplicationInfo(
@@ -44,13 +42,14 @@ internal class ImageDownloader(
         return GravatarResult.Success(Unit)
     }
 
-
     private fun isDownloadManagerEnabled(): Boolean {
         val downloadManagerPackageName = "com.android.providers.downloads"
         val state: Int = context.packageManager.getApplicationEnabledSetting(downloadManagerPackageName)
 
-        return !(state == PackageManager.COMPONENT_ENABLED_STATE_DISABLED ||
-                state == PackageManager.COMPONENT_ENABLED_STATE_DISABLED_USER)
+        return !(
+            state == PackageManager.COMPONENT_ENABLED_STATE_DISABLED ||
+                state == PackageManager.COMPONENT_ENABLED_STATE_DISABLED_USER
+        )
     }
 }
 

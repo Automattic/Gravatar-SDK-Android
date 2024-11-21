@@ -8,8 +8,9 @@ import androidx.compose.ui.res.stringResource
 import com.gravatar.quickeditor.R
 
 @Composable
-internal fun CameraPermissionRationaleDialog(
+internal fun PermissionRationaleDialog(
     isVisible: Boolean,
+    message: String,
     onConfirmation: () -> Unit,
     onDismiss: () -> Unit = {},
 ) {
@@ -20,7 +21,7 @@ internal fun CameraPermissionRationaleDialog(
             },
             text = {
                 Text(
-                    text = stringResource(R.string.gravatar_qe_camera_permission_rationale_message),
+                    text = message,
                 )
             },
             onDismissRequest = onDismiss,
