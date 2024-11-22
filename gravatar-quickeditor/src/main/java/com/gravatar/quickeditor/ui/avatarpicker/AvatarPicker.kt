@@ -152,10 +152,10 @@ internal fun AvatarPicker(uiState: AvatarPickerUiState, onEvent: (AvatarPickerEv
     ) { isGranted: Boolean ->
         if (isGranted) {
             avatarToDownload?.let { onEvent(AvatarPickerEvent.DownloadAvatarTapped(it)) }
-            avatarToDownload = null
         } else {
             storagePermissionRationaleDialogVisible = true
         }
+        avatarToDownload = null
     }
 
     val permissionAwareDownloadImageCallback: (Avatar) -> Unit = { avatar ->
