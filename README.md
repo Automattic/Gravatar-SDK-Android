@@ -217,12 +217,10 @@ We're following [Semantic Versioning](https://semver.org/) for the releases. Her
 
 1. Make sure the latest translations are commited the repository. See [Translations](#Translations)
 2. Generate a new release branch: `git checkout -b release/x.x.x`.
-3. Update version number `versionName` to `x.x.x` in the [root `build.gradle.kts` file](https://github.com/Automattic/Gravatar-SDK-Android/blob/trunk/build.gradle.kts).
-4. Build the Dokka documentation: `./gradlew dokkaHtmlMultiModule` and commit the generated files to the git repository.
-5. Open a PR, wait for a review, merge the PR on approval.
-6. Pull the `trunk` branch and tag the git commit with the version number: `git tag -a x.x.x -m "Release x.x.x"`
-7. Push the new tag: `git push --tags`.
-8. Go to the [GitHub releases page](https://github.com/Automattic/Gravatar-SDK-Android/releases) and create a new release with the tag name and the release notes.
+3. Open a PR, wait for a review, merge the PR on approval.
+4. Pull the `trunk` branch and tag the git commit with the version number: `git tag -a x.x.x -m "Release x.x.x"`
+5. Push the new tag: `git push --tags`.
+6. Go to the [GitHub releases page](https://github.com/Automattic/Gravatar-SDK-Android/releases) and create a new release with the tag name and the release notes.
 
 ## Contributing
 
