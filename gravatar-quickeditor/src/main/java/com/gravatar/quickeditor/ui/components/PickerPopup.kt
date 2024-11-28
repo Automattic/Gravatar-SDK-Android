@@ -161,6 +161,8 @@ private fun calculatePopupXOffset(
     }
 
     return maxBounds?.let { bounds ->
-        offset.coerceIn(bounds.left.toInt(), (bounds.right - popupSize.width).toInt())
+        val minimumValue = bounds.left
+        val maximumValue = (bounds.right - popupSize.width).coerceAtLeast(minimumValue)
+        offset.coerceIn(minimumValue.toInt(), maximumValue.toInt())
     } ?: offset
 }
