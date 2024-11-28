@@ -46,15 +46,18 @@ apiValidation {
     ignoredProjects.addAll(listOf("demo-app", "uitestutils"))
 }
 
-// Semantic versioning for release version
-val versionName = "2.1.0"
+val sdkVersion = providers.exec {
+    commandLine("git", "describe", "--tags", "--abbrev=0")
+}.standardOutput.asText.get().trim()
+
+extra["sdkVersion"] = sdkVersion
 
 tasks.dokkaHtmlMultiModule {
     notCompatibleWithConfigurationCache("https://github.com/Kotlin/dokka/issues/2231")
     val mainDir = projectDir.resolve("docs/dokka/") // docs/dokka/
     val historyDir = mainDir.resolve("history/") // docs/dokka/history/ - all versions
     val currentDir = mainDir.resolve("current/") // docs/dokka/current/ - what we'll serve in github pages
-    val newVersionDir = historyDir.resolve(versionName) // docs/dokka/history/x.x.x/ - new version
+    val newVersionDir = historyDir.resolve(sdkVersion) // docs/dokka/history/x.x.x/ - new version
 
     moduleName.set("Gravatar Android SDK")
     outputDirectory.set(newVersionDir)
@@ -65,7 +68,7 @@ tasks.dokkaHtmlMultiModule {
     }
 
     pluginConfiguration<VersioningPlugin, VersioningConfiguration> {
-        version = versionName
+        version = sdkVersion
         olderVersionsDir = historyDir
     }
 

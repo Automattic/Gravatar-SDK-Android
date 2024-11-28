@@ -12,9 +12,7 @@ plugins {
     alias(libs.plugins.ksp)
 }
 
-val sdkVersion = providers.exec {
-    commandLine("git", "describe", "--tags", "--abbrev=0")
-}.standardOutput.asText.get().trim()
+val sdkVersion: String by rootProject.extra
 
 android {
     namespace = "com.gravatar"
