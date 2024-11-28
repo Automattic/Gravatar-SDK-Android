@@ -7,16 +7,8 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.layout.boundsInRoot
-import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -30,17 +22,14 @@ internal fun LazyAvatarRow(
     onAvatarSelected: (AvatarUi) -> Unit,
     onAvatarOptionClicked: (Avatar, AvatarOption) -> Unit,
     horizontalArrangement: Arrangement.Horizontal,
+    parentBounds: Rect,
     state: LazyListState,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
-    var parentBounds by remember { mutableStateOf(Rect(Offset.Zero, Size.Zero)) }
-
     LazyRow(
         horizontalArrangement = horizontalArrangement,
-        modifier = modifier.onGloballyPositioned { coordinates ->
-            parentBounds = coordinates.boundsInRoot()
-        },
+        modifier = modifier,
         state = state,
         contentPadding = contentPadding,
     ) {
