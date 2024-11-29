@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="gravatar_qe_gravatar">Gravatar</string>
     <string name="gravatar_qe_selectable_avatar_content_description">Avatar Image</string>
     <string name="gravatar_qe_selectable_avatar_more_options_content_description">More Options</string>
-    <string name="gravatar_qe_selectable_avatar_more_options_alt_text">Alt Text</string>
-    <string name="gravatar_qe_selectable_avatar_more_options_alt_text_content_description">Alternative Text</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_alt_text" tools:ignore="UnusedResources">Alt Text</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_alt_text_content_description" tools:ignore="UnusedResources">Alternative Text</string>
     <string name="gravatar_qe_selectable_avatar_more_options_delete">Delete</string>
     <string name="gravatar_qe_selectable_avatar_more_options_delete_content_description">Delete Avatar</string>
     <string name="gravatar_qe_selectable_avatar_more_options_download_image">Download image</string>
