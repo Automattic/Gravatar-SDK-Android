@@ -30,14 +30,6 @@ internal fun AvatarMoreOptionsPickerPopup(
         onDismissRequest = onDismissRequest,
         popupItems = listOf(
             PickerPopupItem(
-                text = R.string.gravatar_qe_selectable_avatar_more_options_alt_text,
-                iconRes = R.drawable.gravatar_avatar_more_options_alt_text,
-                contentDescription = R.string.gravatar_qe_selectable_avatar_more_options_alt_text_content_description,
-                onClick = {
-                    onAvatarOptionClicked(AvatarOption.ALT_TEXT)
-                },
-            ),
-            PickerPopupItem(
                 text = R.string.gravatar_qe_selectable_avatar_more_options_download_image,
                 iconRes = R.drawable.gravatar_avatar_more_options_download,
                 contentDescription = R.string.gravatar_qe_selectable_avatar_more_options_download_image,
