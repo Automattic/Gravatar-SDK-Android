@@ -1,10 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: 2024-10-23 13:54:02+0000
+Translation-Revision-Date: 2024-11-26 14:54:04+0000
 Plural-Forms: nplurals=2; plural=n != 1;
 Generator: GlotPress/2.4.0-alpha
 Language: es
 -->
 <resources>
-
+    <string name="gravatar_qe_write_external_storage_permission_rationale_message">Para guardar la imagen en una carpeta pública, tienes que otorgar el permiso para ello. Puedes hacerlo en los ajustes de la aplicación.</string>
+    <string name="gravatar_qe_download_manager_disabled_title">DownloadManager se ha inhabilitado. Habilítalo para descargar avatares.</string>
+    <string name="gravatar_qe_download_manager_not_available">DownloadManager no está disponible.</string>
+    <string name="gravatar_qe_image_download_queued">La descarga de la imagen está en cola. Recibirás una notificación cuando se haya completado.</string>
+    <string name="gravatar_qe_avatar_delete_confirmation_cancel">Cancelar</string>
+    <string name="gravatar_qe_avatar_delete_confirmation_confirm">Eliminar</string>
+    <string name="gravatar_qe_avatar_delete_confirmation_message">¿Seguro que quieres eliminar esta imagen?</string>
+    <string name="gravatar_qe_avatar_delete_confirmation_title">Eliminar imagen</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_download_image">Descargar imagen</string>
+    <string name="gravatar_qe_avatar_delete_avatar_error">Error al eliminar la imagen.</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_delete_content_description">Eliminar avatar</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_delete">Eliminar</string>
+    <string name="gravatar_qe_permission_rationale_open_settings">Abrir los ajustes</string>
+    <string name="gravatar_qe_upload_image_content_description">Subir imagen</string>
+    <string name="gravatar_qe_happy_face_image_content_description">Imagen de una cara feliz</string>
+    <string name="gravatar_qe_login_required">Inicio de sesión obligatorio</string>
+    <string name="gravatar_qe_avatar_picker_network_error_title">Sin Internet</string>
+    <string name="gravatar_qe_avatar_picker_session_error_close_cta">Cerrar</string>
+    <string name="gravatar_qe_avatar_picker_session_error_cta">Iniciar sesión</string>
+    <string name="gravatar_qe_avatar_picker_session_error_title">Sesión caducada</string>
+    <string name="gravatar_qe_avatar_picker_error_retry_cta">Volver a intentarlo</string>
+    <string name="gravatar_qe_avatar_picker_server_error_title">¡Vaya!</string>
+    <string name="gravatar_qe_capture_photo_icon_description">Capturar foto</string>
+    <string name="gravatar_qe_photo_library_icon_description">Biblioteca de fotos</string>
+    <string name="gravatar_qe_avatar_picker_take_photo">Hacer foto</string>
+    <string name="gravatar_qe_avatar_picker_choose_a_photo">Elige una foto</string>
+    <string name="gravatar_qe_avatar_picker_upload_image">Subir imagen</string>
+    <string name="gravatar_qe_avatar_upload_error_action">Reintentar</string>
+    <string name="gravatar_qe_avatar_picker_title">Avatares</string>
+    <string name="gravatar_qe_bottom_sheet_done">Hecho</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_alt_text_content_description">Texto alternativo</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_alt_text">Texto alt</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_content_description">Más opciones</string>
+    <string name="gravatar_qe_selectable_avatar_content_description">Imagen de avatar</string>
+    <string name="gravatar_qe_gravatar">Gravatar</string>
+    <string name="gravatar_qe_avatar_upload_failure_image_too_big">La imagen proporcionada excede el tamaño máximo: 10 MB</string>
+    <string name="gravatar_qe_dismiss">Descartar</string>
+    <string name="gravatar_qe_camera_permission_rationale_message">Para hacer una foto, tienes que dar permiso a la cámara. Puedes hacerlo en los ajustes de la aplicación.</string>
+    <string name="gravatar_qe_permission_required_alert_title">Se necesita permiso</string>
+    <string name="gravatar_qe_oauth_email_associated_error_message">Algo ha ido mal al verificar tu correo electrónico.</string>
+    <string name="gravatar_qe_avatar_upload_failure_dialog_remove_upload">Eliminar subida</string>
+    <string name="gravatar_qe_avatar_upload_failure_dialog_title">No se ha podido subir la imagen</string>
+    <string name="gravatar_qe_failed_to_load_avatar_content_description">La subida ha fallado. Toca para ver las acciones.</string>
+    <string name="gravatar_qe_oauth_wrong_email_authenticated_error_message">Parece que has utilizado un correo electrónico incorrecto para iniciar sesión. Inténtalo de nuevo usando %s esta vez. ¡Gracias!</string>
+    <string name="gravatar_qe_avatar_picker_session_error_no_login_message">Sesión caducada por motivos de seguridad.</string>
+    <string name="gravatar_qe_login_required_message">Para modificar tu perfil de Gravatar primero tienes que iniciar sesión</string>
+    <string name="gravatar_qe_avatar_picker_network_error_message">¡Vaya! Parece que no estás conectado a Internet.</string>
+    <string name="gravatar_qe_avatar_picker_session_error_message">Sesión caducada por motivos de seguridad. Inicia sesión para actualizar tu avatar.</string>
+    <string name="gravatar_qe_avatar_picker_unknown_error_message">Algo ha salido mal.</string>
+    <string name="gravatar_qe_avatar_picker_server_error_message">Algo ha salido mal y no hemos podido conectarnos a los servidores de Gravatar.</string>
+    <string name="gravatar_qe_avatar_selection_error">¡Vaya! Se ha producido un error al elegir el avatar.</string>
+    <string name="gravatar_qe_avatar_picker_title_empty_state">Vamos a configurar tu avatar</string>
+    <string name="gravatar_qe_avatar_selected_confirmation_v2">Avatar actualizado. Puede tardar unos minutos en aparecer en todos los lugares.</string>
+    <string name="gravatar_qe_avatar_picker_description">Elige o sube tus imágenes de avatar favoritas y conéctalas a tu dirección de correo electrónico.</string>
 </resources>

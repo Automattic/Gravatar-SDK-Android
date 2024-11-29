@@ -1,10 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: 2024-10-23 11:54:03+0000
+Translation-Revision-Date: 2024-11-28 09:54:03+0000
 Plural-Forms: nplurals=2; plural=n != 1;
 Generator: GlotPress/2.4.0-alpha
 Language: sv_SE
 -->
 <resources>
-
+    <string name="gravatar_qe_write_external_storage_permission_rationale_message">För att spara bilden i en offentlig mapp måste du bevilja behörighet. Du kan bevilja detta i appinställningarna.</string>
+    <string name="gravatar_qe_download_manager_disabled_title">DownloadManager är inaktiverad. Aktivera den för att ladda ner profilbilder.</string>
+    <string name="gravatar_qe_download_manager_not_available">DownloadManager är inte tillgänglig.</string>
+    <string name="gravatar_qe_image_download_queued">Bildnedladdningen har köats. Du får ett meddelande när den har slutförts.</string>
+    <string name="gravatar_qe_avatar_delete_confirmation_cancel">Avbryt</string>
+    <string name="gravatar_qe_avatar_delete_confirmation_confirm">Ta bort</string>
+    <string name="gravatar_qe_avatar_delete_confirmation_message">Är du säker på att du vill ta bort denna bild?</string>
+    <string name="gravatar_qe_avatar_delete_confirmation_title">Ta bort bild</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_download_image">Ladda ner bild</string>
+    <string name="gravatar_qe_avatar_delete_avatar_error">Fel vid borttagning av bilden.</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_delete_content_description">Ta bort profilbild</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_delete">Ta bort</string>
+    <string name="gravatar_qe_permission_rationale_open_settings">Öppna inställningar</string>
+    <string name="gravatar_qe_upload_image_content_description">Ladda upp bild</string>
+    <string name="gravatar_qe_happy_face_image_content_description">Glad ansiktsbild</string>
+    <string name="gravatar_qe_login_required">Inloggning krävs</string>
+    <string name="gravatar_qe_avatar_picker_network_error_title">Inget internet</string>
+    <string name="gravatar_qe_avatar_picker_session_error_close_cta">Stäng</string>
+    <string name="gravatar_qe_avatar_picker_session_error_cta">Logga in</string>
+    <string name="gravatar_qe_avatar_picker_session_error_title">Session löpt ut</string>
+    <string name="gravatar_qe_avatar_picker_error_retry_cta">Försök igen</string>
+    <string name="gravatar_qe_avatar_picker_server_error_title">Hoppsan</string>
+    <string name="gravatar_qe_capture_photo_icon_description">Ta foto</string>
+    <string name="gravatar_qe_photo_library_icon_description">Fotobibliotek</string>
+    <string name="gravatar_qe_avatar_picker_take_photo">Ta foto</string>
+    <string name="gravatar_qe_avatar_picker_choose_a_photo">Välj ett foto</string>
+    <string name="gravatar_qe_avatar_picker_upload_image">Ladda upp bild</string>
+    <string name="gravatar_qe_avatar_upload_error_action">Försök igen</string>
+    <string name="gravatar_qe_avatar_picker_title">Profilbilder</string>
+    <string name="gravatar_qe_bottom_sheet_done">Klar</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_alt_text_content_description">Alternativ text</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_alt_text">Alt-text</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_content_description">Fler alternativ</string>
+    <string name="gravatar_qe_selectable_avatar_content_description">Profilbild</string>
+    <string name="gravatar_qe_gravatar">Gravatar</string>
+    <string name="gravatar_qe_avatar_upload_failure_image_too_big">Den angivna bilden överskrider den maximala storleken: 10 MB</string>
+    <string name="gravatar_qe_dismiss">Avfärda</string>
+    <string name="gravatar_qe_camera_permission_rationale_message">För att ta en bild behöver du bevilja kameraåtkomst. Du kan bevilja detta i appinställningarna.</string>
+    <string name="gravatar_qe_permission_required_alert_title">Behörighet krävs</string>
+    <string name="gravatar_qe_oauth_email_associated_error_message">Något gick fel vid verifieringen av din e-post.</string>
+    <string name="gravatar_qe_avatar_upload_failure_dialog_remove_upload">Ta bort uppladdning</string>
+    <string name="gravatar_qe_avatar_upload_failure_dialog_title">Kunde inte ladda upp bild</string>
+    <string name="gravatar_qe_failed_to_load_avatar_content_description">Uppladdning misslyckades, tryck för att se åtgärder.</string>
+    <string name="gravatar_qe_oauth_wrong_email_authenticated_error_message">Det verkar som att du använde fel e-post för att logga in. Försök igen med %s denna gång. Tack!</string>
+    <string name="gravatar_qe_avatar_picker_session_error_no_login_message">Session löpt ut av säkerhetsskäl.</string>
+    <string name="gravatar_qe_login_required_message">För att ändra din Gravatar-profil måste du först logga in</string>
+    <string name="gravatar_qe_avatar_picker_network_error_message">Ojdå! Det ser ut som att du inte är ansluten till internet</string>
+    <string name="gravatar_qe_avatar_picker_session_error_message">Session löpte ut av säkerhetsskäl. Logga in för att uppdatera din profilbild.</string>
+    <string name="gravatar_qe_avatar_picker_unknown_error_message">Något gick fruktansvärt fel.</string>
+    <string name="gravatar_qe_avatar_picker_server_error_message">Något gick fel och vi kunde inte ansluta till Gravatar-servrar.</string>
+    <string name="gravatar_qe_avatar_selection_error">Hoppsan, det uppstod ett fel vid val av profilbilden.</string>
+    <string name="gravatar_qe_avatar_picker_title_empty_state">Låt oss ställa in din profilbild</string>
+    <string name="gravatar_qe_avatar_selected_confirmation_v2">Profilbild uppdaterad! Det kan ta några minuter för att synas överallt.</string>
+    <string name="gravatar_qe_avatar_picker_description">Välj eller ladda upp dina favoritprofilbilder och anslut dem till din e-postadress.</string>
 </resources>

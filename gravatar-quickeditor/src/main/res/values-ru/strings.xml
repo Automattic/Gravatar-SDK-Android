@@ -1,10 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: 2024-10-24 15:54:03+0000
+Translation-Revision-Date: 2024-11-26 14:54:03+0000
 Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);
 Generator: GlotPress/2.4.0-alpha
 Language: ru
 -->
 <resources>
-
+    <string name="gravatar_qe_write_external_storage_permission_rationale_message">Чтобы сохранить изображение в общедоступной папке, требуется разрешение. Вы можете дать разрешение в настройках приложения.</string>
+    <string name="gravatar_qe_download_manager_disabled_title">DownloadManager отключён. Включите его, чтобы загружать аватары.</string>
+    <string name="gravatar_qe_download_manager_not_available">DownloadManager недоступен</string>
+    <string name="gravatar_qe_image_download_queued">Загрузка изображения поставлена в очередь. По завершении вы получите уведомление.</string>
+    <string name="gravatar_qe_avatar_delete_confirmation_cancel">Отмена</string>
+    <string name="gravatar_qe_avatar_delete_confirmation_confirm">Удалить</string>
+    <string name="gravatar_qe_avatar_delete_confirmation_message">Вы уверены, что хотите удалить изображение?</string>
+    <string name="gravatar_qe_avatar_delete_confirmation_title">Удалить изображение</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_download_image">Скачать изображение</string>
+    <string name="gravatar_qe_avatar_delete_avatar_error">Ошибка при удалении изображения.</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_delete_content_description">Удалить аватар</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_delete">Удалить</string>
+    <string name="gravatar_qe_permission_rationale_open_settings">Открыть настройки</string>
+    <string name="gravatar_qe_upload_image_content_description">Загрузить изображение</string>
+    <string name="gravatar_qe_happy_face_image_content_description">Изображение весёлого лица</string>
+    <string name="gravatar_qe_login_required">Необходимо войти в учётную запись</string>
+    <string name="gravatar_qe_avatar_picker_network_error_title">Отсутствует подключение к Интернету</string>
+    <string name="gravatar_qe_avatar_picker_session_error_close_cta">Закрыть</string>
+    <string name="gravatar_qe_avatar_picker_session_error_cta">Войти</string>
+    <string name="gravatar_qe_avatar_picker_session_error_title">Время сеанса истекло</string>
+    <string name="gravatar_qe_avatar_picker_error_retry_cta">Повторите попытку</string>
+    <string name="gravatar_qe_avatar_picker_server_error_title">Ой-ой-ой</string>
+    <string name="gravatar_qe_capture_photo_icon_description">Сделать фотоснимок</string>
+    <string name="gravatar_qe_photo_library_icon_description">Библиотека фотографий</string>
+    <string name="gravatar_qe_avatar_picker_take_photo">Сделать фотографию</string>
+    <string name="gravatar_qe_avatar_picker_choose_a_photo">Выбрать фотографию</string>
+    <string name="gravatar_qe_avatar_picker_upload_image">Загрузить изображение</string>
+    <string name="gravatar_qe_avatar_upload_error_action">Повторить попытку</string>
+    <string name="gravatar_qe_avatar_picker_title">Аватары</string>
+    <string name="gravatar_qe_bottom_sheet_done">Готово</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_alt_text_content_description">Альтернативный текст</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_alt_text">Атрибут alt</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_content_description">Дополнительные параметры</string>
+    <string name="gravatar_qe_selectable_avatar_content_description">Изображение аватара</string>
+    <string name="gravatar_qe_gravatar">Gravatar</string>
+    <string name="gravatar_qe_avatar_upload_failure_image_too_big">Размер предоставленного изображения превосходит максимально допустимый: 10 МБ</string>
+    <string name="gravatar_qe_dismiss">Закрыть</string>
+    <string name="gravatar_qe_camera_permission_rationale_message">Чтобы сделать фотографию, требуется разрешение на доступ к камере. Вы можете дать разрешение в настройках приложения.</string>
+    <string name="gravatar_qe_permission_required_alert_title">Требуются права доступа</string>
+    <string name="gravatar_qe_oauth_email_associated_error_message">Что-то пошло не так при проверке адреса эл. почты.</string>
+    <string name="gravatar_qe_avatar_upload_failure_dialog_remove_upload">Удалить загрузку</string>
+    <string name="gravatar_qe_avatar_upload_failure_dialog_title">Не удалось загрузить изображение</string>
+    <string name="gravatar_qe_failed_to_load_avatar_content_description">Загрузка прервана. Нажмите, чтобы выбрать действие.</string>
+    <string name="gravatar_qe_oauth_wrong_email_authenticated_error_message">По-видимому, вы указали неверный адрес эл. почты при входе. Повторите попытку, используя %s. Спасибо!</string>
+    <string name="gravatar_qe_avatar_picker_session_error_no_login_message">По соображениям безопасности время сеанса истекло.</string>
+    <string name="gravatar_qe_login_required_message">Необходимо войти в учётную запись, чтобы изменить профиль Gravatar</string>
+    <string name="gravatar_qe_avatar_picker_network_error_message">Ой-ой-ой! Похоже, вы не подключены к Интернету.</string>
+    <string name="gravatar_qe_avatar_picker_session_error_message">По соображениям безопасности время сеанса истекло. Войдите, чтобы изменить свой аватар.</string>
+    <string name="gravatar_qe_avatar_picker_unknown_error_message">Что-то пошло не так.</string>
+    <string name="gravatar_qe_avatar_picker_server_error_message">Что-то пошло не так, и нам не удалось подключиться к серверам Gravatar.</string>
+    <string name="gravatar_qe_avatar_selection_error">Ошибка при выборе аватара.</string>
+    <string name="gravatar_qe_avatar_picker_title_empty_state">Настройте свой аватар</string>
+    <string name="gravatar_qe_avatar_selected_confirmation_v2">Аватар обновлён! Через несколько минут он станет отображаться повсюду.</string>
+    <string name="gravatar_qe_avatar_picker_description">Выберите или загрузите предпочитаемые изображения для аватаров и подключите их к своему адресу электронной почты.</string>
 </resources>

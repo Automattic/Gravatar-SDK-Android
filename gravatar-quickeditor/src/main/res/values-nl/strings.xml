@@ -1,10 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: 2024-10-24 11:54:03+0000
+Translation-Revision-Date: 2024-11-28 09:54:03+0000
 Plural-Forms: nplurals=2; plural=n != 1;
 Generator: GlotPress/2.4.0-alpha
 Language: nl
 -->
 <resources>
-
+    <string name="gravatar_qe_write_external_storage_permission_rationale_message">Om een afbeelding in een openbare map op te slaan, moet je toestemming geven. Je kan toestemming geven in de instellingen van de app.</string>
+    <string name="gravatar_qe_download_manager_disabled_title">DownloadManager is uitgeschakeld. Schakel deze in om avatars te downloaden.</string>
+    <string name="gravatar_qe_download_manager_not_available">DownloadManager is niet beschikbaar</string>
+    <string name="gravatar_qe_image_download_queued">Afbeeldingdownload staat in de wachtrij. Je ontvangt een melding wanneer deze is voltooid.</string>
+    <string name="gravatar_qe_avatar_delete_confirmation_cancel">Annuleren</string>
+    <string name="gravatar_qe_avatar_delete_confirmation_confirm">Verwijderen</string>
+    <string name="gravatar_qe_avatar_delete_confirmation_message">Weet je zeker dat je deze afbeelding wilt verwijderen?</string>
+    <string name="gravatar_qe_avatar_delete_confirmation_title">Afbeelding verwijderen</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_download_image">Afbeelding downloaden</string>
+    <string name="gravatar_qe_avatar_delete_avatar_error">Fout bij het verwijderen van de afbeelding.</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_delete_content_description">Avatar verwijderen</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_delete">Verwijderen</string>
+    <string name="gravatar_qe_permission_rationale_open_settings">Instellingen openen</string>
+    <string name="gravatar_qe_upload_image_content_description">Afbeelding uploaden</string>
+    <string name="gravatar_qe_happy_face_image_content_description">Afbeelding van een blij gezicht</string>
+    <string name="gravatar_qe_login_required">Inloggen vereist</string>
+    <string name="gravatar_qe_avatar_picker_network_error_title">Geen internetverbinding</string>
+    <string name="gravatar_qe_avatar_picker_session_error_close_cta">Sluiten</string>
+    <string name="gravatar_qe_avatar_picker_session_error_cta">Inloggen</string>
+    <string name="gravatar_qe_avatar_picker_session_error_title">Sessie verlopen</string>
+    <string name="gravatar_qe_avatar_picker_error_retry_cta">Opnieuw proberen</string>
+    <string name="gravatar_qe_avatar_picker_server_error_title">Oeps</string>
+    <string name="gravatar_qe_capture_photo_icon_description">Foto vastleggen</string>
+    <string name="gravatar_qe_photo_library_icon_description">Fotobibliotheek</string>
+    <string name="gravatar_qe_avatar_picker_take_photo">Foto nemen</string>
+    <string name="gravatar_qe_avatar_picker_choose_a_photo">Foto kiezen</string>
+    <string name="gravatar_qe_avatar_picker_upload_image">Afbeelding uploaden</string>
+    <string name="gravatar_qe_avatar_upload_error_action">Opnieuw proberen</string>
+    <string name="gravatar_qe_avatar_picker_title">Avatars</string>
+    <string name="gravatar_qe_bottom_sheet_done">Klaar</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_alt_text_content_description">Alternatieve tekst</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_alt_text">Alt. tekst</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_content_description">Meer opties</string>
+    <string name="gravatar_qe_selectable_avatar_content_description">Avatarafbeelding</string>
+    <string name="gravatar_qe_gravatar">Gravatar</string>
+    <string name="gravatar_qe_avatar_upload_failure_image_too_big">De opgegeven afbeelding overschrijdt de maximale grootte: 10 MB</string>
+    <string name="gravatar_qe_dismiss">Negeren</string>
+    <string name="gravatar_qe_camera_permission_rationale_message">Om een foto te kunnen nemen, moet je de camera machtigen. Je kan de camera machtigen in de instellingen van de app.</string>
+    <string name="gravatar_qe_permission_required_alert_title">Machtiging vereist</string>
+    <string name="gravatar_qe_oauth_email_associated_error_message">Er is iets misgegaan tijdens de verificatie van je e-mailadres.</string>
+    <string name="gravatar_qe_avatar_upload_failure_dialog_remove_upload">Upload verwijderen</string>
+    <string name="gravatar_qe_avatar_upload_failure_dialog_title">Afbeelding kon niet worden geüpload</string>
+    <string name="gravatar_qe_failed_to_load_avatar_content_description">Upload mislukt. Klik voor opties.</string>
+    <string name="gravatar_qe_oauth_wrong_email_authenticated_error_message">Het lijkt erop dat je het verkeerde e-mailadres hebt gebruikt om in te loggen. Probeer opnieuw met %s. Bedankt!</string>
+    <string name="gravatar_qe_avatar_picker_session_error_no_login_message">Sessie verlopen vanwege beveiligingsredenen.</string>
+    <string name="gravatar_qe_login_required_message">Je moet eerst inloggen om je Gravatar-profiel aan te passen</string>
+    <string name="gravatar_qe_avatar_picker_network_error_message">Oh nee… Het lijkt erop dat je niet bent verbonden met het internet.</string>
+    <string name="gravatar_qe_avatar_picker_session_error_message">Sessie verlopen vanwege beveiligingsredenen. Log in om je avatar bij te werken.</string>
+    <string name="gravatar_qe_avatar_picker_unknown_error_message">Er is iets misgegaan.</string>
+    <string name="gravatar_qe_avatar_picker_server_error_message">Er is iets misgegaan en we kunnen geen verbinding maken met de Gravatar-servers.</string>
+    <string name="gravatar_qe_avatar_selection_error">Oeps, er is een fout opgetreden bij het selecteren van de avatar.</string>
+    <string name="gravatar_qe_avatar_picker_title_empty_state">Laten we je avatar instellen</string>
+    <string name="gravatar_qe_avatar_selected_confirmation_v2">Avatar is bijgewerkt! Het kan een paar minuten duren tot deze overal wordt weergegeven.</string>
+    <string name="gravatar_qe_avatar_picker_description">Kies of upload je favoriete avatarafbeeldingen en koppel ze aan je e-mailadres.</string>
 </resources>

@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: 2024-09-12 15:54:02+0000
+Translation-Revision-Date: 2024-10-31 09:54:02+0000
 Plural-Forms: nplurals=2; plural=n != 1;
 Generator: GlotPress/2.4.0-alpha
 Language: he_IL
 -->
 <resources>
-
+    <string name="gravatar_ui_empty_state_view_profile_button">לקבל בעלות על הפרופיל</string>
+    <string name="gravatar_ui_empty_state_user_info">להוסיף מיקום, כינויי גוף וכו\'</string>
+    <string name="gravatar_ui_empty_state_display_name">השם שלך</string>
+    <string name="gravatar_ui_view_profile_button">להציג פרופיל</string>
+    <string name="gravatar_ui_empty_state_about_me">כל העולם רוצה להכיר אותך. צלמית המשתמש והביו שלך הולכים איתך לכל מקום באינטרנט.</string>
 </resources>

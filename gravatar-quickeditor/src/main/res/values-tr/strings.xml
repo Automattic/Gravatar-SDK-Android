@@ -1,10 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: 2024-10-23 15:54:03+0000
+Translation-Revision-Date: 2024-11-27 09:54:03+0000
 Plural-Forms: nplurals=2; plural=(n > 1);
 Generator: GlotPress/2.4.0-alpha
 Language: tr
 -->
 <resources>
-
+    <string name="gravatar_qe_write_external_storage_permission_rationale_message">Görseli herkese açık klasörde kaydetmek için izin vermeniz gerekir. Uygulama ayarlarından izin verebilirsiniz.</string>
+    <string name="gravatar_qe_download_manager_disabled_title">İndirme Yöneticisi devre dışı bırakıldı. Avatarları indirmek için lütfen bunu etkinleştirin.</string>
+    <string name="gravatar_qe_download_manager_not_available">İndirme Yöneticisi kullanılamıyor.</string>
+    <string name="gravatar_qe_image_download_queued">Görsel indirme işlemi sıraya alındı. Tamamlandığında bir bildirim alırsınız.</string>
+    <string name="gravatar_qe_avatar_delete_confirmation_cancel">İptal Et</string>
+    <string name="gravatar_qe_avatar_delete_confirmation_confirm">Sil</string>
+    <string name="gravatar_qe_avatar_delete_confirmation_message">Bu görseli silmek istediğinizden emin misiniz?</string>
+    <string name="gravatar_qe_avatar_delete_confirmation_title">Görseli Sil</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_download_image">Görseli indir</string>
+    <string name="gravatar_qe_avatar_delete_avatar_error">Görsel silinirken hata oluştu.</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_delete_content_description">Avatarı Sil</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_delete">Sil</string>
+    <string name="gravatar_qe_permission_rationale_open_settings">Ayarları aç</string>
+    <string name="gravatar_qe_upload_image_content_description">Görseli karşıya yükleyin</string>
+    <string name="gravatar_qe_happy_face_image_content_description">Mutlu yüz görseli</string>
+    <string name="gravatar_qe_login_required">Oturum açmanız gerekiyor</string>
+    <string name="gravatar_qe_avatar_picker_network_error_title">İnternet yok</string>
+    <string name="gravatar_qe_avatar_picker_session_error_close_cta">Kapat</string>
+    <string name="gravatar_qe_avatar_picker_session_error_cta">Oturum aç</string>
+    <string name="gravatar_qe_avatar_picker_session_error_title">Oturum süresi doldu</string>
+    <string name="gravatar_qe_avatar_picker_error_retry_cta">Tekrar dene</string>
+    <string name="gravatar_qe_avatar_picker_server_error_title">Üzgünüz</string>
+    <string name="gravatar_qe_capture_photo_icon_description">Fotoğraf Çekin</string>
+    <string name="gravatar_qe_photo_library_icon_description">Fotoğraf kütüphanesi</string>
+    <string name="gravatar_qe_avatar_picker_take_photo">Fotoğraf Çek</string>
+    <string name="gravatar_qe_avatar_picker_choose_a_photo">Fotoğraf Seç</string>
+    <string name="gravatar_qe_avatar_picker_upload_image">Görseli karşıya yükle</string>
+    <string name="gravatar_qe_avatar_upload_error_action">Tekrar dene</string>
+    <string name="gravatar_qe_avatar_picker_title">Avatarlar</string>
+    <string name="gravatar_qe_bottom_sheet_done">Tamam</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_alt_text_content_description">Alternatif Metin</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_alt_text">Alternatif Metin</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_content_description">Daha Fazla Seçenek</string>
+    <string name="gravatar_qe_selectable_avatar_content_description">Avatar Görseli</string>
+    <string name="gravatar_qe_gravatar">Gravatar</string>
+    <string name="gravatar_qe_avatar_upload_failure_image_too_big">Sağlanan görsel maksimum boyutu aşıyor: 10 MB</string>
+    <string name="gravatar_qe_dismiss">Kapat</string>
+    <string name="gravatar_qe_camera_permission_rationale_message">Fotoğraf çekebilmek için kameraya izin vermeniz gerekli. Uygulama ayarlarından izin verebilirsiniz.</string>
+    <string name="gravatar_qe_permission_required_alert_title">İzin gerekli</string>
+    <string name="gravatar_qe_oauth_email_associated_error_message">E-posta adresiniz doğrulanırken bir sorun yaşandı.</string>
+    <string name="gravatar_qe_avatar_upload_failure_dialog_remove_upload">Karşıya yüklemeyi kaldır</string>
+    <string name="gravatar_qe_avatar_upload_failure_dialog_title">Görsel karşıya yüklenemedi</string>
+    <string name="gravatar_qe_failed_to_load_avatar_content_description">Karşıya yükleme başarısız oldu, işlemleri görmek için dokunun.</string>
+    <string name="gravatar_qe_oauth_wrong_email_authenticated_error_message">Görünüşe göre oturum açmak için yanlış e-posta adresini kullandınız. Lütfen şu anda %s adresini kullanmayı yeniden deneyin. Teşekkürler!</string>
+    <string name="gravatar_qe_avatar_picker_session_error_no_login_message">Güvenlik nedeniyle oturum süresi doldu.</string>
+    <string name="gravatar_qe_login_required_message">Gravatar profilinizi değiştirmek için önce oturum açmalısınız</string>
+    <string name="gravatar_qe_avatar_picker_network_error_message">Üzgünüz. Görünüşe göre internete bağlı değilsiniz.</string>
+    <string name="gravatar_qe_avatar_picker_session_error_message">Güvenlik nedeniyle oturum süresi doldu. Avatarınızı güncellemek için lütfen oturum açın.</string>
+    <string name="gravatar_qe_avatar_picker_unknown_error_message">Bir sorun oluştu.</string>
+    <string name="gravatar_qe_avatar_picker_server_error_message">Bir sorun oluştu ve Gravatar sunucularına bağlanılamadı.</string>
+    <string name="gravatar_qe_avatar_selection_error">Üzgünüz, avatar seçilirken bir sorun oluştu</string>
+    <string name="gravatar_qe_avatar_picker_title_empty_state">Avatarınızı oluşturalım</string>
+    <string name="gravatar_qe_avatar_selected_confirmation_v2">Avatar güncellendi! Her yerde görünmesi birkaç dakika sürebilir.</string>
+    <string name="gravatar_qe_avatar_picker_description">Favori avatar görsellerinizi oluşturun veya yükleyin ve e-posta adresinize bağlayın.</string>
 </resources>
