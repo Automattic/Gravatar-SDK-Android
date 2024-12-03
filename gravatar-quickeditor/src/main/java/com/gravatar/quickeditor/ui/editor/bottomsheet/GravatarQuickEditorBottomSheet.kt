@@ -45,10 +45,10 @@ import com.gravatar.quickeditor.ui.components.QEDragHandle
 import com.gravatar.quickeditor.ui.components.QETopBar
 import com.gravatar.quickeditor.ui.editor.AuthenticationMethod
 import com.gravatar.quickeditor.ui.editor.AvatarPickerContentLayout
-import com.gravatar.quickeditor.ui.editor.GravatarColorScheme
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorDismissReason
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorPage
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
+import com.gravatar.quickeditor.ui.editor.GravatarUiMode
 import com.gravatar.ui.GravatarTheme
 import com.gravatar.ui.LocalGravatarTheme
 import com.gravatar.ui.mainGravatarTheme
@@ -96,7 +96,7 @@ internal fun GravatarQuickEditorBottomSheet(
         GravatarModalBottomSheet(
             onDismiss = onDismiss,
             modalBottomSheetState = modalBottomSheetState,
-            colorScheme = gravatarQuickEditorParams.colorScheme,
+            colorScheme = gravatarQuickEditorParams.uiMode,
         ) {
             when (authenticationMethod) {
                 is AuthenticationMethod.Bearer -> {
@@ -124,7 +124,7 @@ internal fun GravatarQuickEditorBottomSheet(
 @Composable
 private fun GravatarModalBottomSheet(
     onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit = {},
-    colorScheme: GravatarColorScheme,
+    colorScheme: GravatarUiMode,
     modalBottomSheetState: ModalBottomSheetState,
     content: @Composable () -> Unit,
 ) {
@@ -139,9 +139,9 @@ private fun GravatarModalBottomSheet(
 
     val configuration = Configuration(LocalConfiguration.current).apply {
         uiMode = when (colorScheme) {
-            GravatarColorScheme.LIGHT -> Configuration.UI_MODE_NIGHT_NO
-            GravatarColorScheme.DARK -> Configuration.UI_MODE_NIGHT_YES
-            GravatarColorScheme.SYSTEM -> uiMode
+            GravatarUiMode.LIGHT -> Configuration.UI_MODE_NIGHT_NO
+            GravatarUiMode.DARK -> Configuration.UI_MODE_NIGHT_YES
+            GravatarUiMode.SYSTEM -> uiMode
         }
     }
     CompositionLocalProvider(
@@ -188,20 +188,16 @@ private fun GravatarModalBottomSheet(
                                 horizontalAlignment = Alignment.CenterHorizontally,
                             ) {
                                 QEDragHandle()
-                                CompositionLocalProvider(
-                                    LocalConfiguration provides configuration,
-                                ) {
-                                    QETopBar(
-                                        onDoneClick = {
-                                            coroutineScope.launch {
-                                                modalBottomSheetState.currentDetent = Hidden
-                                            }
-                                        },
-                                        onGravatarIconClick = {
-                                            uriHandler.openUri(GravatarConstants.GRAVATAR_SIGN_IN_URL)
-                                        },
-                                    )
-                                }
+                                QETopBar(
+                                    onDoneClick = {
+                                        coroutineScope.launch {
+                                            modalBottomSheetState.currentDetent = Hidden
+                                        }
+                                    },
+                                    onGravatarIconClick = {
+                                        uriHandler.openUri(GravatarConstants.GRAVATAR_SIGN_IN_URL)
+                                    },
+                                )
                                 content()
                             }
                         }

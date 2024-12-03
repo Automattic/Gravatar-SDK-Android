@@ -10,18 +10,18 @@ import java.util.Objects
  *
  * @property email The email of the user
  * @property avatarPickerContentLayout The layout direction used in the Avatar Picker.
- * @property colorScheme The color scheme to be used in the Quick Editor.
+ * @property uiMode The UI mode to be used in the Quick Editor.
  */
 @Parcelize
 public class GravatarQuickEditorParams private constructor(
     public val email: Email,
     public val avatarPickerContentLayout: AvatarPickerContentLayout,
-    public val colorScheme: GravatarColorScheme = GravatarColorScheme.SYSTEM,
+    public val uiMode: GravatarUiMode = GravatarUiMode.SYSTEM,
 ) : Parcelable {
     override fun toString(): String = "GravatarQuickEditorParams(" +
         "email='$email', " +
         "avatarPickerContentLayout=$avatarPickerContentLayout, " +
-        "colorScheme=$colorScheme" +
+        "uiMode=$uiMode" +
         ")"
 
     override fun hashCode(): Int = Objects.hash(email, avatarPickerContentLayout)
@@ -30,7 +30,7 @@ public class GravatarQuickEditorParams private constructor(
         return other is GravatarQuickEditorParams &&
             email == other.email &&
             avatarPickerContentLayout == other.avatarPickerContentLayout &&
-            colorScheme == other.colorScheme
+            uiMode == other.uiMode
     }
 
     /**
@@ -50,10 +50,10 @@ public class GravatarQuickEditorParams private constructor(
         public var avatarPickerContentLayout: AvatarPickerContentLayout = AvatarPickerContentLayout.Horizontal
 
         /**
-         * The color scheme to be used in the Quick Editor
+         * The UI mode to be used in the Quick Editor
          */
         @set:JvmSynthetic // Hide 'void' setter from Java
-        public var colorScheme: GravatarColorScheme = GravatarColorScheme.SYSTEM
+        public var uiMode: GravatarUiMode = GravatarUiMode.SYSTEM
 
         /**
          * Sets the content layout direction used in the Avatar Picker
@@ -67,9 +67,9 @@ public class GravatarQuickEditorParams private constructor(
         public fun setEmail(email: Email): Builder = apply { this.email = email }
 
         /**
-         * Sets the color scheme to be used in the Quick Editor
+         * Sets the UI mode to be used in the Quick Editor
          */
-        public fun setColorScheme(colorScheme: GravatarColorScheme): Builder = apply { this.colorScheme = colorScheme }
+        public fun setUiMode(uiMode: GravatarUiMode): Builder = apply { this.uiMode = uiMode }
 
         /**
          * Builds the GravatarQuickEditorParams object
@@ -77,7 +77,7 @@ public class GravatarQuickEditorParams private constructor(
         public fun build(): GravatarQuickEditorParams = GravatarQuickEditorParams(
             email!!,
             avatarPickerContentLayout,
-            colorScheme,
+            uiMode,
         )
     }
 }

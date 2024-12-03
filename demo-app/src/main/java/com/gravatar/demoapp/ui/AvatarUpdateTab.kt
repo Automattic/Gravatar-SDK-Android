@@ -62,8 +62,8 @@ import com.gravatar.demoapp.ui.components.GravatarPasswordInput
 import com.gravatar.quickeditor.GravatarQuickEditor
 import com.gravatar.quickeditor.ui.editor.AuthenticationMethod
 import com.gravatar.quickeditor.ui.editor.AvatarPickerContentLayout
-import com.gravatar.quickeditor.ui.editor.GravatarColorScheme
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
+import com.gravatar.quickeditor.ui.editor.GravatarUiMode
 import com.gravatar.quickeditor.ui.editor.bottomsheet.GravatarQuickEditorBottomSheet
 import com.gravatar.quickeditor.ui.oauth.OAuthParams
 import com.gravatar.types.Email
@@ -89,8 +89,8 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
     ) {
         mutableStateOf(AvatarPickerContentLayout.Horizontal)
     }
-    var pickerColorScheme: GravatarColorScheme by rememberSaveable {
-        mutableStateOf(GravatarColorScheme.SYSTEM)
+    var pickerUiMode: GravatarUiMode by rememberSaveable {
+        mutableStateOf(GravatarUiMode.SYSTEM)
     }
 
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -129,9 +129,9 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
                     onContentLayoutSelected = { pickerContentLayout = it },
                     modifier = Modifier.weight(1f),
                 )
-                ColorSchemeDropdown(
-                    selectedColorScheme = pickerColorScheme,
-                    onColorSchemeSelected = { pickerColorScheme = it },
+                UiModeDropdown(
+                    selectedUiMode = pickerUiMode,
+                    onUiModeSelected = { pickerUiMode = it },
                     modifier = Modifier.weight(1f),
                 )
             }
@@ -199,7 +199,7 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
                 gravatarQuickEditorParams = GravatarQuickEditorParams {
                     email = Email(userEmail)
                     avatarPickerContentLayout = pickerContentLayout
-                    colorScheme = pickerColorScheme
+                    uiMode = pickerUiMode
                 },
                 authenticationMethod = authenticationMethod,
                 onAvatarSelected = remember {
@@ -294,16 +294,16 @@ private fun ContentLayoutDropdown(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun ColorSchemeDropdown(
-    selectedColorScheme: GravatarColorScheme,
-    onColorSchemeSelected: (GravatarColorScheme) -> Unit,
+private fun UiModeDropdown(
+    selectedUiMode: GravatarUiMode,
+    onUiModeSelected: (GravatarUiMode) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var expanded by remember { mutableStateOf(false) }
-    val colorSchemeOptions = listOf(
-        GravatarColorScheme.LIGHT,
-        GravatarColorScheme.DARK,
-        GravatarColorScheme.SYSTEM,
+    val uiModeOptions = listOf(
+        GravatarUiMode.LIGHT,
+        GravatarUiMode.DARK,
+        GravatarUiMode.SYSTEM,
     )
 
     ExposedDropdownMenuBox(
@@ -313,9 +313,9 @@ private fun ColorSchemeDropdown(
     ) {
         TextField(
             readOnly = true,
-            value = selectedColorScheme.toString(),
+            value = selectedUiMode.toString(),
             onValueChange = { },
-            label = { Text("Color Scheme") },
+            label = { Text("UI mode") },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             modifier = Modifier
                 .menuAnchor(),
@@ -325,9 +325,9 @@ private fun ColorSchemeDropdown(
             onDismissRequest = { expanded = false },
             modifier = Modifier.exposedDropdownSize(),
         ) {
-            colorSchemeOptions.forEach { selectionOption ->
+            uiModeOptions.forEach { selectionOption ->
                 DropdownMenuItem(text = { Text(text = selectionOption.toString()) }, onClick = {
-                    onColorSchemeSelected(selectionOption)
+                    onUiModeSelected(selectionOption)
                     expanded = false
                 })
             }
