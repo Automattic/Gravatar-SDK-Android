@@ -1,5 +1,6 @@
 package com.gravatar.quickeditor.ui.editor.bottomsheet
 
+import android.content.res.Configuration
 import android.graphics.Color
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -25,6 +26,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowInsetsControllerCompat
@@ -43,6 +45,7 @@ import com.gravatar.quickeditor.ui.components.QEDragHandle
 import com.gravatar.quickeditor.ui.components.QETopBar
 import com.gravatar.quickeditor.ui.editor.AuthenticationMethod
 import com.gravatar.quickeditor.ui.editor.AvatarPickerContentLayout
+import com.gravatar.quickeditor.ui.editor.GravatarColorScheme
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorDismissReason
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorPage
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
@@ -93,6 +96,7 @@ internal fun GravatarQuickEditorBottomSheet(
         GravatarModalBottomSheet(
             onDismiss = onDismiss,
             modalBottomSheetState = modalBottomSheetState,
+            colorScheme = gravatarQuickEditorParams.colorScheme,
         ) {
             when (authenticationMethod) {
                 is AuthenticationMethod.Bearer -> {
@@ -120,6 +124,7 @@ internal fun GravatarQuickEditorBottomSheet(
 @Composable
 private fun GravatarModalBottomSheet(
     onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit = {},
+    colorScheme: GravatarColorScheme,
     modalBottomSheetState: ModalBottomSheetState,
     content: @Composable () -> Unit,
 ) {
@@ -132,53 +137,74 @@ private fun GravatarModalBottomSheet(
         }
     }
 
-    GravatarTheme {
-        ModalBottomSheet(
-            state = modalBottomSheetState,
-        ) {
-            Scrim(
-                modifier = Modifier.clickable { modalBottomSheetState.currentDetent = Hidden },
-                scrimColor = MaterialTheme.colorScheme.scrim.copy(alpha = 0.32f),
-            )
-            Sheet(
-                modifier = Modifier
-                    .clip(RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp))
-                    .background(MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp))
-                    .widthIn(max = 640.dp)
-                    .fillMaxWidth()
-                    .padding(
-                        WindowInsets.navigationBars
-                            .only(WindowInsetsSides.Vertical)
-                            .asPaddingValues(),
-                    ),
+    val configuration = Configuration(LocalConfiguration.current).apply {
+        uiMode = when (colorScheme) {
+            GravatarColorScheme.LIGHT -> Configuration.UI_MODE_NIGHT_NO
+            GravatarColorScheme.DARK -> Configuration.UI_MODE_NIGHT_YES
+            GravatarColorScheme.SYSTEM -> uiMode
+        }
+    }
+    CompositionLocalProvider(
+        LocalConfiguration provides configuration,
+    ) {
+        GravatarTheme {
+            ModalBottomSheet(
+                state = modalBottomSheetState,
             ) {
-                val window = LocalModalWindow.current
-                val isDarkTheme = isSystemInDarkTheme()
-                LaunchedEffect(Unit) {
-                    window.navigationBarColor = Color.TRANSPARENT
-                    WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightNavigationBars =
-                        !isDarkTheme
-                }
-                Surface(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    tonalElevation = 1.dp,
+                // Modal content must be taking the uiMode from Activity and doesn't respect
+                // the above set CompositionLocalProvider
+                CompositionLocalProvider(
+                    LocalConfiguration provides configuration,
                 ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
+                    Scrim(
+                        modifier = Modifier.clickable { modalBottomSheetState.currentDetent = Hidden },
+                        scrimColor = MaterialTheme.colorScheme.scrim.copy(alpha = 0.32f),
+                    )
+                    Sheet(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp))
+                            .background(MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp))
+                            .widthIn(max = 640.dp)
+                            .fillMaxWidth()
+                            .padding(
+                                WindowInsets.navigationBars
+                                    .only(WindowInsetsSides.Vertical)
+                                    .asPaddingValues(),
+                            ),
                     ) {
-                        QEDragHandle()
-                        QETopBar(
-                            onDoneClick = {
-                                coroutineScope.launch {
-                                    modalBottomSheetState.currentDetent = Hidden
+                        val window = LocalModalWindow.current
+                        val isDarkTheme = isSystemInDarkTheme()
+                        LaunchedEffect(Unit) {
+                            window.navigationBarColor = Color.TRANSPARENT
+                            WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightNavigationBars =
+                                !isDarkTheme
+                        }
+                        Surface(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            tonalElevation = 1.dp,
+                        ) {
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                            ) {
+                                QEDragHandle()
+                                CompositionLocalProvider(
+                                    LocalConfiguration provides configuration,
+                                ) {
+                                    QETopBar(
+                                        onDoneClick = {
+                                            coroutineScope.launch {
+                                                modalBottomSheetState.currentDetent = Hidden
+                                            }
+                                        },
+                                        onGravatarIconClick = {
+                                            uriHandler.openUri(GravatarConstants.GRAVATAR_SIGN_IN_URL)
+                                        },
+                                    )
                                 }
-                            },
-                            onGravatarIconClick = {
-                                uriHandler.openUri(GravatarConstants.GRAVATAR_SIGN_IN_URL)
-                            },
-                        )
-                        content()
+                                content()
+                            }
+                        }
                     }
                 }
             }

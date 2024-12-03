@@ -329,6 +329,15 @@ public final class com/gravatar/quickeditor/ui/editor/AvatarPickerContentLayout$
 	public synthetic fun newArray (I)[Ljava/lang/Object;
 }
 
+public final class com/gravatar/quickeditor/ui/editor/GravatarColorScheme : java/lang/Enum {
+	public static final field DARK Lcom/gravatar/quickeditor/ui/editor/GravatarColorScheme;
+	public static final field LIGHT Lcom/gravatar/quickeditor/ui/editor/GravatarColorScheme;
+	public static final field SYSTEM Lcom/gravatar/quickeditor/ui/editor/GravatarColorScheme;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/gravatar/quickeditor/ui/editor/GravatarColorScheme;
+	public static fun values ()[Lcom/gravatar/quickeditor/ui/editor/GravatarColorScheme;
+}
+
 public abstract class com/gravatar/quickeditor/ui/editor/GravatarQuickEditorDismissReason {
 	public static final field $stable I
 }
@@ -360,10 +369,11 @@ public final class com/gravatar/quickeditor/ui/editor/GravatarQuickEditorDismiss
 public final class com/gravatar/quickeditor/ui/editor/GravatarQuickEditorParams : android/os/Parcelable {
 	public static final field $stable I
 	public static final field CREATOR Landroid/os/Parcelable$Creator;
-	public synthetic fun <init> (Lcom/gravatar/types/Email;Lcom/gravatar/quickeditor/ui/editor/AvatarPickerContentLayout;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Lcom/gravatar/types/Email;Lcom/gravatar/quickeditor/ui/editor/AvatarPickerContentLayout;Lcom/gravatar/quickeditor/ui/editor/GravatarColorScheme;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun describeContents ()I
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getAvatarPickerContentLayout ()Lcom/gravatar/quickeditor/ui/editor/AvatarPickerContentLayout;
+	public final fun getColorScheme ()Lcom/gravatar/quickeditor/ui/editor/GravatarColorScheme;
 	public final fun getEmail ()Lcom/gravatar/types/Email;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
@@ -375,9 +385,12 @@ public final class com/gravatar/quickeditor/ui/editor/GravatarQuickEditorParams$
 	public fun <init> ()V
 	public final fun build ()Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorParams;
 	public final fun getAvatarPickerContentLayout ()Lcom/gravatar/quickeditor/ui/editor/AvatarPickerContentLayout;
+	public final fun getColorScheme ()Lcom/gravatar/quickeditor/ui/editor/GravatarColorScheme;
 	public final fun getEmail ()Lcom/gravatar/types/Email;
 	public final fun setAvatarPickerContentLayout (Lcom/gravatar/quickeditor/ui/editor/AvatarPickerContentLayout;)Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorParams$Builder;
 	public final synthetic fun setAvatarPickerContentLayout (Lcom/gravatar/quickeditor/ui/editor/AvatarPickerContentLayout;)V
+	public final fun setColorScheme (Lcom/gravatar/quickeditor/ui/editor/GravatarColorScheme;)Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorParams$Builder;
+	public final synthetic fun setColorScheme (Lcom/gravatar/quickeditor/ui/editor/GravatarColorScheme;)V
 	public final fun setEmail (Lcom/gravatar/types/Email;)Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorParams$Builder;
 	public final synthetic fun setEmail (Lcom/gravatar/types/Email;)V
 }
