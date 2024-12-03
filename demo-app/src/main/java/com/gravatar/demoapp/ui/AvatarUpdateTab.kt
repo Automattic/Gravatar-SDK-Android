@@ -2,6 +2,7 @@ package com.gravatar.demoapp.ui
 
 import android.content.Intent
 import android.widget.Toast
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -14,16 +15,22 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AccountCircle
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -55,6 +62,7 @@ import com.gravatar.demoapp.ui.components.GravatarPasswordInput
 import com.gravatar.quickeditor.GravatarQuickEditor
 import com.gravatar.quickeditor.ui.editor.AuthenticationMethod
 import com.gravatar.quickeditor.ui.editor.AvatarPickerContentLayout
+import com.gravatar.quickeditor.ui.editor.GravatarColorScheme
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
 import com.gravatar.quickeditor.ui.editor.bottomsheet.GravatarQuickEditorBottomSheet
 import com.gravatar.quickeditor.ui.oauth.OAuthParams
@@ -75,12 +83,17 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
     var showBottomSheet by rememberSaveable { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     var cacheBuster: String? by remember { mutableStateOf(null) }
-    val keyboardController = LocalSoftwareKeyboardController.current
+    val scrollState: ScrollState = rememberScrollState()
     var pickerContentLayout: AvatarPickerContentLayout by rememberSaveable(
         stateSaver = AvatarPickerContentLayoutSaver,
     ) {
         mutableStateOf(AvatarPickerContentLayout.Horizontal)
     }
+    var pickerColorScheme: GravatarColorScheme by rememberSaveable {
+        mutableStateOf(GravatarColorScheme.SYSTEM)
+    }
+
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     Box(
         modifier = Modifier
@@ -89,6 +102,7 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
     ) {
         Column(
             modifier = modifier
+                .verticalScroll(scrollState)
                 .align(Alignment.TopCenter)
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -107,28 +121,18 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
                 Checkbox(checked = useToken, onCheckedChange = { useToken = it })
             }
             Row(
-                horizontalArrangement = Arrangement.Start,
                 modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
             ) {
-                RadioButton(
-                    selected = pickerContentLayout == AvatarPickerContentLayout.Horizontal,
-                    onClick = { pickerContentLayout = AvatarPickerContentLayout.Horizontal },
+                ContentLayoutDropdown(
+                    selectedContentLayout = pickerContentLayout,
+                    onContentLayoutSelected = { pickerContentLayout = it },
+                    modifier = Modifier.weight(1f),
                 )
-                Text(
-                    text = "Horizontal",
-                    modifier = Modifier
-                        .align(Alignment.CenterVertically)
-                        .clickable { pickerContentLayout = AvatarPickerContentLayout.Horizontal },
-                )
-                RadioButton(
-                    selected = pickerContentLayout == AvatarPickerContentLayout.Vertical,
-                    onClick = { pickerContentLayout = AvatarPickerContentLayout.Vertical },
-                )
-                Text(
-                    text = "Vertical",
-                    modifier = Modifier
-                        .align(Alignment.CenterVertically)
-                        .clickable { pickerContentLayout = AvatarPickerContentLayout.Vertical },
+                ColorSchemeDropdown(
+                    selectedColorScheme = pickerColorScheme,
+                    onColorSchemeSelected = { pickerColorScheme = it },
+                    modifier = Modifier.weight(1f),
                 )
             }
             UpdateAvatarComposable(
@@ -195,6 +199,7 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
                 gravatarQuickEditorParams = GravatarQuickEditorParams {
                     email = Email(userEmail)
                     avatarPickerContentLayout = pickerContentLayout
+                    colorScheme = pickerColorScheme
                 },
                 authenticationMethod = authenticationMethod,
                 onAvatarSelected = remember {
@@ -241,6 +246,91 @@ private fun UpdateAvatarComposable(
                 placeholder = rememberVectorPainter(Icons.Rounded.AccountCircle),
             )
             Text(text = stringResource(R.string.update_avatar_button_label))
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ContentLayoutDropdown(
+    selectedContentLayout: AvatarPickerContentLayout,
+    onContentLayoutSelected: (AvatarPickerContentLayout) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    var expanded by remember { mutableStateOf(false) }
+    val contentLayoutOptions = listOf(
+        AvatarPickerContentLayout.Horizontal,
+        AvatarPickerContentLayout.Vertical,
+    )
+
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = { expanded = it },
+        modifier = modifier,
+    ) {
+        TextField(
+            readOnly = true,
+            value = selectedContentLayout.toString(),
+            onValueChange = { },
+            label = { Text("Content Layout") },
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+            modifier = Modifier
+                .menuAnchor(),
+        )
+        ExposedDropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+            modifier = Modifier.exposedDropdownSize(),
+        ) {
+            contentLayoutOptions.forEach { selectionOption ->
+                DropdownMenuItem(text = { Text(text = selectionOption.toString()) }, onClick = {
+                    onContentLayoutSelected(selectionOption)
+                    expanded = false
+                })
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ColorSchemeDropdown(
+    selectedColorScheme: GravatarColorScheme,
+    onColorSchemeSelected: (GravatarColorScheme) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    var expanded by remember { mutableStateOf(false) }
+    val colorSchemeOptions = listOf(
+        GravatarColorScheme.LIGHT,
+        GravatarColorScheme.DARK,
+        GravatarColorScheme.SYSTEM,
+    )
+
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = { expanded = it },
+        modifier = modifier,
+    ) {
+        TextField(
+            readOnly = true,
+            value = selectedColorScheme.toString(),
+            onValueChange = { },
+            label = { Text("Color Scheme") },
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+            modifier = Modifier
+                .menuAnchor(),
+        )
+        ExposedDropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+            modifier = Modifier.exposedDropdownSize(),
+        ) {
+            colorSchemeOptions.forEach { selectionOption ->
+                DropdownMenuItem(text = { Text(text = selectionOption.toString()) }, onClick = {
+                    onColorSchemeSelected(selectionOption)
+                    expanded = false
+                })
+            }
         }
     }
 }
