@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.gravatar.quickeditor.R
@@ -29,6 +30,14 @@ internal fun AvatarMoreOptionsPickerPopup(
         popupDrawArea = popupDrawArea,
         onDismissRequest = onDismissRequest,
         popupItems = listOf(
+            PickerPopupItem(
+                text = R.string.gravatar_qe_selectable_avatar_more_options_style_ai,
+                iconRes = R.drawable.gravatar_avatar_more_options_edit_ai,
+                contentDescription = R.string.gravatar_qe_selectable_avatar_more_options_style_ai,
+                onClick = {
+                    onAvatarOptionClicked(AvatarOption.STYLE_WITH_AI)
+                },
+            ),
             PickerPopupItem(
                 text = R.string.gravatar_qe_selectable_avatar_more_options_download_image,
                 iconRes = R.drawable.gravatar_avatar_more_options_download,
@@ -54,6 +63,7 @@ internal enum class AvatarOption {
     ALT_TEXT,
     DELETE,
     DOWNLOAD_IMAGE,
+    STYLE_WITH_AI,
 }
 
 @Preview

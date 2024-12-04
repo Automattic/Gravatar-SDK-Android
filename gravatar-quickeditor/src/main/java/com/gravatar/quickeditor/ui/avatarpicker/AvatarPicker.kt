@@ -245,6 +245,7 @@ internal fun AvatarPicker(uiState: AvatarPickerUiState, onEvent: (AvatarPickerEv
                                 AvatarOption.DOWNLOAD_IMAGE -> {
                                     permissionAwareDownloadImageCallback(avatar)
                                 }
+                                AvatarOption.STYLE_WITH_AI -> Unit
                             }
                         },
                         onLocalImageSelected = { onEvent(AvatarPickerEvent.LocalImageSelected(it)) },
@@ -288,6 +289,23 @@ internal fun AvatarPicker(uiState: AvatarPickerUiState, onEvent: (AvatarPickerEv
                 },
                 onDismiss = { confirmAvatarDeletion = null },
             )
+        }
+        if (styleWithAIDialogVisible) {
+            Dialog(state = rememberDialogState(visible = true)) {
+                DialogPanel(
+                    modifier = Modifier
+                        .displayCutoutPadding()
+                        .systemBarsPadding()
+                        .fillMaxSize()
+                ) {
+                    Column {
+                        BasicText("This is a full screen dialog")
+                        Box(Modifier.clickable { state.visible = false }) {
+                            BasicText("Got it")
+                        }
+                    }
+                }
+            }
         }
     }
 }

@@ -35,6 +35,7 @@ startup = "1.1.1"
 testCoreKtx = "1.6.1"
 turbine = "1.1.0"
 ucrop = "2.2.10"
+mediapipeImageGenerator = "0.10.18"
 
 [libraries]
 android-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
@@ -79,6 +80,7 @@ roborazzi-junit-rule = { group = "io.github.takahirom.roborazzi", name = "robora
 security-crypto-datastore = { group = "io.github.osipxd", name = "security-crypto-datastore-preferences", version.ref = "dataStore" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 ucrop = { group = "com.automattic", name = "ucrop", version.ref = "ucrop" }
+mediapipe-imagegenerator = { group = "com.google.mediapipe", name = "tasks-vision-image-generator", version.ref = "mediapipeImageGenerator" }
 
 
 [plugins]

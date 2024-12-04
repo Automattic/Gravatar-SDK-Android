@@ -111,7 +111,6 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.retrofit.moshi.converter)
     implementation(libs.ucrop)
-
     // Jetpack Compose
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.ui)

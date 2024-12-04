@@ -8,6 +8,7 @@
     <string name="gravatar_qe_selectable_avatar_more_options_delete">Delete</string>
     <string name="gravatar_qe_selectable_avatar_more_options_delete_content_description">Delete Avatar</string>
     <string name="gravatar_qe_selectable_avatar_more_options_download_image">Download image</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_style_ai">Style with AI</string>
     <string name="gravatar_qe_bottom_sheet_done">Done</string>
     <string name="gravatar_qe_avatar_picker_title">Avatars</string>
     <string name="gravatar_qe_avatar_picker_title_empty_state">Let’s setup your avatar</string>
