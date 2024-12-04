@@ -15,14 +15,14 @@ jobs:
 
     steps:
       - name: Checkout the branch with the latest code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.ref_name }}
           path: 'code'
       - name: Checkout the branch with the docs
         uses: actions/checkout@v4
         with:
-          ref: 'adam/only_docs'
+          ref: 'docs'
           path: 'docs'
       - name: Set up JDK
         uses: actions/setup-java@v3
@@ -49,4 +49,4 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
           git commit -m "Update API documentation for ${{ github.ref_name }}"
-          git push origin adam/only_docs
+          git push origin docs
