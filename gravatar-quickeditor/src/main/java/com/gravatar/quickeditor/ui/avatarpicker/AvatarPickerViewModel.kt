@@ -300,6 +300,7 @@ internal class AvatarPickerViewModel(
                 }
                 when (avatarRepository.deleteAvatar(email, avatarId)) {
                     is GravatarResult.Success -> {
+                        _actions.send(AvatarPickerAction.AvatarSelected)
                         _uiState.update { currentState ->
                             currentState.copy(
                                 avatarUpdates = if (isSelectedAvatar) {
