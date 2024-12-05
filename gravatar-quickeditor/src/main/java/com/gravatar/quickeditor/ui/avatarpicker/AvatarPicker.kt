@@ -6,10 +6,10 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.provider.Settings
 import android.util.DisplayMetrics
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -53,6 +53,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -64,18 +65,17 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import coil.ImageLoader
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
-import coil.request.ImageRequest
-import coil.request.SuccessResult
 import com.composables.core.Dialog
 import com.composables.core.DialogPanel
 import com.composables.core.rememberDialogState
 import com.google.mediapipe.framework.image.BitmapImageBuilder
 import com.google.mediapipe.framework.image.ByteBufferExtractor
 import com.google.mediapipe.tasks.core.BaseOptions
+import com.google.mediapipe.tasks.vision.core.RunningMode
 import com.google.mediapipe.tasks.vision.facestylizer.FaceStylizer
+import com.google.mediapipe.tasks.vision.imagesegmenter.ImageSegmenter
 import com.gravatar.extensions.defaultProfile
 import com.gravatar.quickeditor.R
 import com.gravatar.quickeditor.data.repository.EmailAvatars
@@ -106,7 +106,6 @@ import com.gravatar.ui.components.ComponentState
 import com.yalantis.ucrop.UCrop
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.IOException
@@ -349,7 +348,7 @@ internal fun AvatarPicker(uiState: AvatarPickerUiState, onEvent: (AvatarPickerEv
 private fun StyleWithAI(
     avatarUrl: URI?
 ) {
-    val styleOptions = listOf("Sketch", "Ink", "Oil painting")
+    val styleOptions = listOf("Sketch", "Ink", "Oil painting", "Background")
     var selected: String by rememberSaveable { mutableStateOf(styleOptions.first()) }
     var loadingImage by rememberSaveable { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
@@ -400,7 +399,11 @@ private fun StyleWithAI(
                     }
                 }
             }
-            Box(modifier = Modifier.fillMaxWidth().height(300.dp)) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(300.dp)
+            ) {
                 if (loadingImage) {
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                 } else {
@@ -427,46 +430,17 @@ private fun StyleWithAI(
                 }
             }
             Button(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp),
                 onClick = {
                     coroutineScope.launch {
                         styling = true
                         withContext(Dispatchers.IO) {
-                            val baseOptionsBuilder = BaseOptions.builder()
-                                .setModelAssetPath(selected.modelPath)
-
-                            val optionsBuilder =
-                                FaceStylizer.FaceStylizerOptions.builder()
-                                    .setBaseOptions(baseOptionsBuilder.build())
-
-                            val options = optionsBuilder.build()
-
-                            val faceStylizer = FaceStylizer.createFromOptions(context, options)
-
-                            val mpImage = BitmapImageBuilder(sourceBitmap).build()
-
-                            val stylizeResult = faceStylizer.stylize(mpImage)
-
-                            try {
-                                val stylizedImage = stylizeResult.stylizedImage()
-                                if (stylizedImage.getOrNull() == null) {
-                                    withContext(Dispatchers.Main) {
-                                        Toast.makeText(context, "Failed to stylize image", Toast.LENGTH_SHORT).show()
-                                    }
-                                } else {
-                                    val byteBuffer =
-                                        ByteBufferExtractor.extract(stylizedImage.get())
-
-                                    val width = stylizedImage.get().width
-                                    val height = stylizedImage.get().height
-
-                                    val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
-                                    bitmap.copyPixelsFromBuffer(byteBuffer)
-
-                                    styledBitmap = bitmap
-                                }
-                            } catch (e: Exception) {
-                                Toast.makeText(context, "Exception ${e.message}", Toast.LENGTH_SHORT).show()
+                            styledBitmap = if (selected == "Background") {
+                                removeBackground(context, sourceBitmap)
+                            } else {
+                                styleImage(selected, context, sourceBitmap)
                             }
                         }
                         styling = false
@@ -478,24 +452,122 @@ private fun StyleWithAI(
                 )
             }
             Box(
-                modifier = Modifier.fillMaxWidth().height(300.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(300.dp)
             ) {
                 if (styling) {
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                 } else {
                     styledBitmap?.let {
-                         Image(
+                        Image(
                             painter = rememberAsyncImagePainter(it),
                             contentDescription = null,
                             modifier = Modifier
                                 .size(300.dp)
                                 .align(Alignment.TopCenter),
-                        )                    }
+                        )
+                    }
                 }
             }
         }
     }
 }
+
+private suspend fun styleImage(
+    selected: String,
+    context: Context,
+    sourceBitmap: Bitmap?,
+): Bitmap? {
+    val baseOptionsBuilder = BaseOptions.builder()
+        .setModelAssetPath(selected.modelPath)
+
+    val optionsBuilder =
+        FaceStylizer.FaceStylizerOptions.builder()
+            .setBaseOptions(baseOptionsBuilder.build())
+
+    val options = optionsBuilder.build()
+
+    val faceStylizer = FaceStylizer.createFromOptions(context, options)
+
+    val mpImage = BitmapImageBuilder(sourceBitmap).build()
+
+    val stylizeResult = faceStylizer.stylize(mpImage)
+
+    return try {
+        val stylizedImage = stylizeResult.stylizedImage()
+        if (stylizedImage.getOrNull() == null) {
+            withContext(Dispatchers.Main) {
+                Toast.makeText(context, "Failed to stylize image", Toast.LENGTH_SHORT).show()
+            }
+            null
+        } else {
+            val byteBuffer =
+                ByteBufferExtractor.extract(stylizedImage.get())
+
+            val width = stylizedImage.get().width
+            val height = stylizedImage.get().height
+
+            val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+            bitmap.copyPixelsFromBuffer(byteBuffer)
+            bitmap
+        }
+    } catch (e: Exception) {
+        withContext(Dispatchers.Main) {
+            Toast.makeText(context, "Exception ${e.message}", Toast.LENGTH_SHORT).show()
+        }
+        null
+    }
+}
+
+private fun removeBackground(
+    context: Context,
+    sourceBitmap: Bitmap?,
+): Bitmap? {
+    val options: ImageSegmenter.ImageSegmenterOptions =
+        ImageSegmenter.ImageSegmenterOptions.builder()
+            .setBaseOptions(
+                BaseOptions.builder().setModelAssetPath("selfie_segmenter.tflite").build()
+            )
+            .setRunningMode(RunningMode.IMAGE)
+            .setOutputCategoryMask(true)
+            .setOutputConfidenceMasks(false)
+            .build()
+    val imagesegmenter = ImageSegmenter.createFromOptions(context, options)
+
+    val mpImage = BitmapImageBuilder(sourceBitmap).build()
+
+    return try {
+        val segmenterResult = imagesegmenter.segment(mpImage)
+        val width = sourceBitmap!!.width
+        val height = sourceBitmap!!.height
+        val categoryMask = segmenterResult.categoryMask().get()
+
+        val categoryMaskBuffer = ByteBufferExtractor.extract(categoryMask)
+
+
+        val result = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        val pixels = IntArray(width * height)
+        sourceBitmap!!.getPixels(pixels, 0, width, 0, 0, width, height)
+
+        for (y in 0 until height) {
+            for (x in 0 until width) {
+                val category = categoryMaskBuffer.get(y * width + x).toInt() and 0xFF
+                if (category == 0) { // Assuming 0 is the person
+                    result.setPixel(x, y, pixels[y * width + x])
+                } else {
+                    result.setPixel(x, y, Color.Transparent.toArgb())
+                }
+            }
+        }
+
+        result
+    } catch (e: Exception) {
+        Log.e("StyleWithAI", "Exception ${e.message}")
+        null
+    }
+}
+
 
 private val String.modelPath: String
     get() = when (this) {
@@ -603,7 +675,7 @@ private val SectionError.titleRes: Int
         SectionError.NoInternetConnection -> R.string.gravatar_qe_avatar_picker_network_error_title
         SectionError.ServerError,
         SectionError.Unknown,
-        -> R.string.gravatar_qe_avatar_picker_server_error_title
+            -> R.string.gravatar_qe_avatar_picker_server_error_title
     }
 
 private val SectionError.messageRes: Int
@@ -630,7 +702,7 @@ private val SectionError.buttonTextRes: Int
         SectionError.NoInternetConnection,
         SectionError.ServerError,
         SectionError.Unknown,
-        -> R.string.gravatar_qe_avatar_picker_error_retry_cta
+            -> R.string.gravatar_qe_avatar_picker_error_retry_cta
     }
 
 private val SectionError.event: AvatarPickerEvent
@@ -639,7 +711,7 @@ private val SectionError.event: AvatarPickerEvent
         SectionError.ServerError,
         SectionError.Unknown,
         SectionError.NoInternetConnection,
-        -> AvatarPickerEvent.Refresh
+            -> AvatarPickerEvent.Refresh
     }
 
 @Composable
