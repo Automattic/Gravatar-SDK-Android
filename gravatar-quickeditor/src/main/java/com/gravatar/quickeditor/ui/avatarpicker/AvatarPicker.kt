@@ -4,27 +4,42 @@ import android.Manifest
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.provider.Settings
 import android.util.DisplayMetrics
+import android.widget.Toast
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
 import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.displayCutoutPadding
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -37,6 +52,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -48,6 +64,18 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.ImageLoader
+import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
+import coil.request.SuccessResult
+import com.composables.core.Dialog
+import com.composables.core.DialogPanel
+import com.composables.core.rememberDialogState
+import com.google.mediapipe.framework.image.BitmapImageBuilder
+import com.google.mediapipe.framework.image.ByteBufferExtractor
+import com.google.mediapipe.tasks.core.BaseOptions
+import com.google.mediapipe.tasks.vision.facestylizer.FaceStylizer
 import com.gravatar.extensions.defaultProfile
 import com.gravatar.quickeditor.R
 import com.gravatar.quickeditor.data.repository.EmailAvatars
@@ -78,9 +106,14 @@ import com.gravatar.ui.components.ComponentState
 import com.yalantis.ucrop.UCrop
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.IOException
 import java.net.URI
+import java.net.URL
+import kotlin.jvm.optionals.getOrNull
+
 
 @Composable
 internal fun AvatarPicker(
@@ -147,6 +180,8 @@ internal fun AvatarPicker(uiState: AvatarPickerUiState, onEvent: (AvatarPickerEv
     var loadingSectionHeight by remember { mutableStateOf(DEFAULT_PAGE_HEIGHT) }
     var storagePermissionRationaleDialogVisible by rememberSaveable { mutableStateOf(false) }
     var avatarToDownload: Avatar? by remember { mutableStateOf(null) }
+    val state = rememberDialogState(initiallyVisible = false)
+    var avatarUrl: URI? by remember { mutableStateOf(null) }
 
     val writeExternalStoragePermissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission(),
@@ -245,7 +280,11 @@ internal fun AvatarPicker(uiState: AvatarPickerUiState, onEvent: (AvatarPickerEv
                                 AvatarOption.DOWNLOAD_IMAGE -> {
                                     permissionAwareDownloadImageCallback(avatar)
                                 }
-                                AvatarOption.STYLE_WITH_AI -> Unit
+
+                                AvatarOption.STYLE_WITH_AI -> {
+                                    avatarUrl = avatar.imageUrl
+                                    state.visible = true
+                                }
                             }
                         },
                         onLocalImageSelected = { onEvent(AvatarPickerEvent.LocalImageSelected(it)) },
@@ -290,25 +329,181 @@ internal fun AvatarPicker(uiState: AvatarPickerUiState, onEvent: (AvatarPickerEv
                 onDismiss = { confirmAvatarDeletion = null },
             )
         }
-        if (styleWithAIDialogVisible) {
-            Dialog(state = rememberDialogState(visible = true)) {
-                DialogPanel(
-                    modifier = Modifier
-                        .displayCutoutPadding()
-                        .systemBarsPadding()
-                        .fillMaxSize()
-                ) {
-                    Column {
-                        BasicText("This is a full screen dialog")
-                        Box(Modifier.clickable { state.visible = false }) {
-                            BasicText("Got it")
-                        }
+
+        Dialog(
+            state = state,
+        ) {
+            DialogPanel(
+                modifier = Modifier
+                    .displayCutoutPadding()
+                    .systemBarsPadding()
+                    .fillMaxSize()
+            ) {
+                StyleWithAI(avatarUrl)
+            }
+        }
+    }
+}
+
+@Composable
+private fun StyleWithAI(
+    avatarUrl: URI?
+) {
+    val styleOptions = listOf("Sketch", "Ink", "Oil painting")
+    var selected: String by rememberSaveable { mutableStateOf(styleOptions.first()) }
+    var loadingImage by rememberSaveable { mutableStateOf(false) }
+    val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
+    var sourceBitmap by remember { mutableStateOf<Bitmap?>(null) }
+    var styledBitmap by remember { mutableStateOf<Bitmap?>(null) }
+    var styling by remember { mutableStateOf(false) }
+
+    LaunchedEffect(avatarUrl) {
+        coroutineScope.launch {
+            withContext(Dispatchers.IO) {
+                avatarUrl?.let { uri ->
+                    loadingImage = true
+                    try {
+                        val url = URL(uri.toString().replace("size=512", "size=max"))
+                        sourceBitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream())
+                    } catch (e: IOException) {
+                        println(e)
+                    } finally {
+                        loadingImage = false
                     }
                 }
             }
         }
     }
+
+    Surface(
+        modifier = Modifier
+            .background(Color.Red)
+            .fillMaxSize()
+    ) {
+        Column {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                styleOptions.forEach {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        RadioButton(
+                            selected = it == selected,
+                            onClick = {
+                                selected = it
+                            },
+                            modifier = Modifier
+                        )
+                        Text(text = it)
+                    }
+                }
+            }
+            Box(modifier = Modifier.fillMaxWidth().height(300.dp)) {
+                if (loadingImage) {
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                } else {
+                    if (sourceBitmap != null) {
+                        Image(
+                            painter = rememberAsyncImagePainter(sourceBitmap),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(300.dp)
+                                .align(Alignment.TopCenter),
+                        )
+                    } else {
+                        AsyncImage(
+                            modifier = Modifier
+                                .size(300.dp)
+                                .align(Alignment.TopCenter),
+                            model = sourceBitmap,
+                            contentDescription = null,
+                            onSuccess = {
+
+                            }
+                        )
+                    }
+                }
+            }
+            Button(
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp),
+                onClick = {
+                    coroutineScope.launch {
+                        styling = true
+                        withContext(Dispatchers.IO) {
+                            val baseOptionsBuilder = BaseOptions.builder()
+                                .setModelAssetPath(selected.modelPath)
+
+                            val optionsBuilder =
+                                FaceStylizer.FaceStylizerOptions.builder()
+                                    .setBaseOptions(baseOptionsBuilder.build())
+
+                            val options = optionsBuilder.build()
+
+                            val faceStylizer = FaceStylizer.createFromOptions(context, options)
+
+                            val mpImage = BitmapImageBuilder(sourceBitmap).build()
+
+                            val stylizeResult = faceStylizer.stylize(mpImage)
+
+                            try {
+                                val stylizedImage = stylizeResult.stylizedImage()
+                                if (stylizedImage.getOrNull() == null) {
+                                    withContext(Dispatchers.Main) {
+                                        Toast.makeText(context, "Failed to stylize image", Toast.LENGTH_SHORT).show()
+                                    }
+                                } else {
+                                    val byteBuffer =
+                                        ByteBufferExtractor.extract(stylizedImage.get())
+
+                                    val width = stylizedImage.get().width
+                                    val height = stylizedImage.get().height
+
+                                    val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+                                    bitmap.copyPixelsFromBuffer(byteBuffer)
+
+                                    styledBitmap = bitmap
+                                }
+                            } catch (e: Exception) {
+                                Toast.makeText(context, "Exception ${e.message}", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                        styling = false
+                    }
+                }
+            ) {
+                Text(
+                    text = "Style it!"
+                )
+            }
+            Box(
+                modifier = Modifier.fillMaxWidth().height(300.dp)
+            ) {
+                if (styling) {
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                } else {
+                    styledBitmap?.let {
+                         Image(
+                            painter = rememberAsyncImagePainter(it),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(300.dp)
+                                .align(Alignment.TopCenter),
+                        )                    }
+                }
+            }
+        }
+    }
 }
+
+private val String.modelPath: String
+    get() = when (this) {
+        "Sketch" -> "face_stylizer_color_sketch.task"
+        "Ink" -> "face_stylizer_color_ink.task"
+        "Oil painting" -> "face_stylizer_oil_painting.task"
+        else -> "face_stylizer_color_sketch.task"
+    }
 
 @Suppress("SwallowedException")
 private fun openDownloadManagerSettings(context: Context) {
@@ -512,5 +707,13 @@ private fun AvatarPickerErrorPreview() {
             ),
             onEvent = { },
         )
+    }
+}
+
+@Composable
+@Preview
+private fun StyleWithAIPreview() {
+    GravatarTheme {
+        StyleWithAI(URI.create("https://gravatar.com/avatar/test"))
     }
 }

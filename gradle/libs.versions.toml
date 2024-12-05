@@ -80,7 +80,7 @@ roborazzi-junit-rule = { group = "io.github.takahirom.roborazzi", name = "robora
 security-crypto-datastore = { group = "io.github.osipxd", name = "security-crypto-datastore-preferences", version.ref = "dataStore" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 ucrop = { group = "com.automattic", name = "ucrop", version.ref = "ucrop" }
-mediapipe-imagegenerator = { group = "com.google.mediapipe", name = "tasks-vision-image-generator", version.ref = "mediapipeImageGenerator" }
+mediapipe-taskvision = { group = "com.google.mediapipe", name = "tasks-vision", version.ref = "mediapipeImageGenerator" }
 
 
 [plugins]
