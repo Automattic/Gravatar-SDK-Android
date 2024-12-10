@@ -7,10 +7,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.gravatar.quickeditor.R
 import com.gravatar.ui.GravatarTheme
@@ -18,15 +16,13 @@ import com.gravatar.ui.GravatarTheme
 @Composable
 internal fun AvatarMoreOptionsPickerPopup(
     anchorAlignment: Alignment.Horizontal,
-    anchorBounds: Rect,
-    popupDrawArea: Rect? = null,
+    offset: DpOffset,
     onDismissRequest: () -> Unit,
     onAvatarOptionClicked: (AvatarOption) -> Unit,
 ) {
     PickerPopup(
         anchorAlignment = anchorAlignment,
-        anchorBounds = anchorBounds,
-        popupDrawArea = popupDrawArea,
+        offset = offset,
         onDismissRequest = onDismissRequest,
         popupItems = listOf(
             PickerPopupItem(
@@ -75,8 +71,8 @@ private fun AvatarMoreOptionsPickerPopupPreview() {
         ) {
             AvatarMoreOptionsPickerPopup(
                 anchorAlignment = Alignment.Start,
+                offset = DpOffset.Zero,
                 onDismissRequest = {},
-                anchorBounds = Rect(Offset(0f, 300f), Size(1f, 1f)),
                 onAvatarOptionClicked = {},
             )
         }
