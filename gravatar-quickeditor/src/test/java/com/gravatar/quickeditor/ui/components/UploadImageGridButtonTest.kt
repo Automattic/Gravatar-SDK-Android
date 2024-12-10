@@ -12,7 +12,8 @@ class UploadImageGridButtonTest : RoborazziTest() {
     fun uploadImageGridButtonEnabled() = gravatarScreenshotTest {
         Surface {
             UploadImageGridButton(
-                onClick = {},
+                onTakePhotoClick = {},
+                onChoosePhotoClick = {},
                 enabled = true,
                 modifier = Modifier.size(avatarSize),
             )
@@ -23,7 +24,8 @@ class UploadImageGridButtonTest : RoborazziTest() {
     fun uploadImageGridButtonDisabled() = gravatarScreenshotTest {
         Surface {
             UploadImageGridButton(
-                onClick = {},
+                onTakePhotoClick = {},
+                onChoosePhotoClick = {},
                 enabled = false,
                 modifier = Modifier.size(avatarSize),
             )
