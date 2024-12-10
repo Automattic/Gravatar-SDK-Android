@@ -141,12 +141,14 @@ internal data class PickerPopupPositionProvider(
             IntOffset(offset.x.toPx().toInt(), offset.y.toPx().toInt())
         }
 
+        val displayPadding = with(density) { 16.dp.toPx().toInt() }
+
         // Compute horizontal position.
         val toRight = anchorBounds.left
         val toLeft = anchorBounds.right - popupContentSize.width
 
-        val toDisplayRight = windowSize.width - popupContentSize.width
-        val toDisplayLeft = 0
+        val toDisplayRight = windowSize.width - popupContentSize.width - displayPadding
+        val toDisplayLeft = 0 + displayPadding
 
         val x = (
             if (alignment == Alignment.Start) {
@@ -155,7 +157,7 @@ internal data class PickerPopupPositionProvider(
                     toLeft,
                     // If the anchor gets outside of the window on the left, we want to position
                     // toDisplayLeft for proximity to the anchor. Otherwise, toDisplayRight.
-                    if (anchorBounds.left >= 0) toDisplayRight else toDisplayLeft,
+                    if (anchorBounds.left >= displayPadding) toDisplayRight else toDisplayLeft,
                 )
             } else if (alignment == Alignment.End) {
                 sequenceOf(
@@ -163,13 +165,13 @@ internal data class PickerPopupPositionProvider(
                     toRight,
                     // If the anchor gets outside of the window on the right, we want to position
                     // toDisplayRight for proximity to the anchor. Otherwise, toDisplayLeft.
-                    if (anchorBounds.right <= windowSize.width) toDisplayLeft else toDisplayRight,
+                    if (anchorBounds.right <= windowSize.width - displayPadding) toDisplayLeft else toDisplayRight,
                 )
             } else { // middle
                 sequenceOf(anchorBounds.left + (anchorBounds.width - popupContentSize.width) / 2)
             }
         ).firstOrNull {
-            it >= 0 && it + popupContentSize.width <= windowSize.width
+            it >= displayPadding && it + popupContentSize.width <= windowSize.width - displayPadding
         } ?: toLeft
 
         // Compute vertical position.
