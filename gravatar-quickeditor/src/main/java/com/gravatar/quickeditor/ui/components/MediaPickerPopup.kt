@@ -7,6 +7,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
@@ -25,18 +26,20 @@ internal fun MediaPickerPopup(
         anchorAlignment = anchorAlignment,
         onDismissRequest = onDismissRequest,
         offset = offset,
-        popupItems = listOf(
-            PickerPopupItem(
-                text = R.string.gravatar_qe_avatar_picker_choose_a_photo,
-                iconRes = R.drawable.gravatar_photo_library,
-                contentDescription = R.string.gravatar_qe_photo_library_icon_description,
-                onClick = onChoosePhotoClick,
-            ),
-            PickerPopupItem(
-                text = R.string.gravatar_qe_avatar_picker_take_photo,
-                iconRes = R.drawable.gravatar_capture_photo,
-                contentDescription = R.string.gravatar_qe_capture_photo_icon_description,
-                onClick = onTakePhotoClick,
+        popupMenu = PickerPopupMenu(
+            items = listOf(
+                PickerPopupItem(
+                    text = stringResource(R.string.gravatar_qe_avatar_picker_choose_a_photo),
+                    iconRes = R.drawable.gravatar_photo_library,
+                    contentDescription = R.string.gravatar_qe_photo_library_icon_description,
+                    onClick = onChoosePhotoClick,
+                ),
+                PickerPopupItem(
+                    text = stringResource(R.string.gravatar_qe_avatar_picker_take_photo),
+                    iconRes = R.drawable.gravatar_capture_photo,
+                    contentDescription = R.string.gravatar_qe_capture_photo_icon_description,
+                    onClick = onTakePhotoClick,
+                ),
             ),
         ),
     )

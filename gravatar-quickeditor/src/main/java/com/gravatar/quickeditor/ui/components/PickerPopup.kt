@@ -2,6 +2,7 @@ package com.gravatar.quickeditor.ui.components
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.Spring
@@ -15,7 +16,10 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,13 +42,13 @@ internal fun PickerPopup(
     anchorAlignment: Alignment.Horizontal,
     offset: DpOffset,
     onDismissRequest: () -> Unit,
-    popupItems: List<PickerPopupItem>,
+    popupMenu: PickerPopupMenu,
 ) {
     PickerPopup(
         anchorAlignment = anchorAlignment,
         dpOffset = offset,
         onDismissRequest = onDismissRequest,
-        popupItems = popupItems,
+        popupMenu = popupMenu,
         state = remember {
             MutableTransitionState(false).apply {
                 // Start the animation immediately.
@@ -59,12 +63,13 @@ private fun PickerPopup(
     anchorAlignment: Alignment.Horizontal,
     dpOffset: DpOffset,
     onDismissRequest: () -> Unit,
-    popupItems: List<PickerPopupItem>,
+    popupMenu: PickerPopupMenu,
     state: MutableTransitionState<Boolean>,
 ) {
     val density = LocalDensity.current
     val positionProvider = remember(density) { PickerPopupPositionProvider(density, anchorAlignment, dpOffset) }
     val cornerRadius = 8.dp
+    var popupMenuState by remember { mutableStateOf(popupMenu) }
 
     Popup(
         onDismissRequest = onDismissRequest,
@@ -75,25 +80,36 @@ private fun PickerPopup(
             visibleState = state,
             enter = scaleIn(animationSpec = spring(stiffness = Spring.StiffnessMedium)),
         ) {
-            Surface(
-                modifier = Modifier
-                    .fillMaxWidth(0.6f),
-                shape = RoundedCornerShape(cornerRadius),
-                tonalElevation = 3.dp,
-                shadowElevation = 2.dp,
-            ) {
-                LazyColumn {
-                    itemsIndexed(popupItems) { index, item ->
-                        PopupButton(
-                            text = stringResource(item.text),
-                            iconRes = item.iconRes,
-                            contentDescription = stringResource(item.contentDescription),
-                            shape = popupButtonShape(index, popupItems.size, cornerRadius),
-                            color = item.color,
-                            onClick = item.onClick,
-                        )
-                        if (index < popupItems.size - 1) {
-                            HorizontalDivider()
+            AnimatedContent(
+                targetState = popupMenuState,
+                label = "PickerPopup",
+            ) { targetState ->
+                Surface(
+                    modifier = Modifier
+                        .fillMaxWidth(0.6f),
+                    shape = RoundedCornerShape(cornerRadius),
+                    tonalElevation = 3.dp,
+                    shadowElevation = 2.dp,
+                ) {
+                    LazyColumn {
+                        itemsIndexed(targetState.items) { index, item ->
+                            PopupButton(
+                                text = item.text,
+                                iconRes = item.iconRes,
+                                contentDescription = stringResource(item.contentDescription),
+                                shape = popupButtonShape(index, popupMenu.items.size, cornerRadius),
+                                color = item.contentColor,
+                                onClick = {
+                                    if (item.subMenu != null) {
+                                        popupMenuState = item.subMenu
+                                    } else {
+                                        item.onClick?.let { it() }
+                                    }
+                                },
+                            )
+                            if (index < popupMenu.items.size - 1) {
+                                HorizontalDivider()
+                            }
                         }
                     }
                 }
@@ -115,12 +131,17 @@ private fun popupButtonShape(index: Int, totalItems: Int, cornerRadius: Dp): Rou
     }
 }
 
+internal data class PickerPopupMenu(
+    val items: List<PickerPopupItem>,
+)
+
 internal data class PickerPopupItem(
-    @StringRes val text: Int,
-    @DrawableRes val iconRes: Int,
+    val text: String,
+    @DrawableRes val iconRes: Int?,
     @StringRes val contentDescription: Int,
-    val color: Color? = null,
-    val onClick: () -> Unit,
+    val onClick: (() -> Unit)? = null,
+    val contentColor: Color? = null,
+    val subMenu: PickerPopupMenu? = null,
 )
 
 // Code modified from Compose-Unstyled Menu.kt to prioritize positioning above the anchor

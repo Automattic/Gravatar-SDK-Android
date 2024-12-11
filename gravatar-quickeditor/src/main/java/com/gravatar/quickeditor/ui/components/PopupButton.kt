@@ -26,7 +26,7 @@ import com.gravatar.ui.GravatarTheme
 @Composable
 internal fun PopupButton(
     text: String,
-    @DrawableRes iconRes: Int,
+    @DrawableRes iconRes: Int?,
     contentDescription: String,
     onClick: () -> Unit,
     shape: Shape,
@@ -51,11 +51,13 @@ internal fun PopupButton(
                 maxLines = 1,
                 modifier = Modifier.weight(1f),
             )
-            Icon(
-                painter = painterResource(id = iconRes),
-                contentDescription = contentDescription,
-                tint = color ?: MaterialTheme.colorScheme.onSurface,
-            )
+            iconRes?.let {
+                Icon(
+                    painter = painterResource(id = it),
+                    contentDescription = contentDescription,
+                    tint = color ?: MaterialTheme.colorScheme.onSurface,
+                )
+            }
         }
     }
 }
