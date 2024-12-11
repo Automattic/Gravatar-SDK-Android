@@ -37,7 +37,7 @@ internal fun AvatarMoreOptionsPickerPopup(
                     contentDescription =
                         R.string.gravatar_qe_selectable_avatar_more_options_alt_text_content_description,
                     onClick = {
-                        onAvatarOptionClicked(AvatarOption.ALT_TEXT)
+                        onAvatarOptionClicked(AvatarOption.AltText)
                     },
                 ),
                 PickerPopupItem(
@@ -51,7 +51,7 @@ internal fun AvatarMoreOptionsPickerPopup(
                                 iconRes = if (selected) R.drawable.ic_checkmark else null,
                                 contentDescription = R.string.gravatar_qe_avatar_rating_selected_content_description,
                                 onClick = {
-                                    onAvatarOptionClicked(AvatarOption.ALT_TEXT)
+                                    onAvatarOptionClicked(AvatarOption.Rating(rating))
                                 },
                             )
                         },
@@ -62,7 +62,7 @@ internal fun AvatarMoreOptionsPickerPopup(
                     iconRes = R.drawable.gravatar_avatar_more_options_download,
                     contentDescription = R.string.gravatar_qe_selectable_avatar_more_options_download_image,
                     onClick = {
-                        onAvatarOptionClicked(AvatarOption.DOWNLOAD_IMAGE)
+                        onAvatarOptionClicked(AvatarOption.DownloadImage)
                     },
                 ),
                 PickerPopupItem(
@@ -71,7 +71,7 @@ internal fun AvatarMoreOptionsPickerPopup(
                     contentDescription = R.string.gravatar_qe_selectable_avatar_more_options_delete_content_description,
                     contentColor = MaterialTheme.colorScheme.error,
                     onClick = {
-                        onAvatarOptionClicked(AvatarOption.DELETE)
+                        onAvatarOptionClicked(AvatarOption.Delete)
                     },
                 ),
             ),
@@ -79,10 +79,14 @@ internal fun AvatarMoreOptionsPickerPopup(
     )
 }
 
-internal enum class AvatarOption {
-    ALT_TEXT,
-    DELETE,
-    DOWNLOAD_IMAGE,
+internal sealed class AvatarOption {
+    data object AltText : AvatarOption()
+
+    data class Rating(val rating: Avatar.Rating) : AvatarOption()
+
+    data object Delete : AvatarOption()
+
+    data object DownloadImage : AvatarOption()
 }
 
 private val Avatar.Rating.fullNameRes: Int

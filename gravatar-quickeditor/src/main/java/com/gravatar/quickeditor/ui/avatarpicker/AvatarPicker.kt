@@ -246,13 +246,17 @@ internal fun AvatarPicker(uiState: AvatarPickerUiState, onEvent: (AvatarPickerEv
                         },
                         onAvatarOptionClicked = { avatar, avatarOption ->
                             when (avatarOption) {
-                                AvatarOption.ALT_TEXT -> Unit
-                                AvatarOption.DELETE -> {
+                                AvatarOption.AltText -> Unit
+                                AvatarOption.Delete -> {
                                     confirmAvatarDeletion = avatar.imageId
                                 }
-
-                                AvatarOption.DOWNLOAD_IMAGE -> {
+                                AvatarOption.DownloadImage -> {
                                     permissionAwareDownloadImageCallback(avatar)
+                                }
+                                is AvatarOption.Rating -> {
+                                    onEvent(
+                                        AvatarPickerEvent.AvatarRatingSelected(avatar.imageId, avatarOption.rating),
+                                    )
                                 }
                             }
                         },

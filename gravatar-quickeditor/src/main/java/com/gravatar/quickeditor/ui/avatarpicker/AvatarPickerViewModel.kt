@@ -77,6 +77,7 @@ internal class AvatarPickerViewModel(
             AvatarPickerEvent.DownloadManagerDisabledDialogDismissed -> hideDownloadManagerAlert()
             is AvatarPickerEvent.AvatarDeleteSelected -> deleteAvatar(event.avatarId)
             AvatarPickerEvent.AvatarDeleteAlertDismissed -> hideNonSelectedAvatarAlert()
+            is AvatarPickerEvent.AvatarRatingSelected -> Unit
         }
     }
 
