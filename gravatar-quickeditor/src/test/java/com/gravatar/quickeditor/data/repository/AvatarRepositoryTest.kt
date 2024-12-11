@@ -202,6 +202,42 @@ class AvatarRepositoryTest {
         assertEquals(GravatarResult.Failure<Unit, QuickEditorError>(QuickEditorError.TokenNotFound), result)
     }
 
+    @Test
+    fun `given no token found when updateAvatar is called then TokenNotFound result`() = runTest {
+        coEvery { tokenStorage.getToken(any()) } returns null
+
+        val result = avatarRepository.updateAvatar(email, "avatarId", Avatar.Rating.PG, "New Alt Text")
+
+        assertEquals(GravatarResult.Failure<Unit, QuickEditorError>(QuickEditorError.TokenNotFound), result)
+    }
+
+    @Test
+    fun `given token stored when update avatar fails then Failure result`() = runTest {
+        coEvery { tokenStorage.getToken(any()) } returns "token"
+        coEvery {
+            avatarService.updateAvatarCatching(any(), any(), any(), any())
+        } returns GravatarResult.Failure(ErrorType.Server)
+
+        val result = avatarRepository.updateAvatar(email, "avatarId", Avatar.Rating.PG, "New Alt Text")
+
+        assertEquals(
+            GravatarResult.Failure<Unit, QuickEditorError>(QuickEditorError.Request(ErrorType.Server)),
+            result,
+        )
+    }
+
+    @Test
+    fun `given token stored when update avatar succeeds then Success result`() = runTest {
+        coEvery { tokenStorage.getToken(any()) } returns "token"
+        coEvery {
+            avatarService.updateAvatarCatching(any(), any(), any(), any())
+        } returns GravatarResult.Success(createAvatar("1"))
+
+        val result = avatarRepository.updateAvatar(email, "avatarId", Avatar.Rating.PG, "New Alt Text")
+
+        assertEquals(GravatarResult.Success<Avatar, QuickEditorError>(createAvatar("1")), result)
+    }
+
     private fun createAvatar(id: String, isSelected: Boolean = false) = Avatar {
         imageUrl = URI.create("https://gravatar.com/avatar/test")
         imageId = id

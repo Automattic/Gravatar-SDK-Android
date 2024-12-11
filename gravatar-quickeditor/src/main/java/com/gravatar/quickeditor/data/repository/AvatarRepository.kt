@@ -74,6 +74,21 @@ internal class AvatarRepository(
             }
         } ?: GravatarResult.Failure(QuickEditorError.TokenNotFound)
     }
+
+    suspend fun updateAvatar(
+        email: Email,
+        avatarId: String,
+        rating: Avatar.Rating? = null,
+        altText: String? = null,
+    ): GravatarResult<Avatar, QuickEditorError> = withContext(dispatcher) {
+        val token = tokenStorage.getToken(email.hash().toString())
+        token?.let {
+            when (val result = avatarService.updateAvatarCatching(avatarId, token, rating, altText)) {
+                is GravatarResult.Success -> GravatarResult.Success(result.value)
+                is GravatarResult.Failure -> GravatarResult.Failure(QuickEditorError.Request(result.error))
+            }
+        } ?: GravatarResult.Failure(QuickEditorError.TokenNotFound)
+    }
 }
 
 internal data class EmailAvatars(
