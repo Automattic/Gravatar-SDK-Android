@@ -130,6 +130,7 @@ internal data class PickerPopupPositionProvider(
     val density: Density,
     val alignment: Alignment.Horizontal,
     val offset: DpOffset = DpOffset.Zero,
+    val displayPadding: Dp = 16.dp,
 ) : PopupPositionProvider {
     override fun calculatePosition(
         anchorBounds: IntRect,
@@ -141,7 +142,7 @@ internal data class PickerPopupPositionProvider(
             IntOffset(offset.x.toPx().toInt(), offset.y.toPx().toInt())
         }
 
-        val displayPadding = with(density) { 16.dp.toPx().toInt() }
+        val displayPadding = with(density) { displayPadding.toPx().toInt() }
 
         // Compute horizontal position.
         val toRight = anchorBounds.left
