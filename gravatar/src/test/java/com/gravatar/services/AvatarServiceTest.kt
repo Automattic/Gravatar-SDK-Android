@@ -2,6 +2,7 @@ package com.gravatar.services
 
 import com.gravatar.GravatarSdkContainerRule
 import com.gravatar.restapi.models.Avatar
+import com.gravatar.restapi.models.Rating
 import com.gravatar.types.Hash
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -305,4 +306,104 @@ class AvatarServiceTest {
 
         assertEquals(ErrorType.Server, (response as GravatarResult.Failure).error)
     }
+
+    @Test
+    fun `given an avatarId when updating avatar then Gravatar service is invoked`() = runTest {
+        val avatarId = "avatarId"
+        val mockResponse = mockk<Response<Avatar>>(relaxed = true) {
+            every { isSuccessful } returns true
+            every { body() } returns avatar
+        }
+
+        coEvery { containerRule.gravatarApiMock.updateAvatar(avatarId, any()) } returns mockResponse
+
+        val updatedAvatar = avatarService.updateAvatar(
+            avatarId,
+            oauthToken,
+            Avatar.Rating.PG,
+            "New Alt Text",
+        )
+
+        coVerify(exactly = 1) {
+            containerRule.gravatarApiMock.updateAvatar(
+                avatarId,
+                withArg {
+                    assertEquals(Rating.PG, it.rating)
+                    assertEquals("New Alt Text", it.altText)
+                },
+            )
+        }
+
+        assertEquals(avatar, updatedAvatar)
+    }
+
+    @Test
+    fun `given an avatarId when updating avatar and an error occurs then an exception is thrown`() =
+        runTestExpectingGravatarException(ErrorType.Server, HttpException::class.java) {
+            val avatarId = "avatarId"
+            val mockResponse = mockk<Response<Avatar>>(relaxed = true) {
+                every { isSuccessful } returns false
+                every { code() } returns 500
+            }
+
+            coEvery { containerRule.gravatarApiMock.updateAvatar(avatarId, any()) } returns mockResponse
+
+            avatarService.updateAvatar(
+                avatarId,
+                oauthToken,
+                Avatar.Rating.PG,
+                "New Alt Text",
+            )
+        }
+
+    @Test
+    fun `given an avatarId when updateAvatarCatching then Gravatar service is invoked`() = runTest {
+        val avatarId = "avatarId"
+        val mockResponse = mockk<Response<Avatar>>(relaxed = true) {
+            every { isSuccessful } returns true
+            every { body() } returns avatar
+        }
+
+        coEvery { containerRule.gravatarApiMock.updateAvatar(avatarId, any()) } returns mockResponse
+
+        val response = avatarService.updateAvatarCatching(
+            avatarId,
+            oauthToken,
+            Avatar.Rating.PG,
+            "New Alt Text",
+        )
+
+        coVerify(exactly = 1) {
+            containerRule.gravatarApiMock.updateAvatar(
+                avatarId,
+                withArg {
+                    assertEquals(Rating.PG, it.rating)
+                    assertEquals("New Alt Text", it.altText)
+                },
+            )
+        }
+
+        assertEquals(avatar, (response as GravatarResult.Success).value)
+    }
+
+    @Test
+    fun `given an avatarId when updateAvatarCatching and an error occurs then a Result Failure is returned`() =
+        runTest {
+            val avatarId = "avatarId"
+            val mockResponse = mockk<Response<Avatar>>(relaxed = true) {
+                every { isSuccessful } returns false
+                every { code() } returns 500
+            }
+
+            coEvery { containerRule.gravatarApiMock.updateAvatar(avatarId, any()) } returns mockResponse
+
+            val response = avatarService.updateAvatarCatching(
+                avatarId,
+                oauthToken,
+                Avatar.Rating.PG,
+                "New Alt Text",
+            )
+
+            assertEquals(ErrorType.Server, (response as GravatarResult.Failure).error)
+        }
 }

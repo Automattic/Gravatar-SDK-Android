@@ -3,7 +3,9 @@ package com.gravatar.services
 import com.gravatar.di.container.GravatarSdkContainer.Companion.instance
 import com.gravatar.logger.Logger
 import com.gravatar.restapi.models.Avatar
+import com.gravatar.restapi.models.Rating
 import com.gravatar.restapi.models.SetEmailAvatarRequest
+import com.gravatar.restapi.models.UpdateAvatarRequest
 import com.gravatar.types.Hash
 import kotlinx.coroutines.withContext
 import okhttp3.MultipartBody
@@ -209,4 +211,71 @@ public class AvatarService(private val okHttpClient: OkHttpClient? = null) {
         runCatchingRequest {
             deleteAvatar(imageId, oauthToken)
         }
+
+    /**
+     * Updates the avatar rating and/or alt text.
+     *
+     * @param avatarId The ID of the avatar to update
+     * @param oauthToken The OAuth token to use for authentication
+     * @param avatarRating The new rating for the avatar
+     * @param altText The new alt text for the avatar
+     * @return The updated avatar
+     */
+    public suspend fun updateAvatar(
+        avatarId: String,
+        oauthToken: String,
+        avatarRating: Avatar.Rating? = null,
+        altText: String? = null,
+    ): Avatar = runThrowingExceptionRequest {
+        withContext(GravatarSdkDI.dispatcherIO) {
+            val service = GravatarSdkDI.getGravatarV3Service(okHttpClient, oauthToken)
+
+            val response = service.updateAvatar(
+                avatarId,
+                UpdateAvatarRequest {
+                    rating = avatarRating?.toRating
+                    this.altText = altText
+                },
+            )
+
+            if (response.isSuccessful) {
+                response.body() ?: error("Response body is null")
+            } else {
+                // Log the response body for debugging purposes if the response is not successful
+                Logger.w(
+                    LOG_TAG,
+                    "Network call unsuccessful trying to update Gravatar avatar rating: $response.body",
+                )
+                throw HttpException(response)
+            }
+        }
+    }
+
+    /**
+     * Updates the avatar rating and/or alt text.
+     * This method will catch any exception that occurs during
+     * the execution and return it as a [GravatarResult.Failure].
+     *
+     * @param avatarId The ID of the avatar to update
+     * @param oauthToken The OAuth token to use for authentication
+     * @param avatarRating The new rating for the avatar
+     * @param altText The new alt text for the avatar
+     * @return The updated avatar
+     */
+    public suspend fun updateAvatarCatching(
+        avatarId: String,
+        oauthToken: String,
+        avatarRating: Avatar.Rating? = null,
+        altText: String? = null,
+    ): GravatarResult<Avatar, ErrorType> = runCatchingRequest {
+        updateAvatar(avatarId, oauthToken, avatarRating, altText)
+    }
 }
+
+private val Avatar.Rating.toRating: Rating
+    get() = when (this) {
+        Avatar.Rating.G -> Rating.G
+        Avatar.Rating.PG -> Rating.PG
+        Avatar.Rating.R -> Rating.R
+        Avatar.Rating.X -> Rating.X
+    }
