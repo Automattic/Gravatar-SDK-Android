@@ -31,6 +31,8 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.gravatar.quickeditor.R
+import com.gravatar.quickeditor.ui.avatarpicker.fullList
+import com.gravatar.restapi.models.Avatar
 
 private val cornerRadius = 8.dp
 
@@ -39,9 +41,10 @@ internal fun SelectableAvatar(
     imageUrl: String,
     isSelected: Boolean,
     loadingState: AvatarLoadingState,
+    modifier: Modifier = Modifier,
+    rating: Avatar.Rating? = null,
     onAvatarClicked: () -> Unit,
     onAvatarOptionClicked: ((AvatarOption) -> Unit)? = null,
-    modifier: Modifier = Modifier,
 ) {
     val cornerRadius = 8.dp
     var moreOptionsPopupVisible by remember { mutableStateOf(false) }
@@ -81,6 +84,7 @@ internal fun SelectableAvatar(
 
         if (moreOptionsPopupVisible) {
             AvatarMoreOptionsPickerPopup(
+                avatarRating = rating.fullList,
                 anchorAlignment = Alignment.Start,
                 offset = DpOffset(0.dp, 10.dp),
                 onDismissRequest = { moreOptionsPopupVisible = false },

@@ -5,6 +5,7 @@
     <string name="gravatar_qe_selectable_avatar_more_options_content_description">More Options</string>
     <string name="gravatar_qe_selectable_avatar_more_options_alt_text">Alt Text</string>
     <string name="gravatar_qe_selectable_avatar_more_options_alt_text_content_description">Alternative Text</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_rating">Change rating</string>
     <string name="gravatar_qe_selectable_avatar_more_options_delete">Delete</string>
     <string name="gravatar_qe_selectable_avatar_more_options_delete_content_description">Delete Avatar</string>
     <string name="gravatar_qe_selectable_avatar_more_options_download_image">Download image</string>
@@ -56,4 +57,9 @@
     <string name="gravatar_qe_write_external_storage_permission_rationale_message">To save the image in a public folder, you need to grant permission. You can grant it in the app settings.</string>
     <string name="gravatar_qe_alert_banner_no_avatar_selected">No image selected. Please select one or the default will be used.</string>
     <string name="gravatar_qe_alert_banner_close_content_description">Close alert</string>
+    <string name="gravatar_qe_avatar_rating_g">General</string>
+    <string name="gravatar_qe_avatar_rating_pg">Parental guidance</string>
+    <string name="gravatar_qe_avatar_rating_r">Restricted</string>
+    <string name="gravatar_qe_avatar_rating_x">Extreme</string>
+    <string name="gravatar_qe_avatar_rating_selected_content_description">Selected</string>
 </resources>

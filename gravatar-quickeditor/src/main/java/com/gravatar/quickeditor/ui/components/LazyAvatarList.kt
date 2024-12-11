@@ -60,6 +60,7 @@ internal fun Avatar(
             val sizePx = with(LocalDensity.current) { size.roundToPx() }
             SelectableAvatar(
                 imageUrl = avatar.imageUrlWithSize(sizePx),
+                rating = avatar.avatar.rating,
                 isSelected = avatar.isSelected,
                 loadingState = avatar.loadingState,
                 onAvatarClicked = { onAvatarSelected() },
