@@ -168,7 +168,7 @@ class AvatarRepositoryTest {
         val imageId = "imageId"
         coEvery { tokenStorage.getToken(any()) } returns "token"
         coEvery {
-            avatarService.deleteAvatarCatching(imageId = "imageId", oauthToken = "token")
+            avatarService.deleteAvatarCatching(avatarId = "imageId", oauthToken = "token")
         } returns GravatarResult.Success(Unit)
 
         val result = avatarRepository.deleteAvatar(email, imageId)
@@ -182,7 +182,7 @@ class AvatarRepositoryTest {
         coEvery { tokenStorage.getToken(any()) } returns "token"
         coEvery {
             avatarService.deleteAvatarCatching(
-                imageId = "imageId",
+                avatarId = "imageId",
                 oauthToken = "token",
             )
         } returns GravatarResult.Failure(ErrorType.Server)
