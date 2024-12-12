@@ -1077,6 +1077,92 @@ class AvatarPickerViewModelTest {
         }
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `given avatarId when updateAvatar succeeds then uiState is updated`() = runTest {
+        val avatarId = "avatarId"
+        val rating = Avatar.Rating.PG
+        val oldAvatar = createAvatar(avatarId)
+        val emailAvatarsCopy = emailAvatars.copy(avatars = listOf(oldAvatar), selectedAvatarId = avatarId)
+        coEvery { avatarRepository.getAvatars(email) } returns GravatarResult.Success(emailAvatarsCopy)
+        coEvery { profileService.retrieveCatching(email) } returns GravatarResult.Success(profile)
+        val updatedAvatar = oldAvatar.copy(rating)
+        coEvery {
+            avatarRepository.updateAvatar(email, avatarId, rating)
+        } returns GravatarResult.Success(updatedAvatar)
+
+        viewModel = initViewModel()
+
+        advanceUntilIdle()
+
+        viewModel.uiState.test {
+            expectMostRecentItem()
+            viewModel.onEvent(AvatarPickerEvent.AvatarRatingSelected(avatarId, rating))
+            val updatedEmailAvatars = emailAvatarsCopy.copy(avatars = listOf(updatedAvatar))
+            assertEquals(
+                AvatarPickerUiState(
+                    email = email,
+                    emailAvatars = updatedEmailAvatars,
+                    profile = ComponentState.Loaded(profile),
+                    avatarPickerContentLayout = avatarPickerContentLayout,
+                    scrollToIndex = 0,
+                ),
+                awaitItem(),
+            )
+        }
+        viewModel.actions.test {
+            assertEquals(AvatarPickerAction.AvatarUpdated(AvatarUpdateType.RATING), awaitItem())
+        }
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `given avatarId when updateAvatar fails then uiState is reverted`() = runTest {
+        val avatarId = "avatarId"
+        val rating = Avatar.Rating.PG
+        val oldAvatar = createAvatar(avatarId, isSelected = true)
+        val emailAvatarsCopy = emailAvatars.copy(avatars = listOf(oldAvatar), selectedAvatarId = avatarId)
+        coEvery { avatarRepository.getAvatars(email) } returns GravatarResult.Success(emailAvatarsCopy)
+        coEvery { profileService.retrieveCatching(email) } returns GravatarResult.Success(profile)
+        coEvery {
+            avatarRepository.updateAvatar(email, avatarId, rating)
+        } returns GravatarResult.Failure(QuickEditorError.Unknown)
+
+        viewModel = initViewModel()
+
+        advanceUntilIdle()
+
+        viewModel.uiState.test {
+            expectMostRecentItem()
+            viewModel.onEvent(AvatarPickerEvent.AvatarRatingSelected(avatarId, rating))
+            val updatedAvatar = oldAvatar.copy(rating)
+            val updatedEmailAvatars = emailAvatarsCopy.copy(avatars = listOf(updatedAvatar))
+            assertEquals(
+                AvatarPickerUiState(
+                    email = email,
+                    emailAvatars = updatedEmailAvatars,
+                    profile = ComponentState.Loaded(profile),
+                    avatarPickerContentLayout = avatarPickerContentLayout,
+                    scrollToIndex = 0,
+                ),
+                awaitItem(),
+            )
+            assertEquals(
+                AvatarPickerUiState(
+                    email = email,
+                    emailAvatars = emailAvatarsCopy,
+                    profile = ComponentState.Loaded(profile),
+                    avatarPickerContentLayout = avatarPickerContentLayout,
+                    scrollToIndex = 0,
+                ),
+                awaitItem(),
+            )
+        }
+        viewModel.actions.test {
+            assertEquals(AvatarPickerAction.AvatarUpdateFailed(AvatarUpdateType.RATING), awaitItem())
+        }
+    }
+
     private fun initViewModel(handleExpiredSession: Boolean = true) = AvatarPickerViewModel(
         email = email,
         handleExpiredSession = handleExpiredSession,

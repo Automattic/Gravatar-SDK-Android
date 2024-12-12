@@ -325,7 +325,7 @@ private fun openDownloadManagerSettings(context: Context) {
     }
 }
 
-@Suppress("LongParameterList")
+@Suppress("LongParameterList", "LongMethod")
 private fun AvatarPickerAction.handle(
     viewModel: AvatarPickerViewModel,
     cropperLauncher: CropperLauncher,
@@ -397,6 +397,26 @@ private fun AvatarPickerAction.handle(
                 )
             }
         }
+
+        is AvatarPickerAction.AvatarUpdateFailed -> {
+            scope.launch {
+                snackState.showQESnackbar(
+                    message = context.getString(this@handle.type.errorStringRes),
+                    withDismissAction = true,
+                    snackbarType = SnackbarType.Error,
+                )
+            }
+        }
+
+        is AvatarPickerAction.AvatarUpdated -> {
+            scope.launch {
+                snackState.showQESnackbar(
+                    message = context.getString(this@handle.type.successStringRes),
+                    withDismissAction = true,
+                    snackbarType = SnackbarType.Info,
+                )
+            }
+        }
     }
 }
 
@@ -437,6 +457,16 @@ private val SectionError.buttonTextRes: Int
         SectionError.ServerError,
         SectionError.Unknown,
         -> R.string.gravatar_qe_avatar_picker_error_retry_cta
+    }
+
+private val AvatarUpdateType.successStringRes: Int
+    @StringRes get() = when (this) {
+        AvatarUpdateType.RATING -> R.string.gravatar_qe_avatar_picker_rating_update_success
+    }
+
+private val AvatarUpdateType.errorStringRes: Int
+    @StringRes get() = when (this) {
+        AvatarUpdateType.RATING -> R.string.gravatar_qe_avatar_picker_rating_update_error
     }
 
 private val SectionError.event: AvatarPickerEvent

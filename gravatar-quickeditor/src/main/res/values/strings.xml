@@ -62,4 +62,6 @@
     <string name="gravatar_qe_avatar_rating_r">R (Restricted)</string>
     <string name="gravatar_qe_avatar_rating_x">X (Extreme)</string>
     <string name="gravatar_qe_avatar_rating_selected_content_description">Selected</string>
+    <string name="gravatar_qe_avatar_picker_rating_update_success">Avatar rating was changed successfully.</string>
+    <string name="gravatar_qe_avatar_picker_rating_update_error">Oops, something didn\'t quite work out while trying to rate your avatar.</string>
 </resources>

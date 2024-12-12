@@ -77,7 +77,47 @@ internal class AvatarPickerViewModel(
             AvatarPickerEvent.DownloadManagerDisabledDialogDismissed -> hideDownloadManagerAlert()
             is AvatarPickerEvent.AvatarDeleteSelected -> deleteAvatar(event.avatarId)
             AvatarPickerEvent.AvatarDeleteAlertDismissed -> hideNonSelectedAvatarAlert()
-            is AvatarPickerEvent.AvatarRatingSelected -> Unit
+            is AvatarPickerEvent.AvatarRatingSelected -> updateAvatar(event.avatarId, event.rating)
+        }
+    }
+
+    private fun updateAvatar(avatarId: String, rating: Avatar.Rating? = null, altText: String? = null) {
+        viewModelScope.launch {
+            val oldAvatar: Avatar? = _uiState.value.emailAvatars?.avatars?.find { it.imageId == avatarId }
+            val updateType = AvatarUpdateType.RATING
+            _uiState.update { currentState ->
+                val emailAvatars = currentState.emailAvatars?.copy(
+                    avatars = currentState.emailAvatars.avatars.map { avatar ->
+                        if (avatar.imageId == avatarId) {
+                            avatar.copy(rating, altText)
+                        } else {
+                            avatar
+                        }
+                    },
+                )
+                currentState.copy(emailAvatars = emailAvatars)
+            }
+            when (avatarRepository.updateAvatar(email, avatarId, rating, altText)) {
+                is GravatarResult.Success -> {
+                    _actions.send(AvatarPickerAction.AvatarUpdated(updateType))
+                }
+
+                is GravatarResult.Failure -> {
+                    _uiState.update { currentState ->
+                        val emailAvatars = currentState.emailAvatars?.copy(
+                            avatars = currentState.emailAvatars.avatars.map { avatar ->
+                                if (avatar.imageId == avatarId) {
+                                    avatar.copy(oldAvatar?.rating, oldAvatar?.altText)
+                                } else {
+                                    avatar
+                                }
+                            },
+                        )
+                        currentState.copy(emailAvatars = emailAvatars)
+                    }
+                    _actions.send(AvatarPickerAction.AvatarUpdateFailed(updateType))
+                }
+            }
         }
     }
 
@@ -422,4 +462,15 @@ internal class AvatarPickerViewModelFactory(
 private inline fun <T> List<T>.indexOfFirstOrNull(predicate: (T) -> Boolean): Int? {
     val index = indexOfFirst { predicate(it) }
     return if (index == -1) null else index
+}
+
+internal fun Avatar.copy(rating: Avatar.Rating? = null, altText: String? = null): Avatar {
+    return Avatar {
+        imageId = this@copy.imageId
+        imageUrl = this@copy.imageUrl
+        updatedDate = this@copy.updatedDate
+        selected = this@copy.selected
+        this.altText = altText ?: this@copy.altText
+        this.rating = rating ?: this@copy.rating
+    }
 }
