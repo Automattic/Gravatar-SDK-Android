@@ -47,7 +47,7 @@ internal fun AvatarMoreOptionsPickerPopup(
                     subMenu = PickerPopupMenu(
                         items = avatarRating.map { (rating, selected) ->
                             PickerPopupItem(
-                                text = "${rating.value} (${stringResource(rating.fullNameRes)})",
+                                text = stringResource(rating.fullNameRes),
                                 iconRes = if (selected) R.drawable.ic_checkmark else null,
                                 contentDescription = R.string.gravatar_qe_avatar_rating_selected_content_description,
                                 onClick = {
