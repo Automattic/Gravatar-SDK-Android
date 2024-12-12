@@ -699,6 +699,10 @@ public final class com/gravatar/services/AvatarService {
 	public final fun retrieveCatching (Ljava/lang/String;Lcom/gravatar/types/Hash;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun setAvatar (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun setAvatarCatching (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun updateAvatar (Ljava/lang/String;Ljava/lang/String;Lcom/gravatar/restapi/models/Avatar$Rating;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun updateAvatar$default (Lcom/gravatar/services/AvatarService;Ljava/lang/String;Ljava/lang/String;Lcom/gravatar/restapi/models/Avatar$Rating;Ljava/lang/String;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public final fun updateAvatarCatching (Ljava/lang/String;Ljava/lang/String;Lcom/gravatar/restapi/models/Avatar$Rating;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun updateAvatarCatching$default (Lcom/gravatar/services/AvatarService;Ljava/lang/String;Ljava/lang/String;Lcom/gravatar/restapi/models/Avatar$Rating;Ljava/lang/String;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 	public final fun upload (Ljava/io/File;Ljava/lang/String;Lcom/gravatar/types/Hash;Ljava/lang/Boolean;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static synthetic fun upload$default (Lcom/gravatar/services/AvatarService;Ljava/io/File;Ljava/lang/String;Lcom/gravatar/types/Hash;Ljava/lang/Boolean;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 	public final fun uploadCatching (Ljava/io/File;Ljava/lang/String;Lcom/gravatar/types/Hash;Ljava/lang/Boolean;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
