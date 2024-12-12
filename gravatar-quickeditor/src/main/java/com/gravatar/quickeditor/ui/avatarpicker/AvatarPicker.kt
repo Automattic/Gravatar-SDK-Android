@@ -183,7 +183,6 @@ internal fun AvatarPicker(uiState: AvatarPickerUiState, onEvent: (AvatarPickerEv
     Surface(
         Modifier
             .fillMaxWidth()
-            .animateContentSize()
             .then(
                 if (uiState.avatarPickerContentLayout == AvatarPickerContentLayout.Horizontal) {
                     Modifier.verticalScroll(rememberScrollState())
@@ -199,7 +198,7 @@ internal fun AvatarPicker(uiState: AvatarPickerUiState, onEvent: (AvatarPickerEv
                     .fillMaxWidth()
                     .padding(bottom = 10.dp),
             )
-            AnimatedVisibility(uiState.nonSelectedAvatarAlertVisible) {
+            AnimatedVisibility(visible = uiState.nonSelectedAvatarAlertVisible) {
                 AlertBanner(
                     message = stringResource(id = R.string.gravatar_qe_alert_banner_no_avatar_selected),
                     onClose = { onEvent(AvatarPickerEvent.AvatarDeleteAlertDismissed) },
@@ -212,62 +211,69 @@ internal fun AvatarPicker(uiState: AvatarPickerUiState, onEvent: (AvatarPickerEv
                     modifier = Modifier.padding(horizontal = 16.dp),
                 )
             }
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .animateContentSize(),
+            ) {
+                val sectionModifier = Modifier.padding(top = 24.dp, bottom = 10.dp)
+                when {
+                    uiState.isLoading -> Box(
+                        modifier = sectionModifier
+                            .height(loadingSectionHeight)
+                            .fillMaxWidth(),
+                    ) {
+                        CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                    }
 
-            val sectionModifier = Modifier.padding(top = 24.dp, bottom = 10.dp)
-            when {
-                uiState.isLoading -> Box(
-                    modifier = sectionModifier
-                        .height(loadingSectionHeight)
-                        .fillMaxWidth(),
-                ) {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-                }
-
-                uiState.error != null -> ErrorSection(
-                    title = stringResource(id = uiState.error.titleRes),
-                    message = stringResource(id = uiState.error.messageRes),
-                    buttonText = stringResource(id = uiState.error.buttonTextRes),
-                    onButtonClick = { onEvent(uiState.error.event) },
-                    modifier = sectionModifier
-                        .padding(horizontal = 16.dp)
-                        .onSizeChanged { size ->
-                            loadingSectionHeight = size.height.pxToDp(context)
-                        },
-                )
-
-                uiState.avatarsSectionUiState != null ->
-                    AvatarsSection(
-                        state = uiState.avatarsSectionUiState,
-                        onAvatarSelected = { avatarUi ->
-                            when (avatarUi) {
-                                is AvatarUi.Local -> onEvent(AvatarPickerEvent.FailedAvatarTapped(avatarUi.uri))
-                                is AvatarUi.Uploaded -> onEvent(AvatarPickerEvent.AvatarSelected(avatarUi.avatar))
-                            }
-                        },
-                        onAvatarOptionClicked = { avatar, avatarOption ->
-                            when (avatarOption) {
-                                AvatarOption.AltText -> Unit
-                                AvatarOption.Delete -> {
-                                    confirmAvatarDeletion = avatar.imageId
-                                }
-                                AvatarOption.DownloadImage -> {
-                                    permissionAwareDownloadImageCallback(avatar)
-                                }
-                                is AvatarOption.Rating -> {
-                                    onEvent(
-                                        AvatarPickerEvent.AvatarRatingSelected(avatar.imageId, avatarOption.rating),
-                                    )
-                                }
-                            }
-                        },
-                        onLocalImageSelected = { onEvent(AvatarPickerEvent.LocalImageSelected(it)) },
+                    uiState.error != null -> ErrorSection(
+                        title = stringResource(id = uiState.error.titleRes),
+                        message = stringResource(id = uiState.error.messageRes),
+                        buttonText = stringResource(id = uiState.error.buttonTextRes),
+                        onButtonClick = { onEvent(uiState.error.event) },
                         modifier = sectionModifier
                             .padding(horizontal = 16.dp)
-                            .fillMaxWidth()
                             .onSizeChanged { size ->
                                 loadingSectionHeight = size.height.pxToDp(context)
                             },
                     )
+
+                    uiState.avatarsSectionUiState != null ->
+                        AvatarsSection(
+                            state = uiState.avatarsSectionUiState,
+                            onAvatarSelected = { avatarUi ->
+                                when (avatarUi) {
+                                    is AvatarUi.Local -> onEvent(AvatarPickerEvent.FailedAvatarTapped(avatarUi.uri))
+                                    is AvatarUi.Uploaded -> onEvent(AvatarPickerEvent.AvatarSelected(avatarUi.avatar))
+                                }
+                            },
+                            onAvatarOptionClicked = { avatar, avatarOption ->
+                                when (avatarOption) {
+                                    AvatarOption.AltText -> Unit
+                                    AvatarOption.Delete -> {
+                                        confirmAvatarDeletion = avatar.imageId
+                                    }
+
+                                    AvatarOption.DownloadImage -> {
+                                        permissionAwareDownloadImageCallback(avatar)
+                                    }
+
+                                    is AvatarOption.Rating -> {
+                                        onEvent(
+                                            AvatarPickerEvent.AvatarRatingSelected(avatar.imageId, avatarOption.rating),
+                                        )
+                                    }
+                                }
+                            },
+                            onLocalImageSelected = { onEvent(AvatarPickerEvent.LocalImageSelected(it)) },
+                            modifier = sectionModifier
+                                .padding(horizontal = 16.dp)
+                                .fillMaxWidth()
+                                .onSizeChanged { size ->
+                                    loadingSectionHeight = size.height.pxToDp(context)
+                                },
+                        )
+                }
             }
         }
         FailedAvatarUploadAlertDialog(
