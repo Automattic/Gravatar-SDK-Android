@@ -79,6 +79,9 @@ internal class AvatarPickerViewModel(
     private fun updateAvatar(avatarId: String, rating: Avatar.Rating? = null, altText: String? = null) {
         viewModelScope.launch {
             val oldAvatar: Avatar? = _uiState.value.emailAvatars?.avatars?.find { it.imageId == avatarId }
+            if (!oldAvatar.shouldUpdateRating(rating) && !oldAvatar.shouldUpdateAltText(altText)) {
+                return@launch
+            }
             val updateType = AvatarUpdateType.RATING
             _uiState.update { currentState ->
                 val emailAvatars = currentState.emailAvatars?.copy(
@@ -447,6 +450,14 @@ internal class AvatarPickerViewModel(
                 else -> SectionError.Unknown
             }
         }
+
+    private fun Avatar?.shouldUpdateRating(newRating: Avatar.Rating?): Boolean {
+        return newRating != null && this?.rating != newRating
+    }
+
+    private fun Avatar?.shouldUpdateAltText(newAltText: String?): Boolean {
+        return newAltText != null && this?.altText != newAltText
+    }
 }
 
 internal class AvatarPickerViewModelFactory(

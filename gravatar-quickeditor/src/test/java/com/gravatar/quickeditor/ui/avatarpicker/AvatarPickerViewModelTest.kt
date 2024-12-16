@@ -1215,6 +1215,34 @@ class AvatarPickerViewModelTest {
         }
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `given rating and altText not changed when updateAvatar then avatar not updated`() = runTest {
+        val avatarId = "avatarId"
+        val rating = Avatar.Rating.PG
+        val altText = "New Alt"
+        val oldAvatar = createAvatar(avatarId, isSelected = true, rating = rating, altText = altText)
+        val emailAvatarsCopy = emailAvatars.copy(avatars = listOf(oldAvatar), selectedAvatarId = avatarId)
+        coEvery { avatarRepository.getAvatars(email) } returns GravatarResult.Success(emailAvatarsCopy)
+        coEvery { profileService.retrieveCatching(email) } returns GravatarResult.Success(profile)
+        coEvery {
+            avatarRepository.updateAvatar(email, avatarId, rating)
+        } returns GravatarResult.Success(oldAvatar)
+
+        viewModel = initViewModel()
+
+        advanceUntilIdle()
+
+        viewModel.uiState.test {
+            expectMostRecentItem()
+            viewModel.onEvent(AvatarPickerEvent.AvatarRatingSelected(avatarId, rating))
+            expectNoEvents()
+        }
+        viewModel.actions.test {
+            expectNoEvents()
+        }
+    }
+
     private fun initViewModel(handleExpiredSession: Boolean = true) = AvatarPickerViewModel(
         email = email,
         handleExpiredSession = handleExpiredSession,
@@ -1225,11 +1253,16 @@ class AvatarPickerViewModelTest {
         imageDownloader = imageDownloader,
     )
 
-    private fun createAvatar(id: String, isSelected: Boolean? = null) = Avatar {
+    private fun createAvatar(
+        id: String,
+        isSelected: Boolean? = null,
+        rating: Avatar.Rating = Avatar.Rating.G,
+        altText: String = "alt",
+    ) = Avatar {
         imageUrl = URI.create("https://gravatar.com/avatar/test")
         imageId = id
-        rating = Avatar.Rating.G
-        altText = "alt"
+        this.rating = rating
+        this.altText = altText
         updatedDate = ""
         selected = isSelected
     }
