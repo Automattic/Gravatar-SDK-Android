@@ -56,9 +56,9 @@ import com.gravatar.quickeditor.ui.components.AlertBanner
 import com.gravatar.quickeditor.ui.components.AvatarDeletionConfirmationDialog
 import com.gravatar.quickeditor.ui.components.AvatarOption
 import com.gravatar.quickeditor.ui.components.AvatarsSection
+import com.gravatar.quickeditor.ui.components.CtaSection
 import com.gravatar.quickeditor.ui.components.DownloadManagerDisabledAlertDialog
 import com.gravatar.quickeditor.ui.components.EmailLabel
-import com.gravatar.quickeditor.ui.components.ErrorSection
 import com.gravatar.quickeditor.ui.components.FailedAvatarUploadAlertDialog
 import com.gravatar.quickeditor.ui.components.PermissionRationaleDialog
 import com.gravatar.quickeditor.ui.components.ProfileCard
@@ -226,7 +226,7 @@ internal fun AvatarPicker(uiState: AvatarPickerUiState, onEvent: (AvatarPickerEv
                         CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                     }
 
-                    uiState.error != null -> ErrorSection(
+                    uiState.error != null -> CtaSection(
                         title = stringResource(id = uiState.error.titleRes),
                         message = stringResource(id = uiState.error.messageRes),
                         buttonText = stringResource(id = uiState.error.buttonTextRes),

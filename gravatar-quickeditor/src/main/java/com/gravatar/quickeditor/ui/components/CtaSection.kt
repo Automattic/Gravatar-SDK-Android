@@ -14,12 +14,12 @@ import androidx.compose.ui.unit.dp
 import com.gravatar.ui.GravatarTheme
 
 @Composable
-internal fun ErrorSection(
-    title: String,
+internal fun CtaSection(
     message: String,
     buttonText: String,
     onButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
+    title: String? = null,
 ) {
     Surface(
         modifier = modifier
@@ -32,25 +32,46 @@ internal fun ErrorSection(
         Column(
             modifier = Modifier.padding(16.dp),
         ) {
-            QESectionTitle(title = title)
+            title?.let { QESectionTitle(title = it) }
             QESectionMessage(message = message, modifier = Modifier.padding(top = 4.dp))
-            QEButton(buttonText = buttonText, onClick = onButtonClick, modifier = Modifier.padding(top = 24.dp))
+            QEButton(
+                buttonText = buttonText,
+                onClick = onButtonClick,
+                modifier = Modifier.padding(top = if (title == null) 16.dp else 24.dp),
+            )
         }
     }
 }
 
 @PreviewLightDark
 @Composable
-private fun ErrorSectionPreview() {
+private fun CtaSectionPreview() {
     GravatarTheme {
         Surface {
-            ErrorSection(
+            CtaSection(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(20.dp),
                 title = "Oooops",
                 message = "Something went wrong and we couldn't connect to Gravatar servers.",
                 buttonText = "Retry",
+                onButtonClick = {},
+            )
+        }
+    }
+}
+
+@PreviewLightDark
+@Composable
+private fun CtaSectionNoTitlePreview() {
+    GravatarTheme {
+        Surface {
+            CtaSection(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp),
+                message = "Manage your profile for the web in one place.",
+                buttonText = "Continue",
                 onButtonClick = {},
             )
         }

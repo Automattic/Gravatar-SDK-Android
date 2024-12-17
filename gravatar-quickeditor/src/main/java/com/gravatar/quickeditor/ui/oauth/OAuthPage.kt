@@ -30,7 +30,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.gravatar.quickeditor.R
-import com.gravatar.quickeditor.ui.components.ErrorSection
+import com.gravatar.quickeditor.ui.components.CtaSection
 import com.gravatar.quickeditor.ui.editor.bottomsheet.DEFAULT_PAGE_HEIGHT
 import com.gravatar.types.Email
 import com.gravatar.ui.GravatarTheme
@@ -119,7 +119,7 @@ internal fun OauthPage(
                 when (val status = uiState.status) {
                     OAuthStatus.Authorizing -> CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                     OAuthStatus.LoginRequired -> {
-                        ErrorSection(
+                        CtaSection(
                             title = stringResource(R.string.gravatar_qe_login_required),
                             message = stringResource(R.string.gravatar_qe_login_required_message),
                             buttonText = stringResource(id = R.string.gravatar_qe_avatar_picker_session_error_cta),
@@ -131,7 +131,7 @@ internal fun OauthPage(
                     }
 
                     OAuthStatus.WrongEmailAuthorized -> {
-                        ErrorSection(
+                        CtaSection(
                             title = stringResource(R.string.gravatar_qe_avatar_picker_server_error_title),
                             message = stringResource(
                                 R.string.gravatar_qe_oauth_wrong_email_authenticated_error_message,
@@ -145,7 +145,7 @@ internal fun OauthPage(
                         )
                     }
 
-                    is OAuthStatus.EmailAssociatedCheckError -> ErrorSection(
+                    is OAuthStatus.EmailAssociatedCheckError -> CtaSection(
                         title = stringResource(R.string.gravatar_qe_avatar_picker_server_error_title),
                         message = stringResource(
                             R.string.gravatar_qe_oauth_email_associated_error_message,
