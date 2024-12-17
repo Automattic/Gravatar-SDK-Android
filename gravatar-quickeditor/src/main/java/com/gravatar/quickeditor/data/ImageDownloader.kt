@@ -13,13 +13,7 @@ internal class ImageDownloader(
     private val context: Context,
 ) {
     private val downloadManager: DownloadManager? = context.getSystemService(DownloadManager::class.java)
-    private val appName: String by lazy {
-        val applicationInfo = context.packageManager.getApplicationInfo(
-            context.packageName,
-            PackageManager.GET_META_DATA,
-        )
-        context.packageManager.getApplicationLabel(applicationInfo).toString()
-    }
+    private val appName: String by lazy { context.appName }
 
     fun downloadImage(imageUrl: URI): GravatarResult<Unit, DownloadManagerError> {
         return when {
@@ -69,3 +63,12 @@ internal enum class DownloadManagerError {
     DOWNLOAD_MANAGER_NOT_AVAILABLE,
     DOWNLOAD_MANAGER_DISABLED,
 }
+
+internal val Context.appName: String
+    get() {
+        val applicationInfo = packageManager.getApplicationInfo(
+            packageName,
+            PackageManager.GET_META_DATA,
+        )
+        return packageManager.getApplicationLabel(applicationInfo).toString()
+    }

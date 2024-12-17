@@ -4,8 +4,8 @@ import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -25,9 +25,19 @@ import com.gravatar.ui.GravatarTheme
 import com.gravatar.ui.components.ComponentState
 import com.gravatar.ui.components.ProfileSummary
 import com.gravatar.ui.components.atomic.Avatar
+import com.gravatar.ui.components.atomic.ViewProfileButton
 
 @Composable
-internal fun ProfileCard(profile: ComponentState<Profile>?, modifier: Modifier = Modifier) {
+internal fun ProfileCard(
+    profile: ComponentState<Profile>?,
+    modifier: Modifier = Modifier,
+    viewProfile: @Composable ((state: ComponentState<Profile>) -> Unit) = { profileState ->
+        ViewProfileButton(
+            state = profileState,
+            modifier = Modifier.height(32.dp),
+        )
+    },
+) {
     GravatarCard(modifier) { backgroundColor ->
         profile?.let {
             ProfileSummary(
@@ -44,6 +54,7 @@ internal fun ProfileCard(profile: ComponentState<Profile>?, modifier: Modifier =
                         forceRefresh = true,
                     )
                 },
+                viewProfile = viewProfile,
             )
         }
     }

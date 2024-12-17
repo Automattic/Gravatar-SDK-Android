@@ -21,7 +21,6 @@ Language: pt_BR
     <string name="gravatar_qe_permission_rationale_open_settings">Abrir configurações</string>
     <string name="gravatar_qe_upload_image_content_description">Fazer upload da imagem</string>
     <string name="gravatar_qe_happy_face_image_content_description">Imagem de um rosto feliz</string>
-    <string name="gravatar_qe_login_required">Login obrigatório</string>
     <string name="gravatar_qe_avatar_picker_network_error_title">Sem Internet</string>
     <string name="gravatar_qe_avatar_picker_session_error_close_cta">Fechar</string>
     <string name="gravatar_qe_avatar_picker_session_error_cta">Fazer login</string>
@@ -51,7 +50,6 @@ Language: pt_BR
     <string name="gravatar_qe_failed_to_load_avatar_content_description">Falha no envio. Toque para ver o que você pode fazer.</string>
     <string name="gravatar_qe_oauth_wrong_email_authenticated_error_message">Parece que você usou o e-mail errado para fazer login. Experimente usar %s desta vez. Obrigado!</string>
     <string name="gravatar_qe_avatar_picker_session_error_no_login_message">A sessão expirou por motivos de segurança.</string>
-    <string name="gravatar_qe_login_required_message">Para alterar seu perfil no Gravatar, você precisa fazer login primeiro</string>
     <string name="gravatar_qe_avatar_picker_network_error_message">Ops! Parece que você não está conectado à Internet.</string>
     <string name="gravatar_qe_avatar_picker_session_error_message">A sessão expirou por motivos de segurança. Faça login para atualizar seu avatar.</string>
     <string name="gravatar_qe_avatar_picker_unknown_error_message">Ocorreu um erro grave.</string>

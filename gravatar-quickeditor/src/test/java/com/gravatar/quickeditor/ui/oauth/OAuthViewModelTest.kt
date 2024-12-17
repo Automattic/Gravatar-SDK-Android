@@ -3,10 +3,12 @@ package com.gravatar.quickeditor.ui.oauth
 import app.cash.turbine.test
 import com.gravatar.quickeditor.data.storage.TokenStorage
 import com.gravatar.quickeditor.ui.CoroutineTestRule
+import com.gravatar.restapi.models.Profile
 import com.gravatar.services.ErrorType
 import com.gravatar.services.GravatarResult
 import com.gravatar.services.ProfileService
 import com.gravatar.types.Email
+import com.gravatar.ui.components.ComponentState
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -27,20 +29,14 @@ class OAuthViewModelTest {
 
     private lateinit var viewModel: OAuthViewModel
 
-    val token = "access_token"
-    val email = Email("email")
+    private val token = "access_token"
+    private val email = Email("email")
 
     @Before
     fun setup() {
         coEvery { tokenStorage.storeToken(any(), any()) } returns Unit
-        viewModel = OAuthViewModel(tokenStorage, profileService)
-    }
-
-    @Test
-    fun `given viewModel when initialized then OAuthAction_StartOAuth sent`() = runTest {
-        viewModel.actions.test {
-            assertEquals(OAuthAction.StartOAuth, awaitItem())
-        }
+        coEvery { profileService.retrieveCatching(email) } returns GravatarResult.Success(mockk())
+        viewModel = OAuthViewModel(email, tokenStorage, profileService)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -67,7 +63,6 @@ class OAuthViewModelTest {
         )
 
         viewModel.actions.test {
-            expectMostRecentItem()
             assertEquals(OAuthAction.AuthorizationSuccess, awaitItem())
         }
     }
@@ -78,10 +73,10 @@ class OAuthViewModelTest {
             coEvery { profileService.checkAssociatedEmailCatching(any(), any()) } returns GravatarResult.Success(false)
 
             viewModel.uiState.test {
-                assertEquals(OAuthUiState(OAuthStatus.LoginRequired), awaitItem())
+                assertEquals(OAuthStatus.LoginRequired, awaitItem().status)
                 viewModel.tokenReceived(email, token)
                 skipItems(1) // skipping the OAuthStatus.Authorizing state
-                assertEquals(OAuthUiState(OAuthStatus.WrongEmailAuthorized), awaitItem())
+                assertEquals(OAuthStatus.WrongEmailAuthorized, awaitItem().status)
                 viewModel.startOAuth()
                 expectNoEvents()
             }
@@ -151,5 +146,32 @@ class OAuthViewModelTest {
         }
 
         coEvery { tokenStorage.storeToken(email.hash().toString(), token) }
+    }
+
+    @Test
+    fun `when fetchProfile succeeds then UiState is updated with profile`() = runTest {
+        val profile = mockk<Profile>()
+        coEvery { profileService.retrieveCatching(email) } returns GravatarResult.Success(profile)
+
+        viewModel = OAuthViewModel(email, tokenStorage, profileService)
+
+        viewModel.uiState.test {
+            expectMostRecentItem()
+            assertEquals(ComponentState.Loading, awaitItem().profile)
+            assertEquals(ComponentState.Loaded(profile), awaitItem().profile)
+        }
+    }
+
+    @Test
+    fun `when fetchProfile fails then UiState is updated with null profile`() = runTest {
+        coEvery { profileService.retrieveCatching(email) } returns GravatarResult.Failure(ErrorType.Unknown())
+
+        viewModel = OAuthViewModel(email, tokenStorage, profileService)
+
+        viewModel.uiState.test {
+            expectMostRecentItem()
+            assertEquals(ComponentState.Loading, awaitItem().profile)
+            assertEquals(null, awaitItem().profile)
+        }
     }
 }

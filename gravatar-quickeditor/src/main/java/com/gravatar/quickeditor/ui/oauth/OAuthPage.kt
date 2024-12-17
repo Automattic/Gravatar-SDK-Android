@@ -6,32 +6,41 @@ import android.content.Intent
 import android.net.Uri
 import androidx.activity.ComponentActivity
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.util.Consumer
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.gravatar.quickeditor.R
+import com.gravatar.quickeditor.data.appName
 import com.gravatar.quickeditor.ui.components.CtaSection
-import com.gravatar.quickeditor.ui.editor.bottomsheet.DEFAULT_PAGE_HEIGHT
+import com.gravatar.quickeditor.ui.components.ProfileCard
+import com.gravatar.quickeditor.ui.components.QESectionMessage
 import com.gravatar.types.Email
 import com.gravatar.ui.GravatarTheme
 import kotlinx.coroutines.Dispatchers
@@ -45,7 +54,7 @@ internal fun OAuthPage(
     onAuthSuccess: () -> Unit,
     onAuthError: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: OAuthViewModel = viewModel(factory = OAuthViewModel.Factory),
+    viewModel: OAuthViewModel = viewModel(factory = OAuthViewModelFactory(email)),
 ) {
     val context = LocalContext.current
     val activity = context.findComponentActivity()
@@ -106,27 +115,54 @@ internal fun OauthPage(
     uiState: OAuthUiState,
     email: Email,
     onStartOAuthClicked: () -> Unit,
-    onEmailAssociationCheckClicked: (String) -> Unit = {},
     modifier: Modifier = Modifier,
+    onEmailAssociationCheckClicked: (String) -> Unit = {},
 ) {
+    val context = LocalContext.current
     GravatarTheme {
         Surface {
-            Box(
+            Column(
                 modifier = modifier
-                    .fillMaxWidth()
-                    .height(DEFAULT_PAGE_HEIGHT),
+                    .padding(horizontal = 16.dp)
+                    .fillMaxWidth(),
             ) {
+                Text(
+                    text = stringResource(R.string.gravatar_qe_oauth_page_title),
+                    style = MaterialTheme.typography.headlineMedium.copy(
+                        fontWeight = FontWeight.Black,
+                        fontSize = 32.sp,
+                        letterSpacing = 0.4.sp,
+                    ),
+                    modifier = Modifier.padding(top = 10.dp),
+                )
+                QESectionMessage(
+                    message = stringResource(R.string.gravatar_qe_oauth_page_message, context.appName),
+                )
+                ProfileCard(
+                    profile = uiState.profile,
+                    modifier = Modifier.padding(top = 16.dp),
+                )
+                val sectionModifier = Modifier.padding(top = 24.dp, bottom = 10.dp)
                 when (val status = uiState.status) {
-                    OAuthStatus.Authorizing -> CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                    OAuthStatus.Authorizing -> Box(
+                        modifier = sectionModifier
+                            .fillMaxWidth()
+                            .height(100.dp)
+                            .border(
+                                width = 1.dp,
+                                color = MaterialTheme.colorScheme.surfaceContainerHighest,
+                                shape = RoundedCornerShape(8.dp),
+                            ),
+                    ) {
+                        CircularProgressIndicator(modifier = Modifier.align(Center))
+                    }
+
                     OAuthStatus.LoginRequired -> {
                         CtaSection(
-                            title = stringResource(R.string.gravatar_qe_login_required),
-                            message = stringResource(R.string.gravatar_qe_login_required_message),
-                            buttonText = stringResource(id = R.string.gravatar_qe_avatar_picker_session_error_cta),
+                            message = stringResource(R.string.gravatar_qe_login_required_message_v2),
+                            buttonText = stringResource(id = R.string.gravatar_qe_login_required_cta),
                             onButtonClick = onStartOAuthClicked,
-                            modifier = Modifier
-                                .padding(horizontal = 16.dp)
-                                .align(Alignment.Center),
+                            modifier = sectionModifier,
                         )
                     }
 
@@ -139,9 +175,7 @@ internal fun OauthPage(
                             ),
                             buttonText = stringResource(id = R.string.gravatar_qe_avatar_picker_session_error_cta),
                             onButtonClick = onStartOAuthClicked,
-                            modifier = Modifier
-                                .padding(horizontal = 16.dp)
-                                .align(Alignment.Center),
+                            modifier = sectionModifier,
                         )
                     }
 
@@ -153,9 +187,7 @@ internal fun OauthPage(
                         ),
                         buttonText = stringResource(id = R.string.gravatar_qe_avatar_picker_error_retry_cta),
                         onButtonClick = { onEmailAssociationCheckClicked(status.token) },
-                        modifier = Modifier
-                            .padding(horizontal = 16.dp)
-                            .align(Alignment.Center),
+                        modifier = sectionModifier,
                     )
                 }
             }
@@ -184,6 +216,20 @@ private fun OAuthPagePreview() {
     GravatarTheme {
         OauthPage(
             uiState = OAuthUiState(),
+            email = Email("email"),
+            onStartOAuthClicked = { },
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun OAuthPageLoadingPreview() {
+    GravatarTheme {
+        OauthPage(
+            uiState = OAuthUiState(
+                status = OAuthStatus.Authorizing,
+            ),
             email = Email("email"),
             onStartOAuthClicked = { },
         )
