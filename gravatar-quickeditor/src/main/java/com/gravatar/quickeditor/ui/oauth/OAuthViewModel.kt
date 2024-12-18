@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.gravatar.quickeditor.QuickEditorContainer
 import com.gravatar.quickeditor.data.storage.TokenStorage
+import com.gravatar.services.ErrorType
 import com.gravatar.services.GravatarResult
 import com.gravatar.services.ProfileService
 import com.gravatar.types.Email
@@ -83,7 +84,13 @@ internal class OAuthViewModel(
 
                 is GravatarResult.Failure -> {
                     _uiState.update { currentState ->
-                        currentState.copy(profile = null)
+                        currentState.copy(
+                            profile = if (result.error is ErrorType.NotFound) {
+                                ComponentState.Empty
+                            } else {
+                                null
+                            },
+                        )
                     }
                 }
             }

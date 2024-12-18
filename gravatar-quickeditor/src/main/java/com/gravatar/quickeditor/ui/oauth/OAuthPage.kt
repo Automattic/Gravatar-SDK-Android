@@ -138,10 +138,12 @@ internal fun OauthPage(
                 QESectionMessage(
                     message = stringResource(R.string.gravatar_qe_oauth_page_message, context.appName),
                 )
-                ProfileCard(
-                    profile = uiState.profile,
-                    modifier = Modifier.padding(top = 16.dp),
-                )
+                uiState.profile?.let {
+                    ProfileCard(
+                        profile = it,
+                        modifier = Modifier.padding(top = 16.dp),
+                    )
+                }
                 val sectionModifier = Modifier.padding(top = 24.dp, bottom = 10.dp)
                 when (val status = uiState.status) {
                     OAuthStatus.Authorizing -> Box(
