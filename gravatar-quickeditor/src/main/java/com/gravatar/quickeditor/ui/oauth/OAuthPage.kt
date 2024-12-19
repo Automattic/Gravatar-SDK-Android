@@ -137,6 +137,7 @@ internal fun OauthPage(
                 )
                 QESectionMessage(
                     message = stringResource(R.string.gravatar_qe_oauth_page_message, context.appName),
+                    modifier = Modifier.padding(top = 4.dp),
                 )
                 uiState.profile?.let {
                     ProfileCard(
