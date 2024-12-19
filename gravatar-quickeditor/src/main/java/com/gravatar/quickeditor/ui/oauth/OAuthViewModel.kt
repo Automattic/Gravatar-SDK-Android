@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.gravatar.quickeditor.QuickEditorContainer
+import com.gravatar.quickeditor.data.storage.ProfileStorage
 import com.gravatar.quickeditor.data.storage.TokenStorage
 import com.gravatar.services.ErrorType
 import com.gravatar.services.GravatarResult
@@ -22,6 +23,7 @@ import kotlinx.coroutines.launch
 internal class OAuthViewModel(
     private val email: Email,
     private val tokenStorage: TokenStorage,
+    private val profileStorage: ProfileStorage,
     private val profileService: ProfileService,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(OAuthUiState())
@@ -32,10 +34,17 @@ internal class OAuthViewModel(
 
     init {
         fetchProfile()
+        viewModelScope.launch {
+            val loginIntroShown = profileStorage.getLoginIntroShown(email.hash().toString())
+            if (loginIntroShown) {
+                _actions.send(OAuthAction.StartOAuth)
+            }
+        }
     }
 
     fun startOAuth() {
         viewModelScope.launch {
+            profileStorage.setLoginIntroShown(email.hash().toString())
             _actions.send(OAuthAction.StartOAuth)
         }
     }
@@ -106,6 +115,7 @@ internal class OAuthViewModelFactory(
         return OAuthViewModel(
             email = email,
             tokenStorage = QuickEditorContainer.getInstance().tokenStorage,
+            profileStorage = QuickEditorContainer.getInstance().profileStorage,
             profileService = QuickEditorContainer.getInstance().profileService,
         ) as T
     }

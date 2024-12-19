@@ -1,6 +1,7 @@
 package com.gravatar.quickeditor.ui.oauth
 
 import app.cash.turbine.test
+import com.gravatar.quickeditor.data.storage.ProfileStorage
 import com.gravatar.quickeditor.data.storage.TokenStorage
 import com.gravatar.quickeditor.ui.CoroutineTestRule
 import com.gravatar.restapi.models.Profile
@@ -26,6 +27,7 @@ class OAuthViewModelTest {
 
     private val tokenStorage = mockk<TokenStorage>()
     private val profileService = mockk<ProfileService>()
+    private val profileStorage = mockk<ProfileStorage>()
 
     private lateinit var viewModel: OAuthViewModel
 
@@ -36,7 +38,9 @@ class OAuthViewModelTest {
     fun setup() {
         coEvery { tokenStorage.storeToken(any(), any()) } returns Unit
         coEvery { profileService.retrieveCatching(email) } returns GravatarResult.Success(mockk())
-        viewModel = OAuthViewModel(email, tokenStorage, profileService)
+        coEvery { profileStorage.getLoginIntroShown(any()) } returns false
+        coEvery { profileStorage.setLoginIntroShown(any()) } returns Unit
+        viewModel = OAuthViewModel(email, tokenStorage, profileStorage, profileService)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -153,7 +157,7 @@ class OAuthViewModelTest {
         val profile = mockk<Profile>()
         coEvery { profileService.retrieveCatching(email) } returns GravatarResult.Success(profile)
 
-        viewModel = OAuthViewModel(email, tokenStorage, profileService)
+        viewModel = createViewModel()
 
         viewModel.uiState.test {
             expectMostRecentItem()
@@ -166,12 +170,57 @@ class OAuthViewModelTest {
     fun `when fetchProfile fails then UiState is updated with null profile`() = runTest {
         coEvery { profileService.retrieveCatching(email) } returns GravatarResult.Failure(ErrorType.Unknown())
 
-        viewModel = OAuthViewModel(email, tokenStorage, profileService)
+        viewModel = createViewModel()
 
         viewModel.uiState.test {
             expectMostRecentItem()
             assertEquals(ComponentState.Loading, awaitItem().profile)
             assertEquals(null, awaitItem().profile)
         }
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `when init and loginIntroShown is true then StartOAuth action is sent`() = runTest {
+        coEvery { profileStorage.getLoginIntroShown(email.hash().toString()) } returns true
+
+        viewModel = createViewModel()
+
+        advanceUntilIdle()
+
+        viewModel.actions.test {
+            assertEquals(OAuthAction.StartOAuth, awaitItem())
+        }
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `when init and loginIntroShown is false then no action is sent`() = runTest {
+        coEvery { profileStorage.getLoginIntroShown(email.hash().toString()) } returns false
+
+        viewModel = createViewModel()
+
+        advanceUntilIdle()
+
+        viewModel.actions.test {
+            expectNoEvents()
+        }
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `when startOAuth is called then loginIntroShown is set and StartOAuth action is sent`() = runTest {
+        coEvery { profileStorage.setLoginIntroShown(email.hash().toString()) } returns Unit
+
+        viewModel = createViewModel()
+        viewModel.startOAuth()
+
+        advanceUntilIdle()
+
+        coVerify { profileStorage.setLoginIntroShown(email.hash().toString()) }
+    }
+
+    private fun createViewModel(): OAuthViewModel {
+        return OAuthViewModel(email, tokenStorage, profileStorage, profileService)
     }
 }

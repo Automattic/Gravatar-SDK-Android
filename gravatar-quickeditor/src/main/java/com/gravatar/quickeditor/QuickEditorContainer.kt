@@ -7,13 +7,16 @@ import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.emptyPreferences
+import androidx.datastore.preferences.preferencesDataStoreFile
 import com.gravatar.quickeditor.data.AcceptedLanguageInterceptor
 import com.gravatar.quickeditor.data.FileUtils
 import com.gravatar.quickeditor.data.ImageDownloader
 import com.gravatar.quickeditor.data.datastore.createEncryptedFileWithFallbackReset
 import com.gravatar.quickeditor.data.repository.AvatarRepository
+import com.gravatar.quickeditor.data.storage.DataStoreProfileStorage
 import com.gravatar.quickeditor.data.storage.DataStoreTokenStorage
 import com.gravatar.quickeditor.data.storage.InMemoryTokenStorage
+import com.gravatar.quickeditor.data.storage.ProfileStorage
 import com.gravatar.quickeditor.data.storage.TokenStorage
 import com.gravatar.services.AvatarService
 import com.gravatar.services.ProfileService
@@ -41,14 +44,20 @@ internal class QuickEditorContainer private constructor(
         }
     }
 
-    private val dataStore: DataStore<Preferences> = PreferenceDataStoreFactory.createEncrypted(
+    private val tokenDataStore: DataStore<Preferences> = PreferenceDataStoreFactory.createEncrypted(
         corruptionHandler = ReplaceFileCorruptionHandler { emptyPreferences() },
     ) {
         context.createEncryptedFileWithFallbackReset(name = "quick-editor-preferences")
     }
 
+    private val profileDataStore: DataStore<Preferences> = PreferenceDataStoreFactory.create(
+        corruptionHandler = ReplaceFileCorruptionHandler { emptyPreferences() },
+    ) {
+        context.preferencesDataStoreFile("quick-editor-profile")
+    }
+
     val dataStoreTokenStorage: DataStoreTokenStorage by lazy {
-        DataStoreTokenStorage(dataStore = dataStore, dispatcher = Dispatchers.IO)
+        DataStoreTokenStorage(dataStore = tokenDataStore, dispatcher = Dispatchers.IO)
     }
 
     private val okHttpClient: OkHttpClient by lazy {
@@ -65,6 +74,10 @@ internal class QuickEditorContainer private constructor(
 
     val tokenStorage: TokenStorage
         get() = if (useInMemoryTokenStorage) inMemoryTokenStorage else dataStoreTokenStorage
+
+    val profileStorage: ProfileStorage by lazy {
+        DataStoreProfileStorage(dataStore = profileDataStore, dispatcher = Dispatchers.IO)
+    }
 
     private val avatarService: AvatarService by lazy {
         AvatarService(okHttpClient)
