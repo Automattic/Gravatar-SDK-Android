@@ -846,6 +846,9 @@ class AvatarPickerViewModelTest {
                 awaitItem(),
             )
         }
+        viewModel.actions.test {
+            assertEquals(AvatarPickerAction.AvatarSelected, awaitItem())
+        }
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -883,7 +886,7 @@ class AvatarPickerViewModelTest {
             )
         }
         viewModel.actions.test {
-            assertEquals(AvatarPickerAction.AvatarSelected, awaitItem())
+            expectNoEvents()
         }
     }
 

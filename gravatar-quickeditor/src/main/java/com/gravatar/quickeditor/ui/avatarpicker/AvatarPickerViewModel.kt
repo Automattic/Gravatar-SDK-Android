@@ -396,7 +396,7 @@ internal class AvatarPickerViewModel(
     }
 
     private suspend fun notifyAvatarDeletedSuccessfully(isSelectedAvatar: Boolean) {
-        _actions.send(AvatarPickerAction.AvatarSelected)
+        if (isSelectedAvatar) _actions.send(AvatarPickerAction.AvatarSelected)
         _uiState.update { currentState ->
             currentState.copy(
                 avatarUpdates = if (isSelectedAvatar) {
