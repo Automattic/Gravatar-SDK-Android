@@ -130,6 +130,7 @@ public fun ViewProfileButton(
                 url = GravatarConstants.GRAVATAR_SIGN_IN_URL,
                 textStyle = textStyle,
                 inlineContent = inlineContent,
+                modifier = modifier,
             )
         }
     }

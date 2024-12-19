@@ -46,4 +46,9 @@ class ProfileSummaryTest : RoborazziTest() {
             viewProfile = { _ -> Text(text = "Custom Profile Button", color = gravatarTheme.colorScheme.primary) },
         )
     }
+
+    @Test
+    fun profileEmptyStateDescription() = gravatarScreenshotTest {
+        ProfileSummary(ComponentState.Empty)
+    }
 }
