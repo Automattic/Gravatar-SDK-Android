@@ -22,9 +22,9 @@ internal class DataStoreProfileStorage(
     }
 
     @Suppress("SwallowedException")
-    override suspend fun getLoginIntroShown(emailHast: String): Boolean = withContext(dispatcher) {
+    override suspend fun getLoginIntroShown(emailHash: String): Boolean = withContext(dispatcher) {
         try {
-            dataStore.data.first()[booleanPreferencesKey(emailHast.loginIntroShownKey)] ?: false
+            dataStore.data.first()[booleanPreferencesKey(emailHash.loginIntroShownKey)] ?: false
         } catch (exception: IOException) {
             false
         }
