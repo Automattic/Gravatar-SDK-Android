@@ -423,21 +423,13 @@ internal class AvatarPickerViewModel(
     private fun nonAvatarSelectedAlertObserver() {
         _uiState
             .filter { it.emailAvatars != null }
-            .map { it.emailAvatars?.selectedAvatarId != null }
+            .map { it.emailAvatars?.selectedAvatarId == null && it.emailAvatars?.avatars?.isNotEmpty() == true }
             .distinctUntilChanged()
-            .onEach { isAvatarSelected ->
-                if (isAvatarSelected) {
-                    _uiState.update { currentState ->
-                        currentState.copy(
-                            nonSelectedAvatarAlertVisible = false,
-                        )
-                    }
-                } else {
-                    _uiState.update { currentState ->
-                        currentState.copy(
-                            nonSelectedAvatarAlertVisible = true,
-                        )
-                    }
+            .onEach { shouldShowAlert ->
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        nonSelectedAvatarAlertVisible = shouldShowAlert,
+                    )
                 }
             }
             .launchIn(viewModelScope)

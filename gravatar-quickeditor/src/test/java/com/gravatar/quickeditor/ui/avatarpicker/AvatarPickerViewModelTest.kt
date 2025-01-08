@@ -151,17 +151,6 @@ class AvatarPickerViewModelTest {
                 ),
                 awaitItem(),
             )
-            // Checking that the nonSelectedAvatarAlertVisible is set to true after emails are loaded
-            assertEquals(
-                avatarPickerUiState.copy(
-                    email = email,
-                    emailAvatars = emailAvatars,
-                    error = null,
-                    profile = ComponentState.Loaded(profile),
-                    nonSelectedAvatarAlertVisible = true,
-                ),
-                awaitItem(),
-            )
         }
     }
 
@@ -194,7 +183,6 @@ class AvatarPickerViewModelTest {
                 ),
                 awaitItem(),
             )
-            skipItems(1) // skipping the nonAvatarSelectedAlertVisible state
         }
     }
 
@@ -1243,6 +1231,20 @@ class AvatarPickerViewModelTest {
         }
         viewModel.actions.test {
             expectNoEvents()
+        }
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `given empty avatar list when loaded then avatar not selected banner invisible`() = runTest {
+        coEvery { profileService.retrieveCatching(email) } returns GravatarResult.Success(profile)
+
+        viewModel = initViewModel()
+
+        advanceUntilIdle()
+
+        viewModel.uiState.test {
+            assertEquals(false, awaitItem().nonSelectedAvatarAlertVisible)
         }
     }
 
