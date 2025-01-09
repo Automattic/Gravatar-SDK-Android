@@ -53,9 +53,9 @@ internal fun GravatarQuickEditorPage(
         composable(route = QuickEditorPage.SPLASH.name) {
             SplashPage(email = gravatarQuickEditorParams.email) { isAuthorized ->
                 if (isAuthorized) {
-                    navController.navigate(QuickEditorPage.EDITOR.name)
+                    navController.navigateAndClean(QuickEditorPage.EDITOR.name)
                 } else {
-                    navController.navigate(QuickEditorPage.OAUTH.name)
+                    navController.navigateAndClean(QuickEditorPage.OAUTH.name)
                 }
             }
         }
@@ -64,7 +64,9 @@ internal fun GravatarQuickEditorPage(
                 oAuthParams = oAuthParams,
                 email = gravatarQuickEditorParams.email,
                 onAuthError = { onDismiss(GravatarQuickEditorDismissReason.OauthFailed) },
-                onAuthSuccess = { navController.navigate(QuickEditorPage.EDITOR.name) },
+                onAuthSuccess = {
+                    navController.navigateAndClean(QuickEditorPage.EDITOR.name)
+                },
             )
         }
         addAvatarPickerGraph(
@@ -116,7 +118,7 @@ internal fun GravatarQuickEditorPage(
                 email = gravatarQuickEditorParams.email,
                 token = authToken,
             ) {
-                navController.navigate(QuickEditorPage.EDITOR.name)
+                navController.navigateAndClean(QuickEditorPage.EDITOR.name)
             }
         }
         addAvatarPickerGraph(
@@ -179,4 +181,11 @@ private fun NavGraphBuilder.addAvatarPickerGraph(
             )
         }
     }
+}
+
+private fun NavHostController.navigateAndClean(route: String) {
+    navigate(route = route) {
+        popUpTo(graph.startDestinationId) { inclusive = true }
+    }
+    graph.setStartDestination(route)
 }

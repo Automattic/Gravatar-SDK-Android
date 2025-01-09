@@ -2,6 +2,7 @@ package com.gravatar.quickeditor.ui.editor.bottomsheet
 
 import android.content.res.Configuration
 import android.graphics.Color
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -35,6 +36,7 @@ import androidx.window.core.layout.WindowHeightSizeClass
 import com.composables.core.LocalModalWindow
 import com.composables.core.ModalBottomSheet
 import com.composables.core.ModalBottomSheetState
+import com.composables.core.ModalSheetProperties
 import com.composables.core.Scrim
 import com.composables.core.Sheet
 import com.composables.core.SheetDetent
@@ -151,7 +153,13 @@ private fun GravatarModalBottomSheet(
         GravatarTheme {
             ModalBottomSheet(
                 state = modalBottomSheetState,
+                properties = ModalSheetProperties(dismissOnBackPress = false),
             ) {
+                BackHandler {
+                    coroutineScope.launch {
+                        modalBottomSheetState.animateTo(Hidden)
+                    }
+                }
                 // Modal content must be taking the uiMode from Activity and doesn't respect
                 // the above set CompositionLocalProvider
                 CompositionLocalProvider(
