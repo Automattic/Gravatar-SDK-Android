@@ -9,7 +9,7 @@ import java.net.URI
 
 class AltTextPageTest : RoborazziTest() {
     @Test
-    fun altTextPageLoaded() = gravatarScreenshotTest {
+    fun initialAltTextPageLoaded() = gravatarScreenshotTest {
         GravatarTheme {
             AltTextPage(
                 altTextState = AltTextUiState(
@@ -25,7 +25,7 @@ class AltTextPageTest : RoborazziTest() {
 
     @Config(qualifiers = "+night")
     @Test
-    fun altTextPageLoadedDark() = gravatarScreenshotTest {
+    fun initialAltTextPageLoadedDark() = gravatarScreenshotTest {
         GravatarTheme {
             AltTextPage(
                 altTextState = AltTextUiState(
@@ -46,7 +46,7 @@ class AltTextPageTest : RoborazziTest() {
                 altTextState = AltTextUiState(
                     avatarUrl = URI("https://gravatar.com/avatar/test"),
                     isUpdating = false,
-                    altText = "New alt text",
+                    altText = "",
                     altTextMaxLength = 125,
                 ),
                 onEvent = { },
@@ -62,7 +62,40 @@ class AltTextPageTest : RoborazziTest() {
                 altTextState = AltTextUiState(
                     avatarUrl = URI("https://gravatar.com/avatar/test"),
                     isUpdating = false,
+                    altText = "",
+                    altTextMaxLength = 125,
+                ),
+                onEvent = { },
+            )
+        }
+    }
+
+    @Test
+    fun updatedAltTextPageLoaded() = gravatarScreenshotTest {
+        GravatarTheme {
+            AltTextPage(
+                altTextState = AltTextUiState(
+                    avatarUrl = "https://gravatar.com/avatar/test",
+                    isUpdating = false,
                     altText = "New alt text",
+                    initialAltText = "Alt",
+                    altTextMaxLength = 125,
+                ),
+                onEvent = { },
+            )
+        }
+    }
+
+    @Config(qualifiers = "+night")
+    @Test
+    fun updatedAltTextPageLoadedDark() = gravatarScreenshotTest {
+        GravatarTheme {
+            AltTextPage(
+                altTextState = AltTextUiState(
+                    avatarUrl = "https://gravatar.com/avatar/test",
+                    isUpdating = false,
+                    altText = "New alt text",
+                    initialAltText = "Alt",
                     altTextMaxLength = 125,
                 ),
                 onEvent = { },
