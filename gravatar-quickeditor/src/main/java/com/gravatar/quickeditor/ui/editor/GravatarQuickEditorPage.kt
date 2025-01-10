@@ -12,7 +12,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import androidx.navigation.navOptions
 import com.gravatar.quickeditor.QuickEditorContainer
 import com.gravatar.quickeditor.ui.alttext.AltTextPage
 import com.gravatar.quickeditor.ui.avatarpicker.AvatarPicker
@@ -74,7 +73,9 @@ internal fun GravatarQuickEditorPage(
             handleExpiredSession = true,
             navController = navController,
             onAvatarSelected = onAvatarSelected,
-            onSessionExpired = { navController.navigate(QuickEditorPage.OAUTH.name) },
+            onSessionExpired = {
+                navController.navigateAndClean(QuickEditorPage.OAUTH.name)
+            },
         )
     }
 }
@@ -152,9 +153,6 @@ private fun NavGraphBuilder.addAvatarPickerGraph(
                     val encodedUrl = URLEncoder.encode(avatarUrl, StandardCharsets.UTF_8.toString())
                     navController.navigate(
                         route = "${EditorNavDestinations.ALT_TEXT.name}/$email/$avatarId/$altText/$encodedUrl",
-                        navOptions = navOptions {
-                            popUpTo(EditorNavDestinations.AVATAR_SELECTION.name) { saveState = true }
-                        },
                     )
                 },
             )
