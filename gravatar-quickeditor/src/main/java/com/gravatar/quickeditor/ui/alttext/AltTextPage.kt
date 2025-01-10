@@ -208,6 +208,14 @@ internal fun AltTextPage(
                                 Box(
                                     modifier = Modifier.weight(1f),
                                 ) {
+                                    if (altTextState.altText.isEmpty()) {
+                                        Text(
+                                            text = stringResource(
+                                                R.string.gravatar_qe_avatar_alt_text_section_placeholder,
+                                            ),
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                        )
+                                    }
                                     innerTextField()
                                 }
                                 Text(
