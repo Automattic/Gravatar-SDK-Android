@@ -53,9 +53,9 @@ class AltTextViewModelTest {
         viewModel.uiState.test {
             val altTextUiState = AltTextUiState(
                 avatarUrl = avatarUrl,
-                isSaveButtonEnabled = false,
                 isUpdating = false,
                 altText = altText,
+                altTextMaxLength = 125,
             )
 
             assertEquals(altTextUiState, expectMostRecentItem())
@@ -78,9 +78,33 @@ class AltTextViewModelTest {
 
             val altTextUiState = AltTextUiState(
                 avatarUrl = avatarUrl,
-                isSaveButtonEnabled = true,
                 isUpdating = false,
                 altText = newAltText,
+                initialAltText = altText,
+                altTextMaxLength = 125,
+            )
+
+            assertEquals(altTextUiState, awaitItem())
+        }
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `given an alt text change with too many char when onEvent is called then alt text `() = runTest {
+        initWithAvatarStorage(createAvatar(id = avatarId, url = avatarUrl, altText = altText))
+
+        advanceUntilIdle()
+
+        val newAltText = "a".repeat(126)
+        viewModel.onEvent(AltTextEvent.AvatarAltTextChange(newAltText))
+
+        viewModel.uiState.test {
+            val altTextUiState = AltTextUiState(
+                avatarUrl = avatarUrl,
+                isUpdating = false,
+                altText = newAltText.take(125),
+                initialAltText = altText,
+                altTextMaxLength = 125,
             )
 
             assertEquals(altTextUiState, awaitItem())
@@ -98,9 +122,8 @@ class AltTextViewModelTest {
                 avatarRepository.updateAvatar(email = any(), avatarId = avatarId, rating = null, altText = newAltText)
             } returns GravatarResult.Success(mockk())
 
-            viewModel.onEvent(AltTextEvent.AvatarAltTextChange(newAltText))
-
             advanceUntilIdle()
+            viewModel.onEvent(AltTextEvent.AvatarAltTextChange(newAltText))
 
             viewModel.uiState.test {
                 expectMostRecentItem()
@@ -109,15 +132,15 @@ class AltTextViewModelTest {
 
                 var altTextUiState = AltTextUiState(
                     avatarUrl = avatarUrl,
-                    isSaveButtonEnabled = false,
                     isUpdating = true,
                     altText = newAltText,
+                    altTextMaxLength = 125,
+                    initialAltText = altText,
                 )
 
                 assertEquals(altTextUiState, awaitItem())
 
                 altTextUiState = altTextUiState.copy(
-                    isSaveButtonEnabled = true,
                     isUpdating = false,
                 )
 
@@ -139,9 +162,8 @@ class AltTextViewModelTest {
             avatarRepository.updateAvatar(email = any(), avatarId = avatarId, rating = null, altText = newAltText)
         } returns GravatarResult.Failure(mockk())
 
-        viewModel.onEvent(AltTextEvent.AvatarAltTextChange(newAltText))
-
         advanceUntilIdle()
+        viewModel.onEvent(AltTextEvent.AvatarAltTextChange(newAltText))
 
         viewModel.uiState.test {
             expectMostRecentItem()
@@ -150,15 +172,15 @@ class AltTextViewModelTest {
 
             var altTextUiState = AltTextUiState(
                 avatarUrl = avatarUrl,
-                isSaveButtonEnabled = false,
                 isUpdating = true,
                 altText = newAltText,
+                altTextMaxLength = 125,
+                initialAltText = altText,
             )
 
             assertEquals(altTextUiState, awaitItem())
 
             altTextUiState = altTextUiState.copy(
-                isSaveButtonEnabled = true,
                 isUpdating = false,
             )
 

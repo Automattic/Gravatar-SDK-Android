@@ -16,7 +16,7 @@ class AltTextPageTest : RoborazziTest() {
                     avatarUrl = URI("https://gravatar.com/avatar/test"),
                     isUpdating = false,
                     altText = "alt",
-                    isSaveButtonEnabled = false,
+                    altTextMaxLength = 125,
                 ),
                 onEvent = { },
             )
@@ -32,7 +32,7 @@ class AltTextPageTest : RoborazziTest() {
                     avatarUrl = URI("https://gravatar.com/avatar/test"),
                     isUpdating = false,
                     altText = "alt",
-                    isSaveButtonEnabled = false,
+                    altTextMaxLength = 125,
                 ),
                 onEvent = { },
             )
@@ -47,7 +47,7 @@ class AltTextPageTest : RoborazziTest() {
                     avatarUrl = URI("https://gravatar.com/avatar/test"),
                     isUpdating = false,
                     altText = "New alt text",
-                    isSaveButtonEnabled = true,
+                    altTextMaxLength = 125,
                 ),
                 onEvent = { },
             )
@@ -63,7 +63,7 @@ class AltTextPageTest : RoborazziTest() {
                     avatarUrl = URI("https://gravatar.com/avatar/test"),
                     isUpdating = false,
                     altText = "New alt text",
-                    isSaveButtonEnabled = true,
+                    altTextMaxLength = 125,
                 ),
                 onEvent = { },
             )

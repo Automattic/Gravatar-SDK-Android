@@ -21,15 +21,20 @@ internal class AltTextViewModel(
     private val avatarId: String,
     private val avatarRepository: AvatarRepository,
 ) : ViewModel() {
+    companion object {
+        private const val MAX_CHAR_COUNT = 125
+    }
+
     private val _uiState =
         MutableStateFlow(
-            AltTextUiState(isSaveButtonEnabled = false, isUpdating = false),
+            AltTextUiState(
+                isUpdating = false,
+                altTextMaxLength = MAX_CHAR_COUNT,
+            ),
         )
     val uiState: StateFlow<AltTextUiState> = _uiState.asStateFlow()
     private val _actions = Channel<AltTextAction>(Channel.BUFFERED)
     val actions = _actions.receiveAsFlow()
-
-    private lateinit var originalAltText: String
 
     init {
         getAvatarData()
@@ -39,12 +44,11 @@ internal class AltTextViewModel(
         viewModelScope.launch {
             val avatar = avatarRepository.getAvatar(Email(email), avatarId)
             if (avatar != null) {
-                originalAltText = avatar.altText
-
                 _uiState.update {
                     it.copy(
                         avatarUrl = avatar.imageUrl,
                         altText = avatar.altText,
+                        initialAltText = avatar.altText
                     )
                 }
             } else {
@@ -64,7 +68,6 @@ internal class AltTextViewModel(
         viewModelScope.launch {
             _uiState.update { currentState ->
                 currentState.copy(
-                    isSaveButtonEnabled = false,
                     isUpdating = true,
                 )
             }
@@ -72,7 +75,6 @@ internal class AltTextViewModel(
                 is GravatarResult.Success -> {
                     _uiState.update { currentState ->
                         currentState.copy(
-                            isSaveButtonEnabled = true,
                             isUpdating = false,
                         )
                     }
@@ -82,7 +84,6 @@ internal class AltTextViewModel(
                 is GravatarResult.Failure -> {
                     _uiState.update { currentState ->
                         currentState.copy(
-                            isSaveButtonEnabled = true,
                             isUpdating = false,
                         )
                     }
@@ -93,13 +94,10 @@ internal class AltTextViewModel(
     }
 
     private fun updateUiStateWithNewAltText(newAltText: String) {
-        viewModelScope.launch {
-            _uiState.update { currentState ->
-                currentState.copy(
-                    altText = newAltText,
-                    isSaveButtonEnabled = newAltText != originalAltText,
-                )
-            }
+        _uiState.update { currentState ->
+            currentState.copy(
+                altText = newAltText.take(MAX_CHAR_COUNT),
+            )
         }
     }
 }

@@ -1,13 +1,17 @@
 package com.gravatar.quickeditor.ui.alttext
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
@@ -18,6 +22,7 @@ import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -104,7 +109,11 @@ internal fun AltTextPage(
     }
 
     GravatarTheme {
-        Box(modifier = modifier.padding(16.dp).wrapContentSize()) {
+        Box(
+            modifier = modifier
+                .padding(16.dp)
+                .wrapContentSize(),
+        ) {
             state.let { altTextState ->
                 AltTextPage(
                     altTextState = altTextState,
@@ -131,6 +140,7 @@ internal fun AltTextPage(
     Surface(modifier = modifier.fillMaxWidth()) {
         Box(
             modifier = Modifier
+                .animateContentSize()
                 .border(
                     width = 1.dp,
                     color = MaterialTheme.colorScheme.surfaceContainerHighest,
@@ -162,7 +172,8 @@ internal fun AltTextPage(
                     verticalAlignment = Alignment.Top,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 16.dp),
+                        .padding(top = 16.dp)
+                        .height(IntrinsicSize.Min),
                 ) {
                     val cornerRadius = 8.dp
                     val avatarSize = 96.dp
@@ -189,7 +200,26 @@ internal fun AltTextPage(
                         textStyle = LocalTextStyle.current.copy(color = MaterialTheme.colorScheme.onSurface),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(start = 16.dp, top = 8.dp, bottom = 8.dp),
+                            .fillMaxHeight(),
+                        decorationBox = { innerTextField ->
+                            Column(
+                                modifier = Modifier
+                                    .padding(start = 16.dp, top = 8.dp, bottom = 8.dp),
+                            ) {
+                                Box(
+                                    modifier = Modifier.weight(1f),
+                                ) {
+                                    innerTextField()
+                                }
+                                Text(
+                                    text = (altTextState.altTextMaxLength - altTextState.altText.count()).toString(),
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f),
+                                    modifier = Modifier
+                                        .align(Alignment.End),
+                                )
+                            }
+                        },
                     )
                 }
                 QEButton(
@@ -217,7 +247,7 @@ private fun AltTextPagePreview() {
                 avatarUrl = URI.create("https://gravatar.com/avatar/test"),
                 isUpdating = false,
                 altText = "alt",
-                isSaveButtonEnabled = true,
+                altTextMaxLength = 125,
             ),
             onEvent = { },
         )
@@ -233,7 +263,7 @@ private fun AltTextPageEmptyAltTextPreview() {
                 avatarUrl = URI.create("https://gravatar.com/avatar/test"),
                 isUpdating = false,
                 altText = "",
-                isSaveButtonEnabled = true,
+                altTextMaxLength = 125,
             ),
             onEvent = { },
         )
