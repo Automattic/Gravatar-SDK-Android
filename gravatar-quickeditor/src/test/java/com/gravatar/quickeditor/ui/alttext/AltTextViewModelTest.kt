@@ -90,7 +90,60 @@ class AltTextViewModelTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `given an alt text change with too many char when onEvent is called then alt text `() = runTest {
+    fun `given an alt text change with too many char when onEvent is called then alt text unchanged`() = runTest {
+        initWithAvatarStorage(createAvatar(id = avatarId, url = avatarUrl, altText = altText))
+
+        advanceUntilIdle()
+
+        val altTextReachingTheLimit = "a".repeat(126)
+        viewModel.onEvent(AltTextEvent.AvatarAltTextChange(altTextReachingTheLimit))
+        val newAltText = "b".repeat(126)
+        viewModel.onEvent(AltTextEvent.AvatarAltTextChange(newAltText))
+
+        viewModel.uiState.test {
+            val altTextUiState = AltTextUiState(
+                avatarUrl = avatarUrl,
+                isUpdating = false,
+                altText = altTextReachingTheLimit.take(125),
+                initialAltText = altText,
+                altTextMaxLength = 125,
+            )
+
+            assertEquals(altTextUiState, awaitItem())
+        }
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `given new alt text that's below the limit when onEvent is called then alt text modified`() = runTest {
+        initWithAvatarStorage(createAvatar(id = avatarId, url = avatarUrl, altText = altText))
+
+        advanceUntilIdle()
+
+        val altTextReachingTheLimit = "a".repeat(126)
+        viewModel.onEvent(AltTextEvent.AvatarAltTextChange(altTextReachingTheLimit))
+
+        viewModel.uiState.test {
+            expectMostRecentItem()
+
+            val newAltText = "a".repeat(124)
+            viewModel.onEvent(AltTextEvent.AvatarAltTextChange(newAltText))
+
+            val altTextUiState = AltTextUiState(
+                avatarUrl = avatarUrl,
+                isUpdating = false,
+                altText = newAltText,
+                initialAltText = altText,
+                altTextMaxLength = 125,
+            )
+
+            assertEquals(altTextUiState, awaitItem())
+        }
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `given an alt text limit reached when onEvent is called then alt text stays unchanged`() = runTest {
         initWithAvatarStorage(createAvatar(id = avatarId, url = avatarUrl, altText = altText))
 
         advanceUntilIdle()

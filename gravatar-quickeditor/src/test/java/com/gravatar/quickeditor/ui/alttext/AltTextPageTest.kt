@@ -75,7 +75,7 @@ class AltTextPageTest : RoborazziTest() {
         GravatarTheme {
             AltTextPage(
                 altTextState = AltTextUiState(
-                    avatarUrl = "https://gravatar.com/avatar/test",
+                    avatarUrl = URI("https://gravatar.com/avatar/test"),
                     isUpdating = false,
                     altText = "New alt text",
                     initialAltText = "Alt",
@@ -92,7 +92,7 @@ class AltTextPageTest : RoborazziTest() {
         GravatarTheme {
             AltTextPage(
                 altTextState = AltTextUiState(
-                    avatarUrl = "https://gravatar.com/avatar/test",
+                    avatarUrl = URI("https://gravatar.com/avatar/test"),
                     isUpdating = false,
                     altText = "New alt text",
                     initialAltText = "Alt",

@@ -48,7 +48,7 @@ internal class AltTextViewModel(
                     it.copy(
                         avatarUrl = avatar.imageUrl,
                         altText = avatar.altText,
-                        initialAltText = avatar.altText
+                        initialAltText = avatar.altText,
                     )
                 }
             } else {
@@ -94,10 +94,12 @@ internal class AltTextViewModel(
     }
 
     private fun updateUiStateWithNewAltText(newAltText: String) {
-        _uiState.update { currentState ->
-            currentState.copy(
-                altText = newAltText.take(MAX_CHAR_COUNT),
-            )
+        if (_uiState.value.altText.length < MAX_CHAR_COUNT || newAltText.length <= MAX_CHAR_COUNT) {
+            _uiState.update { currentState ->
+                currentState.copy(
+                    altText = newAltText.take(MAX_CHAR_COUNT),
+                )
+            }
         }
     }
 }
