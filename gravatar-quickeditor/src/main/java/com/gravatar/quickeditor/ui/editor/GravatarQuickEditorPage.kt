@@ -54,9 +54,9 @@ internal fun GravatarQuickEditorPage(
         composable(route = QuickEditorPage.SPLASH.name) {
             SplashPage(email = gravatarQuickEditorParams.email) { isAuthorized ->
                 if (isAuthorized) {
-                    navController.navigateAndClean(QuickEditorPage.EDITOR.name)
+                    navController.navigateAndPopupTo(QuickEditorPage.EDITOR.name, QuickEditorPage.SPLASH.name)
                 } else {
-                    navController.navigateAndClean(QuickEditorPage.OAUTH.name)
+                    navController.navigateAndPopupTo(QuickEditorPage.OAUTH.name, QuickEditorPage.SPLASH.name)
                 }
             }
         }
@@ -66,7 +66,7 @@ internal fun GravatarQuickEditorPage(
                 email = gravatarQuickEditorParams.email,
                 onAuthError = { onDismiss(GravatarQuickEditorDismissReason.OauthFailed) },
                 onAuthSuccess = {
-                    navController.navigateAndClean(QuickEditorPage.EDITOR.name)
+                    navController.navigateAndPopupTo(QuickEditorPage.EDITOR.name, QuickEditorPage.OAUTH.name)
                 },
             )
         }
@@ -76,7 +76,7 @@ internal fun GravatarQuickEditorPage(
             navController = navController,
             onAvatarSelected = onAvatarSelected,
             onSessionExpired = {
-                navController.navigateAndClean(QuickEditorPage.OAUTH.name)
+                navController.navigateAndPopupTo(QuickEditorPage.OAUTH.name, QuickEditorPage.EDITOR.name)
             },
         )
     }
@@ -121,7 +121,7 @@ internal fun GravatarQuickEditorPage(
                 email = gravatarQuickEditorParams.email,
                 token = authToken,
             ) {
-                navController.navigateAndClean(QuickEditorPage.EDITOR.name)
+                navController.navigateAndPopupTo(QuickEditorPage.EDITOR.name, QuickEditorPage.SPLASH.name)
             }
         }
         addAvatarPickerGraph(
@@ -185,9 +185,8 @@ private fun NavGraphBuilder.addAvatarPickerGraph(
     }
 }
 
-private fun NavHostController.navigateAndClean(route: String) {
+private fun NavHostController.navigateAndPopupTo(route: String, popUpTo: String) {
     navigate(route = route) {
-        popUpTo(graph.startDestinationId) { inclusive = true }
+        popUpTo(popUpTo) { inclusive = true }
     }
-    graph.setStartDestination(route)
 }
