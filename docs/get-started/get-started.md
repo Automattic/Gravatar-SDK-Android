@@ -500,3 +500,14 @@ public fun Avatar(
 ```
 
 By setting `forceRefresh` to true, you ensure that the avatar is always fetched with the latest changes.
+
+### Android Permission
+
+The Quick Editor module requires certain permissions to function correctly. Below is a table listing the permissions and the reasons why they are needed:
+
+| Permission                  | Reason                                                                                           |
+|-----------------------------|--------------------------------------------------------------------------------------------------|
+| `INTERNET`                  | Required to make network requests to the Gravatar API.                                           |
+| `WRITE_EXTERNAL_STORAGE`    | Allows the app to save images to the device storage on Android 9 and lower via Download Manager. |
+
+If you use the same permission with different configurations, you might end up with conflicts.
