@@ -15,8 +15,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
@@ -141,6 +143,7 @@ internal fun AltTextPage(
         Box(
             modifier = Modifier
                 .animateContentSize()
+                .verticalScroll(rememberScrollState())
                 .border(
                     width = 1.dp,
                     color = MaterialTheme.colorScheme.surfaceContainerHighest,
@@ -197,6 +200,7 @@ internal fun AltTextPage(
                         onValueChange = { newAltText ->
                             onEvent(AltTextEvent.AvatarAltTextChange(newAltText))
                         },
+                        maxLines = 5,
                         textStyle = LocalTextStyle.current.copy(color = MaterialTheme.colorScheme.onSurface),
                         modifier = Modifier
                             .fillMaxSize(),
