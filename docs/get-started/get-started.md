@@ -74,6 +74,8 @@ Below you can find description of how to use each module.
 
 ## Core Module
 
+The :gravatar module provides convenience classes to interact with Gravatar’s public [REST API](https://docs.gravatar.com/api/), enabling easy access to user profiles and avatars.
+
 For details on how to use the `:gravatar` module, see [Core Module Usage](usage-core.md).
 
 ## UI Module
