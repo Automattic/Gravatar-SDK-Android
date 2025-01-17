@@ -80,6 +80,8 @@ For details on how to use the `:gravatar` module, see [Core Module Usage](usage-
 
 ## UI Module
 
+The :gravatar-ui module provides customizable Jetpack Compose components, such as profile cards of various sizes and layouts, for displaying Gravatar user information in your app.
+
 For details on how to use the `:gravatar-ui` module, see [UI Module Usage](usage-ui.md).
 
 ## Quick Editor
