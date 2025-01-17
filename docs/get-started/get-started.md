@@ -84,4 +84,8 @@ For details on how to use the `:gravatar-ui` module, see [UI Module Usage](usage
 
 ## Quick Editor
 
+The :gravatar-quickeditor module simplifies avatar management by offering a fully featured, customizable UI for editing avatars directly within your app. 
+
+It supports OAuth authentication with built-in flow handling or token-based integration, provides flexible options for Jetpack Compose and traditional Views, and includes features like secure token storage, cache-busting for immediate updates, and easy theming. Designed to improve user experience and make development straightforward, it requires minimal configuration while adhering to modern Android practices.
+
 For details on how to use the `:gravatar-quickeditor` module, see [Quick Editor Module Usage](usage-quickeditor.md).
