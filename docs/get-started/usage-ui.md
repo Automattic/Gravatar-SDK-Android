@@ -1,4 +1,4 @@
-# UI Modula usage
+# UI Module usage
 
 The `:gravatar-ui` module provides various different types of Profile cards to suit your needs. They vary in size and the number of information presented to the user.
 
