@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
-<!--    <uses-permission android:name="android.permission.CAMERA" />-->
+    <!--    <uses-permission android:name="android.permission.CAMERA" />-->
 
     <application
         android:allowBackup="true"
@@ -19,14 +19,53 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustResize"
-            android:theme="@style/Theme.Gravatar">
+            android:theme="@style/Theme.Gravatar"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.activity.QuickEditorTestActivity"
+            android:exported="true"
+            android:label="Old good Activity"
+            android:launchMode="singleTask"
+            android:theme="@style/Theme.Gravatar">
+            <!--            <intent-filter>-->
+            <!--                <action android:name="android.intent.action.VIEW" />-->
+
+            <!--                <category android:name="android.intent.category.DEFAULT" />-->
+            <!--                <category android:name="android.intent.category.BROWSABLE" />-->
+
+            <!--                <data-->
+            <!--                    android:host="${DEMO_OAUTH_REDIRECT_URI_HOST}"-->
+            <!--                    android:scheme="${DEMO_OAUTH_REDIRECT_URI_SCHEME}" />-->
+            <!--            </intent-filter>-->
+        </activity>
+
+        <!-- Gravatar QE Activity -->
+        <!--        <activity-->
+        <!--            android:name="com.gravatar.quickeditor.ui.GravatarQuickEditorActivity"-->
+        <!--            tools:node="merge">-->
+
+        <!--            <intent-filter>-->
+        <!--                <action android:name="android.intent.action.VIEW" />-->
+
+        <!--                <category android:name="android.intent.category.DEFAULT" />-->
+        <!--                <category android:name="android.intent.category.BROWSABLE" />-->
+
+        <!--                <data-->
+        <!--                    android:host="${DEMO_OAUTH_REDIRECT_URI_HOST}"-->
+        <!--                    android:scheme="${DEMO_OAUTH_REDIRECT_URI_SCHEME}" />-->
+        <!--            </intent-filter>-->
+        <!--        </activity>-->
+
+        <activity
+            android:name="com.gravatar.quickeditor.ui.oauth.GravatarOAuthActivity"
+            tools:node="merge">
+
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -38,40 +77,6 @@
                     android:scheme="${DEMO_OAUTH_REDIRECT_URI_SCHEME}" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.activity.QuickEditorTestActivity"
-            android:launchMode="singleTask"
-            android:label="Old good Activity"
-            android:theme="@style/Theme.Gravatar"
-            android:exported="true">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.VIEW" />-->
-
-<!--                <category android:name="android.intent.category.DEFAULT" />-->
-<!--                <category android:name="android.intent.category.BROWSABLE" />-->
-
-<!--                <data-->
-<!--                    android:host="${DEMO_OAUTH_REDIRECT_URI_HOST}"-->
-<!--                    android:scheme="${DEMO_OAUTH_REDIRECT_URI_SCHEME}" />-->
-<!--            </intent-filter>-->
-        </activity>
-
-        <!-- Gravatar QE Activity -->
-<!--        <activity-->
-<!--            android:name="com.gravatar.quickeditor.ui.GravatarQuickEditorActivity"-->
-<!--            tools:node="merge">-->
-
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.VIEW" />-->
-
-<!--                <category android:name="android.intent.category.DEFAULT" />-->
-<!--                <category android:name="android.intent.category.BROWSABLE" />-->
-
-<!--                <data-->
-<!--                    android:host="${DEMO_OAUTH_REDIRECT_URI_HOST}"-->
-<!--                    android:scheme="${DEMO_OAUTH_REDIRECT_URI_SCHEME}" />-->
-<!--            </intent-filter>-->
-<!--        </activity>-->
 
 
         <!-- Lib activities -->
@@ -82,8 +87,8 @@
         <provider
             android:name=".DemoFileProvider"
             android:authorities="${applicationId}.fileprovider"
-            android:grantUriPermissions="true"
-            android:exported="false">
+            android:exported="false"
+            android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />
