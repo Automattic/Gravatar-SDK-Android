@@ -1,5 +1,6 @@
 package com.gravatar.quickeditor.ui.oauth
 
+import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import com.gravatar.quickeditor.data.storage.ProfileStorage
 import com.gravatar.quickeditor.data.storage.TokenStorage
@@ -28,6 +29,7 @@ class OAuthViewModelTest {
     private val tokenStorage = mockk<TokenStorage>()
     private val profileService = mockk<ProfileService>()
     private val profileStorage = mockk<ProfileStorage>()
+    private val savedStateHandle = SavedStateHandle()
 
     private lateinit var viewModel: OAuthViewModel
 
@@ -40,7 +42,7 @@ class OAuthViewModelTest {
         coEvery { profileService.retrieveCatching(email) } returns GravatarResult.Success(mockk())
         coEvery { profileStorage.getLoginIntroShown(any()) } returns false
         coEvery { profileStorage.setLoginIntroShown(any()) } returns Unit
-        viewModel = OAuthViewModel(email, tokenStorage, profileStorage, profileService)
+        viewModel = createViewModel()
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -191,6 +193,22 @@ class OAuthViewModelTest {
         viewModel.actions.test {
             assertEquals(OAuthAction.StartOAuth, awaitItem())
         }
+        assertEquals(true, savedStateHandle.get<Boolean>("oauth_started"))
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `when init and oAuthStarted before then StartOAuth action is not sent`() = runTest {
+        coEvery { profileStorage.getLoginIntroShown(email.hash().toString()) } returns true
+        savedStateHandle["oauth_started"] = true
+
+        viewModel = createViewModel()
+
+        advanceUntilIdle()
+
+        viewModel.actions.test {
+            expectNoEvents()
+        }
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -221,6 +239,6 @@ class OAuthViewModelTest {
     }
 
     private fun createViewModel(): OAuthViewModel {
-        return OAuthViewModel(email, tokenStorage, profileStorage, profileService)
+        return OAuthViewModel(savedStateHandle, email, tokenStorage, profileStorage, profileService)
     }
 }

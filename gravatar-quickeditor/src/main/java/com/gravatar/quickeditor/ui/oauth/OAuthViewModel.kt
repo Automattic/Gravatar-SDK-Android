@@ -1,7 +1,9 @@
 package com.gravatar.quickeditor.ui.oauth
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.gravatar.quickeditor.QuickEditorContainer
@@ -21,6 +23,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 internal class OAuthViewModel(
+    private val savedStateHandle: SavedStateHandle,
     private val email: Email,
     private val tokenStorage: TokenStorage,
     private val profileStorage: ProfileStorage,
@@ -36,8 +39,10 @@ internal class OAuthViewModel(
         fetchProfile()
         viewModelScope.launch {
             val loginIntroShown = profileStorage.getLoginIntroShown(email.hash().toString())
-            if (loginIntroShown) {
+            val oauthStarted = savedStateHandle.get<Boolean>(OAUTH_STARTED_KEY) ?: false
+            if (loginIntroShown && !oauthStarted) {
                 _actions.send(OAuthAction.StartOAuth)
+                savedStateHandle[OAUTH_STARTED_KEY] = true
             }
         }
     }
@@ -105,6 +110,10 @@ internal class OAuthViewModel(
             }
         }
     }
+
+    companion object {
+        private const val OAUTH_STARTED_KEY = "oauth_started"
+    }
 }
 
 internal class OAuthViewModelFactory(
@@ -113,6 +122,7 @@ internal class OAuthViewModelFactory(
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
         return OAuthViewModel(
+            savedStateHandle = extras.createSavedStateHandle(),
             email = email,
             tokenStorage = QuickEditorContainer.getInstance().tokenStorage,
             profileStorage = QuickEditorContainer.getInstance().profileStorage,
