@@ -15,6 +15,12 @@
             android:launchMode="singleTask"
             android:theme="@style/GravatarQETheme.Transparent" />
 
+        <activity
+            android:name=".ui.oauth.GravatarOAuthActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:theme="@style/GravatarQETheme.Transparent" />
+
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"
