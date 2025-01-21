@@ -451,6 +451,11 @@ public final class com/gravatar/quickeditor/ui/oauth/ComposableSingletons$OAuthP
 	public final fun getLambda-2$gravatar_quickeditor_release ()Lkotlin/jvm/functions/Function2;
 }
 
+public final class com/gravatar/quickeditor/ui/oauth/GravatarOAuthActivity : androidx/appcompat/app/AppCompatActivity {
+	public static final field $stable I
+	public fun <init> ()V
+}
+
 public final class com/gravatar/quickeditor/ui/oauth/OAuthParams : android/os/Parcelable {
 	public static final field $stable I
 	public static final field CREATOR Landroid/os/Parcelable$Creator;

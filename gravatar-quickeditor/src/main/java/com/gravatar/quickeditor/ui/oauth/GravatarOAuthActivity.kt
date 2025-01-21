@@ -110,10 +110,10 @@ public class GravatarOAuthActivity : AppCompatActivity() {
         private const val OAUTH_STARTED_KEY = "oauth_started"
         internal const val TOKEN_KEY = "auth_token"
 
-        const val ACTIVITY_RESULT: String = "oAuthActivityResult"
-        const val RESULT_CANCELED: Int = 1000
-        const val RESULT_TOKEN_RETRIEVED: Int = 1001
-        const val RESULT_TOKEN_ERROR: Int = 1002
+        internal const val ACTIVITY_RESULT: String = "oAuthActivityResult"
+        internal const val RESULT_CANCELED: Int = 1000
+        internal const val RESULT_TOKEN_RETRIEVED: Int = 1001
+        internal const val RESULT_TOKEN_ERROR: Int = 1002
 
         internal fun createIntent(context: Context, oAuthParams: OAuthParams, email: String): Intent {
             return Intent(context, GravatarOAuthActivity::class.java).apply {
