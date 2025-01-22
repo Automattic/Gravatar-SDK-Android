@@ -2,6 +2,8 @@ package com.gravatar.quickeditor.ui.oauth
 
 import android.content.Context
 import android.content.ContextWrapper
+import android.content.Intent
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.border
@@ -16,6 +18,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -28,6 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.util.Consumer
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
@@ -42,6 +46,7 @@ import com.gravatar.types.Email
 import com.gravatar.ui.GravatarTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.net.URLDecoder
 
 @Composable
 internal fun OAuthPage(
@@ -53,6 +58,8 @@ internal fun OAuthPage(
     modifier: Modifier = Modifier,
     viewModel: OAuthViewModel = viewModel(factory = OAuthViewModelFactory(email)),
 ) {
+    val context = LocalContext.current
+    val activity = context.findComponentActivity()
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     val uiState by viewModel.uiState.collectAsState()
 
@@ -61,6 +68,38 @@ internal fun OAuthPage(
             GravatarOAuthResult.DISMISSED -> Unit
             is GravatarOAuthResult.TOKEN -> viewModel.tokenReceived(email, result.token)
             GravatarOAuthResult.ERROR -> onAuthError()
+        }
+    }
+
+    // Kept for backwards-compatibility.
+    // This will be removed in the future and the GravatarOAuthActivity should be used instead.
+    if (activity != null) {
+        DisposableEffect(Unit) {
+            val listener = Consumer<Intent> { newIntent ->
+                Log.w(
+                    "QuickEditor",
+                    "Setup GravatarOAuthActivity in your AndroidManifest.xml to handle the OAuth flow.",
+                )
+                val token = newIntent.data
+                    ?.encodedFragment
+                    ?.split("&")
+                    ?.associate {
+                        val split = it.split("=")
+                        split.first() to split.last()
+                    }
+                    ?.get("access_token")
+                    ?.let { URLDecoder.decode(it, "UTF-8") }
+
+                if (token != null) {
+                    viewModel.tokenReceived(email, token)
+                } else {
+                    onAuthError()
+                }
+            }
+            activity.addOnNewIntentListener(listener)
+            onDispose {
+                activity.removeOnNewIntentListener(listener)
+            }
         }
     }
 
