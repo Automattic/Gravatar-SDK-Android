@@ -78,7 +78,7 @@ internal fun OAuthPage(
             val listener = Consumer<Intent> { newIntent ->
                 Log.w(
                     "QuickEditor",
-                    "Setup GravatarOAuthActivity in your AndroidManifest.xml to handle the OAuth flow.",
+                    "GRAVATAR SDK WARNING: You're using a deprecated version of the Gravatar QuickEditor OAuth flow. Set up GravatarOAuthActivity in your AndroidManifest.xml to handle the OAuth flow and to remove this warning message. ",
                 )
                 val token = newIntent.data
                     ?.encodedFragment
