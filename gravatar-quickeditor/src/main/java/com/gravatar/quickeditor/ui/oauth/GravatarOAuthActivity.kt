@@ -23,18 +23,29 @@ import java.net.URLDecoder
  */
 public class GravatarOAuthActivity : AppCompatActivity() {
     private var oAuthStarted = false
-    private lateinit var clientId: String
-    private lateinit var redirectUri: String
-    private lateinit var email: String
+    private var clientId: String? = null
+    private var redirectUri: String? = null
+    private var email: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        clientId = intent.getStringExtra(CLIENT_ID_KEY)!!
-        redirectUri = intent.getStringExtra(REDIRECT_URI_KEY)!!
-        email = intent.getStringExtra(EMAIL_KEY)!!
-
         oAuthStarted = savedInstanceState?.getBoolean(OAUTH_STARTED_KEY) ?: false
+
+        clientId = intent.getStringExtra(CLIENT_ID_KEY)
+        redirectUri = intent.getStringExtra(REDIRECT_URI_KEY)
+        email = intent.getStringExtra(EMAIL_KEY)
+
+        if (clientId == null || redirectUri == null || email == null) {
+            setResult(
+                RESULT_OK,
+                Intent().apply {
+                    putExtra(ACTIVITY_RESULT, RESULT_CANCELED)
+                },
+            )
+            finish()
+            return
+        }
 
         addOnNewIntentListener { newIntent ->
             val token = newIntent.data
@@ -78,9 +89,9 @@ public class GravatarOAuthActivity : AppCompatActivity() {
         if (!oAuthStarted) {
             launchCustomTab(
                 this,
-                clientId = clientId,
-                redirectUri = redirectUri,
-                email = Email(email),
+                clientId = clientId!!,
+                redirectUri = redirectUri!!,
+                email = Email(email!!),
             )
             oAuthStarted = true
         } else {
