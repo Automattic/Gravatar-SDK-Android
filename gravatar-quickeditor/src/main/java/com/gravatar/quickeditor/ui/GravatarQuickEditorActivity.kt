@@ -23,6 +23,10 @@ import kotlinx.parcelize.Parcelize
  *
  * @see GravatarEditorActivityArguments
  */
+@Deprecated(
+    message = "This class is deprecated and will be removed in a future release.",
+    replaceWith = ReplaceWith("GravatarQuickEditor.show()"),
+)
 public class GravatarQuickEditorActivity : AppCompatActivity() {
     private var avatarHasChanged: Boolean = false
 
@@ -109,6 +113,10 @@ public class GravatarQuickEditorActivity : AppCompatActivity() {
  * @see GravatarQuickEditorResult
  * @see GravatarEditorActivityArguments
  */
+@Deprecated(
+    message = "This class is deprecated and will be removed in a future release.",
+    replaceWith = ReplaceWith("GravatarQuickEditor.show()"),
+)
 public class GetQuickEditorResult :
     ActivityResultContract<GravatarEditorActivityArguments, GravatarQuickEditorResult?>() {
     override fun createIntent(context: Context, input: GravatarEditorActivityArguments): Intent {
@@ -129,6 +137,10 @@ public class GetQuickEditorResult :
 /**
  * Result enum for the [GravatarQuickEditorActivity].
  */
+@Deprecated(
+    message = "This class is deprecated and will be removed in a future release.",
+    replaceWith = ReplaceWith("GravatarQuickEditor.show()"),
+)
 public enum class GravatarQuickEditorResult {
     AVATAR_SELECTED,
     DISMISSED,

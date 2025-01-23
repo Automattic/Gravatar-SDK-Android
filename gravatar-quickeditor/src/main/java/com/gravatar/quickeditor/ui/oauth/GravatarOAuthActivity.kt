@@ -9,7 +9,6 @@ import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
-import com.gravatar.quickeditor.ui.GravatarQuickEditorActivity
 import com.gravatar.types.Email
 import java.net.URLDecoder
 
@@ -181,7 +180,7 @@ internal class GravatarOAuthActivityParams(
 )
 
 /**
- * Result enum for the [GravatarQuickEditorActivity].
+ * Result enum for the [GravatarOAuthActivity].
  */
 internal sealed class GravatarOAuthResult {
     data class TOKEN(val token: String) : GravatarOAuthResult()
