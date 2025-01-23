@@ -6,8 +6,6 @@ To do that the QuickEditor needs an authorization token to perform requests on b
 
 ### 1. Let the Quick Editor handle the OAuth flow
 
-#### 1.1 Using you own activity with `android:launchMode="singleTask"` (Recommended)
-
 Quick Editor can handle the heavy lifting of running the full OAuth flow, so you don't have to do that. We will still need a few things from you.
 First, you have to go to [OAuth docs](https://docs.gravatar.com/oauth/) and create your Application. Define the `Redirect URLs`.
 
@@ -15,14 +13,13 @@ First, you have to go to [OAuth docs](https://docs.gravatar.com/oauth/) and crea
 
 For the sake of this example let's assume the redirect URL is `https://yourhost.com/redirect-url`.
 
-In your `AndroidManifest.xml` you need to add an `<intent-filter>` and the `android:launchMode="singleTask"` to the activity that will
-launch the Quick Editor (or the last/main activity depending on your app architecture). This is important because the Quick Editor will be waiting for the `onNewIntent()` callback to handle OAuth redirection.
+In your `AndroidManifest.xml` you need to setup `GravatarOAuthActivity` by adding the `<activity>` tag. 
+This Activity is launched by the Quick Editor when starting the OAuth flow and it handles the redirect URL to retrieve the token.
 
 ```xml
 <activity
-    android:name=".YourActivity"
-    android:launchMode="singleTask"
-    ...>
+    android:name="com.gravatar.quickeditor.ui.oauth.GravatarOAuthActivity"
+    tools:node="merge">
     <intent-filter android:autoVerify="true">
         <action android:name="android.intent.action.VIEW" />
 
@@ -66,7 +63,7 @@ if (showBottomSheet) {
 }
 ```
 
-With the provided `clientId` and the `redirectUrl` Quick Editor can launch and handle the full OAuth flow. Once obtained the token will be stored in an encrypted Data Store.
+With the provided `clientId` and the `redirectUrl` Quick Editor will launch and handle the full OAuth flow. Once obtained, the token will be stored in an encrypted Data Store.
 This token will be later used in subsequent Quick Editor launches to make the user experience more seamless by not having to go through the OAuth flow each time.
 
 When the user logs out form the app, make sure to run:
@@ -74,61 +71,6 @@ When the user logs out form the app, make sure to run:
 ```kotlin
 GravatarQuickEditor.logout(Email("{USER_EMAIL}"))
 ```
-
-#### 1.2 Using the provided activity
-
-If using an activity with `android:launchMode="singleTask"` is not an option, you can use the provided activity. With this option, you don't need to modify how your activities are set up.
-
-You need to add the provided activity to your `AndroidManifest.xml`:
-
-```xml
-<activity
-    android:name="com.gravatar.quickeditor.ui.GravatarQuickEditorActivity"
-    tools:node="merge">
-
-    <intent-filter>
-        <action android:name="android.intent.action.VIEW" />
-
-        <category android:name="android.intent.category.DEFAULT" />
-        <category android:name="android.intent.category.BROWSABLE" />
-
-        <data
-            android:scheme="https"
-            android:host="yourhost.com"
-            android:pathPrefix="/redirect-url"
-        />
-    </intent-filter>
-</activity>
-```
-
-_Note the important difference here: the `tools:node="merge"` attribute. This is necessary to merge the intent filter with the one defined in the library._
-
-The `GravatarQuickEditorActivity` defines an Activity Result contract that you can use to launch the Quick Editor and handle the result. Here's an example of how you can use it:
-
-```kotlin
-private val getQEResult = registerForActivityResult(GetQuickEditorResult()) { quickEditorResult ->
-        when (quickEditorResult) {
-            GravatarQuickEditorResult.AVATAR_SELECTED -> { ... }
-
-            GravatarQuickEditorResult.DISMISSED -> { ... }
-
-            else -> { ... }
-        }
-}
-
-getQEResult.launch(
-    GravatarQuickEditorActivity.GravatarEditorActivityArguments(
-        GravatarQuickEditorParams { ... },
-        AuthenticationMethod.OAuth(
-            OAuthParams { ... },
-        ),
-    ),
-)
-```
-
-It's important to note that using the `GravatarQuickEditorActivity` you'll only receive the result of the Quick Editor when it's dismissed not instantly as with using the `@Composable` component from your `singleTask` activity (see [Section 1.1](#11-using-you-own-activity-with-androidlaunchmodesingletask-recommended)).
-
-In the `demo-app` you can find a detailed implementation showing how to use the provided activity. See `QuickEditorTestActivity`.
 
 #### Exclude Data Store files from Android backup (optional, but recommended)
 
@@ -253,7 +195,7 @@ If you're using our UI Avatar component, you can simply enable the `forceRefresh
 ```kotlin
 @Composable
 public fun Avatar(
-    profile: Profile,
+    state: ComponentState<Profile>,
     size: Dp,
     modifier: Modifier = Modifier,
     avatarQueryOptions: AvatarQueryOptions? = null,
@@ -262,6 +204,17 @@ public fun Avatar(
 ```
 
 By setting `forceRefresh` to true, you ensure that the avatar is always fetched with the latest changes.
+
+If you want a more fine-grained control with the `Avatar` component you can use the version that takes the URL as a parameter and pass the URL with the cacheBuster value created with the `AvatarUrl` class.
+
+```kotlin
+@Composable
+public fun Avatar(
+    state: ComponentState<String>,
+    size: Dp,
+    modifier: Modifier = Modifier,
+)
+```
 
 ### Android Permissions
 
