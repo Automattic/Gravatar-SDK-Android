@@ -226,3 +226,12 @@ The Quick Editor module requires certain permissions to function correctly. Belo
 | `WRITE_EXTERNAL_STORAGE`    | Allows the app to save images to the device storage on Android 9 and lower via Download Manager. |
 
 If you use the same permission with different configurations, you might end up with conflicts.
+
+### Version migrations
+
+When updating the SDK, you might need to migrate your code to the new version. Here is the list of all the migrations:
+
+| Versions                | Intructions                                     |
+|-------------------------|-------------------------------------------------|
+| 2.x - 2.3.0             | [2.x-2.3.0](../version-migrations/2.x-2.3.0.md) |
+
