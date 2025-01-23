@@ -1,11 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: 2024-11-27 15:54:03+0000
+Translation-Revision-Date: 2025-01-23 09:54:02+0000
 Plural-Forms: nplurals=2; plural=n != 1;
 Generator: GlotPress/2.4.0-alpha
 Language: he_IL
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="gravatar_qe_avatar_alt_text_cancel_button">ביטול</string>
+    <string name="gravatar_qe_avatar_alt_text_save_button">לשמור</string>
+    <string name="gravatar_qe_avatar_alt_text_section_placeholder">לכתוב טקסט חלופי</string>
+    <string name="gravatar_qe_avatar_alt_text_section_what_is">מה זה טקסט חלופי?</string>
+    <string name="gravatar_qe_avatar_alt_text_section_title">טקסט חלופי</string>
+    <string name="gravatar_qe_avatar_picker_alt_text_update_error">אופס, משהו השתבש במהלך הניסיון לעדכן את הטקסט החלופי.</string>
+    <string name="gravatar_qe_oauth_page_message">לשפר את הפרופיל %s עם Gravatar.</string>
+    <string name="gravatar_qe_oauth_page_title">לערוך את הפרופיל שלך</string>
+    <string name="gravatar_qe_login_required_cta">המשך</string>
+    <string name="gravatar_qe_login_required_message_v2">לנהל את הפרופיל שלך לאינטרנט במקום אחד.</string>
+    <string name="gravatar_qe_avatar_picker_rating_update_error">אופס, משהו השתבש במהלך הניסיון לדרג את צלמית המשתמש שלך.</string>
+    <string name="gravatar_qe_avatar_picker_rating_update_success">הדירוג של צלמית המשתמש שונה בהצלחה.</string>
+    <string name="gravatar_qe_avatar_rating_selected_content_description">נבחר</string>
+    <string name="gravatar_qe_avatar_rating_x">X (קיצוני)</string>
+    <string name="gravatar_qe_avatar_rating_r">R (תוכן מוגבל)</string>
+    <string name="gravatar_qe_avatar_rating_pg">PG (השגחה של הורים)</string>
+    <string name="gravatar_qe_avatar_rating_g">G (כללי)</string>
+    <string name="gravatar_qe_alert_banner_close_content_description">לסגור התראה</string>
+    <string name="gravatar_qe_alert_banner_no_avatar_selected">לא נבחרה תמונה. יש לבחור לפחות תמונה אחת, אחרת נשתמש בברירת המחדל.</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_rating">לשנות דירוג</string>
     <string name="gravatar_qe_write_external_storage_permission_rationale_message">כדי לשמור את התמונה בתיקייה ציבורית, עליך להעניק הרשאה. אפשר להעניק את ההרשאות בהגדרות האפליקציה.</string>
     <string name="gravatar_qe_download_manager_disabled_title">האפשרות DownloadManager מושבתת. יש להפעיל אותה כדי להוריד צלמיות משתמשים.</string>
     <string name="gravatar_qe_download_manager_not_available">האפשרות DownloadManager לא זמינה</string>
@@ -35,8 +55,8 @@ Language: he_IL
     <string name="gravatar_qe_avatar_upload_error_action">לנסות שוב</string>
     <string name="gravatar_qe_avatar_picker_title">צלמיות משתמשים</string>
     <string name="gravatar_qe_bottom_sheet_done">בוצע</string>
-    <string name="gravatar_qe_selectable_avatar_more_options_alt_text_content_description" tools:ignore="UnusedResources">טקסט חלופי</string>
-    <string name="gravatar_qe_selectable_avatar_more_options_alt_text" tools:ignore="UnusedResources">טקסט חלופי</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_alt_text_content_description">טקסט חלופי</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_alt_text">טקסט חלופי</string>
     <string name="gravatar_qe_selectable_avatar_more_options_content_description">אפשרויות נוספות</string>
     <string name="gravatar_qe_selectable_avatar_content_description">תמונה של צלמית המשתמש</string>
     <string name="gravatar_qe_gravatar">Gravatar</string>

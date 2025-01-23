@@ -1,11 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: 2024-11-28 18:54:03+0000
+Translation-Revision-Date: 2025-01-22 16:54:03+0000
 Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;
 Generator: GlotPress/2.4.0-alpha
 Language: ar
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="gravatar_qe_avatar_alt_text_cancel_button">إلغاء</string>
+    <string name="gravatar_qe_avatar_alt_text_save_button">حفظ</string>
+    <string name="gravatar_qe_avatar_alt_text_section_placeholder">كتابة النص البديل</string>
+    <string name="gravatar_qe_avatar_alt_text_section_what_is">ما المقصود بالنص البديل؟</string>
+    <string name="gravatar_qe_avatar_alt_text_section_title">النص البديل</string>
+    <string name="gravatar_qe_avatar_picker_alt_text_update_error">عذرًا، ثمَّة شيء لم يعمل بشكل طبيعي في أثناء محاولة تحديث النص البديل.</string>
+    <string name="gravatar_qe_oauth_page_message">حسِّن ملفك الشخصي على %s باستخدام جرافتار.</string>
+    <string name="gravatar_qe_oauth_page_title">تحرير ملفك الشخصي</string>
+    <string name="gravatar_qe_login_required_cta">متابعة</string>
+    <string name="gravatar_qe_login_required_message_v2">أدر ملفك الشخصي للويب في مكان واحد.</string>
+    <string name="gravatar_qe_avatar_picker_rating_update_error">عذرًا، ثمَّة شيء لم يعمل بشكل طبيعي في أثناء محاولة تقييم صورتك الرمزية.</string>
+    <string name="gravatar_qe_avatar_picker_rating_update_success">تم تغيير تقييم الصورة الافتراضية بنجاح.</string>
+    <string name="gravatar_qe_avatar_rating_selected_content_description">محدد</string>
+    <string name="gravatar_qe_avatar_rating_x">X (حد أقصى)</string>
+    <string name="gravatar_qe_avatar_rating_r">R (مقيّد)</string>
+    <string name="gravatar_qe_avatar_rating_pg">PG (توجيه أبوي)</string>
+    <string name="gravatar_qe_avatar_rating_g">G (عام)</string>
+    <string name="gravatar_qe_alert_banner_close_content_description">إغلاق الإنذار</string>
+    <string name="gravatar_qe_alert_banner_no_avatar_selected">لم يتم تحديد صورة. يرجى تحديد صورة أو سيتم استخدام الصورة الافتراضية.</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_rating">تغيير التقييم</string>
     <string name="gravatar_qe_write_external_storage_permission_rationale_message">لحفظ الصورة في مجلد عام، يتعين عليك منح الصلاحية. يمكنك منحها ضمن إعدادات التطبيق.</string>
     <string name="gravatar_qe_download_manager_disabled_title">تم تعطيل DownloadManager. يرجى تمكينها لتنزيل الصور الرمزية.</string>
     <string name="gravatar_qe_download_manager_not_available">DownloadManager غير متوفر</string>
@@ -35,8 +55,8 @@ Language: ar
     <string name="gravatar_qe_avatar_upload_error_action">إعادة المحاولة</string>
     <string name="gravatar_qe_avatar_picker_title">الصور الرمزية</string>
     <string name="gravatar_qe_bottom_sheet_done">تم</string>
-    <string name="gravatar_qe_selectable_avatar_more_options_alt_text_content_description" tools:ignore="UnusedResources">النص البديل</string>
-    <string name="gravatar_qe_selectable_avatar_more_options_alt_text" tools:ignore="UnusedResources">النص البديل</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_alt_text_content_description">النص البديل</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_alt_text">النص البديل</string>
     <string name="gravatar_qe_selectable_avatar_more_options_content_description">مزيد من الخيارات</string>
     <string name="gravatar_qe_selectable_avatar_content_description">صورة رمزية</string>
     <string name="gravatar_qe_gravatar">جرافتار</string>

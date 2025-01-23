@@ -1,11 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: 2024-11-27 11:54:03+0000
+Translation-Revision-Date: 2025-01-22 09:54:02+0000
 Plural-Forms: nplurals=1; plural=0;
 Generator: GlotPress/2.4.0-alpha
 Language: zh_CN
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="gravatar_qe_avatar_alt_text_cancel_button">取消</string>
+    <string name="gravatar_qe_avatar_alt_text_save_button">保存</string>
+    <string name="gravatar_qe_avatar_alt_text_section_placeholder">编写替代文本</string>
+    <string name="gravatar_qe_avatar_alt_text_section_what_is">什么是替代文本？</string>
+    <string name="gravatar_qe_avatar_alt_text_section_title">替代文本</string>
+    <string name="gravatar_qe_avatar_picker_alt_text_update_error">糟糕，尝试更新替代文本时出现错误。</string>
+    <string name="gravatar_qe_oauth_page_message">使用 Gravatar 完善您的 %s 个人资料。</string>
+    <string name="gravatar_qe_oauth_page_title">编辑您的个人资料</string>
+    <string name="gravatar_qe_login_required_cta">继续</string>
+    <string name="gravatar_qe_login_required_message_v2">一站式管理您的网络个人资料。</string>
+    <string name="gravatar_qe_avatar_picker_rating_update_error">糟糕，尝试给您的头像评级时出现错误。</string>
+    <string name="gravatar_qe_avatar_picker_rating_update_success">头像评级更改成功。</string>
+    <string name="gravatar_qe_avatar_rating_selected_content_description">已选择</string>
+    <string name="gravatar_qe_avatar_rating_x">X（严加限制级）</string>
+    <string name="gravatar_qe_avatar_rating_r">R（限制级）</string>
+    <string name="gravatar_qe_avatar_rating_pg">PG（辅导级）</string>
+    <string name="gravatar_qe_avatar_rating_g">G（大众级）</string>
+    <string name="gravatar_qe_alert_banner_close_content_description">关闭警告</string>
+    <string name="gravatar_qe_alert_banner_no_avatar_selected">未选择图片。 请选择一张图片，否则系统将使用默认图片。</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_rating">更改评级</string>
     <string name="gravatar_qe_write_external_storage_permission_rationale_message">要将图片保存到公共文件夹中，您需要授予权限。 您可以在应用程序设置中授予该权限。</string>
     <string name="gravatar_qe_download_manager_disabled_title">DownloadManager 已禁用。 请将其启用以下载头像。</string>
     <string name="gravatar_qe_download_manager_not_available">DownloadManager 不可用</string>
@@ -35,8 +55,8 @@ Language: zh_CN
     <string name="gravatar_qe_avatar_upload_error_action">重试</string>
     <string name="gravatar_qe_avatar_picker_title">头像</string>
     <string name="gravatar_qe_bottom_sheet_done">完成</string>
-    <string name="gravatar_qe_selectable_avatar_more_options_alt_text_content_description" tools:ignore="UnusedResources">替代文本</string>
-    <string name="gravatar_qe_selectable_avatar_more_options_alt_text" tools:ignore="UnusedResources">替代文本</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_alt_text_content_description">替代文本</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_alt_text">替代文本</string>
     <string name="gravatar_qe_selectable_avatar_more_options_content_description">更多选项</string>
     <string name="gravatar_qe_selectable_avatar_content_description">头像图片</string>
     <string name="gravatar_qe_gravatar">Gravatar</string>

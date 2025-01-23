@@ -1,11 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: 2024-11-28 09:54:03+0000
+Translation-Revision-Date: 2025-01-21 09:54:03+0000
 Plural-Forms: nplurals=1; plural=0;
 Generator: GlotPress/2.4.0-alpha
 Language: ja_JP
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="gravatar_qe_avatar_alt_text_cancel_button">キャンセル</string>
+    <string name="gravatar_qe_avatar_alt_text_save_button">保存</string>
+    <string name="gravatar_qe_avatar_alt_text_section_placeholder">代替テキストを作成</string>
+    <string name="gravatar_qe_avatar_alt_text_section_what_is">代替テキストとは ?</string>
+    <string name="gravatar_qe_avatar_alt_text_section_title">代替テキスト</string>
+    <string name="gravatar_qe_avatar_picker_alt_text_update_error">代替テキストの変更中にエラーが発生しました。</string>
+    <string name="gravatar_qe_oauth_page_message">Gravatar で %s のプロフィールをレベルアップできます。</string>
+    <string name="gravatar_qe_oauth_page_title">プロフィールを編集</string>
+    <string name="gravatar_qe_login_required_cta">続行</string>
+    <string name="gravatar_qe_login_required_message_v2">ウェブのプロフィールを1か所から管理できます。</string>
+    <string name="gravatar_qe_avatar_picker_rating_update_error">アバターの評価中にエラーが発生しました。</string>
+    <string name="gravatar_qe_avatar_picker_rating_update_success">アバター評価の変更が完了しました。</string>
+    <string name="gravatar_qe_avatar_rating_selected_content_description">選択済み</string>
+    <string name="gravatar_qe_avatar_rating_x">X (過激)</string>
+    <string name="gravatar_qe_avatar_rating_r">R (制限付き)</string>
+    <string name="gravatar_qe_avatar_rating_pg">PG (保護者の助言と指導が必要)</string>
+    <string name="gravatar_qe_avatar_rating_g">G (一般)</string>
+    <string name="gravatar_qe_alert_banner_close_content_description">アラートを閉じる</string>
+    <string name="gravatar_qe_alert_banner_no_avatar_selected">画像が選択されていません。 いずれかを選択してください。選択しない場合はデフォルトが使用されます。</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_rating">評価を変更</string>
     <string name="gravatar_qe_write_external_storage_permission_rationale_message">パブリックフォルダーに画像を保存するには、パーミッションを付与する必要があります。 アプリの設定でパーミッションを付与できます。</string>
     <string name="gravatar_qe_download_manager_disabled_title">DownloadManager は無効です。 アバターをダウンロードするには、有効にしてください。</string>
     <string name="gravatar_qe_download_manager_not_available">DownloadManager は利用できません。</string>
@@ -35,8 +55,8 @@ Language: ja_JP
     <string name="gravatar_qe_avatar_upload_error_action">再試行</string>
     <string name="gravatar_qe_avatar_picker_title">アバター</string>
     <string name="gravatar_qe_bottom_sheet_done">完了</string>
-    <string name="gravatar_qe_selectable_avatar_more_options_alt_text_content_description" tools:ignore="UnusedResources">代替テキスト</string>
-    <string name="gravatar_qe_selectable_avatar_more_options_alt_text" tools:ignore="UnusedResources">代替テキスト</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_alt_text_content_description">代替テキスト</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_alt_text">代替テキスト</string>
     <string name="gravatar_qe_selectable_avatar_more_options_content_description">追加オプション</string>
     <string name="gravatar_qe_selectable_avatar_content_description">アバター画像</string>
     <string name="gravatar_qe_gravatar">Gravatar</string>

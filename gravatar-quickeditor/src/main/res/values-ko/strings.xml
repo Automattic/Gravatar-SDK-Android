@@ -1,11 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: 2024-11-27 09:54:03+0000
+Translation-Revision-Date: 2025-01-22 09:54:02+0000
 Plural-Forms: nplurals=1; plural=0;
 Generator: GlotPress/2.4.0-alpha
 Language: ko_KR
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="gravatar_qe_avatar_alt_text_cancel_button">취소</string>
+    <string name="gravatar_qe_avatar_alt_text_save_button">저장</string>
+    <string name="gravatar_qe_avatar_alt_text_section_placeholder">대체 텍스트 쓰기…</string>
+    <string name="gravatar_qe_avatar_alt_text_section_what_is">대체 텍스트란 무엇인가요?</string>
+    <string name="gravatar_qe_avatar_alt_text_section_title">대체 텍스트</string>
+    <string name="gravatar_qe_avatar_picker_alt_text_update_error">죄송합니다. 대체 텍스트를 업데이트하는 중 문제가 발생했습니다.</string>
+    <string name="gravatar_qe_oauth_page_message">그라바타를 사용해 %s 프로필을 개선하세요.</string>
+    <string name="gravatar_qe_oauth_page_title">프로필 편집</string>
+    <string name="gravatar_qe_login_required_cta">계속</string>
+    <string name="gravatar_qe_login_required_message_v2">한 곳에서 웹 프로필을 관리하세요.</string>
+    <string name="gravatar_qe_avatar_picker_rating_update_error">죄송합니다. 아바타 등급을 지정하는 중 문제가 발생했습니다.</string>
+    <string name="gravatar_qe_avatar_picker_rating_update_success">아바타 등급이 변경되었습니다.</string>
+    <string name="gravatar_qe_avatar_rating_selected_content_description">선택됨</string>
+    <string name="gravatar_qe_avatar_rating_x">X(성인)</string>
+    <string name="gravatar_qe_avatar_rating_r">R(제한)</string>
+    <string name="gravatar_qe_avatar_rating_pg">PG(보호자 지도)</string>
+    <string name="gravatar_qe_avatar_rating_g">G(전체)</string>
+    <string name="gravatar_qe_alert_banner_close_content_description">알림 닫기</string>
+    <string name="gravatar_qe_alert_banner_no_avatar_selected">선택된 이미지가 없습니다. 이미지를 선택하지 않으면 기본 이미지가 사용됩니다.</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_rating">등급 변경</string>
     <string name="gravatar_qe_write_external_storage_permission_rationale_message">이미지를 공개 폴더에 저장하려면 권한을 부여해야 합니다. 권한은 앱 설정에서 부여할 수 있습니다.</string>
     <string name="gravatar_qe_download_manager_disabled_title">DownloadManager가 비활성화되어 있습니다. 아바타를 다운로드하려면 활성화하세요.</string>
     <string name="gravatar_qe_download_manager_not_available">DownloadManager를 사용할 수 없습니다.</string>
@@ -35,8 +55,8 @@ Language: ko_KR
     <string name="gravatar_qe_avatar_upload_error_action">다시 시도</string>
     <string name="gravatar_qe_avatar_picker_title">아바타</string>
     <string name="gravatar_qe_bottom_sheet_done">완료</string>
-    <string name="gravatar_qe_selectable_avatar_more_options_alt_text_content_description" tools:ignore="UnusedResources">대체 텍스트</string>
-    <string name="gravatar_qe_selectable_avatar_more_options_alt_text" tools:ignore="UnusedResources">대체 텍스트</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_alt_text_content_description">대체 텍스트</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_alt_text">대체 텍스트</string>
     <string name="gravatar_qe_selectable_avatar_more_options_content_description">추가 옵션</string>
     <string name="gravatar_qe_selectable_avatar_content_description">아바타 이미지</string>
     <string name="gravatar_qe_gravatar">그라바타</string>

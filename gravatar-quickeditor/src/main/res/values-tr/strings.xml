@@ -1,11 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: 2024-11-27 09:54:03+0000
+Translation-Revision-Date: 2025-01-23 09:54:03+0000
 Plural-Forms: nplurals=2; plural=(n > 1);
 Generator: GlotPress/2.4.0-alpha
 Language: tr
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="gravatar_qe_avatar_alt_text_cancel_button">İptal Et</string>
+    <string name="gravatar_qe_avatar_alt_text_save_button">Kaydet</string>
+    <string name="gravatar_qe_avatar_alt_text_section_placeholder">Alternatif metin yazın…</string>
+    <string name="gravatar_qe_avatar_alt_text_section_what_is">Alternatif metin nedir?</string>
+    <string name="gravatar_qe_avatar_alt_text_section_title">Alternatif Metin</string>
+    <string name="gravatar_qe_avatar_picker_alt_text_update_error">Üzgünüz, alternatif metninizi güncellemeye çalışırken bir sorun yaşandı.</string>
+    <string name="gravatar_qe_oauth_page_message">Gravatar ile %s profilinizi geliştirin.</string>
+    <string name="gravatar_qe_oauth_page_title">Profilinizi düzenleyin</string>
+    <string name="gravatar_qe_login_required_cta">Devam</string>
+    <string name="gravatar_qe_login_required_message_v2">Web\'deki profilinizi tek bir yerden yönetin.</string>
+    <string name="gravatar_qe_avatar_picker_rating_update_error">Üzgünüz, avatarınızı değerlendirmeye çalışırken bir sorun yaşandı.</string>
+    <string name="gravatar_qe_avatar_picker_rating_update_success">Avatar değerlendirmesi başarıyla değiştirildi.</string>
+    <string name="gravatar_qe_avatar_rating_selected_content_description">Seçildi</string>
+    <string name="gravatar_qe_avatar_rating_x">X (Yetişkin)</string>
+    <string name="gravatar_qe_avatar_rating_r">R (Kısıtlı)</string>
+    <string name="gravatar_qe_avatar_rating_pg">PG (Ebeveyn rehberliği önerilir)</string>
+    <string name="gravatar_qe_avatar_rating_g">G (Genel)</string>
+    <string name="gravatar_qe_alert_banner_close_content_description">Uyarıyı kapatın</string>
+    <string name="gravatar_qe_alert_banner_no_avatar_selected">Görsel seçilmedi. Lütfen bir görsel seçin, aksi halde varsayılan görsel kullanılır.</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_rating">Derecelendirmeyi değiştir</string>
     <string name="gravatar_qe_write_external_storage_permission_rationale_message">Görseli herkese açık klasörde kaydetmek için izin vermeniz gerekir. Uygulama ayarlarından izin verebilirsiniz.</string>
     <string name="gravatar_qe_download_manager_disabled_title">İndirme Yöneticisi devre dışı bırakıldı. Avatarları indirmek için lütfen bunu etkinleştirin.</string>
     <string name="gravatar_qe_download_manager_not_available">İndirme Yöneticisi kullanılamıyor.</string>
@@ -35,8 +55,8 @@ Language: tr
     <string name="gravatar_qe_avatar_upload_error_action">Tekrar dene</string>
     <string name="gravatar_qe_avatar_picker_title">Avatarlar</string>
     <string name="gravatar_qe_bottom_sheet_done">Tamam</string>
-    <string name="gravatar_qe_selectable_avatar_more_options_alt_text_content_description" tools:ignore="UnusedResources">Alternatif Metin</string>
-    <string name="gravatar_qe_selectable_avatar_more_options_alt_text" tools:ignore="UnusedResources">Alternatif Metin</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_alt_text_content_description">Alternatif Metin</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_alt_text">Alternatif Metin</string>
     <string name="gravatar_qe_selectable_avatar_more_options_content_description">Daha Fazla Seçenek</string>
     <string name="gravatar_qe_selectable_avatar_content_description">Avatar Görseli</string>
     <string name="gravatar_qe_gravatar">Gravatar</string>

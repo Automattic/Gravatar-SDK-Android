@@ -1,11 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: 2024-11-28 09:54:03+0000
+Translation-Revision-Date: 2025-01-23 09:54:02+0000
 Plural-Forms: nplurals=2; plural=n != 1;
 Generator: GlotPress/2.4.0-alpha
 Language: nl
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="gravatar_qe_avatar_alt_text_cancel_button">Annuleren</string>
+    <string name="gravatar_qe_avatar_alt_text_save_button">Opslaan</string>
+    <string name="gravatar_qe_avatar_alt_text_section_placeholder">Alt-tekst schrijven…</string>
+    <string name="gravatar_qe_avatar_alt_text_section_what_is">Wat is een alt-tekst?</string>
+    <string name="gravatar_qe_avatar_alt_text_section_title">Alt-tekst</string>
+    <string name="gravatar_qe_avatar_picker_alt_text_update_error">Oeps, er is iets misgegaan terwijl je je alt. tekst probeerde aan te passen.</string>
+    <string name="gravatar_qe_oauth_page_message">Verbeter je %s profiel met Gravatar.</string>
+    <string name="gravatar_qe_oauth_page_title">Je profiel bewerken</string>
+    <string name="gravatar_qe_login_required_cta">Doorgaan</string>
+    <string name="gravatar_qe_login_required_message_v2">Beheer je profiel voor het web op één plek.</string>
+    <string name="gravatar_qe_avatar_picker_rating_update_error">Oeps, er is iets misgegaan terwijl je je avatar probeerde te beoordelen.</string>
+    <string name="gravatar_qe_avatar_picker_rating_update_success">Beoordeling van avatar is gewijzigd.</string>
+    <string name="gravatar_qe_avatar_rating_selected_content_description">Geselecteerd</string>
+    <string name="gravatar_qe_avatar_rating_x">X (extreem)</string>
+    <string name="gravatar_qe_avatar_rating_r">R (beperkt)</string>
+    <string name="gravatar_qe_avatar_rating_pg">PG (ouderlijk toezicht)</string>
+    <string name="gravatar_qe_avatar_rating_g">G (algemeen)</string>
+    <string name="gravatar_qe_alert_banner_close_content_description">Waarschuwing</string>
+    <string name="gravatar_qe_alert_banner_no_avatar_selected">Geen afbeelding geselecteerd. Selecteer een afbeelding, anders wordt de standaardafbeelding gebruikt.</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_rating">Beoordeling wijzigen</string>
     <string name="gravatar_qe_write_external_storage_permission_rationale_message">Om een afbeelding in een openbare map op te slaan, moet je toestemming geven. Je kan toestemming geven in de instellingen van de app.</string>
     <string name="gravatar_qe_download_manager_disabled_title">DownloadManager is uitgeschakeld. Schakel deze in om avatars te downloaden.</string>
     <string name="gravatar_qe_download_manager_not_available">DownloadManager is niet beschikbaar</string>
@@ -35,8 +55,8 @@ Language: nl
     <string name="gravatar_qe_avatar_upload_error_action">Opnieuw proberen</string>
     <string name="gravatar_qe_avatar_picker_title">Avatars</string>
     <string name="gravatar_qe_bottom_sheet_done">Klaar</string>
-    <string name="gravatar_qe_selectable_avatar_more_options_alt_text_content_description" tools:ignore="UnusedResources">Alternatieve tekst</string>
-    <string name="gravatar_qe_selectable_avatar_more_options_alt_text" tools:ignore="UnusedResources">Alt. tekst</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_alt_text_content_description">Alternatieve tekst</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_alt_text">Alt. tekst</string>
     <string name="gravatar_qe_selectable_avatar_more_options_content_description">Meer opties</string>
     <string name="gravatar_qe_selectable_avatar_content_description">Avatarafbeelding</string>
     <string name="gravatar_qe_gravatar">Gravatar</string>

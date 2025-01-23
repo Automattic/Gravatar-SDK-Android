@@ -1,11 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: 2024-11-28 09:54:03+0000
+Translation-Revision-Date: 2025-01-17 09:14:55+0000
 Plural-Forms: nplurals=2; plural=n != 1;
 Generator: GlotPress/2.4.0-alpha
 Language: sv_SE
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="gravatar_qe_avatar_alt_text_cancel_button">Avbryt</string>
+    <string name="gravatar_qe_avatar_alt_text_save_button">Spara</string>
+    <string name="gravatar_qe_avatar_alt_text_section_placeholder">Skriv alt-text</string>
+    <string name="gravatar_qe_avatar_alt_text_section_what_is">Vad är alt-text?</string>
+    <string name="gravatar_qe_avatar_alt_text_section_title">Alt-text</string>
+    <string name="gravatar_qe_avatar_picker_alt_text_update_error">Hoppsan, något fungerade inte riktigt när du försökte uppdatera den alternativa texten.</string>
+    <string name="gravatar_qe_oauth_page_message">Förbättra din %s-profil med Gravatar.</string>
+    <string name="gravatar_qe_oauth_page_title">Redigera din profil</string>
+    <string name="gravatar_qe_login_required_cta">Fortsätt</string>
+    <string name="gravatar_qe_login_required_message_v2">Hantera din profil för webben på ett ställe.</string>
+    <string name="gravatar_qe_avatar_picker_rating_update_error">Hoppsan, något fungerade inte riktigt när du försökte klassificera din profilbild.</string>
+    <string name="gravatar_qe_avatar_picker_rating_update_success">Profilbildens klassificering har ändrats.</string>
+    <string name="gravatar_qe_avatar_rating_selected_content_description">Vald</string>
+    <string name="gravatar_qe_avatar_rating_x">X (Extrem)</string>
+    <string name="gravatar_qe_avatar_rating_r">R (Begränsad)</string>
+    <string name="gravatar_qe_avatar_rating_pg">PG (Föräldravägledning)</string>
+    <string name="gravatar_qe_avatar_rating_g">G (Allmänt)</string>
+    <string name="gravatar_qe_alert_banner_close_content_description">Stäng varning</string>
+    <string name="gravatar_qe_alert_banner_no_avatar_selected">Ingen bild vald. Välj en eller så kommer standard att användas.</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_rating">Ändra klassificering</string>
     <string name="gravatar_qe_write_external_storage_permission_rationale_message">För att spara bilden i en offentlig mapp måste du bevilja behörighet. Du kan bevilja detta i appinställningarna.</string>
     <string name="gravatar_qe_download_manager_disabled_title">DownloadManager är inaktiverad. Aktivera den för att ladda ner profilbilder.</string>
     <string name="gravatar_qe_download_manager_not_available">DownloadManager är inte tillgänglig.</string>
@@ -35,8 +55,8 @@ Language: sv_SE
     <string name="gravatar_qe_avatar_upload_error_action">Försök igen</string>
     <string name="gravatar_qe_avatar_picker_title">Profilbilder</string>
     <string name="gravatar_qe_bottom_sheet_done">Klar</string>
-    <string name="gravatar_qe_selectable_avatar_more_options_alt_text_content_description" tools:ignore="UnusedResources">Alternativ text</string>
-    <string name="gravatar_qe_selectable_avatar_more_options_alt_text" tools:ignore="UnusedResources">Alt-text</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_alt_text_content_description">Alternativ text</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_alt_text">Alt-text</string>
     <string name="gravatar_qe_selectable_avatar_more_options_content_description">Fler alternativ</string>
     <string name="gravatar_qe_selectable_avatar_content_description">Profilbild</string>
     <string name="gravatar_qe_gravatar">Gravatar</string>

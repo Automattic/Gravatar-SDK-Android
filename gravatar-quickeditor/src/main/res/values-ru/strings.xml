@@ -1,11 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: 2024-11-26 14:54:03+0000
+Translation-Revision-Date: 2025-01-21 14:54:02+0000
 Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);
 Generator: GlotPress/2.4.0-alpha
 Language: ru
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="gravatar_qe_avatar_alt_text_cancel_button">Отмена</string>
+    <string name="gravatar_qe_avatar_alt_text_save_button">Сохранить</string>
+    <string name="gravatar_qe_avatar_alt_text_section_placeholder">Введите альтернативный текст</string>
+    <string name="gravatar_qe_avatar_alt_text_section_what_is">Что такое альтернативный текст?</string>
+    <string name="gravatar_qe_avatar_alt_text_section_title">Альтернативный текст</string>
+    <string name="gravatar_qe_avatar_picker_alt_text_update_error">Что-то пошло не так при попытке изменить альтернативный текст.</string>
+    <string name="gravatar_qe_oauth_page_message">Расширьте возможности вашего профиля %s с помощью Gravatar.</string>
+    <string name="gravatar_qe_oauth_page_title">Редактировать профиль</string>
+    <string name="gravatar_qe_login_required_cta">Продолжить</string>
+    <string name="gravatar_qe_login_required_message_v2">Централизованно управляйте своим интернет-профилем на всех сайтах.</string>
+    <string name="gravatar_qe_avatar_picker_rating_update_error">Что-то пошло не так при попытке оценить ваш аватар.</string>
+    <string name="gravatar_qe_avatar_picker_rating_update_success">Рейтинг аватара успешно изменён.</string>
+    <string name="gravatar_qe_avatar_rating_selected_content_description">Выбрано</string>
+    <string name="gravatar_qe_avatar_rating_x">X (экстремальный)</string>
+    <string name="gravatar_qe_avatar_rating_r">R (ограниченный доступ)</string>
+    <string name="gravatar_qe_avatar_rating_pg">PG (родительский контроль)</string>
+    <string name="gravatar_qe_avatar_rating_g">G (общедоступный)</string>
+    <string name="gravatar_qe_alert_banner_close_content_description">Закрыть предупреждение</string>
+    <string name="gravatar_qe_alert_banner_no_avatar_selected">Изображение не выбрано. Выберите изображение, если не хотите использовать изображение по умолчанию.</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_rating">Изменить оценку</string>
     <string name="gravatar_qe_write_external_storage_permission_rationale_message">Чтобы сохранить изображение в общедоступной папке, требуется разрешение. Вы можете дать разрешение в настройках приложения.</string>
     <string name="gravatar_qe_download_manager_disabled_title">DownloadManager отключён. Включите его, чтобы загружать аватары.</string>
     <string name="gravatar_qe_download_manager_not_available">DownloadManager недоступен</string>
@@ -35,8 +55,8 @@ Language: ru
     <string name="gravatar_qe_avatar_upload_error_action">Повторить попытку</string>
     <string name="gravatar_qe_avatar_picker_title">Аватары</string>
     <string name="gravatar_qe_bottom_sheet_done">Готово</string>
-    <string name="gravatar_qe_selectable_avatar_more_options_alt_text_content_description" tools:ignore="UnusedResources">Альтернативный текст</string>
-    <string name="gravatar_qe_selectable_avatar_more_options_alt_text" tools:ignore="UnusedResources">Атрибут alt</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_alt_text_content_description">Альтернативный текст</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_alt_text">Атрибут alt</string>
     <string name="gravatar_qe_selectable_avatar_more_options_content_description">Дополнительные параметры</string>
     <string name="gravatar_qe_selectable_avatar_content_description">Изображение аватара</string>
     <string name="gravatar_qe_gravatar">Gravatar</string>

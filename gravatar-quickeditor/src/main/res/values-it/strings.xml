@@ -1,11 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: 2024-11-27 13:54:03+0000
+Translation-Revision-Date: 2025-01-14 22:54:02+0000
 Plural-Forms: nplurals=2; plural=n != 1;
 Generator: GlotPress/2.4.0-alpha
 Language: it
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="gravatar_qe_avatar_alt_text_save_button">Salva</string>
+    <string name="gravatar_qe_avatar_alt_text_section_what_is">Cos\'è un testo alternativo?</string>
+    <string name="gravatar_qe_avatar_alt_text_section_title">Testo alternativo</string>
+    <string name="gravatar_qe_avatar_picker_alt_text_update_error">Ops, qualcosa è andato storto durante il tentativo di aggiornamento del testo alternativo.</string>
+    <string name="gravatar_qe_oauth_page_message">Migliora il tuo profilo %s con Gravatar.</string>
+    <string name="gravatar_qe_oauth_page_title">Modifica il tuo profilo</string>
+    <string name="gravatar_qe_login_required_cta">Continua</string>
+    <string name="gravatar_qe_login_required_message_v2">Gestisci il tuo profilo web da un unico luogo.</string>
+    <string name="gravatar_qe_avatar_picker_rating_update_error">Ops, qualcosa è andato storto durante il tentativo di valutare il tuo avatar.</string>
+    <string name="gravatar_qe_avatar_picker_rating_update_success">Valutazione dell\'avatar modificata con successo.</string>
+    <string name="gravatar_qe_avatar_rating_selected_content_description">Selezionato</string>
+    <string name="gravatar_qe_avatar_rating_x">X (estrema)</string>
+    <string name="gravatar_qe_avatar_rating_r">R (con limitazioni)</string>
+    <string name="gravatar_qe_avatar_rating_pg">PG (visibile in presenza di un adulto)</string>
+    <string name="gravatar_qe_avatar_rating_g">G (generale)</string>
+    <string name="gravatar_qe_alert_banner_close_content_description">Chiudi avviso</string>
+    <string name="gravatar_qe_alert_banner_no_avatar_selected">Nessuna immagine selezionata. Seleziona un\'immagine, altrimenti verrà usata quella predefinita.</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_rating">Modifica la valutazione</string>
     <string name="gravatar_qe_write_external_storage_permission_rationale_message">Per salvare l\'immagine in una cartella pubblica devi concedere l\'autorizzazione. Puoi concederla nelle impostazioni dell\'app.</string>
     <string name="gravatar_qe_download_manager_disabled_title">DownloadManager è disabilitato. Abilitalo per scaricare gli avatar.</string>
     <string name="gravatar_qe_download_manager_not_available">DownloadManager non è disponibile</string>
@@ -35,8 +53,8 @@ Language: it
     <string name="gravatar_qe_avatar_upload_error_action">Riprova</string>
     <string name="gravatar_qe_avatar_picker_title">Avatar</string>
     <string name="gravatar_qe_bottom_sheet_done">Fatto</string>
-    <string name="gravatar_qe_selectable_avatar_more_options_alt_text_content_description" tools:ignore="UnusedResources">Testo alternativo</string>
-    <string name="gravatar_qe_selectable_avatar_more_options_alt_text" tools:ignore="UnusedResources">Testo Alt</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_alt_text_content_description">Testo alternativo</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_alt_text">Testo Alt</string>
     <string name="gravatar_qe_selectable_avatar_more_options_content_description">Altre opzioni</string>
     <string name="gravatar_qe_selectable_avatar_content_description">Immagine avatar</string>
     <string name="gravatar_qe_gravatar">Gravatar</string>
