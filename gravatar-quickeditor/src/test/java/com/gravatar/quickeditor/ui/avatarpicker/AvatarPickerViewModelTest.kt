@@ -71,7 +71,7 @@ class AvatarPickerViewModelTest {
         coEvery { profileService.retrieveCatching(email) } returns GravatarResult.Failure(ErrorType.Unknown())
         coEvery { avatarRepository.refreshAvatars(email) } returns GravatarResult.Success(emptyList())
         coEvery { avatarRepository.getAvatars(email) } returns avatarsFlow
-        coEvery { clock.getTimeMillis() } returns 1
+        coEvery { clock.getTimeMillis() } returns 0
     }
 
     @Test
@@ -82,8 +82,11 @@ class AvatarPickerViewModelTest {
         viewModel = initViewModel()
 
         viewModel.uiState.test {
-            val avatarPickerUiState =
-                AvatarPickerUiState(email = email, avatarPickerContentLayout = avatarPickerContentLayout)
+            val avatarPickerUiState = AvatarPickerUiState(
+                email = email,
+                avatarPickerContentLayout = avatarPickerContentLayout,
+                avatarCacheBuster = 0,
+            )
             assertEquals(avatarPickerUiState, awaitItem())
             assertEquals(
                 avatarPickerUiState.copy(isLoading = true, profile = null),
@@ -110,8 +113,11 @@ class AvatarPickerViewModelTest {
         viewModel = initViewModel()
 
         viewModel.uiState.test {
-            val avatarPickerUiState =
-                AvatarPickerUiState(email = email, avatarPickerContentLayout = avatarPickerContentLayout)
+            val avatarPickerUiState = AvatarPickerUiState(
+                email = email,
+                avatarPickerContentLayout = avatarPickerContentLayout,
+                avatarCacheBuster = 0,
+            )
             assertEquals(avatarPickerUiState, awaitItem())
             assertEquals(
                 avatarPickerUiState.copy(isLoading = true),
@@ -132,8 +138,11 @@ class AvatarPickerViewModelTest {
         viewModel = initViewModel()
 
         viewModel.uiState.test {
-            val avatarPickerUiState =
-                AvatarPickerUiState(email = email, avatarPickerContentLayout = avatarPickerContentLayout)
+            val avatarPickerUiState = AvatarPickerUiState(
+                email = email,
+                avatarPickerContentLayout = avatarPickerContentLayout,
+                avatarCacheBuster = 0,
+            )
             assertEquals(avatarPickerUiState, awaitItem())
             skipItems(2) // skipping loading avatars states
             assertEquals(
@@ -164,8 +173,11 @@ class AvatarPickerViewModelTest {
         viewModel = initViewModel()
 
         viewModel.uiState.test {
-            val avatarPickerUiState =
-                AvatarPickerUiState(email = email, avatarPickerContentLayout = avatarPickerContentLayout)
+            val avatarPickerUiState = AvatarPickerUiState(
+                email = email,
+                avatarPickerContentLayout = avatarPickerContentLayout,
+                avatarCacheBuster = 0,
+            )
             assertEquals(avatarPickerUiState, awaitItem())
             skipItems(2) // skipping loading avatars states
             assertEquals(
@@ -205,6 +217,7 @@ class AvatarPickerViewModelTest {
 
         viewModel.uiState.test {
             expectMostRecentItem()
+            coEvery { clock.getTimeMillis() } returns 1
             viewModel.onEvent(AvatarPickerEvent.AvatarSelected(avatars.last()))
             val avatarPickerUiState = AvatarPickerUiState(
                 email = email,
@@ -214,6 +227,7 @@ class AvatarPickerViewModelTest {
                 selectingAvatarId = avatars.last().imageId,
                 scrollToIndex = 0,
                 avatarPickerContentLayout = avatarPickerContentLayout,
+                avatarCacheBuster = 0,
             )
             assertEquals(
                 avatarPickerUiState,
@@ -255,6 +269,7 @@ class AvatarPickerViewModelTest {
                 selectingAvatarId = avatars.last().imageId,
                 scrollToIndex = 0,
                 avatarPickerContentLayout = avatarPickerContentLayout,
+                avatarCacheBuster = 0,
             )
             assertEquals(
                 avatarPickerUiState,
@@ -334,6 +349,7 @@ class AvatarPickerViewModelTest {
                 uploadingAvatar = uri,
                 scrollToIndex = 0,
                 avatarPickerContentLayout = avatarPickerContentLayout,
+                avatarCacheBuster = 0,
             )
             assertEquals(
                 avatarPickerUiState,
@@ -379,6 +395,7 @@ class AvatarPickerViewModelTest {
                 scrollToIndex = 0,
                 avatarPickerContentLayout = avatarPickerContentLayout,
                 failedUploads = emptySet(),
+                avatarCacheBuster = 0,
             )
             assertEquals(
                 avatarPickerUiState,
@@ -500,6 +517,7 @@ class AvatarPickerViewModelTest {
                 failedUploads = setOf(
                     AvatarUploadFailure(uriOne, invalidRequest.type),
                 ),
+                avatarCacheBuster = 0,
             )
             assertEquals(
                 avatarPickerUiState,
@@ -662,6 +680,7 @@ class AvatarPickerViewModelTest {
         viewModel.uiState.test {
             expectMostRecentItem()
 
+            coEvery { clock.getTimeMillis() } returns 1
             viewModel.onEvent(AvatarPickerEvent.ImageCropped(uriOne))
 
             // State before upload starts
@@ -675,6 +694,7 @@ class AvatarPickerViewModelTest {
                 scrollToIndex = 0,
                 avatarPickerContentLayout = avatarPickerContentLayout,
                 nonSelectedAvatarAlertVisible = true,
+                avatarCacheBuster = 0,
             )
             assertEquals(
                 avatarPickerUiState,
@@ -719,6 +739,7 @@ class AvatarPickerViewModelTest {
         viewModel.uiState.test {
             expectMostRecentItem()
             val avatarToDelete = avatars.first()
+            coEvery { clock.getTimeMillis() } returns 1
             viewModel.onEvent(AvatarPickerEvent.AvatarDeleteSelected(avatarToDelete.imageId))
             var avatarPickerUiState = AvatarPickerUiState(
                 email = email,
@@ -728,6 +749,7 @@ class AvatarPickerViewModelTest {
                 avatarPickerContentLayout = avatarPickerContentLayout,
                 scrollToIndex = 0,
                 nonSelectedAvatarAlertVisible = false,
+                avatarCacheBuster = 0,
             )
             assertEquals(
                 avatarPickerUiState,
@@ -778,6 +800,7 @@ class AvatarPickerViewModelTest {
                 avatarPickerContentLayout = avatarPickerContentLayout,
                 scrollToIndex = 0,
                 nonSelectedAvatarAlertVisible = false,
+                avatarCacheBuster = 0
             )
             assertEquals(
                 avatarPickerUiState,
@@ -816,6 +839,7 @@ class AvatarPickerViewModelTest {
                 avatarPickerContentLayout = avatarPickerContentLayout,
                 scrollToIndex = 0,
                 nonSelectedAvatarAlertVisible = false,
+                avatarCacheBuster = 0,
             )
             assertEquals(
                 avatarPickerUiState,
@@ -854,6 +878,7 @@ class AvatarPickerViewModelTest {
                 avatarPickerContentLayout = avatarPickerContentLayout,
                 scrollToIndex = 0,
                 nonSelectedAvatarAlertVisible = false,
+                avatarCacheBuster = 0,
             )
             assertEquals(
                 avatarPickerUiState,
@@ -882,6 +907,7 @@ class AvatarPickerViewModelTest {
             advanceUntilIdle()
 
             viewModel.uiState.test {
+                coEvery { clock.getTimeMillis() } returns 1
                 viewModel.onEvent(AvatarPickerEvent.AvatarDeleteAlertDismissed)
                 expectMostRecentItem()
                 viewModel.onEvent(AvatarPickerEvent.ImageCropped(uri))
@@ -896,6 +922,7 @@ class AvatarPickerViewModelTest {
                     scrollToIndex = 0,
                     avatarPickerContentLayout = avatarPickerContentLayout,
                     nonSelectedAvatarAlertVisible = false,
+                    avatarCacheBuster = 0,
                 )
                 assertEquals(
                     avatarPickerUiState,
@@ -938,7 +965,7 @@ class AvatarPickerViewModelTest {
         coEvery { avatarRepository.refreshAvatars(email) } returns GravatarResult.Success(avatars)
         coEvery { profileService.retrieveCatching(email) } returns GravatarResult.Success(profile)
         coEvery { avatarRepository.deleteAvatar(any(), any()) } returns
-            GravatarResult.Failure(QuickEditorError.Request(ErrorType.NotFound))
+                GravatarResult.Failure(QuickEditorError.Request(ErrorType.NotFound))
 
         viewModel = initViewModel()
 
@@ -947,6 +974,7 @@ class AvatarPickerViewModelTest {
         viewModel.uiState.test {
             expectMostRecentItem()
             val avatarToDelete = avatars.first()
+            coEvery { clock.getTimeMillis() } returns 1
             viewModel.onEvent(AvatarPickerEvent.AvatarDeleteSelected(avatarToDelete.imageId))
             var avatarPickerUiState = AvatarPickerUiState(
                 email = email,
@@ -955,6 +983,7 @@ class AvatarPickerViewModelTest {
                 profile = ComponentState.Loaded(profile),
                 avatarPickerContentLayout = avatarPickerContentLayout,
                 scrollToIndex = 0,
+                avatarCacheBuster = 0,
             )
             assertEquals(
                 avatarPickerUiState,
@@ -1064,6 +1093,7 @@ class AvatarPickerViewModelTest {
                     profile = ComponentState.Loaded(profile),
                     avatarPickerContentLayout = avatarPickerContentLayout,
                     scrollToIndex = 0,
+                    avatarCacheBuster = 0,
                 ),
                 awaitItem(),
             )
@@ -1101,6 +1131,7 @@ class AvatarPickerViewModelTest {
                     profile = ComponentState.Loaded(profile),
                     avatarPickerContentLayout = avatarPickerContentLayout,
                     scrollToIndex = 0,
+                    avatarCacheBuster = 0,
                 ),
                 awaitItem(),
             )
@@ -1111,6 +1142,7 @@ class AvatarPickerViewModelTest {
                     profile = ComponentState.Loaded(profile),
                     avatarPickerContentLayout = avatarPickerContentLayout,
                     scrollToIndex = 0,
+                    avatarCacheBuster = 0,
                 ),
                 awaitItem(),
             )
@@ -1187,6 +1219,7 @@ class AvatarPickerViewModelTest {
                     profile = ComponentState.Loaded(profile),
                     avatarPickerContentLayout = avatarPickerContentLayout,
                     scrollToIndex = 0,
+                    avatarCacheBuster = 0,
                 ),
                 awaitItem(),
             )
