@@ -800,7 +800,7 @@ class AvatarPickerViewModelTest {
                 avatarPickerContentLayout = avatarPickerContentLayout,
                 scrollToIndex = 0,
                 nonSelectedAvatarAlertVisible = false,
-                avatarCacheBuster = 0
+                avatarCacheBuster = 0,
             )
             assertEquals(
                 avatarPickerUiState,
@@ -965,7 +965,7 @@ class AvatarPickerViewModelTest {
         coEvery { avatarRepository.refreshAvatars(email) } returns GravatarResult.Success(avatars)
         coEvery { profileService.retrieveCatching(email) } returns GravatarResult.Success(profile)
         coEvery { avatarRepository.deleteAvatar(any(), any()) } returns
-                GravatarResult.Failure(QuickEditorError.Request(ErrorType.NotFound))
+            GravatarResult.Failure(QuickEditorError.Request(ErrorType.NotFound))
 
         viewModel = initViewModel()
 

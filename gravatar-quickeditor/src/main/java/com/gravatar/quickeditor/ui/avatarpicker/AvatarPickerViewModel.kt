@@ -51,7 +51,7 @@ internal class AvatarPickerViewModel(
                 email = email,
                 avatarPickerContentLayout = avatarPickerContentLayout,
                 avatarCacheBuster = clock.getTimeMillis(),
-            )
+            ),
         )
     val uiState: StateFlow<AvatarPickerUiState> = _uiState.asStateFlow()
     private val _actions = Channel<AvatarPickerAction>(Channel.BUFFERED)
