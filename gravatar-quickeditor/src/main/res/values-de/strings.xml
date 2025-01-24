@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: 2025-01-22 16:54:04+0000
+Translation-Revision-Date: 2025-01-23 20:35:13+0000
 Plural-Forms: nplurals=2; plural=n != 1;
 Generator: GlotPress/2.4.0-alpha
 Language: de
@@ -19,23 +19,23 @@ Language: de
     <string name="gravatar_qe_avatar_picker_rating_update_error">Ups, beim Bewerten deines Avatars ist etwas schiefgegangen.</string>
     <string name="gravatar_qe_avatar_picker_rating_update_success">Die Avatar-Bewertung wurde erfolgreich geändert.</string>
     <string name="gravatar_qe_avatar_rating_selected_content_description">Ausgewählt</string>
-    <string name="gravatar_qe_avatar_rating_x">X (extreme – extrem)</string>
-    <string name="gravatar_qe_avatar_rating_r">R (restricted – eingeschränkt)</string>
-    <string name="gravatar_qe_avatar_rating_pg">PG (parental guidance – elterliche Anleitung erforderlich)</string>
-    <string name="gravatar_qe_avatar_rating_g">G (general – allgemein)</string>
+    <string name="gravatar_qe_avatar_rating_x">X (Nur für Erwachsene)</string>
+    <string name="gravatar_qe_avatar_rating_r">R (Ab 18 Jahren)</string>
+    <string name="gravatar_qe_avatar_rating_pg">PG (Mit Elternempfehlung)</string>
+    <string name="gravatar_qe_avatar_rating_g">G (Für alle)</string>
     <string name="gravatar_qe_alert_banner_close_content_description">Hinweis schließen</string>
     <string name="gravatar_qe_alert_banner_no_avatar_selected">Kein Bild ausgewählt. Bitte wähle eines aus, andernfalls wird das Standardbild verwendet.</string>
     <string name="gravatar_qe_selectable_avatar_more_options_rating">Bewertung ändern</string>
     <string name="gravatar_qe_write_external_storage_permission_rationale_message">Zum Speichern des Bilds in einem öffentlichen Ordner musst du die entsprechende Berechtigung erteilen. Die Berechtigung kannst du in den App-Einstellungen erteilen.</string>
-    <string name="gravatar_qe_download_manager_disabled_title">DownloadManager ist deaktiviert. Aktiviere die Funktion, um Avatare herunterladen zu können.</string>
-    <string name="gravatar_qe_download_manager_not_available">DownloadManager ist nicht verfügbar</string>
-    <string name="gravatar_qe_image_download_queued">Der Bild-Download wurde in die Warteschlange gestellt. Nach Abschluss erhältst du eine Benachrichtigung.</string>
+    <string name="gravatar_qe_download_manager_disabled_title">Der Download Manager ist deaktiviert. Aktiviere die Funktion, um Avatare herunterladen zu können.</string>
+    <string name="gravatar_qe_download_manager_not_available">Der Download Manager ist nicht verfügbar</string>
+    <string name="gravatar_qe_image_download_queued">Der Bild-Download hat begonnen. Nach Abschluss erhältst du eine Benachrichtigung.</string>
     <string name="gravatar_qe_avatar_delete_confirmation_cancel">Abbrechen</string>
     <string name="gravatar_qe_avatar_delete_confirmation_confirm">Löschen</string>
     <string name="gravatar_qe_avatar_delete_confirmation_message">Bist du sicher, dass du dieses Bild löschen möchtest?</string>
     <string name="gravatar_qe_avatar_delete_confirmation_title">Bild löschen</string>
     <string name="gravatar_qe_selectable_avatar_more_options_download_image">Bild herunterladen</string>
-    <string name="gravatar_qe_avatar_delete_avatar_error">Fehler beim Löschen des Bilds.</string>
+    <string name="gravatar_qe_avatar_delete_avatar_error">Fehler beim Löschen des Bildes.</string>
     <string name="gravatar_qe_selectable_avatar_more_options_delete_content_description">Avatar löschen</string>
     <string name="gravatar_qe_selectable_avatar_more_options_delete">Löschen</string>
     <string name="gravatar_qe_permission_rationale_open_settings">Einstellungen öffnen</string>
@@ -60,9 +60,9 @@ Language: de
     <string name="gravatar_qe_selectable_avatar_more_options_content_description">Weitere Optionen</string>
     <string name="gravatar_qe_selectable_avatar_content_description">Avatar-Bild</string>
     <string name="gravatar_qe_gravatar">Gravatar</string>
-    <string name="gravatar_qe_avatar_upload_failure_image_too_big">Das bereitgestellte Bild überschreitet die maximal zulässige Größe: 10 MB</string>
+    <string name="gravatar_qe_avatar_upload_failure_image_too_big">Das Bild überschreitet die maximal zulässige Größe: 10 MB</string>
     <string name="gravatar_qe_dismiss">Verwerfen</string>
-    <string name="gravatar_qe_camera_permission_rationale_message">Um ein Foto zu machen, musst du die Berechtigung zur Nutzung der Kamera erteilen. Die Berechtigung kannst du in den App-Einstellungen erteilen.</string>
+    <string name="gravatar_qe_camera_permission_rationale_message">Um ein Foto zu machen, musst du eine Berechtigung zur Nutzung der Kamera erteilen. Diese kannst du in den App-Einstellungen erteilen.</string>
     <string name="gravatar_qe_permission_required_alert_title">Berechtigung erforderlich</string>
     <string name="gravatar_qe_oauth_email_associated_error_message">Beim Verifizieren deiner E-Mail-Adresse ist ein Fehler aufgetreten.</string>
     <string name="gravatar_qe_avatar_upload_failure_dialog_remove_upload">Upload entfernen</string>
@@ -75,7 +75,7 @@ Language: de
     <string name="gravatar_qe_avatar_picker_unknown_error_message">Etwas ist ziemlich schiefgegangen.</string>
     <string name="gravatar_qe_avatar_picker_server_error_message">Es ist ein Fehler aufgetreten und wir konnten keine Verbindung zu den Servern von Gravatar herstellen.</string>
     <string name="gravatar_qe_avatar_selection_error">Ups, beim Auswählen des Avatars ist ein Fehler aufgetreten.</string>
-    <string name="gravatar_qe_avatar_picker_title_empty_state">Richten wir deinen Avatar ein</string>
+    <string name="gravatar_qe_avatar_picker_title_empty_state">Lass uns deinen Avatar einrichten</string>
     <string name="gravatar_qe_avatar_selected_confirmation_v2">Avatar aktualisiert! Es kann ein paar Minuten dauern, bis er überall angezeigt wird.</string>
-    <string name="gravatar_qe_avatar_picker_description">Wähle deine Lieblingsavatarbilder aus – oder lade sie hoch – und verbinde sie mit deiner E-Mail-Adresse.</string>
+    <string name="gravatar_qe_avatar_picker_description">Wähle oder lade deine Lieblings-Avatar-Bilder hoch und verknüpfe sie mit deiner E-Mail-Adresse.</string>
 </resources>
