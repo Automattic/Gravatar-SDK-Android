@@ -20,6 +20,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.gravatar.AvatarQueryOptions
+import com.gravatar.ImageRating
 import com.gravatar.extensions.avatarUrl
 import com.gravatar.extensions.defaultProfile
 import com.gravatar.restapi.models.Profile
@@ -50,6 +51,7 @@ internal fun ProfileCard(
                             avatarUrl(
                                 AvatarQueryOptions {
                                     preferredSize = sizePx
+                                    rating = ImageRating.X
                                 },
                             ).url(avatarCacheBuster).toString()
                         },
