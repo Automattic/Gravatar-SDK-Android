@@ -36,6 +36,16 @@ internal fun AvatarMoreOptionsPickerPopup(
         popupMenu = PickerPopupMenu(
             items = listOf(
                 PickerPopupItem(
+                    text = stringResource(R.string.gravatar_qe_selectable_avatar_more_options_download_image),
+                    iconRes = R.drawable.gravatar_avatar_more_options_download,
+                    contentDescription = stringResource(
+                        R.string.gravatar_qe_selectable_avatar_more_options_download_image,
+                    ),
+                    onClick = {
+                        onAvatarOptionClicked(AvatarOption.DownloadImage)
+                    },
+                ),
+                PickerPopupItem(
                     text = stringResource(R.string.gravatar_qe_selectable_avatar_more_options_alt_text),
                     iconRes = R.drawable.gravatar_avatar_more_options_alt_text,
                     contentDescription = stringResource(
@@ -63,16 +73,6 @@ internal fun AvatarMoreOptionsPickerPopup(
                             )
                         },
                     ),
-                ),
-                PickerPopupItem(
-                    text = stringResource(R.string.gravatar_qe_selectable_avatar_more_options_download_image),
-                    iconRes = R.drawable.gravatar_avatar_more_options_download,
-                    contentDescription = stringResource(
-                        R.string.gravatar_qe_selectable_avatar_more_options_download_image,
-                    ),
-                    onClick = {
-                        onAvatarOptionClicked(AvatarOption.DownloadImage)
-                    },
                 ),
                 PickerPopupItem(
                     text = stringResource(R.string.gravatar_qe_selectable_avatar_more_options_delete),
