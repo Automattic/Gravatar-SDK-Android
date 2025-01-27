@@ -74,4 +74,5 @@
     <string name="gravatar_qe_avatar_alt_text_section_placeholder">Write alt text…</string>
     <string name="gravatar_qe_avatar_alt_text_save_button">Save</string>
     <string name="gravatar_qe_avatar_alt_text_cancel_button">Cancel</string>
+    <string name="gravatar_qe_picker_submenu_icon_description">Expand</string>
 </resources>

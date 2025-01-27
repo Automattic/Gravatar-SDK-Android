@@ -7,11 +7,18 @@ import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.scaleIn
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
@@ -35,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupPositionProvider
 import androidx.compose.ui.window.PopupProperties
+import com.gravatar.quickeditor.R
 
 @Composable
 internal fun PickerPopup(
@@ -104,6 +112,27 @@ private fun PickerPopup(
                                     } else {
                                         item.onClick?.let { it() }
                                     }
+                                },
+                                startIcon = if (targetState.items.any { it.subMenu != null }) {
+                                    {
+                                        Box(
+                                            modifier = Modifier
+                                                .padding(end = 2.dp)
+                                                .width(24.dp),
+                                        ) {
+                                            if (item.subMenu != null) {
+                                                Icon(
+                                                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                                                    contentDescription = stringResource(
+                                                        R.string.gravatar_qe_picker_submenu_icon_description,
+                                                    ),
+                                                    tint = item.contentColor ?: MaterialTheme.colorScheme.onSurface,
+                                                )
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    null
                                 },
                             )
                             if (index < popupMenu.items.size - 1) {

@@ -32,17 +32,26 @@ internal fun PopupButton(
     shape: Shape,
     color: Color? = null,
     modifier: Modifier = Modifier,
+    startIcon: @Composable (() -> Unit)? = null,
 ) {
+    val contentPadding = if (startIcon != null) {
+        PaddingValues(top = 12.dp, bottom = 12.dp, start = 6.dp, end = 16.dp)
+    } else {
+        PaddingValues(vertical = 12.dp, horizontal = 16.dp)
+    }
     TextButton(
         onClick = onClick,
         modifier = modifier,
         shape = shape,
-        contentPadding = PaddingValues(vertical = 12.dp, horizontal = 16.dp),
+        contentPadding = contentPadding,
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
+            if (startIcon != null) {
+                startIcon()
+            }
             Text(
                 text = text,
                 overflow = TextOverflow.Ellipsis,
