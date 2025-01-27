@@ -25,7 +25,6 @@ Language: id
     <string name="gravatar_qe_avatar_rating_g">G (Umum)</string>
     <string name="gravatar_qe_alert_banner_close_content_description">Tutup peringatan</string>
     <string name="gravatar_qe_alert_banner_no_avatar_selected">Tidak ada gambar dipilih. Harap pilih satu gambar atau gambar default akan digunakan.</string>
-    <string name="gravatar_qe_selectable_avatar_more_options_rating">Ubah rating</string>
     <string name="gravatar_qe_write_external_storage_permission_rationale_message">Untuk menyimpan gambar di folder publik, Anda perlu memberikan izin. Anda dapat memberikan izin di pengaturan aplikasi.</string>
     <string name="gravatar_qe_download_manager_disabled_title">DownloadManager dinonaktifkan. Aktifkan untuk mengunduh Avatar.</string>
     <string name="gravatar_qe_download_manager_not_available">DownloadManager tidak tersedia</string>

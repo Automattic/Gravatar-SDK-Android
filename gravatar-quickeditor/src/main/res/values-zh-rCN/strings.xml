@@ -25,7 +25,6 @@ Language: zh_CN
     <string name="gravatar_qe_avatar_rating_g">G（大众级）</string>
     <string name="gravatar_qe_alert_banner_close_content_description">关闭警告</string>
     <string name="gravatar_qe_alert_banner_no_avatar_selected">未选择图片。 请选择一张图片，否则系统将使用默认图片。</string>
-    <string name="gravatar_qe_selectable_avatar_more_options_rating">更改评级</string>
     <string name="gravatar_qe_write_external_storage_permission_rationale_message">要将图片保存到公共文件夹中，您需要授予权限。 您可以在应用程序设置中授予该权限。</string>
     <string name="gravatar_qe_download_manager_disabled_title">DownloadManager 已禁用。 请将其启用以下载头像。</string>
     <string name="gravatar_qe_download_manager_not_available">DownloadManager 不可用</string>

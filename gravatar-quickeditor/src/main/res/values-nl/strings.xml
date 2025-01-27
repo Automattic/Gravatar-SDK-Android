@@ -25,7 +25,6 @@ Language: nl
     <string name="gravatar_qe_avatar_rating_g">G (algemeen)</string>
     <string name="gravatar_qe_alert_banner_close_content_description">Waarschuwing</string>
     <string name="gravatar_qe_alert_banner_no_avatar_selected">Geen afbeelding geselecteerd. Selecteer een afbeelding, anders wordt de standaardafbeelding gebruikt.</string>
-    <string name="gravatar_qe_selectable_avatar_more_options_rating">Beoordeling wijzigen</string>
     <string name="gravatar_qe_write_external_storage_permission_rationale_message">Om een afbeelding in een openbare map op te slaan, moet je toestemming geven. Je kan toestemming geven in de instellingen van de app.</string>
     <string name="gravatar_qe_download_manager_disabled_title">DownloadManager is uitgeschakeld. Schakel deze in om avatars te downloaden.</string>
     <string name="gravatar_qe_download_manager_not_available">DownloadManager is niet beschikbaar</string>

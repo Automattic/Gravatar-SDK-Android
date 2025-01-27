@@ -25,7 +25,6 @@ Language: ru
     <string name="gravatar_qe_avatar_rating_g">G (общедоступный)</string>
     <string name="gravatar_qe_alert_banner_close_content_description">Закрыть предупреждение</string>
     <string name="gravatar_qe_alert_banner_no_avatar_selected">Изображение не выбрано. Выберите изображение, если не хотите использовать изображение по умолчанию.</string>
-    <string name="gravatar_qe_selectable_avatar_more_options_rating">Изменить оценку</string>
     <string name="gravatar_qe_write_external_storage_permission_rationale_message">Чтобы сохранить изображение в общедоступной папке, требуется разрешение. Вы можете дать разрешение в настройках приложения.</string>
     <string name="gravatar_qe_download_manager_disabled_title">DownloadManager отключён. Включите его, чтобы загружать аватары.</string>
     <string name="gravatar_qe_download_manager_not_available">DownloadManager недоступен</string>

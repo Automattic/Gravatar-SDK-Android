@@ -25,7 +25,6 @@ Language: pt_BR
     <string name="gravatar_qe_avatar_rating_g">G (geral)</string>
     <string name="gravatar_qe_alert_banner_close_content_description">Fechar alerta</string>
     <string name="gravatar_qe_alert_banner_no_avatar_selected">Nenhuma imagem selecionada. Selecione uma ou a padrão será utilizada.</string>
-    <string name="gravatar_qe_selectable_avatar_more_options_rating">Mudar classificação</string>
     <string name="gravatar_qe_write_external_storage_permission_rationale_message">Para salvar a imagem em uma pasta pública, você precisa conceder permissão. Você pode fazer isso nas configurações do app.</string>
     <string name="gravatar_qe_download_manager_disabled_title">O DownloadManager está desativado. Ative-o para fazer download de avatares.</string>
     <string name="gravatar_qe_download_manager_not_available">O DownloadManager não está disponível</string>
