@@ -1,7 +1,6 @@
 package com.gravatar.quickeditor.ui.components
 
 import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.MutableTransitionState
@@ -96,7 +95,7 @@ private fun PickerPopup(
                             PopupButton(
                                 text = item.text,
                                 iconRes = item.iconRes,
-                                contentDescription = stringResource(item.contentDescription),
+                                contentDescription = item.contentDescription,
                                 shape = popupButtonShape(index, popupMenu.items.size, cornerRadius),
                                 color = item.contentColor,
                                 onClick = {
@@ -138,7 +137,7 @@ internal data class PickerPopupMenu(
 internal data class PickerPopupItem(
     val text: String,
     @DrawableRes val iconRes: Int?,
-    @StringRes val contentDescription: Int,
+    val contentDescription: String,
     val onClick: (() -> Unit)? = null,
     val contentColor: Color? = null,
     val subMenu: PickerPopupMenu? = null,

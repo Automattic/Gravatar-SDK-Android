@@ -25,6 +25,10 @@ internal fun AvatarMoreOptionsPickerPopup(
     onDismissRequest: () -> Unit,
     onAvatarOptionClicked: (AvatarOption) -> Unit,
 ) {
+    val altTextItemLabel = stringResource(
+        R.string.gravatar_qe_selectable_avatar_more_options_rating_v2,
+        avatarRating.firstOrNull { it.selected }?.rating?.value.orEmpty(),
+    )
     PickerPopup(
         anchorAlignment = anchorAlignment,
         offset = offset,
@@ -34,22 +38,23 @@ internal fun AvatarMoreOptionsPickerPopup(
                 PickerPopupItem(
                     text = stringResource(R.string.gravatar_qe_selectable_avatar_more_options_alt_text),
                     iconRes = R.drawable.gravatar_avatar_more_options_alt_text,
-                    contentDescription =
-                        R.string.gravatar_qe_selectable_avatar_more_options_alt_text_content_description,
+                    contentDescription = stringResource(R.string.gravatar_qe_selectable_avatar_more_options_alt_text_content_description),
                     onClick = {
                         onAvatarOptionClicked(AvatarOption.AltText)
                     },
                 ),
                 PickerPopupItem(
-                    text = stringResource(R.string.gravatar_qe_selectable_avatar_more_options_rating),
+                    text = altTextItemLabel,
                     iconRes = R.drawable.gravatar_avatar_more_options_rating,
-                    contentDescription = R.string.gravatar_qe_selectable_avatar_more_options_rating,
+                    contentDescription = altTextItemLabel,
                     subMenu = PickerPopupMenu(
                         items = avatarRating.map { (rating, selected) ->
                             PickerPopupItem(
                                 text = stringResource(rating.fullNameRes),
                                 iconRes = if (selected) R.drawable.ic_checkmark else null,
-                                contentDescription = R.string.gravatar_qe_avatar_rating_selected_content_description,
+                                contentDescription = stringResource(
+                                    R.string.gravatar_qe_avatar_rating_selected_content_description,
+                                ),
                                 onClick = {
                                     onAvatarOptionClicked(AvatarOption.Rating(rating))
                                 },
@@ -60,7 +65,9 @@ internal fun AvatarMoreOptionsPickerPopup(
                 PickerPopupItem(
                     text = stringResource(R.string.gravatar_qe_selectable_avatar_more_options_download_image),
                     iconRes = R.drawable.gravatar_avatar_more_options_download,
-                    contentDescription = R.string.gravatar_qe_selectable_avatar_more_options_download_image,
+                    contentDescription = stringResource(
+                        R.string.gravatar_qe_selectable_avatar_more_options_download_image,
+                    ),
                     onClick = {
                         onAvatarOptionClicked(AvatarOption.DownloadImage)
                     },
@@ -68,7 +75,9 @@ internal fun AvatarMoreOptionsPickerPopup(
                 PickerPopupItem(
                     text = stringResource(R.string.gravatar_qe_selectable_avatar_more_options_delete),
                     iconRes = R.drawable.gravatar_avatar_more_options_delete,
-                    contentDescription = R.string.gravatar_qe_selectable_avatar_more_options_delete_content_description,
+                    contentDescription = stringResource(
+                        R.string.gravatar_qe_selectable_avatar_more_options_delete_content_description,
+                    ),
                     contentColor = MaterialTheme.colorScheme.error,
                     onClick = {
                         onAvatarOptionClicked(AvatarOption.Delete)

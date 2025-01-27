@@ -31,13 +31,13 @@ internal fun MediaPickerPopup(
                 PickerPopupItem(
                     text = stringResource(R.string.gravatar_qe_avatar_picker_choose_a_photo),
                     iconRes = R.drawable.gravatar_photo_library,
-                    contentDescription = R.string.gravatar_qe_photo_library_icon_description,
+                    contentDescription = stringResource(R.string.gravatar_qe_photo_library_icon_description),
                     onClick = onChoosePhotoClick,
                 ),
                 PickerPopupItem(
                     text = stringResource(R.string.gravatar_qe_avatar_picker_take_photo),
                     iconRes = R.drawable.gravatar_capture_photo,
-                    contentDescription = R.string.gravatar_qe_capture_photo_icon_description,
+                    contentDescription = stringResource(R.string.gravatar_qe_capture_photo_icon_description),
                     onClick = onTakePhotoClick,
                 ),
             ),
