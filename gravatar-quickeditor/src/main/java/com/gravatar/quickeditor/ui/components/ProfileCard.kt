@@ -4,6 +4,7 @@ import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
@@ -28,6 +29,7 @@ import com.gravatar.ui.GravatarTheme
 import com.gravatar.ui.components.ComponentState
 import com.gravatar.ui.components.ProfileSummary
 import com.gravatar.ui.components.atomic.Avatar
+import com.gravatar.ui.components.atomic.ViewProfileButton
 import com.gravatar.ui.components.transform
 
 @Composable
@@ -58,6 +60,14 @@ internal fun ProfileCard(
                         size = 72.dp,
                         modifier = Modifier.clip(CircleShape),
                     )
+                },
+                viewProfile = { state ->
+                    if (state !is ComponentState.Empty) {
+                        ViewProfileButton(
+                            state = state,
+                            modifier = Modifier.height(32.dp),
+                        )
+                    }
                 },
             )
         }
