@@ -59,7 +59,7 @@ internal fun AlertBanner(message: String, onClose: () -> Unit, modifier: Modifie
             fontSize = 13.sp,
             modifier = Modifier
                 .weight(1f)
-                .padding(start = 12.dp, top = 12.dp, end = 48.dp, bottom = 12.dp),
+                .padding(12.dp),
         )
         Icon(
             imageVector = Icons.Filled.Close,
