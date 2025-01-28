@@ -25,7 +25,7 @@ internal fun AvatarMoreOptionsPickerPopup(
     onDismissRequest: () -> Unit,
     onAvatarOptionClicked: (AvatarOption) -> Unit,
 ) {
-    val altTextItemLabel = stringResource(
+    val ratingItemLabel = stringResource(
         R.string.gravatar_qe_selectable_avatar_more_options_rating_v2,
         avatarRating.firstOrNull { it.selected }?.rating?.value.orEmpty(),
     )
@@ -56,9 +56,9 @@ internal fun AvatarMoreOptionsPickerPopup(
                     },
                 ),
                 PickerPopupItem(
-                    text = altTextItemLabel,
+                    text = ratingItemLabel,
                     iconRes = R.drawable.gravatar_avatar_more_options_rating,
-                    contentDescription = altTextItemLabel,
+                    contentDescription = ratingItemLabel,
                     subMenu = PickerPopupMenu(
                         items = avatarRating.map { (rating, selected) ->
                             PickerPopupItem(
