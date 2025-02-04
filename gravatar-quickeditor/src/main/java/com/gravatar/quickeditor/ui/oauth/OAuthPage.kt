@@ -172,7 +172,9 @@ internal fun OauthPage(
                         uiState.profile?.let {
                             ProfileCard(
                                 profile = it,
+                                email = email,
                                 modifier = Modifier.padding(top = 16.dp),
+                                avatarCacheBuster = uiState.avatarCacheBuster,
                             )
                         }
                         val sectionModifier = Modifier.padding(top = 24.dp, bottom = 10.dp)

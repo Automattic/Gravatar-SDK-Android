@@ -21,20 +21,21 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.gravatar.AvatarQueryOptions
+import com.gravatar.DefaultAvatarOption
 import com.gravatar.ImageRating
-import com.gravatar.extensions.avatarUrl
 import com.gravatar.extensions.defaultProfile
 import com.gravatar.restapi.models.Profile
+import com.gravatar.types.Email
 import com.gravatar.ui.GravatarTheme
 import com.gravatar.ui.components.ComponentState
 import com.gravatar.ui.components.ProfileSummary
 import com.gravatar.ui.components.atomic.Avatar
 import com.gravatar.ui.components.atomic.ViewProfileButton
-import com.gravatar.ui.components.transform
 
 @Composable
 internal fun ProfileCard(
     profile: ComponentState<Profile>?,
+    email: Email,
     modifier: Modifier = Modifier,
     avatarCacheBuster: String? = null,
 ) {
@@ -49,16 +50,15 @@ internal fun ProfileCard(
                 avatar = {
                     val sizePx = with(LocalDensity.current) { 72.dp.roundToPx() }
                     Avatar(
-                        state = profile.transform {
-                            avatarUrl(
-                                AvatarQueryOptions {
-                                    preferredSize = sizePx
-                                    rating = ImageRating.X
-                                },
-                            ).url(avatarCacheBuster).toString()
+                        email = email,
+                        avatarQueryOptions = AvatarQueryOptions {
+                            preferredSize = sizePx
+                            rating = ImageRating.X
+                            defaultAvatarOption = DefaultAvatarOption.Status404
                         },
                         size = 72.dp,
                         modifier = Modifier.clip(CircleShape),
+                        cacheBuster = avatarCacheBuster,
                     )
                 },
                 viewProfile = { state ->
@@ -106,6 +106,7 @@ private fun ProfileCardPreview() {
             profile = ComponentState.Loaded(
                 defaultProfile(hash = "dfadf", "John Travolta"),
             ),
+            email = Email("john.adams@test.com"),
             modifier = Modifier.padding(20.dp),
         )
     }

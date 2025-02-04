@@ -9,6 +9,8 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import com.gravatar.quickeditor.QuickEditorContainer
 import com.gravatar.quickeditor.data.storage.ProfileStorage
 import com.gravatar.quickeditor.data.storage.TokenStorage
+import com.gravatar.quickeditor.ui.time.Clock
+import com.gravatar.quickeditor.ui.time.SystemClock
 import com.gravatar.services.ErrorType
 import com.gravatar.services.GravatarResult
 import com.gravatar.services.ProfileService
@@ -28,8 +30,9 @@ internal class OAuthViewModel(
     private val tokenStorage: TokenStorage,
     private val profileStorage: ProfileStorage,
     private val profileService: ProfileService,
+    clock: Clock,
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow(OAuthUiState())
+    private val _uiState = MutableStateFlow(OAuthUiState(avatarCacheBuster = clock.getTimeMillis().toString()))
     val uiState: StateFlow<OAuthUiState> = _uiState.asStateFlow()
 
     private val _actions = Channel<OAuthAction>(Channel.BUFFERED)
@@ -127,6 +130,7 @@ internal class OAuthViewModelFactory(
             tokenStorage = QuickEditorContainer.getInstance().tokenStorage,
             profileStorage = QuickEditorContainer.getInstance().profileStorage,
             profileService = QuickEditorContainer.getInstance().profileService,
+            clock = SystemClock(),
         ) as T
     }
 }

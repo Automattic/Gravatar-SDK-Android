@@ -214,6 +214,7 @@ internal fun AvatarPicker(uiState: AvatarPickerUiState, onEvent: (AvatarPickerEv
             }
             ProfileCard(
                 profile = uiState.profile,
+                email = uiState.email,
                 avatarCacheBuster = uiState.avatarCacheBuster.toString(),
                 modifier = Modifier.padding(horizontal = 16.dp),
             )

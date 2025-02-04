@@ -5,6 +5,7 @@ import app.cash.turbine.test
 import com.gravatar.quickeditor.data.storage.ProfileStorage
 import com.gravatar.quickeditor.data.storage.TokenStorage
 import com.gravatar.quickeditor.ui.CoroutineTestRule
+import com.gravatar.quickeditor.ui.time.Clock
 import com.gravatar.restapi.models.Profile
 import com.gravatar.services.ErrorType
 import com.gravatar.services.GravatarResult
@@ -29,6 +30,7 @@ class OAuthViewModelTest {
     private val tokenStorage = mockk<TokenStorage>()
     private val profileService = mockk<ProfileService>()
     private val profileStorage = mockk<ProfileStorage>()
+    private val clock = mockk<Clock>()
     private val savedStateHandle = SavedStateHandle()
 
     private lateinit var viewModel: OAuthViewModel
@@ -42,6 +44,7 @@ class OAuthViewModelTest {
         coEvery { profileService.retrieveCatching(email) } returns GravatarResult.Success(mockk())
         coEvery { profileStorage.getLoginIntroShown(any()) } returns false
         coEvery { profileStorage.setLoginIntroShown(any()) } returns Unit
+        coEvery { clock.getTimeMillis() } returns 0
         viewModel = createViewModel()
     }
 
@@ -239,6 +242,6 @@ class OAuthViewModelTest {
     }
 
     private fun createViewModel(): OAuthViewModel {
-        return OAuthViewModel(savedStateHandle, email, tokenStorage, profileStorage, profileService)
+        return OAuthViewModel(savedStateHandle, email, tokenStorage, profileStorage, profileService, clock)
     }
 }

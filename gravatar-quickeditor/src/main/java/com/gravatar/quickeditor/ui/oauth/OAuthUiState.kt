@@ -6,6 +6,7 @@ import com.gravatar.ui.components.ComponentState
 internal data class OAuthUiState(
     val status: OAuthStatus = OAuthStatus.LoginRequired,
     val profile: ComponentState<Profile>? = null,
+    val avatarCacheBuster: String? = null,
 )
 
 internal sealed class OAuthStatus {

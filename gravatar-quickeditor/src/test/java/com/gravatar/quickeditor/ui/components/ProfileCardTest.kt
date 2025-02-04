@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.gravatar.extensions.defaultProfile
 import com.gravatar.quickeditor.ui.gravatarScreenshotTest
+import com.gravatar.types.Email
 import com.gravatar.ui.components.ComponentState
 import com.gravatar.uitestutils.RoborazziTest
 import org.junit.Test
@@ -22,6 +23,7 @@ class ProfileCardTest : RoborazziTest() {
         gravatarScreenshotTest {
             ProfileCard(
                 profile = ComponentState.Loaded(profile),
+                email = Email("email"),
                 modifier = Modifier.padding(20.dp),
             )
         }
@@ -32,6 +34,7 @@ class ProfileCardTest : RoborazziTest() {
     fun profileCardDarkMode() = gravatarScreenshotTest {
         ProfileCard(
             profile = ComponentState.Loaded(profile),
+            email = Email("email"),
             modifier = Modifier.padding(20.dp),
         )
     }
