@@ -6,4 +6,5 @@
     <string name="gravatar_ui_empty_state_user_info">Add your location, pronouns, etc</string>
     <string name="gravatar_ui_empty_state_view_profile_button">Claim profile</string>
     <string name="gravatar_ui_location_empty_state">Location</string>
+    <string name="gravatar_ui_avatar_content_description">User profile image</string>
 </resources>

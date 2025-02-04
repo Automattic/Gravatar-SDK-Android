@@ -4,16 +4,23 @@ import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.gravatar.AvatarQueryOptions
+import com.gravatar.AvatarUrl
 import com.gravatar.extensions.avatarUrl
 import com.gravatar.extensions.defaultProfile
 import com.gravatar.restapi.models.Profile
+import com.gravatar.types.Email
 import com.gravatar.ui.R
 import com.gravatar.ui.components.ComponentState
 import com.gravatar.ui.components.LoadingToLoadedProfileStatePreview
@@ -144,9 +151,68 @@ private fun EmptyAvatar(size: Dp, modifier: Modifier = Modifier) {
 private fun Avatar(model: Any?, size: Dp, modifier: Modifier) {
     AsyncImage(
         model = model,
-        contentDescription = "User profile image",
+        contentDescription = stringResource(R.string.gravatar_ui_avatar_content_description),
         modifier = modifier.size(size),
     )
+}
+
+private enum class AvatarState {
+    None,
+    Loading,
+    Loaded,
+    Placeholder,
+}
+
+/**
+ * Atomic Avatar composable that displays a user's avatar that is generated from the user's email address.
+ * A skeleton overlay will be shown while loading the image.
+ *
+ * @param email The user's email address
+ * @param size The size of the avatar
+ * @param modifier Composable modifier
+ * @param avatarQueryOptions Options to customize the avatar query
+ * @param cacheBuster Random string value to force a cache bust
+ */
+@Composable
+public fun Avatar(
+    email: Email,
+    size: Dp,
+    modifier: Modifier = Modifier,
+    avatarQueryOptions: AvatarQueryOptions? = null,
+    cacheBuster: String? = null,
+) {
+    var state by remember { mutableStateOf(AvatarState.None) }
+    val sizePx = with(LocalDensity.current) { size.roundToPx() }
+    Box(
+        modifier = modifier.size(size),
+    ) {
+        AsyncImage(
+            model = AvatarUrl(
+                hash = email.hash(),
+                avatarQueryOptions = AvatarQueryOptions {
+                    preferredSize = sizePx
+                    rating = avatarQueryOptions?.rating
+                    forceDefaultAvatar = avatarQueryOptions?.forceDefaultAvatar
+                    defaultAvatarOption = avatarQueryOptions?.defaultAvatarOption
+                },
+            ).url(cacheBuster).toString(),
+            contentDescription = stringResource(R.string.gravatar_ui_avatar_content_description),
+            onLoading = {
+                state = AvatarState.Loading
+            },
+            onError = {
+                state = AvatarState.Placeholder
+            },
+            onSuccess = {
+                state = AvatarState.Loaded
+            },
+        )
+        when (state) {
+            AvatarState.Loading -> SkeletonAvatar(size = size)
+            AvatarState.Placeholder -> EmptyAvatar(size = size)
+            else -> Unit
+        }
+    }
 }
 
 @Preview
