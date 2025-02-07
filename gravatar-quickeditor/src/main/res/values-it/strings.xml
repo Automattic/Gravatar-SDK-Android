@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: 2025-01-23 16:54:03+0000
+Translation-Revision-Date: 2025-02-05 15:54:03+0000
 Plural-Forms: nplurals=2; plural=n != 1;
 Generator: GlotPress/2.4.0-alpha
 Language: it
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="gravatar_qe_picker_submenu_icon_description">Espandi</string>
     <string name="gravatar_qe_avatar_alt_text_cancel_button">Annulla</string>
     <string name="gravatar_qe_avatar_alt_text_save_button">Salva</string>
     <string name="gravatar_qe_avatar_alt_text_section_placeholder">Scrivi testo alternativo…</string>
@@ -25,6 +26,7 @@ Language: it
     <string name="gravatar_qe_avatar_rating_g">G (generale)</string>
     <string name="gravatar_qe_alert_banner_close_content_description">Chiudi avviso</string>
     <string name="gravatar_qe_alert_banner_no_avatar_selected">Nessuna immagine selezionata. Seleziona un\'immagine, altrimenti verrà usata quella predefinita.</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_rating_v2">Valutazione: %s</string>
     <string name="gravatar_qe_write_external_storage_permission_rationale_message">Per salvare l\'immagine in una cartella pubblica devi concedere l\'autorizzazione. Puoi concederla nelle impostazioni dell\'app.</string>
     <string name="gravatar_qe_download_manager_disabled_title">DownloadManager è disabilitato. Abilitalo per scaricare gli avatar.</string>
     <string name="gravatar_qe_download_manager_not_available">DownloadManager non è disponibile</string>

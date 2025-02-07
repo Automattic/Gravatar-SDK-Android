@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: 2025-01-23 09:54:02+0000
+Translation-Revision-Date: 2025-02-05 13:54:03+0000
 Plural-Forms: nplurals=1; plural=0;
 Generator: GlotPress/2.4.0-alpha
 Language: zh_TW
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="gravatar_qe_picker_submenu_icon_description">展開</string>
     <string name="gravatar_qe_avatar_alt_text_cancel_button">取消</string>
     <string name="gravatar_qe_avatar_alt_text_save_button">儲存</string>
     <string name="gravatar_qe_avatar_alt_text_section_placeholder">撰寫替代文字…</string>
@@ -25,6 +26,7 @@ Language: zh_TW
     <string name="gravatar_qe_avatar_rating_g">G (普遍級)</string>
     <string name="gravatar_qe_alert_banner_close_content_description">關閉警示</string>
     <string name="gravatar_qe_alert_banner_no_avatar_selected">未選取圖片。 請選取圖片，不然系統就會使用預設圖片。</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_rating_v2">評分：%s</string>
     <string name="gravatar_qe_write_external_storage_permission_rationale_message">若要在公開資料夾儲存圖片，請授予權限。 你可以在應用程式設定中授予權限。</string>
     <string name="gravatar_qe_download_manager_disabled_title">DownloadManager 已停用。 請啟用以下載大頭貼。</string>
     <string name="gravatar_qe_download_manager_not_available">無法使用 DownloadManager</string>

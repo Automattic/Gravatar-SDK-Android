@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: 2024-10-31 09:54:03+0000
+Translation-Revision-Date: 2025-02-05 09:54:02+0000
 Plural-Forms: nplurals=1; plural=0;
 Generator: GlotPress/2.4.0-alpha
 Language: ja_JP
 -->
 <resources>
+    <string name="gravatar_ui_location_empty_state">場所</string>
     <string name="gravatar_ui_empty_state_view_profile_button">プロフィールを取得</string>
     <string name="gravatar_ui_empty_state_user_info">場所や代名詞などを追加</string>
     <string name="gravatar_ui_empty_state_display_name">あなたの名前</string>

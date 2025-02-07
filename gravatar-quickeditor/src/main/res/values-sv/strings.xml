@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: 2025-01-17 09:14:55+0000
+Translation-Revision-Date: 2025-01-28 14:48:39+0000
 Plural-Forms: nplurals=2; plural=n != 1;
 Generator: GlotPress/2.4.0-alpha
 Language: sv_SE
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="gravatar_qe_picker_submenu_icon_description">Expandera</string>
     <string name="gravatar_qe_avatar_alt_text_cancel_button">Avbryt</string>
     <string name="gravatar_qe_avatar_alt_text_save_button">Spara</string>
     <string name="gravatar_qe_avatar_alt_text_section_placeholder">Skriv alt-text</string>
@@ -25,6 +26,7 @@ Language: sv_SE
     <string name="gravatar_qe_avatar_rating_g">G (Allmänt)</string>
     <string name="gravatar_qe_alert_banner_close_content_description">Stäng varning</string>
     <string name="gravatar_qe_alert_banner_no_avatar_selected">Ingen bild vald. Välj en eller så kommer standard att användas.</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_rating_v2">Klassificering: %s</string>
     <string name="gravatar_qe_write_external_storage_permission_rationale_message">För att spara bilden i en offentlig mapp måste du bevilja behörighet. Du kan bevilja detta i appinställningarna.</string>
     <string name="gravatar_qe_download_manager_disabled_title">DownloadManager är inaktiverad. Aktivera den för att ladda ner profilbilder.</string>
     <string name="gravatar_qe_download_manager_not_available">DownloadManager är inte tillgänglig.</string>

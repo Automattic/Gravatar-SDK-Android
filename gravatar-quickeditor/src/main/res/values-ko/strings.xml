@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: 2025-01-22 09:54:02+0000
+Translation-Revision-Date: 2025-02-04 09:54:03+0000
 Plural-Forms: nplurals=1; plural=0;
 Generator: GlotPress/2.4.0-alpha
 Language: ko_KR
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="gravatar_qe_picker_submenu_icon_description">확장</string>
     <string name="gravatar_qe_avatar_alt_text_cancel_button">취소</string>
     <string name="gravatar_qe_avatar_alt_text_save_button">저장</string>
     <string name="gravatar_qe_avatar_alt_text_section_placeholder">대체 텍스트 쓰기…</string>
@@ -25,6 +26,7 @@ Language: ko_KR
     <string name="gravatar_qe_avatar_rating_g">G(전체)</string>
     <string name="gravatar_qe_alert_banner_close_content_description">알림 닫기</string>
     <string name="gravatar_qe_alert_banner_no_avatar_selected">선택된 이미지가 없습니다. 이미지를 선택하지 않으면 기본 이미지가 사용됩니다.</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_rating_v2">평가: %s</string>
     <string name="gravatar_qe_write_external_storage_permission_rationale_message">이미지를 공개 폴더에 저장하려면 권한을 부여해야 합니다. 권한은 앱 설정에서 부여할 수 있습니다.</string>
     <string name="gravatar_qe_download_manager_disabled_title">DownloadManager가 비활성화되어 있습니다. 아바타를 다운로드하려면 활성화하세요.</string>
     <string name="gravatar_qe_download_manager_not_available">DownloadManager를 사용할 수 없습니다.</string>

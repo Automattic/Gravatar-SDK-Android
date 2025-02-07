@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: 2025-01-23 16:54:03+0000
+Translation-Revision-Date: 2025-02-04 09:54:03+0000
 Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);
 Generator: GlotPress/2.4.0-alpha
 Language: ru
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="gravatar_qe_picker_submenu_icon_description">Развернуть</string>
     <string name="gravatar_qe_avatar_alt_text_cancel_button">Отмена</string>
     <string name="gravatar_qe_avatar_alt_text_save_button">Сохранить</string>
     <string name="gravatar_qe_avatar_alt_text_section_placeholder">Введите альтернативный текст…</string>
@@ -25,6 +26,7 @@ Language: ru
     <string name="gravatar_qe_avatar_rating_g">G (общедоступный)</string>
     <string name="gravatar_qe_alert_banner_close_content_description">Закрыть предупреждение</string>
     <string name="gravatar_qe_alert_banner_no_avatar_selected">Изображение не выбрано. Выберите изображение, если не хотите использовать изображение по умолчанию.</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_rating_v2">Рейтинг: %s</string>
     <string name="gravatar_qe_write_external_storage_permission_rationale_message">Чтобы сохранить изображение в общедоступной папке, требуется разрешение. Вы можете дать разрешение в настройках приложения.</string>
     <string name="gravatar_qe_download_manager_disabled_title">DownloadManager отключён. Включите его, чтобы загружать аватары.</string>
     <string name="gravatar_qe_download_manager_not_available">DownloadManager недоступен</string>
