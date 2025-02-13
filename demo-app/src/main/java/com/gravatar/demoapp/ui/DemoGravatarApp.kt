@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -90,7 +89,6 @@ fun DemoGravatarApp() {
 
         Scaffold(
             snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
-            modifier = Modifier.systemBarsPadding(),
         ) { innerPadding ->
             val defaultErrorMessage = stringResource(R.string.snackbar_unknown_error_message)
             GravatarTabs(
@@ -151,7 +149,7 @@ private fun GravatarTabs(
         stringResource(R.string.tab_label_avatar_update),
     )
 
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(modifier = modifier.fillMaxSize()) {
         TabRow(selectedTabIndex = tabIndex) {
             tabs.forEachIndexed { index, title ->
                 Tab(
@@ -162,9 +160,14 @@ private fun GravatarTabs(
             }
         }
         when (tabIndex) {
-            0 -> AvatarTab(modifier, gravatarUrl, onGravatarUrlChanged, showSnackBar)
-            1 -> ProfileTab(modifier, showSnackBar)
-            2 -> AvatarUpdateTab(modifier)
+            0 -> AvatarTab(
+                gravatarUrl = gravatarUrl,
+                onGravatarUrlChanged = onGravatarUrlChanged,
+                onError = showSnackBar,
+            )
+
+            1 -> ProfileTab(onError = showSnackBar)
+            2 -> AvatarUpdateTab()
         }
     }
 }
