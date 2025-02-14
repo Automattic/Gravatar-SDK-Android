@@ -35,7 +35,7 @@ roborazzi = "1.26.0"
 startup = "1.1.1"
 testCoreKtx = "1.6.1"
 turbine = "1.1.0"
-ucrop = "2.2.10"
+ucrop = "2.2.11"
 
 [libraries]
 android-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
