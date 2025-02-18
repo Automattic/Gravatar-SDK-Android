@@ -119,8 +119,18 @@ dependencies {
     implementation(libs.compose.material3)
     implementation(libs.androidx.activity.compose)
     implementation(libs.compose.adaptive)
+    implementation(libs.android.material)
+    implementation(libs.androidx.activity)
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.camera.view)
     debugImplementation(libs.androidx.compose.ui.tooling)
     implementation(libs.composables.core)
+    // CameraX core library
+    implementation("androidx.camera:camera-core:1.4.1")
+    implementation("androidx.camera:camera-view:1.4.1")
+    implementation("androidx.camera:camera-lifecycle:1.4.1")
+    implementation("androidx.camera:camera-camera2:1.4.1")
+    implementation("androidx.concurrent:concurrent-futures-ktx:1.2.0")
 
     testImplementation(libs.junit)
     testImplementation(libs.mockk.android)

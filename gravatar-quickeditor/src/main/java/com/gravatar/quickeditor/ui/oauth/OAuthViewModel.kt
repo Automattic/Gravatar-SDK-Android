@@ -44,7 +44,7 @@ internal class OAuthViewModel(
             val loginIntroShown = profileStorage.getLoginIntroShown(email.hash().toString())
             val oauthStarted = savedStateHandle.get<Boolean>(OAUTH_STARTED_KEY) ?: false
             if (loginIntroShown && !oauthStarted) {
-                _actions.send(OAuthAction.StartOAuth)
+//                _actions.send(OAuthAction.StartOAuth)
                 savedStateHandle[OAUTH_STARTED_KEY] = true
             }
         }

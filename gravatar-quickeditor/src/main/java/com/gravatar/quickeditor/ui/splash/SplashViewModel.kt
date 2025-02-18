@@ -7,6 +7,7 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import com.gravatar.quickeditor.QuickEditorContainer
 import com.gravatar.quickeditor.data.storage.DataStoreTokenStorage
 import com.gravatar.quickeditor.data.storage.InMemoryTokenStorage
+import com.gravatar.quickeditor.data.storage.TokenStorage
 import com.gravatar.types.Email
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -16,7 +17,7 @@ internal class SplashViewModel(
     private val email: Email,
     token: String?,
     private val inMemoryTokenStorage: InMemoryTokenStorage,
-    private val dataStoreTokenStorage: DataStoreTokenStorage,
+    private val dataStoreTokenStorage: TokenStorage,
 ) : ViewModel() {
     private val _actions = Channel<SplashAction>(Channel.BUFFERED)
     val actions = _actions.receiveAsFlow()

@@ -8,6 +8,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -38,9 +39,10 @@ import com.gravatar.quickeditor.ui.splash.SplashPage
  *                  [GravatarQuickEditorError] will be non-null if the dismiss was caused by an error.
  */
 @Composable
-internal fun GravatarQuickEditorPage(
+public fun GravatarQuickEditorPage(
     gravatarQuickEditorParams: GravatarQuickEditorParams,
     oAuthParams: OAuthParams,
+    modifier: Modifier = Modifier,
     onAvatarSelected: () -> Unit,
     onDoneClicked: () -> Unit,
     onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit = {},
@@ -49,6 +51,7 @@ internal fun GravatarQuickEditorPage(
 
     NavHost(
         navController,
+        modifier = modifier,
         startDestination = QuickEditorPage.SPLASH.name,
         enterTransition = { EnterTransition.None },
         exitTransition = { ExitTransition.None },
@@ -102,9 +105,10 @@ internal fun GravatarQuickEditorPage(
  *                  [GravatarQuickEditorError] will be non-null if the dismiss was caused by an error.
  */
 @Composable
-internal fun GravatarQuickEditorPage(
+public fun GravatarQuickEditorPage(
     gravatarQuickEditorParams: GravatarQuickEditorParams,
     authToken: String,
+    modifier: Modifier = Modifier,
     onAvatarSelected: () -> Unit,
     onDoneClicked: () -> Unit,
     onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit = {},

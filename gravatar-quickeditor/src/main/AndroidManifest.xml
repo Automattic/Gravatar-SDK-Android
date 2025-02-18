@@ -2,34 +2,34 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <!-- Required by DownloadManager to download the avatar to public directory on Android 9 and lower  -->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- Required by DownloadManager to download the avatar to public directory on Android 9 and lower -->
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application>
+        <activity
+            android:name=".ui.CameraActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.GravatarQuickEditorActivity"
             android:exported="true"
             android:launchMode="singleTask"
             android:theme="@style/GravatarQETheme.Transparent" />
-
         <activity
             android:name=".ui.oauth.GravatarOAuthActivity"
             android:exported="true"
             android:launchMode="singleTask"
-            android:theme="@style/GravatarQETheme.Transparent" />
-
-        <provider
-            android:name="androidx.startup.InitializationProvider"
-            android:authorities="${applicationId}.androidx-startup"
-            android:exported="false"
-            tools:node="merge">
-            <meta-data
-                android:name="com.gravatar.quickeditor.initializer.QuickEditorContainerInitializer"
-                android:value="androidx.startup" />
-        </provider>
+            android:theme="@style/GravatarQETheme.Transparent" /> <!-- <provider -->
+        <!-- android:name="androidx.startup.InitializationProvider" -->
+        <!-- android:authorities="${applicationId}.androidx-startup" -->
+        <!-- android:exported="false" -->
+        <!-- tools:node="merge"> -->
+        <!-- <meta-data -->
+        <!-- android:name="com.gravatar.quickeditor.initializer.QuickEditorContainerInitializer" -->
+        <!-- android:value="androidx.startup" /> -->
+        <!-- </provider> -->
         <provider
             android:name=".QuickEditorFileProvider"
             android:authorities="${applicationId}.com.quickeditor.fileprovider"
@@ -40,7 +40,7 @@
                 android:resource="@xml/quickeditor_filepaths" />
         </provider>
 
-        <!-- Lib activities-->
+        <!-- Lib activities -->
         <activity
             android:name=".ui.cropperlauncher.GravatarUCropActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />

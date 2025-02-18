@@ -12,6 +12,10 @@ internal class FileUtils(
         return File(context.cacheDir, "cropped_avatar_${System.currentTimeMillis()}.jpg")
     }
 
+    fun createImageFile(): File {
+        return File(context.filesDir, "picture_avatar_${System.currentTimeMillis()}.jpg")
+    }
+
     fun deleteFile(uri: Uri) {
         val toFile = uri.toFile()
         toFile.delete()

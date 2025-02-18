@@ -121,6 +121,7 @@ dependencies {
     implementation(project(":gravatar"))
     implementation(project(":gravatar-ui"))
     implementation(project(":gravatar-quickeditor"))
+    implementation("com.google.android.gms:play-services-instantapps:18.1.0")
 
     debugImplementation(libs.androidx.compose.ui.tooling)
 

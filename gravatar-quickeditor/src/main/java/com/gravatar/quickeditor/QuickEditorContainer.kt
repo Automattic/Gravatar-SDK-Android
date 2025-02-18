@@ -25,19 +25,19 @@ import io.github.osipxd.security.crypto.createEncrypted
 import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
 
-internal class QuickEditorContainer private constructor(
+public class QuickEditorContainer private constructor(
     private val context: Context,
 ) {
-    companion object {
+    public companion object {
         @SuppressLint("StaticFieldLeak")
         private lateinit var instance: QuickEditorContainer
 
-        fun init(context: Context): QuickEditorContainer {
+        public fun init(context: Context): QuickEditorContainer {
             instance = QuickEditorContainer(context)
             return instance
         }
 
-        fun getInstance(): QuickEditorContainer {
+        internal fun getInstance(): QuickEditorContainer {
             check(::instance.isInitialized) {
                 "QuickEditorContainer is not initialized. Call init() first."
             }
@@ -45,11 +45,11 @@ internal class QuickEditorContainer private constructor(
         }
     }
 
-    private val tokenDataStore: DataStore<Preferences> = PreferenceDataStoreFactory.createEncrypted(
-        corruptionHandler = ReplaceFileCorruptionHandler { emptyPreferences() },
-    ) {
-        context.createEncryptedFileWithFallbackReset(name = "quick-editor-preferences")
-    }
+//    private val tokenDataStore: DataStore<Preferences> = PreferenceDataStoreFactory.createEncrypted(
+//        corruptionHandler = ReplaceFileCorruptionHandler { emptyPreferences() },
+//    ) {
+//        context.createEncryptedFileWithFallbackReset(name = "quick-editor-preferences")
+//    }
 
     private val profileDataStore: DataStore<Preferences> = PreferenceDataStoreFactory.create(
         corruptionHandler = ReplaceFileCorruptionHandler { emptyPreferences() },
@@ -57,8 +57,8 @@ internal class QuickEditorContainer private constructor(
         context.preferencesDataStoreFile("quick-editor-profile")
     }
 
-    val dataStoreTokenStorage: DataStoreTokenStorage by lazy {
-        DataStoreTokenStorage(dataStore = tokenDataStore, dispatcher = Dispatchers.IO)
+    internal val dataStoreTokenStorage: TokenStorage by lazy {
+        InMemoryTokenStorage()
     }
 
     private val okHttpClient: OkHttpClient by lazy {
@@ -69,14 +69,14 @@ internal class QuickEditorContainer private constructor(
 
     private var useInMemoryTokenStorage = false
 
-    public val inMemoryTokenStorage: InMemoryTokenStorage by lazy {
+    internal val inMemoryTokenStorage: InMemoryTokenStorage by lazy {
         InMemoryTokenStorage()
     }
 
-    val tokenStorage: TokenStorage
+    internal val tokenStorage: TokenStorage
         get() = if (useInMemoryTokenStorage) inMemoryTokenStorage else dataStoreTokenStorage
 
-    val profileStorage: ProfileStorage by lazy {
+    internal val profileStorage: ProfileStorage by lazy {
         DataStoreProfileStorage(dataStore = profileDataStore, dispatcher = Dispatchers.IO)
     }
 
@@ -84,11 +84,11 @@ internal class QuickEditorContainer private constructor(
         AvatarService(okHttpClient)
     }
 
-    val profileService: ProfileService by lazy {
+    internal val profileService: ProfileService by lazy {
         ProfileService()
     }
 
-    val fileUtils: FileUtils by lazy {
+    internal val fileUtils: FileUtils by lazy {
         FileUtils(context)
     }
 
@@ -96,7 +96,7 @@ internal class QuickEditorContainer private constructor(
         AvatarStorage()
     }
 
-    val avatarRepository: AvatarRepository
+    internal val avatarRepository: AvatarRepository
         get() = AvatarRepository(
             avatarService = avatarService,
             tokenStorage = tokenStorage,
@@ -104,13 +104,13 @@ internal class QuickEditorContainer private constructor(
             dispatcher = Dispatchers.IO,
         )
 
-    val imageDownloader: ImageDownloader by lazy { ImageDownloader(context = context) }
+    internal val imageDownloader: ImageDownloader by lazy { ImageDownloader(context = context) }
 
-    fun useInMemoryTokenStorage() {
+    internal fun useInMemoryTokenStorage() {
         useInMemoryTokenStorage = true
     }
 
-    fun resetUseInMemoryTokenStorage() {
+    internal fun resetUseInMemoryTokenStorage() {
         useInMemoryTokenStorage = false
     }
 }

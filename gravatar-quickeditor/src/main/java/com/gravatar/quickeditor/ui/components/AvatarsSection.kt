@@ -1,7 +1,9 @@
 package com.gravatar.quickeditor.ui.components
 
 import android.Manifest
+import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -17,6 +19,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.gravatar.quickeditor.QuickEditorFileProvider
 import com.gravatar.quickeditor.R
+import com.gravatar.quickeditor.data.FileUtils
+import com.gravatar.quickeditor.ui.CameraActivity
 import com.gravatar.quickeditor.ui.avatarpicker.AvatarUi
 import com.gravatar.quickeditor.ui.avatarpicker.AvatarsSectionUiState
 import com.gravatar.quickeditor.ui.editor.AvatarPickerContentLayout
@@ -25,6 +29,8 @@ import com.gravatar.quickeditor.ui.openAppPermissionSettings
 import com.gravatar.quickeditor.ui.withPermission
 import com.gravatar.restapi.models.Avatar
 import com.gravatar.ui.GravatarTheme
+import java.io.File
+import java.io.FileOutputStream
 import java.net.URI
 
 @Composable
@@ -38,18 +44,36 @@ internal fun AvatarsSection(
     val context = LocalContext.current
     var cameraPermissionDialogRationaleVisible by rememberSaveable { mutableStateOf(false) }
     var photoImageUri by rememberSaveable { mutableStateOf<Uri?>(null) }
-    val pickMedia = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-        uri?.let { onLocalImageSelected(it) }
+    val pickMedia = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+//        uri?.let { onLocalImageSelected(it) }
+
+        if (uri != null && uri.scheme.equals("content")) {
+            val image =
+                (context.contentResolver?.openInputStream(uri))?.readBytes()
+            val file = FileUtils(context).createImageFile()
+
+            try {
+                val fos = FileOutputStream(file.path)
+                fos.write(image)
+                fos.close()
+            } catch (e: Exception) {
+                Log.e("PDF File", "Exception in pdf callback", e)
+            }
+        }
+
     }
-    val takePhoto = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { success ->
-        val takenPictureUri = photoImageUri
-        if (success && takenPictureUri != null) onLocalImageSelected(takenPictureUri)
+    val takePhoto = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == android.app.Activity.RESULT_OK) {
+            result.data?.getStringExtra("IMAGE_URI")?.let {
+                onLocalImageSelected(Uri.parse(it))
+            }
+        }
     }
 
     val takePhotoCallback = {
         val imageUri = QuickEditorFileProvider.getTempCameraImageUri(context)
         photoImageUri = imageUri
-        takePhoto.launch(imageUri)
+        takePhoto.launch(Intent(context, CameraActivity::class.java))
     }
 
     val cameraPermissionLauncher = rememberLauncherForActivityResult(
@@ -87,7 +111,7 @@ internal fun AvatarsSection(
                 onAvatarSelected = onAvatarSelected,
                 onAvatarOptionClicked = onAvatarOptionClicked,
                 onChoosePhotoClick = {
-                    pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                    pickMedia.launch("image/*")
                 },
                 onTakePhotoClick = permissionAwareTakePhotoCallback,
             )
@@ -101,7 +125,7 @@ internal fun AvatarsSection(
                 onAvatarOptionClicked = onAvatarOptionClicked,
                 onTakePhotoClick = permissionAwareTakePhotoCallback,
                 onChoosePhotoClick = {
-                    pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                    pickMedia.launch("image/*")
                 },
             )
         }
