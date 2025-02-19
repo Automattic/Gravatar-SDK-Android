@@ -11,6 +11,9 @@ steps:
     command: |
       validate_gradle_wrapper
     plugins: [$CI_TOOLKIT]
+    notify:
+      - github_commit_status:
+          context: "Gradle Wrapper Validation"
 
   # Wait for Gradle Wrapper to be validated before running any other jobs
   - wait
@@ -19,6 +22,9 @@ steps:
     command: |
       echo "--- 🧹 Linting"
       ./gradlew ktlintcheck detekt
+    notify:
+      - github_commit_status:
+          context: "Static code analysis"
 
   - label: "☢️ Danger - PR Check"
     command: danger
@@ -27,6 +33,9 @@ steps:
     retry:
       manual:
         permit_on_passed: true
+    notify:
+      - github_commit_status:
+          context: "Danger - PR Check"
     agents:
       queue: "linter"
 
@@ -35,6 +44,9 @@ steps:
       echo "--- ⚒️ Building"
       # `build` task would also run tasks, which are executed in a separate job
       ./gradlew assemble
+    notify:
+      - github_commit_status:
+          context: "Build"
 
   - label: "Unit tests"
     command: |
@@ -42,12 +54,18 @@ steps:
       ./gradlew test
     artifact_paths:
       - "**/build/test-results/*/*.xml"
+    notify:
+      - github_commit_status:
+          context: "Unit tests"
 
   - label: "Lint"
     command: ".buildkite/commands/lint.sh"
     plugins: [$CI_TOOLKIT]
     artifact_paths:
       - "**/build/reports/lint-results*.*"
+    notify:
+      - github_commit_status:
+          context: "Lint"
 
   - label: "Screenshot tests"
     command: |
@@ -57,11 +75,17 @@ steps:
       :gravatar-quickeditor:verifyRoborazziDebug -Pscreenshot
     artifact_paths:
       - "**/build/test-results/*/*.xml"
+    notify:
+      - github_commit_status:
+          context: "Screenshot tests"
 
   - label: "Binary compatibility check"
     command: |
       echo "--- Validating binary compatibility"
       ./gradlew apiCheck
+    notify:
+      - github_commit_status:
+          context: "Binary compatibility check"
 
   - wait: ~
     if: build.branch == "trunk" || build.tag != null
@@ -78,6 +102,9 @@ steps:
     command: |
       echo "--- ⚒️ Generating OpenAPI code"
       ./gradlew :gravatar:openApiGenerate
+    notify:
+      - github_commit_status:
+          context: "OpenAPI generation"
 
   - label: "Prototype Builds"
     if: "build.pull_request.id != null"
@@ -85,9 +112,15 @@ steps:
     plugins: [ $CI_TOOLKIT ]
     artifact_paths:
       - "**/build/outputs/apk/**/*"
+    notify:
+      - github_commit_status:
+          context: "Prototype Builds"
 
   - label: "Dependency Tree Diff"
     command: |
       comment_with_dependency_diff 'gravatar-quickeditor' 'releaseRuntimeClasspath'
     if: build.pull_request.id != null
     plugins: [ $CI_TOOLKIT ]
+    notify:
+      - github_commit_status:
+          context: "Dependency Tree Diff"
