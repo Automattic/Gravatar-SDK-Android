@@ -114,16 +114,6 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
 }
 
-project.afterEvaluate {
-    publishing {
-        publications {
-            create<MavenPublication>("maven") {
-                from(components["release"])
+extra["artifactId"] = "gravatar-ui"
 
-                groupId = "com.gravatar"
-                artifactId = "gravatar-ui"
-                // version is set by `publish-to-s3` plugin
-            }
-        }
-    }
-}
+apply(from = rootProject.file("gradle/publication.gradle.kts"))

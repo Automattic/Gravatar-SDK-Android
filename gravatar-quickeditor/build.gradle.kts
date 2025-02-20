@@ -132,16 +132,6 @@ dependencies {
     testImplementation(project(":uitestutils"))
 }
 
-project.afterEvaluate {
-    publishing {
-        publications {
-            create<MavenPublication>("maven") {
-                from(components["release"])
+extra["artifactId"] = "gravatar-quickeditor"
 
-                groupId = "com.gravatar"
-                artifactId = "gravatar-quickeditor"
-                // version is set by `publish-to-s3` plugin
-            }
-        }
-    }
-}
+apply(from = rootProject.file("gradle/publication.gradle.kts"))

@@ -10,6 +10,8 @@ plugins {
     alias(libs.plugins.openapi.generator)
     alias(libs.plugins.dokka)
     alias(libs.plugins.ksp)
+    id("maven-publish")
+    signing
 }
 
 val sdkVersion: String by rootProject.extra
@@ -84,20 +86,6 @@ dependencies {
     testImplementation(kotlin("test"))
 }
 
-project.afterEvaluate {
-    publishing {
-        publications {
-            create<MavenPublication>("maven") {
-                from(components["release"])
-
-                groupId = "com.gravatar"
-                artifactId = "gravatar"
-                // version is set by `publish-to-s3` plugin
-            }
-        }
-    }
-}
-
 openApiGenerate {
     generatorName = "kotlin"
     inputSpec = "${projectDir.path}/openapi/api-gravatar.json"
@@ -159,3 +147,7 @@ tasks.openApiGenerate {
     // Always run the task forcing the up-to-date check to return false
     outputs.upToDateWhen { false }
 }
+
+extra["artifactId"] = "gravatar"
+
+apply(from = rootProject.file("gradle/publication.gradle.kts"))
