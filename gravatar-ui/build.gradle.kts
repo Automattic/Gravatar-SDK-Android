@@ -1,13 +1,14 @@
+import com.vanniktech.maven.publish.SonatypeHost
 import org.jetbrains.dokka.gradle.DokkaTaskPartial
 
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.publish.to.s3)
     alias(libs.plugins.ktlint)
     alias(libs.plugins.detekt)
     alias(libs.plugins.roborazzi)
     alias(libs.plugins.dokka)
+    alias(libs.plugins.vanniktech.maven.publish)
 }
 
 android {
@@ -114,16 +115,47 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
 }
 
-project.afterEvaluate {
-    publishing {
-        publications {
-            create<MavenPublication>("maven") {
-                from(components["release"])
+val sdkVersion: String by rootProject.extra
 
-                groupId = "com.gravatar"
-                artifactId = "gravatar-ui"
-                // version is set by `publish-to-s3` plugin
+mavenPublishing {
+    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+
+    coordinates(
+        groupId = "com.gravatar",
+        artifactId = "gravatar-ui",
+        version = sdkVersion,
+    )
+
+    pom {
+        name.set("Gravatar Android SDK")
+        description.set("The official Gravatar Android SDK")
+        url.set("https://github.com/Automattic/Gravatar-SDK-Android")
+        licenses {
+            license {
+                name.set("Mozilla Public License, Version 2.0")
+                url.set("http://www.mozilla.org/MPL/2.0/index.txt")
             }
         }
+
+        scm {
+            connection.set("scm:git:github.com:Automattic/Gravatar-SDK-Android.git")
+            developerConnection.set("scm:git:ssh://github.com:Automattic/Gravatar-SDK-Android.git")
+            url.set("https://github.com/Automattic/Gravatar-SDK-Android")
+        }
+
+        developers {
+            developer {
+                id.set("AdamGrzybkowski")
+                name.set("Adam Grzybkowski")
+                email.set("adam.grzybkowski@automattic.com")
+            }
+        }
+
+        organization {
+            name.set("Gravatar.com")
+            url.set("https://www.gravatar.com/")
+        }
     }
+
+    signAllPublications()
 }

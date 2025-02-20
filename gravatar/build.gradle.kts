@@ -1,3 +1,4 @@
+import com.vanniktech.maven.publish.SonatypeHost
 import org.jetbrains.dokka.gradle.DokkaTaskPartial
 
 plugins {
@@ -6,10 +7,10 @@ plugins {
     alias(libs.plugins.parcelize)
     alias(libs.plugins.ktlint)
     alias(libs.plugins.detekt)
-    alias(libs.plugins.publish.to.s3)
     alias(libs.plugins.openapi.generator)
     alias(libs.plugins.dokka)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.vanniktech.maven.publish)
 }
 
 val sdkVersion: String by rootProject.extra
@@ -84,20 +85,6 @@ dependencies {
     testImplementation(kotlin("test"))
 }
 
-project.afterEvaluate {
-    publishing {
-        publications {
-            create<MavenPublication>("maven") {
-                from(components["release"])
-
-                groupId = "com.gravatar"
-                artifactId = "gravatar"
-                // version is set by `publish-to-s3` plugin
-            }
-        }
-    }
-}
-
 openApiGenerate {
     generatorName = "kotlin"
     inputSpec = "${projectDir.path}/openapi/api-gravatar.json"
@@ -158,4 +145,47 @@ tasks.openApiGenerate {
 
     // Always run the task forcing the up-to-date check to return false
     outputs.upToDateWhen { false }
+}
+
+mavenPublishing {
+    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+
+    coordinates(
+        groupId = "com.gravatar",
+        artifactId = "gravatar",
+        version = sdkVersion,
+    )
+
+    pom {
+        name.set("Gravatar Android SDK")
+        description.set("The official Gravatar Android SDK")
+        url.set("https://github.com/Automattic/Gravatar-SDK-Android")
+        licenses {
+            license {
+                name.set("Mozilla Public License, Version 2.0")
+                url.set("http://www.mozilla.org/MPL/2.0/index.txt")
+            }
+        }
+
+        scm {
+            connection.set("scm:git:github.com:Automattic/Gravatar-SDK-Android.git")
+            developerConnection.set("scm:git:ssh://github.com:Automattic/Gravatar-SDK-Android.git")
+            url.set("https://github.com/Automattic/Gravatar-SDK-Android")
+        }
+
+        developers {
+            developer {
+                id.set("AdamGrzybkowski")
+                name.set("Adam Grzybkowski")
+                email.set("adam.grzybkowski@automattic.com")
+            }
+        }
+
+        organization {
+            name.set("Gravatar.com")
+            url.set("https://www.gravatar.com/")
+        }
+    }
+
+    signAllPublications()
 }

@@ -36,6 +36,7 @@ startup = "1.1.1"
 testCoreKtx = "1.6.1"
 turbine = "1.1.0"
 ucrop = "2.2.11"
+mavenPublish = "0.30.0"
 
 [libraries]
 android-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
@@ -95,3 +96,4 @@ openapi-generator = { id = "org.openapi.generator", version.ref = "openapi" }
 parcelize = { id = "kotlin-parcelize" }
 publish-to-s3 = { id = "com.automattic.android.publish-to-s3", version.ref = "publishToS3" }
 roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
+vanniktech-maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "mavenPublish" }
