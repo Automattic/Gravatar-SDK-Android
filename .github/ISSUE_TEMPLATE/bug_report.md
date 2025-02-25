@@ -1,6 +1,6 @@
 ---
 name: "\U0001F41E Bug report"
-about: Report a bug if something isn't working as expected in Gravatar.
+about: Report a bug if something isn't working as expected in Gravatar Android SDK.
 title: ''
 labels:
   - 'Bug'
