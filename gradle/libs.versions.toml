@@ -28,7 +28,6 @@ moshi = "1.15.1"
 navigationCompose = "2.8.3"
 okhttp = "4.12.0"
 openapi = "7.4.0"
-publishToS3 = "0.10.0"
 retrofit = "2.11.0"
 robolectric = "4.12.2"
 roborazzi = "1.26.0"
@@ -94,6 +93,5 @@ ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 openapi-generator = { id = "org.openapi.generator", version.ref = "openapi" }
 parcelize = { id = "kotlin-parcelize" }
-publish-to-s3 = { id = "com.automattic.android.publish-to-s3", version.ref = "publishToS3" }
 roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
 vanniktech-maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "mavenPublish" }
