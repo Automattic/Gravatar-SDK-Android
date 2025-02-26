@@ -160,7 +160,9 @@ To regerate the code you can use the following gradlew task:
 
 ## Publishing
 
-The SDK is published to the Automattic's S3 instance via [`publish-to-s3`](https://github.com/Automattic/publish-to-s3-gradle-plugin) Gradle plugin.
+All new versions are published in the Maven Central repository.
+
+Older versions (<=2.3.1) were published to the Automattic's S3 instance via [`publish-to-s3`](https://github.com/Automattic/publish-to-s3-gradle-plugin) Gradle plugin.
 
 The published version is calculated depending on the Git context, in this order:
 - if there's a tag, version is `<tag name>`
