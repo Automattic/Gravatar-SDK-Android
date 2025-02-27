@@ -81,6 +81,10 @@ security-crypto-datastore = { group = "io.github.osipxd", name = "security-crypt
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 ucrop = { group = "com.automattic", name = "ucrop", version.ref = "ucrop" }
 
+# Dependencies of the included build-logic
+android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
+kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+vanniktech-maven-publish-plugin = { group = "com.vanniktech.maven.publish", name = "com.vanniktech.maven.publish.gradle.plugin", version.ref = "mavenPublish" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
@@ -95,3 +99,6 @@ openapi-generator = { id = "org.openapi.generator", version.ref = "openapi" }
 parcelize = { id = "kotlin-parcelize" }
 roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
 vanniktech-maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "mavenPublish" }
+
+# Plugins defined by this project
+gravatar-maven-publish = { id = "gravatar.maven.publish" }
