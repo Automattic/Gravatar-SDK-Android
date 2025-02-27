@@ -1,11 +1,8 @@
 import org.jetbrains.dokka.gradle.DokkaTaskPartial
 
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.gravatar.android.library)
     alias(libs.plugins.parcelize)
-    alias(libs.plugins.ktlint)
-    alias(libs.plugins.detekt)
     alias(libs.plugins.openapi.generator)
     alias(libs.plugins.dokka)
     alias(libs.plugins.ksp)
@@ -16,38 +13,10 @@ val sdkVersion: String by rootProject.extra
 
 android {
     namespace = "com.gravatar"
-    compileSdk = 34
     buildFeatures.buildConfig = true
 
     defaultConfig {
-        minSdk = 21
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
         buildConfigField("String", "SDK_VERSION", "\"$sdkVersion\"")
-    }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro",
-            )
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-    detekt {
-        config.setFrom("${project.rootDir}/config/detekt/detekt.yml")
-        source.setFrom("src")
-        autoCorrect = false
-        buildUponDefaultConfig = true
-        parallel = true
     }
 
     testOptions {
@@ -62,11 +31,6 @@ android {
                 includes.from("GravatarCore.md")
             }
         }
-    }
-
-    // Explicit API mode
-    kotlin {
-        explicitApi()
     }
 }
 

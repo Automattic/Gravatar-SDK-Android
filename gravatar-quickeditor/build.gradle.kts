@@ -1,96 +1,24 @@
 import org.jetbrains.dokka.gradle.DokkaTaskPartial
 
 plugins {
-    alias(libs.plugins.android.library)
+    alias(libs.plugins.gravatar.android.library)
+    alias(libs.plugins.gravatar.android.compose)
     alias(libs.plugins.parcelize)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.ktlint)
-    alias(libs.plugins.detekt)
-    alias(libs.plugins.roborazzi)
     alias(libs.plugins.dokka)
     alias(libs.plugins.gravatar.maven.publish)
 }
 
 android {
     namespace = "com.gravatar.quickeditor"
-    compileSdk = 34
 
     defaultConfig {
         minSdk = 23
-        // targetSdkVersion has no effect for libraries. This is only used for the test APK
-        targetSdk = 34
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
     }
 
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = "1.8"
-        val composeReportsDir = "reports/compose"
-        freeCompilerArgs += listOf(
-            "-P",
-            "plugin:androidx.compose.compiler.plugins.kotlin:stabilityConfigurationPath=" +
-                "${project.rootDir}/compose_compiler_config.conf",
-        )
-        freeCompilerArgs += listOf(
-            "-P",
-            "plugin:androidx.compose.compiler.plugins.kotlin:metricsDestination=" +
-                project.layout.buildDirectory.get().dir(composeReportsDir).asFile.absolutePath,
-        )
-        freeCompilerArgs += listOf(
-            "-P",
-            "plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=" +
-                project.layout.buildDirectory.get().dir(composeReportsDir).asFile.absolutePath,
-        )
-    }
-    detekt {
-        config.setFrom("${project.rootDir}/config/detekt/detekt.yml")
-        source.setFrom("src")
-        autoCorrect = false
-        buildUponDefaultConfig = true
-        parallel = false
-    }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.15"
-    }
     tasks.withType<DokkaTaskPartial>().configureEach {
         dokkaSourceSets {
             configureEach {
                 includes.from("QuickEditor.md")
-            }
-        }
-    }
-
-    // Explicit API mode
-    kotlin {
-        explicitApi()
-    }
-
-    testOptions {
-        unitTests {
-            isIncludeAndroidResources = true
-            all {
-                // -Pscreenshot to filter screenshot tests
-                it.useJUnit {
-                    if (project.hasProperty("screenshot")) {
-                        includeCategories("com.gravatar.uitestutils.ScreenshotTests")
-                    } else {
-                        excludeCategories("com.gravatar.uitestutils.ScreenshotTests")
-                    }
-                }
-                it.systemProperties["robolectric.pixelCopyRenderMode"] = "hardware"
             }
         }
     }

@@ -21,6 +21,7 @@ dependencies {
     compileOnly(libs.android.gradlePlugin)
     compileOnly(libs.kotlin.gradlePlugin)
     compileOnly(libs.vanniktech.maven.publish.plugin)
+    compileOnly(libs.detekt.gradlePlugin)
 }
 
 tasks {
@@ -35,6 +36,14 @@ gradlePlugin {
         register("mavenCentralPublish") {
             id = libs.plugins.gravatar.maven.publish.get().pluginId
             implementationClass = "MavenPublishConventionPlugin"
+        }
+        register("gravatarAndroidLibrary") {
+            id = libs.plugins.gravatar.android.library.get().pluginId
+            implementationClass = "GravatarAndroidLibraryConventionPlugin"
+        }
+        register("gravatarAndroidCompose") {
+            id = libs.plugins.gravatar.android.compose.get().pluginId
+            implementationClass = "GravatarComposeConventionPlugin"
         }
     }
 }
