@@ -28,3 +28,12 @@ tasks {
         failOnWarning = true
     }
 }
+
+gradlePlugin {
+    plugins {
+        register("mavenCentralPublish") {
+            id = libs.plugins.gravatar.maven.publish.get().pluginId
+            implementationClass = "MavenPublishConventionPlugin"
+        }
+    }
+}
