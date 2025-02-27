@@ -20,8 +20,9 @@ tasks.withType<KotlinCompile>().configureEach {
 dependencies {
     compileOnly(libs.android.gradlePlugin)
     compileOnly(libs.kotlin.gradlePlugin)
-    compileOnly(libs.vanniktech.maven.publish.plugin)
+    compileOnly(libs.vanniktech.maven.publishPlugin)
     compileOnly(libs.detekt.gradlePlugin)
+    compileOnly(libs.openapi.generator.gradlePlugin)
 }
 
 tasks {
@@ -44,6 +45,10 @@ gradlePlugin {
         register("gravatarAndroidCompose") {
             id = libs.plugins.gravatar.android.compose.get().pluginId
             implementationClass = "GravatarComposeConventionPlugin"
+        }
+        register("gravatarOpenApiGenerator") {
+            id = libs.plugins.gravatar.openapi.generator.get().pluginId
+            implementationClass = "GravatarOpenApiGeneratorConventionPlugin"
         }
     }
 }

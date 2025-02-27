@@ -8,14 +8,11 @@ plugins {
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.android.library) apply false
     alias(libs.plugins.kotlin.android) apply false
-    // Ktlint
     alias(libs.plugins.ktlint) apply false
-    // Detekt
     alias(libs.plugins.detekt) apply false
-    // Dokka
     alias(libs.plugins.dokka)
-    // Roborazzi
     alias(libs.plugins.roborazzi) apply false
+    alias(libs.plugins.openapi.generator) apply false
     alias(libs.plugins.binary.compatibility.validator)
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.vanniktech.maven.publish) apply false
