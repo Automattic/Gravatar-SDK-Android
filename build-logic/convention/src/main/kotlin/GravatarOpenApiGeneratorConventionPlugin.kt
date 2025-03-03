@@ -3,13 +3,14 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.withType
+import org.openapitools.generator.gradle.plugin.OpenApiGeneratorPlugin
 import org.openapitools.generator.gradle.plugin.extensions.OpenApiGeneratorGenerateExtension
 import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
 
 class GravatarOpenApiGeneratorConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
-            apply(plugin = "org.openapi.generator")
+            apply<OpenApiGeneratorPlugin>()
 
             extensions.configure<OpenApiGeneratorGenerateExtension> {
                 generatorName.set("kotlin")
