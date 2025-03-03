@@ -38,20 +38,17 @@ class GravatarComposeConventionPlugin : Plugin<Project> {
                 tasks.withType<KotlinCompile>().configureEach {
                     kotlinOptions {
                         val composeReportsDir = "reports/compose"
+                        val prefix="plugin:androidx.compose.compiler.plugins.kotlin"
+
                         freeCompilerArgs += listOf(
                             "-P",
-                            "plugin:androidx.compose.compiler.plugins.kotlin:stabilityConfigurationPath=" +
-                                    "${project.rootDir}/compose_compiler_config.conf",
-                        )
-                        freeCompilerArgs += listOf(
+                            "$prefix:stabilityConfigurationPath=${project.rootDir}/compose_compiler_config.conf",
                             "-P",
-                            "plugin:androidx.compose.compiler.plugins.kotlin:metricsDestination=" +
-                                    project.layout.buildDirectory.get().dir(composeReportsDir).asFile.absolutePath,
-                        )
-                        freeCompilerArgs += listOf(
+                            "$prefix:metricsDestination=${project.layout.buildDirectory.get().dir(composeReportsDir)
+                                .asFile.absolutePath}",
                             "-P",
-                            "plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=" +
-                                    project.layout.buildDirectory.get().dir(composeReportsDir).asFile.absolutePath,
+                            "$prefix:reportsDestination=${project.layout.buildDirectory.get().dir(composeReportsDir)
+                                .asFile.absolutePath}"
                         )
                     }
                 }
