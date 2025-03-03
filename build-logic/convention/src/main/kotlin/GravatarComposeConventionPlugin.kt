@@ -1,4 +1,5 @@
 import com.android.build.gradle.LibraryExtension
+import com.gravatar.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
@@ -16,7 +17,8 @@ class GravatarComposeConventionPlugin : Plugin<Project> {
                     compose = true
                 }
                 composeOptions {
-                    kotlinCompilerExtensionVersion = "1.5.15"
+                    kotlinCompilerExtensionVersion =
+                        libs.findVersion("kotlinCompilerExtension").get().toString()
                 }
                 testOptions {
                     unitTests {

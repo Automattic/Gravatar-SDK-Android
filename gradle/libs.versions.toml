@@ -36,6 +36,7 @@ testCoreKtx = "1.6.1"
 turbine = "1.1.0"
 ucrop = "2.2.11"
 mavenPublish = "0.31.0"
+kotlinCompilerExtension = "1.5.15"
 
 [libraries]
 android-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
