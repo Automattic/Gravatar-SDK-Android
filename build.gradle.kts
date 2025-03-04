@@ -51,7 +51,7 @@ val isTagBuild: Boolean = System.getenv("BUILDKITE_TAG")?.isNotEmpty() == true
 
 val sdkVersion = providers.exec {
     commandLine("git", "describe", "--tags")
-}.standardOutput.asText.get().trim() + if (isTagBuild) "" else "" // Add -SNAPSHOT suffix once 0.31.0 version is released
+}.standardOutput.asText.get().trim() + if (isTagBuild) "" else "-SNAPSHOT" // Add -SNAPSHOT suffix once 0.31.0 version is released
 
 extra["sdkVersion"] = sdkVersion
 
