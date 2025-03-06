@@ -18,6 +18,7 @@ plugins {
     alias(libs.plugins.roborazzi) apply false
     alias(libs.plugins.binary.compatibility.validator)
     alias(libs.plugins.ksp) apply false
+    alias(libs.plugins.vanniktech.maven.publish) apply false
 }
 
 buildscript {
@@ -46,9 +47,11 @@ apiValidation {
     ignoredProjects.addAll(listOf("demo-app", "uitestutils"))
 }
 
+val isTagBuild: Boolean = System.getenv("BUILDKITE_TAG")?.isNotEmpty() == true
+
 val sdkVersion = providers.exec {
     commandLine("git", "describe", "--tags")
-}.standardOutput.asText.get().trim()
+}.standardOutput.asText.get().trim() + if (isTagBuild) "" else "-SNAPSHOT" // Add -SNAPSHOT suffix once 0.31.0 version is released
 
 extra["sdkVersion"] = sdkVersion
 
