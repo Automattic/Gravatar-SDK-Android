@@ -41,7 +41,7 @@ class GravatarComposeConventionPlugin : Plugin<Project> {
                 tasks.withType<KotlinCompile>().configureEach {
                     kotlinOptions {
                         val composeReportsDir = "reports/compose"
-                        val prefix="plugin:androidx.compose.compiler.plugins.kotlin"
+                        val prefix = "plugin:androidx.compose.compiler.plugins.kotlin"
 
                         freeCompilerArgs += listOf(
                             "-P",
@@ -51,7 +51,7 @@ class GravatarComposeConventionPlugin : Plugin<Project> {
                                 .asFile.absolutePath}",
                             "-P",
                             "$prefix:reportsDestination=${project.layout.buildDirectory.get().dir(composeReportsDir)
-                                .asFile.absolutePath}"
+                                .asFile.absolutePath}",
                         )
                     }
                 }

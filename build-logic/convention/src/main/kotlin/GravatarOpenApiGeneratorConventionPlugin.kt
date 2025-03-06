@@ -55,7 +55,9 @@ class GravatarOpenApiGeneratorConventionPlugin : Plugin<Project> {
 
             tasks.withType<GenerateTask>().configureEach {
                 // Workaround for avoid the build error
-                notCompatibleWithConfigurationCache("Incomplete support for configuration cache in OpenAPI Generator plugin.")
+                notCompatibleWithConfigurationCache(
+                    "Incomplete support for configuration cache in OpenAPI Generator plugin.",
+                )
 
                 val buildPath = layout.buildDirectory.asFile.get().absolutePath
 

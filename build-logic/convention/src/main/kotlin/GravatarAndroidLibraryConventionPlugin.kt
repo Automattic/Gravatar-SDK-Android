@@ -10,6 +10,10 @@ import org.gradle.kotlin.dsl.configure
 import org.jetbrains.kotlin.gradle.plugin.KotlinAndroidPluginWrapper
 import org.jlleitschuh.gradle.ktlint.KtlintPlugin
 
+private const val TARGET_SDK = 34
+internal const val COMPILE_SDK = 34
+internal const val MIN_SDK = 21
+
 class GravatarAndroidLibraryConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
@@ -21,7 +25,7 @@ class GravatarAndroidLibraryConventionPlugin : Plugin<Project> {
             extensions.configure<LibraryExtension> {
                 configureKotlinAndroid(this)
                 defaultConfig.apply {
-                    targetSdk = 34
+                    targetSdk = TARGET_SDK
                     consumerProguardFiles("consumer-rules.pro")
                 }
                 configureBuildTypes()

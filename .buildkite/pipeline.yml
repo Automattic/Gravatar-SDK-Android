@@ -21,7 +21,7 @@ steps:
   - label: "Static code analysis"
     command: |
       echo "--- 🧹 Linting"
-      ./gradlew ktlintcheck detekt
+      ./gradlew :build-logic:convention:ktlintcheck :build-logic:convention:detekt ktlintcheck detekt
     notify:
       - github_commit_status:
           context: "Static code analysis"
