@@ -1,5 +1,6 @@
 import com.android.build.gradle.LibraryExtension
 import com.gravatar.libs
+import io.github.takahirom.roborazzi.RoborazziPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
@@ -10,7 +11,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 class GravatarComposeConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
-            apply(plugin = "io.github.takahirom.roborazzi")
+            apply<RoborazziPlugin>()
 
             extensions.configure<LibraryExtension> {
                 buildFeatures {

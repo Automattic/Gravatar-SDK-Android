@@ -23,6 +23,8 @@ dependencies {
     compileOnly(libs.vanniktech.maven.publishPlugin)
     compileOnly(libs.detekt.gradlePlugin)
     compileOnly(libs.openapi.generator.gradlePlugin)
+    compileOnly(libs.ktlint.gradlePlugin)
+    compileOnly(libs.roborazzi.gradlePlugin)
 }
 
 tasks {

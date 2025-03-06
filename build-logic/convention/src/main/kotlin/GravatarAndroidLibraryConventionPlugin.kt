@@ -1,18 +1,22 @@
 import com.android.build.gradle.LibraryExtension
+import com.android.build.gradle.LibraryPlugin
 import com.gravatar.configureDetekt
 import com.gravatar.configureKotlinAndroid
+import io.gitlab.arturbosch.detekt.DetektPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
+import org.jetbrains.kotlin.gradle.plugin.KotlinAndroidPluginWrapper
+import org.jlleitschuh.gradle.ktlint.KtlintPlugin
 
 class GravatarAndroidLibraryConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
-            apply(plugin = "com.android.library")
-            apply(plugin = "org.jetbrains.kotlin.android")
-            apply(plugin = "org.jlleitschuh.gradle.ktlint")
-            apply(plugin = "io.gitlab.arturbosch.detekt")
+            apply<LibraryPlugin>()
+            apply<KotlinAndroidPluginWrapper>()
+            apply<KtlintPlugin>()
+            apply<DetektPlugin>()
 
             extensions.configure<LibraryExtension> {
                 configureKotlinAndroid(this)
