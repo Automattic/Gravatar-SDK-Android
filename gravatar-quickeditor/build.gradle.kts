@@ -157,7 +157,7 @@ mavenPublishing {
 
         scm {
             connection.set("scm:git:github.com:Automattic/Gravatar-SDK-Android.git")
-            developerConnection.set("scm:git:ssh://github.com:Automattic/Gravatar-SDK-Android.git")
+            developerConnection.set("scm:git:https://github.com:Automattic/Gravatar-SDK-Android.git")
             url.set("https://github.com/Automattic/Gravatar-SDK-Android")
         }
 
