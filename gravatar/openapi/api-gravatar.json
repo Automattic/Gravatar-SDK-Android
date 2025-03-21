@@ -774,6 +774,61 @@
         }
       }
     },
+    "/me/profile": {
+      "get": {
+        "summary": "Get profile information for the authenticated user",
+        "description": "Returns the information available for the authenticated user. It's equivalent to the full profile information available in the `/profiles/{profileIdentifier}` endpoint.",
+        "tags": [
+          "profiles"
+        ],
+        "operationId": "getProfile",
+        "security": [
+          {
+            "oauth": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Profile"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not Authorized",
+            "$ref": "#/components/responses/not_authorized"
+          },
+          "403": {
+            "description": "Insufficient Scope",
+            "$ref": "#/components/responses/insufficient_scope"
+          },
+          "404": {
+            "description": "Profile is disabled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "disabled": {
+                    "value": {
+                      "error": "Profile is disabled",
+                      "code": "disabled"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/me/associated-email": {
       "get": {
         "summary": "Check if the email is associated with the authenticated user",

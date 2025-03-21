@@ -32,6 +32,20 @@ internal interface ProfilesApi {
     ): Response<AssociatedResponse>
 
     /**
+     * Get profile information for the authenticated user
+     * Returns the information available for the authenticated user. It&#39;s equivalent to the full profile information available in the &#x60;/profiles/{profileIdentifier}&#x60; endpoint.
+     * Responses:
+     *  - 200: Successful response
+     *  - 401: Not Authorized
+     *  - 403: Insufficient Scope
+     *  - 404: Profile is disabled
+     *
+     * @return [Profile]
+     */
+    @GET("me/profile")
+    suspend fun getProfile(): Response<Profile>
+
+    /**
      * Get profile by identifier
      * Returns a profile by the given identifier.
      * Responses:
