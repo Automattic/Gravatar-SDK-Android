@@ -949,6 +949,8 @@ public final class com/gravatar/services/ProfileService {
 	public final fun retrieveCatching (Lcom/gravatar/types/Email;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun retrieveCatching (Lcom/gravatar/types/Hash;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun retrieveCatching (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun retrieveProfile (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun retrieveProfileCatching (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class com/gravatar/types/Email : android/os/Parcelable {
