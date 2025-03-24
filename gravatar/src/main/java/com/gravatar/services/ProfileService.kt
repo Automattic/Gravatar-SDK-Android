@@ -178,4 +178,41 @@ public class ProfileService(private val okHttpClient: OkHttpClient? = null) {
     ): GravatarResult<Boolean, ErrorType> = runCatchingRequest {
         checkAssociatedEmail(oauthToken, email)
     }
+
+    /**
+     * Retrieves the profile information for the authenticated user.
+     *
+     * @param oauthToken The OAuth token to use for authentication
+     * @return The profile information for the authenticated user
+     */
+    public suspend fun retrieveProfile(oauthToken: String): Profile = runThrowingExceptionRequest {
+        withContext(GravatarSdkDI.dispatcherIO) {
+            val service = GravatarSdkDI.getGravatarV3Service(okHttpClient, oauthToken)
+
+            val response = service.getProfile()
+            if (response.isSuccessful) {
+                response.body() ?: error("Response body is null")
+            } else {
+                // Log the response body for debugging purposes if the response is not successful
+                Logger.w(
+                    LOG_TAG,
+                    "Network call unsuccessful trying to get Gravatar profile: ${response.code()}",
+                )
+                throw HttpException(response)
+            }
+        }
+    }
+
+    /**
+     * Retrieves the profile information for the authenticated user.
+     * This method will catch any exception that occurs during
+     * the execution and return it as a [GravatarResult.Failure].
+     *
+     * @param oauthToken The OAuth token to use for authentication
+     * @return The profile information for the authenticated user
+     */
+    public suspend fun retrieveProfileCatching(oauthToken: String): GravatarResult<Profile, ErrorType> =
+        runCatchingRequest {
+            retrieveProfile(oauthToken)
+        }
 }
