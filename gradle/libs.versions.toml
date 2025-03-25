@@ -36,6 +36,7 @@ testCoreKtx = "1.6.1"
 turbine = "1.1.0"
 ucrop = "2.2.11"
 mavenPublish = "0.31.0"
+kotlinCompilerExtension = "1.5.15"
 
 [libraries]
 android-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
@@ -84,7 +85,11 @@ ucrop = { group = "com.automattic", name = "ucrop", version.ref = "ucrop" }
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
-vanniktech-maven-publish-plugin = { group = "com.vanniktech.maven.publish", name = "com.vanniktech.maven.publish.gradle.plugin", version.ref = "mavenPublish" }
+vanniktech-maven-publishPlugin = { group = "com.vanniktech.maven.publish", name = "com.vanniktech.maven.publish.gradle.plugin", version.ref = "mavenPublish" }
+detekt-gradlePlugin = { group = "io.gitlab.arturbosch.detekt", name = "io.gitlab.arturbosch.detekt.gradle.plugin", version.ref = "detekt" }
+openapi-generator-gradlePlugin = { group = "org.openapitools", name = "openapi-generator-gradle-plugin", version.ref = "openapi" }
+ktlint-gradlePlugin = { group = "org.jlleitschuh.gradle.ktlint", name = "org.jlleitschuh.gradle.ktlint.gradle.plugin", version.ref = "ktlint" }
+roborazzi-gradlePlugin = { group = "io.github.takahirom.roborazzi", name = "io.github.takahirom.roborazzi.gradle.plugin", version.ref = "roborazzi" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
@@ -102,3 +107,6 @@ vanniktech-maven-publish = { id = "com.vanniktech.maven.publish", version.ref = 
 
 # Plugins defined by this project
 gravatar-maven-publish = { id = "gravatar.maven.publish" }
+gravatar-android-library = { id = "gravatar.android.library" }
+gravatar-android-compose = { id = "gravatar.android.compose" }
+gravatar-openapi-generator = { id = "gravatar.openapi.generator" }
