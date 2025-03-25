@@ -1,4 +1,3 @@
-import com.vanniktech.maven.publish.SonatypeHost
 import org.jetbrains.dokka.gradle.DokkaTaskPartial
 
 plugins {
@@ -9,7 +8,7 @@ plugins {
     alias(libs.plugins.detekt)
     alias(libs.plugins.roborazzi)
     alias(libs.plugins.dokka)
-    alias(libs.plugins.vanniktech.maven.publish)
+    alias(libs.plugins.gravatar.maven.publish)
 }
 
 android {
@@ -131,49 +130,4 @@ dependencies {
     testImplementation(libs.androidx.test.core.ktx)
     testImplementation(libs.mockwebserver)
     testImplementation(project(":uitestutils"))
-}
-
-val sdkVersion: String by rootProject.extra
-
-mavenPublishing {
-    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
-
-    coordinates(
-        groupId = "com.gravatar",
-        artifactId = "gravatar-quickeditor",
-        version = sdkVersion,
-    )
-
-    pom {
-        name.set("Gravatar Android SDK")
-        description.set("The official Gravatar Android SDK")
-        url.set("https://github.com/Automattic/Gravatar-SDK-Android")
-        licenses {
-            license {
-                name.set("Mozilla Public License, Version 2.0")
-                url.set("http://www.mozilla.org/MPL/2.0/index.txt")
-            }
-        }
-
-        scm {
-            connection.set("scm:git:github.com:Automattic/Gravatar-SDK-Android.git")
-            developerConnection.set("scm:git:https://github.com:Automattic/Gravatar-SDK-Android.git")
-            url.set("https://github.com/Automattic/Gravatar-SDK-Android")
-        }
-
-        developers {
-            developer {
-                id.set("AdamGrzybkowski")
-                name.set("Adam Grzybkowski")
-                email.set("adam.grzybkowski@automattic.com")
-            }
-        }
-
-        organization {
-            name.set("Gravatar.com")
-            url.set("https://www.gravatar.com/")
-        }
-    }
-
-    signAllPublications()
 }
