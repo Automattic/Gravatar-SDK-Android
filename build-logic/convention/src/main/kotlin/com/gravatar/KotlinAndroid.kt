@@ -5,7 +5,9 @@ import MIN_SDK
 import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 internal fun Project.configureKotlinAndroid(commonExtension: CommonExtension<*, *, *, *, *, *>) {
@@ -33,5 +35,8 @@ internal fun Project.configureKotlin() {
         kotlinOptions {
             jvmTarget = JavaVersion.VERSION_1_8.toString()
         }
+    }
+    extensions.configure<KotlinProjectExtension> {
+        explicitApi()
     }
 }
