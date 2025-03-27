@@ -967,14 +967,14 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "data": {
+                  "image": {
                     "type": "string",
                     "format": "binary",
                     "description": "The avatar image file"
                   }
                 },
                 "required": [
-                  "data"
+                  "image"
                 ]
               }
             }
