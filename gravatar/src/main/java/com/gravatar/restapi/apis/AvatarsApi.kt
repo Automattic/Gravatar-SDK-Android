@@ -7,111 +7,284 @@
  */
 package com.gravatar.restapi.apis
 
+import com.gravatar.restapi.infrastructure.ApiClient
+import com.gravatar.restapi.infrastructure.ApiResponse
+import com.gravatar.restapi.infrastructure.MultiValueMap
+import com.gravatar.restapi.infrastructure.PartConfig
+import com.gravatar.restapi.infrastructure.RequestConfig
+import com.gravatar.restapi.infrastructure.RequestMethod
 import com.gravatar.restapi.models.Avatar
 import com.gravatar.restapi.models.SetEmailAvatarRequest
 import com.gravatar.restapi.models.UpdateAvatarRequest
-import okhttp3.MultipartBody
-import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.DELETE
-import retrofit2.http.GET
-import retrofit2.http.Multipart
-import retrofit2.http.PATCH
-import retrofit2.http.POST
-import retrofit2.http.Part
-import retrofit2.http.Path
-import retrofit2.http.Query
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import okhttp3.HttpUrl
+import okhttp3.OkHttpClient
+import java.io.IOException
 
-internal interface AvatarsApi {
+internal class AvatarsApi(
+    basePath: kotlin.String = defaultBasePath,
+    client: OkHttpClient = ApiClient.defaultClient,
+) : ApiClient(basePath, client) {
+    internal companion object {
+        @JvmStatic
+        val defaultBasePath: String by lazy {
+            System.getProperties().getProperty(ApiClient.BASE_URL_KEY, "https://api.gravatar.com/v3")
+        }
+    }
+
     /**
+     * DELETE /me/avatars/{imageHash}
      * Delete avatar
      * Deletes a specific avatar for the authenticated user.
-     * Responses:
-     *  - 200: Avatar deleted successfully
-     *  - 401: Not Authorized
-     *  - 403: Insufficient Scope
-     *  - 404: Avatar not found
+     * @param imageHash The hash of the avatar to delete.
+     * @return ApiResponse<Unit?>
+     * @throws IllegalStateException If the request is not correctly configured
+     * @throws IOException Rethrows the OkHttp execute method exception
+     */
+    @Throws(IllegalStateException::class, IOException::class)
+    internal suspend fun deleteAvatar(imageHash: kotlin.String): ApiResponse<Unit> = withContext(Dispatchers.IO) {
+        val localVariableConfig = deleteAvatarRequestConfig(imageHash = imageHash)
+
+        return@withContext request<Unit, Unit>(
+            localVariableConfig,
+        )
+    }
+
+    /**
+     * To obtain the request config of the operation deleteAvatar
      *
      * @param imageHash The hash of the avatar to delete.
-     * @return [Unit]
+     * @return RequestConfig
      */
-    @DELETE("me/avatars/{imageHash}")
-    suspend fun deleteAvatar(
-        @Path("imageHash") imageHash: kotlin.String,
-    ): Response<Unit>
+    private fun deleteAvatarRequestConfig(imageHash: kotlin.String): RequestConfig<Unit> {
+        val localVariableBody = null
+        val localVariableQuery: MultiValueMap = mutableMapOf()
+        val localVariableHeaders: MutableMap<String, String> = mutableMapOf()
+        localVariableHeaders["Accept"] = "application/json"
+
+        return RequestConfig(
+            method = RequestMethod.DELETE,
+            path = "/me/avatars/{imageHash}".replace("{" + "imageHash" + "}", encodeURIComponent(imageHash.toString())),
+            query = localVariableQuery,
+            headers = localVariableHeaders,
+            requiresAuthentication = true,
+            body = localVariableBody,
+        )
+    }
 
     /**
+     * GET /me/avatars
      * List avatars
      * Retrieves a list of available avatars for the authenticated user.
-     * Responses:
-     *  - 200: Successful retrieval of avatars
-     *  - 401: Not Authorized
-     *  - 403: Insufficient Scope
-     *
      * @param selectedEmailHash The SHA256 hash of the email address used to determine which avatar is selected. The &#39;selected&#39; attribute in the avatar list will be set to &#39;true&#39; for the avatar associated with this email. (optional, default to "")
-     * @return [kotlin.collections.List<Avatar>]
+     * @return ApiResponse<kotlin.collections.List<Avatar>?>
+     * @throws IllegalStateException If the request is not correctly configured
+     * @throws IOException Rethrows the OkHttp execute method exception
      */
-    @GET("me/avatars")
-    suspend fun getAvatars(
-        @Query("selected_email_hash") selectedEmailHash: kotlin.String? = "",
-    ): Response<kotlin.collections.List<Avatar>>
+    @Suppress("UNCHECKED_CAST")
+    @Throws(IllegalStateException::class, IOException::class)
+    internal suspend fun getAvatars(selectedEmailHash: kotlin.String?): ApiResponse<kotlin.collections.List<Avatar>> =
+        withContext(Dispatchers.IO) {
+            val localVariableConfig = getAvatarsRequestConfig(selectedEmailHash = selectedEmailHash)
+
+            return@withContext request<Unit, kotlin.collections.List<Avatar>>(
+                localVariableConfig,
+            )
+        }
 
     /**
+     * To obtain the request config of the operation getAvatars
+     *
+     * @param selectedEmailHash The SHA256 hash of the email address used to determine which avatar is selected. The &#39;selected&#39; attribute in the avatar list will be set to &#39;true&#39; for the avatar associated with this email. (optional, default to "")
+     * @return RequestConfig
+     */
+    private fun getAvatarsRequestConfig(selectedEmailHash: kotlin.String?): RequestConfig<Unit> {
+        val localVariableBody = null
+        val localVariableQuery: MultiValueMap = mutableMapOf<kotlin.String, kotlin.collections.List<kotlin.String>>()
+            .apply {
+                if (selectedEmailHash != null) {
+                    put("selected_email_hash", listOf(selectedEmailHash.toString()))
+                }
+            }
+        val localVariableHeaders: MutableMap<String, String> = mutableMapOf()
+        localVariableHeaders["Accept"] = "application/json"
+
+        return RequestConfig(
+            method = RequestMethod.GET,
+            path = "/me/avatars",
+            query = localVariableQuery,
+            headers = localVariableHeaders,
+            requiresAuthentication = true,
+            body = localVariableBody,
+        )
+    }
+
+    /**
+     * POST /me/avatars/{imageId}/email
      * Set avatar for the hashed email
      * Sets the avatar for the provided email hash.
-     * Responses:
-     *  - 200: Avatar successfully set
-     *  - 401: Not Authorized
-     *  - 403: Insufficient Scope
+     * @param imageId Image ID of the avatar to set as the provided hashed email avatar.
+     * @param setEmailAvatarRequest Avatar selection details
+     * @return ApiResponse<Unit?>
+     * @throws IllegalStateException If the request is not correctly configured
+     * @throws IOException Rethrows the OkHttp execute method exception
+     */
+    @Throws(IllegalStateException::class, IOException::class)
+    internal suspend fun setEmailAvatar(
+        imageId: kotlin.String,
+        setEmailAvatarRequest: SetEmailAvatarRequest,
+    ): ApiResponse<Unit> = withContext(Dispatchers.IO) {
+        val localVariableConfig =
+            setEmailAvatarRequestConfig(imageId = imageId, setEmailAvatarRequest = setEmailAvatarRequest)
+
+        return@withContext request<SetEmailAvatarRequest, Unit>(
+            localVariableConfig,
+        )
+    }
+
+    /**
+     * To obtain the request config of the operation setEmailAvatar
      *
      * @param imageId Image ID of the avatar to set as the provided hashed email avatar.
      * @param setEmailAvatarRequest Avatar selection details
-     * @return [Unit]
+     * @return RequestConfig
      */
-    @POST("me/avatars/{imageId}/email")
-    suspend fun setEmailAvatar(
-        @Path("imageId") imageId: kotlin.String,
-        @Body setEmailAvatarRequest: SetEmailAvatarRequest,
-    ): Response<Unit>
+    private fun setEmailAvatarRequestConfig(
+        imageId: kotlin.String,
+        setEmailAvatarRequest: SetEmailAvatarRequest,
+    ): RequestConfig<SetEmailAvatarRequest> {
+        val localVariableBody = setEmailAvatarRequest
+        val localVariableQuery: MultiValueMap = mutableMapOf()
+        val localVariableHeaders: MutableMap<String, String> = mutableMapOf()
+        localVariableHeaders["Content-Type"] = "application/json"
+        localVariableHeaders["Accept"] = "application/json"
+
+        return RequestConfig(
+            method = RequestMethod.POST,
+            path = "/me/avatars/{imageId}/email".replace("{" + "imageId" + "}", encodeURIComponent(imageId.toString())),
+            query = localVariableQuery,
+            headers = localVariableHeaders,
+            requiresAuthentication = true,
+            body = localVariableBody,
+        )
+    }
 
     /**
+     * PATCH /me/avatars/{imageHash}
      * Update avatar data
      * Updates the avatar data for a given avatar for the authenticated user.
-     * Responses:
-     *  - 200: Avatar updated successfully
-     *  - 401: Not Authorized
-     *  - 403: Insufficient Scope
-     *  - 404: Avatar not found
+     * @param imageHash The hash of the avatar to update.
+     * @param updateAvatarRequest
+     * @return ApiResponse<Avatar?>
+     * @throws IllegalStateException If the request is not correctly configured
+     * @throws IOException Rethrows the OkHttp execute method exception
+     */
+    @Suppress("UNCHECKED_CAST")
+    @Throws(IllegalStateException::class, IOException::class)
+    internal suspend fun updateAvatar(
+        imageHash: kotlin.String,
+        updateAvatarRequest: UpdateAvatarRequest,
+    ): ApiResponse<Avatar> = withContext(Dispatchers.IO) {
+        val localVariableConfig =
+            updateAvatarRequestConfig(imageHash = imageHash, updateAvatarRequest = updateAvatarRequest)
+
+        return@withContext request<UpdateAvatarRequest, Avatar>(
+            localVariableConfig,
+        )
+    }
+
+    /**
+     * To obtain the request config of the operation updateAvatar
      *
      * @param imageHash The hash of the avatar to update.
      * @param updateAvatarRequest
-     * @return [Avatar]
+     * @return RequestConfig
      */
-    @PATCH("me/avatars/{imageHash}")
-    suspend fun updateAvatar(
-        @Path("imageHash") imageHash: kotlin.String,
-        @Body updateAvatarRequest: UpdateAvatarRequest,
-    ): Response<Avatar>
+    private fun updateAvatarRequestConfig(
+        imageHash: kotlin.String,
+        updateAvatarRequest: UpdateAvatarRequest,
+    ): RequestConfig<UpdateAvatarRequest> {
+        val localVariableBody = updateAvatarRequest
+        val localVariableQuery: MultiValueMap = mutableMapOf()
+        val localVariableHeaders: MutableMap<String, String> = mutableMapOf()
+        localVariableHeaders["Content-Type"] = "application/json"
+        localVariableHeaders["Accept"] = "application/json"
+
+        return RequestConfig(
+            method = RequestMethod.PATCH,
+            path = "/me/avatars/{imageHash}".replace("{" + "imageHash" + "}", encodeURIComponent(imageHash.toString())),
+            query = localVariableQuery,
+            headers = localVariableHeaders,
+            requiresAuthentication = true,
+            body = localVariableBody,
+        )
+    }
 
     /**
+     * POST /me/avatars
      * Upload new avatar image
      * Uploads a new avatar image for the authenticated user.
-     * Responses:
-     *  - 200: Avatar uploaded successfully
-     *  - 400: Invalid request
-     *  - 401: Not Authorized
-     *  - 403: Insufficient Scope
-     *
-     * @param `data` The avatar image file
+     * @param image The avatar image file
      * @param selectedEmailHash The SHA256 hash of email. If provided, the uploaded image will be selected as the avatar for this email. (optional)
      * @param selectAvatar Determines if the uploaded image should be set as the avatar for the email. If not passed, the image is only selected as the email&#39;s avatar if no previous avatar has been set. Accepts &#39;1&#39;/&#39;true&#39; to always set the avatar or &#39;0&#39;/&#39;false&#39; to never set the avatar. (optional, default to null)
-     * @return [Avatar]
+     * @return ApiResponse<Avatar?>
+     * @throws IllegalStateException If the request is not correctly configured
+     * @throws IOException Rethrows the OkHttp execute method exception
      */
-    @Multipart
-    @POST("me/avatars")
-    suspend fun uploadAvatar(
-        @Part `data`: MultipartBody.Part,
-        @Query("selected_email_hash") selectedEmailHash: kotlin.String? = null,
-        @Query("select_avatar") selectAvatar: kotlin.Boolean? = null,
-    ): Response<Avatar>
+    @Suppress("UNCHECKED_CAST")
+    @Throws(IllegalStateException::class, IOException::class)
+    internal suspend fun uploadAvatar(
+        image: java.io.File,
+        selectedEmailHash: kotlin.String?,
+        selectAvatar: kotlin.Boolean?,
+    ): ApiResponse<Avatar> = withContext(Dispatchers.IO) {
+        val localVariableConfig =
+            uploadAvatarRequestConfig(image = image, selectedEmailHash = selectedEmailHash, selectAvatar = selectAvatar)
+
+        return@withContext request<Map<String, PartConfig<*>>, Avatar>(
+            localVariableConfig,
+        )
+    }
+
+    /**
+     * To obtain the request config of the operation uploadAvatar
+     *
+     * @param image The avatar image file
+     * @param selectedEmailHash The SHA256 hash of email. If provided, the uploaded image will be selected as the avatar for this email. (optional)
+     * @param selectAvatar Determines if the uploaded image should be set as the avatar for the email. If not passed, the image is only selected as the email&#39;s avatar if no previous avatar has been set. Accepts &#39;1&#39;/&#39;true&#39; to always set the avatar or &#39;0&#39;/&#39;false&#39; to never set the avatar. (optional, default to null)
+     * @return RequestConfig
+     */
+    private fun uploadAvatarRequestConfig(
+        image: java.io.File,
+        selectedEmailHash: kotlin.String?,
+        selectAvatar: kotlin.Boolean?,
+    ): RequestConfig<Map<String, PartConfig<*>>> {
+        val localVariableBody = mapOf(
+            "image" to PartConfig(body = image, headers = mutableMapOf()),
+        )
+        val localVariableQuery: MultiValueMap = mutableMapOf<kotlin.String, kotlin.collections.List<kotlin.String>>()
+            .apply {
+                if (selectedEmailHash != null) {
+                    put("selected_email_hash", listOf(selectedEmailHash.toString()))
+                }
+                if (selectAvatar != null) {
+                    put("select_avatar", listOf(selectAvatar.toString()))
+                }
+            }
+        val localVariableHeaders: MutableMap<String, String> = mutableMapOf("Content-Type" to "multipart/form-data")
+        localVariableHeaders["Accept"] = "application/json"
+
+        return RequestConfig(
+            method = RequestMethod.POST,
+            path = "/me/avatars",
+            query = localVariableQuery,
+            headers = localVariableHeaders,
+            requiresAuthentication = true,
+            body = localVariableBody,
+        )
+    }
+
+    private fun encodeURIComponent(uriComponent: kotlin.String): kotlin.String =
+        HttpUrl.Builder().scheme("http").host("localhost").addPathSegment(uriComponent).build().encodedPathSegments[0]
 }

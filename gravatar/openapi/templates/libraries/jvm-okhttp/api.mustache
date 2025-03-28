@@ -52,8 +52,6 @@ internal class {{classname}}(
         {{^nonPublicApi}}{{#explicitApi}}public {{/explicitApi}}{{/nonPublicApi}}val defaultBasePath: String by lazy {
             System.getProperties().getProperty(ApiClient.BASE_URL_KEY, "{{{basePath}}}")
         }
-        @JvmStatic
-        private val TAG: String = "{{classname}}"
     }
 
     {{#operation}}
