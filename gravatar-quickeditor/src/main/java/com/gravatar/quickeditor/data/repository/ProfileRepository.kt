@@ -17,7 +17,7 @@ internal class ProfileRepository(
     suspend fun getProfile(email: Email): GravatarResult<Profile, QuickEditorError> = withContext(dispatcher) {
         val token = tokenStorage.getToken(email.hash().toString())
         token?.let {
-            when (val result = profileService.retrieveProfileCatching(token)) {
+            when (val result = profileService.retrieveAuthenticatedCatching(token)) {
                 is GravatarResult.Success -> GravatarResult.Success(result.value)
                 is GravatarResult.Failure -> GravatarResult.Failure(QuickEditorError.Request(result.error))
             }

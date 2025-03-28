@@ -352,7 +352,7 @@ class ProfileServiceTests {
         }
         coEvery { containerRule.gravatarApiMock.getProfile() } returns mockResponse
 
-        val profile = profileService.retrieveProfile(oauthToken)
+        val profile = profileService.retrieveAuthenticated(oauthToken)
 
         coVerify(exactly = 1) { containerRule.gravatarApiMock.getProfile() }
         assertEquals(mockResponse.body(), profile)
@@ -369,7 +369,7 @@ class ProfileServiceTests {
             }
             coEvery { containerRule.gravatarApiMock.getProfile() } returns mockResponse
 
-            profileService.retrieveProfile(oauthToken)
+            profileService.retrieveAuthenticated(oauthToken)
         }
 
     @Test
@@ -377,7 +377,7 @@ class ProfileServiceTests {
         val oauthToken = "oauth"
         coEvery { containerRule.gravatarApiMock.getProfile() } throws Exception()
 
-        val result = profileService.retrieveProfileCatching(oauthToken)
+        val result = profileService.retrieveAuthenticatedCatching(oauthToken)
 
         coVerify(exactly = 1) { containerRule.gravatarApiMock.getProfile() }
         assertTrue((result as GravatarResult.Failure).error == ErrorType.Unknown())
@@ -392,7 +392,7 @@ class ProfileServiceTests {
         }
         coEvery { containerRule.gravatarApiMock.getProfile() } returns mockResponse
 
-        val result = profileService.retrieveProfileCatching(oauthToken)
+        val result = profileService.retrieveAuthenticatedCatching(oauthToken)
 
         coVerify(exactly = 1) { containerRule.gravatarApiMock.getProfile() }
         assertTrue(result is GravatarResult.Success)

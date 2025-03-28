@@ -182,12 +182,12 @@ public class ProfileService(private val okHttpClient: OkHttpClient? = null) {
     /**
      * Retrieves the profile information for the authenticated user.
      *
-     * @param oauthToken The OAuth token to use for authentication
+     * @param withToken The OAuth token to use for authentication
      * @return The profile information for the authenticated user
      */
-    public suspend fun retrieveProfile(oauthToken: String): Profile = runThrowingExceptionRequest {
+    public suspend fun retrieveAuthenticated(withToken: String): Profile = runThrowingExceptionRequest {
         withContext(GravatarSdkDI.dispatcherIO) {
-            val service = GravatarSdkDI.getGravatarV3Service(okHttpClient, oauthToken)
+            val service = GravatarSdkDI.getGravatarV3Service(okHttpClient, withToken)
 
             val response = service.getProfile()
             if (response.isSuccessful) {
@@ -208,11 +208,11 @@ public class ProfileService(private val okHttpClient: OkHttpClient? = null) {
      * This method will catch any exception that occurs during
      * the execution and return it as a [GravatarResult.Failure].
      *
-     * @param oauthToken The OAuth token to use for authentication
+     * @param withToken The OAuth token to use for authentication
      * @return The profile information for the authenticated user
      */
-    public suspend fun retrieveProfileCatching(oauthToken: String): GravatarResult<Profile, ErrorType> =
+    public suspend fun retrieveAuthenticatedCatching(withToken: String): GravatarResult<Profile, ErrorType> =
         runCatchingRequest {
-            retrieveProfile(oauthToken)
+            retrieveAuthenticated(withToken)
         }
 }

@@ -59,12 +59,12 @@ class ProfileRepositoryTest {
         val profileResult = defaultProfile(hash = "hash")
         coEvery { tokenStorage.getToken(any()) } returns oauthToken
         coEvery {
-            profileService.retrieveProfileCatching(oauthToken)
+            profileService.retrieveAuthenticatedCatching(oauthToken)
         } returns GravatarResult.Success(profileResult)
 
         val profile = profileRepository.getProfile(email)
 
-        coVerify(exactly = 1) { profileService.retrieveProfileCatching(oauthToken) }
+        coVerify(exactly = 1) { profileService.retrieveAuthenticatedCatching(oauthToken) }
         assertEquals(GravatarResult.Success<Profile, QuickEditorError>(profileResult), profile)
     }
 
@@ -72,7 +72,9 @@ class ProfileRepositoryTest {
     fun `given oauthToken when retrieving profile and response is NOT successful then Failure returned`() = runTest {
         val oauthToken = "oauth"
         coEvery { tokenStorage.getToken(any()) } returns oauthToken
-        coEvery { profileService.retrieveProfileCatching(oauthToken) } returns GravatarResult.Failure(ErrorType.Server)
+        coEvery {
+            profileService.retrieveAuthenticatedCatching(oauthToken)
+        } returns GravatarResult.Failure(ErrorType.Server)
 
         val result = profileRepository.getProfile(email)
 
