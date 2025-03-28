@@ -11,6 +11,7 @@ import com.gravatar.quickeditor.data.FileUtils
 import com.gravatar.quickeditor.data.ImageDownloader
 import com.gravatar.quickeditor.data.models.QuickEditorError
 import com.gravatar.quickeditor.data.repository.AvatarRepository
+import com.gravatar.quickeditor.data.repository.ProfileRepository
 import com.gravatar.quickeditor.ui.editor.AvatarPickerContentLayout
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
 import com.gravatar.quickeditor.ui.time.Clock
@@ -18,7 +19,6 @@ import com.gravatar.quickeditor.ui.time.SystemClock
 import com.gravatar.restapi.models.Avatar
 import com.gravatar.services.ErrorType
 import com.gravatar.services.GravatarResult
-import com.gravatar.services.ProfileService
 import com.gravatar.types.Email
 import com.gravatar.ui.components.ComponentState
 import kotlinx.coroutines.channels.Channel
@@ -39,7 +39,7 @@ internal class AvatarPickerViewModel(
     private val email: Email,
     private val handleExpiredSession: Boolean,
     private val avatarPickerContentLayout: AvatarPickerContentLayout,
-    private val profileService: ProfileService,
+    private val profileRepository: ProfileRepository,
     private val avatarRepository: AvatarRepository,
     private val imageDownloader: ImageDownloader,
     private val fileUtils: FileUtils,
@@ -276,7 +276,7 @@ internal class AvatarPickerViewModel(
     private fun fetchProfile() {
         viewModelScope.launch {
             _uiState.update { currentState -> currentState.copy(profile = ComponentState.Loading) }
-            when (val result = profileService.retrieveCatching(email)) {
+            when (val result = profileRepository.getProfile(email)) {
                 is GravatarResult.Success -> {
                     _uiState.update { currentState ->
                         currentState.copy(profile = ComponentState.Loaded(result.value))
@@ -474,7 +474,7 @@ internal class AvatarPickerViewModelFactory(
             handleExpiredSession = handleExpiredSession,
             email = gravatarQuickEditorParams.email,
             avatarPickerContentLayout = gravatarQuickEditorParams.avatarPickerContentLayout,
-            profileService = QuickEditorContainer.getInstance().profileService,
+            profileRepository = QuickEditorContainer.getInstance().profileRepository,
             avatarRepository = QuickEditorContainer.getInstance().avatarRepository,
             imageDownloader = QuickEditorContainer.getInstance().imageDownloader,
             fileUtils = QuickEditorContainer.getInstance().fileUtils,

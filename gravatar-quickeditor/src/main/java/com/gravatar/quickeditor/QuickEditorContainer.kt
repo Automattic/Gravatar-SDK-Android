@@ -13,6 +13,7 @@ import com.gravatar.quickeditor.data.FileUtils
 import com.gravatar.quickeditor.data.ImageDownloader
 import com.gravatar.quickeditor.data.datastore.createEncryptedFileWithFallbackReset
 import com.gravatar.quickeditor.data.repository.AvatarRepository
+import com.gravatar.quickeditor.data.repository.ProfileRepository
 import com.gravatar.quickeditor.data.storage.AvatarStorage
 import com.gravatar.quickeditor.data.storage.DataStoreProfileStorage
 import com.gravatar.quickeditor.data.storage.DataStoreTokenStorage
@@ -86,6 +87,14 @@ internal class QuickEditorContainer private constructor(
 
     val profileService: ProfileService by lazy {
         ProfileService()
+    }
+
+    val profileRepository: ProfileRepository by lazy {
+        ProfileRepository(
+            profileService = profileService,
+            tokenStorage = tokenStorage,
+            dispatcher = Dispatchers.IO,
+        )
     }
 
     val fileUtils: FileUtils by lazy {
