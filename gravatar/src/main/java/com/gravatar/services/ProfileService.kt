@@ -21,7 +21,7 @@ public class ProfileService(private val okHttpClient: OkHttpClient? = null) {
         const val LOG_TAG = "ProfileService"
     }
 
-    private val service = GravatarSdkDI.getGravatarV3Service(okHttpClient)
+    private val service = GravatarSdkDI.getProfilesApi(okHttpClient)
 
     /**
      * Fetches a Gravatar profile for the given hash or username.
@@ -36,14 +36,14 @@ public class ProfileService(private val okHttpClient: OkHttpClient? = null) {
             withContext(GravatarSdkDI.dispatcherIO) {
                 val response = service.getProfileById(hashOrUsername)
                 if (response.isSuccessful) {
-                    response.body() ?: error("Response body is null")
+                    response.body ?: error("Response body is null")
                 } else {
                     // Log the response body for debugging purposes if the response is not successful
                     Logger.w(
                         LOG_TAG,
-                        "Network call unsuccessful trying to get Gravatar profile: ${response.code()}",
+                        "Network call unsuccessful trying to get Gravatar profile: ${response.code}",
                     )
-                    if (response.code() == HttpResponseCode.HTTP_NOT_FOUND) {
+                    if (response.code == HttpResponseCode.HTTP_NOT_FOUND) {
                         return@withContext null
                     } else {
                         throw HttpException(response)
@@ -147,16 +147,16 @@ public class ProfileService(private val okHttpClient: OkHttpClient? = null) {
      */
     public suspend fun checkAssociatedEmail(oauthToken: String, email: Email): Boolean = runThrowingExceptionRequest {
         withContext(GravatarSdkDI.dispatcherIO) {
-            val service = GravatarSdkDI.getGravatarV3Service(okHttpClient, oauthToken)
+            val service = GravatarSdkDI.getProfilesApi(okHttpClient, oauthToken)
 
             val response = service.associatedEmail(email.hash().toString())
             if (response.isSuccessful) {
-                response.body()?.associated ?: error("Response body is null")
+                response.body?.associated ?: error("Response body is null")
             } else {
                 // Log the response body for debugging purposes if the response is not successful
                 Logger.w(
                     LOG_TAG,
-                    "Network call unsuccessful trying to checkAssociatedEmail: ${response.code()}",
+                    "Network call unsuccessful trying to checkAssociatedEmail: ${response.code}",
                 )
                 throw HttpException(response)
             }
@@ -187,16 +187,16 @@ public class ProfileService(private val okHttpClient: OkHttpClient? = null) {
      */
     public suspend fun retrieveAuthenticated(withToken: String): Profile = runThrowingExceptionRequest {
         withContext(GravatarSdkDI.dispatcherIO) {
-            val service = GravatarSdkDI.getGravatarV3Service(okHttpClient, withToken)
+            val service = GravatarSdkDI.getProfilesApi(okHttpClient, withToken)
 
             val response = service.getProfile()
             if (response.isSuccessful) {
-                response.body() ?: error("Response body is null")
+                response.body ?: error("Response body is null")
             } else {
                 // Log the response body for debugging purposes if the response is not successful
                 Logger.w(
                     LOG_TAG,
-                    "Network call unsuccessful trying to get Gravatar profile: ${response.code()}",
+                    "Network call unsuccessful trying to get Gravatar profile: ${response.code}",
                 )
                 throw HttpException(response)
             }
