@@ -9,14 +9,12 @@ complexity:
   LongParameterList:
     ignoreDefaultParameters: true
     ignoreAnnotated: ['Inject', 'Composable']
-    excludes: [ '**/restapi/models/**' ]
   LongMethod:
     ignoreAnnotated: ['Composable']
   TooManyFunctions:
     active: false
   CyclomaticComplexMethod:
     ignoreSimpleWhenEntries: true
-    excludes: [ '**/restapi/models/**' ]
 
 coroutines:
   GlobalCoroutineUsage:
@@ -27,7 +25,6 @@ naming:
     ignoreAnnotated: ['Composable']
   FunctionParameterNaming:
     active: true
-    excludes: [ '**/restapi/**' ]
 
 style:
   DataClassShouldBeImmutable:
@@ -48,7 +45,6 @@ style:
   MaxLineLength:
     active: true
     maxLineLength: 120
-    excludes: [ '**/api/**', '**/restapi/**' ]
     excludePackageStatements: true
     excludeImportStatements: true
     excludeCommentStatements: false
@@ -57,7 +53,7 @@ style:
 comments:
   UndocumentedPublicClass:
     active: true
-    excludes: [ '**/test/**', '**/androidTest/**', '**/demoapp/**', '**/restapi/models/**', '**/uitestutils/**' ]
+    excludes: [ '**/test/**', '**/androidTest/**', '**/demoapp/**', '**/uitestutils/**' ]
     searchInNestedClass: true
     searchInInnerClass: true
     searchInInnerObject: true
@@ -68,16 +64,16 @@ comments:
     # Ignore Jetpack Compose functions annotated with @Preview
     ignoreAnnotated:
       - 'Preview'
-    excludes: [ '**/test/**', '**/androidTest/**', '**/demoapp/**', '**/restapi/models/**', '**/uitestutils/**' ]
+    excludes: [ '**/test/**', '**/androidTest/**', '**/demoapp/**', '**/uitestutils/**' ]
     searchProtectedFunction: false
   UndocumentedPublicProperty:
     active: true
     # TODO - Remove the explicit exclusion of Email.kt once we implement the new REST API
-    excludes: [ '**/test/**', '**/androidTest/**', '**/demoapp/**', '**/restapi/models/**', '**/uitestutils/**' ]
+    excludes: [ '**/test/**', '**/androidTest/**', '**/demoapp/**', '**/uitestutils/**' ]
     searchProtectedProperty: false
   OutdatedDocumentation:
     active: true
-    excludes: [ '**/test/**', '**/androidTest/**', '**/demoapp/**', '**/restapi/models/**', '**/restapi/apis/**' ]
+    excludes: [ '**/test/**', '**/androidTest/**', '**/demoapp/**' ]
     matchTypeParameters: true
     matchDeclarationsOrder: true
     allowParamOnConstructorProperties: false

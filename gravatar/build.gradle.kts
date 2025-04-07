@@ -32,6 +32,12 @@ android {
             }
         }
     }
+
+    detekt {
+        tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
+            exclude("**/restapi/**") // Specify the directory to exclude
+        }
+    }
 }
 
 dependencies {
