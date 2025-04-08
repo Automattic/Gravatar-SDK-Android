@@ -7,58 +7,159 @@
  */
 package com.gravatar.restapi.apis
 
+import com.gravatar.restapi.infrastructure.ApiClient
+import com.gravatar.restapi.infrastructure.ApiResponse
+import com.gravatar.restapi.infrastructure.MultiValueMap
+import com.gravatar.restapi.infrastructure.RequestConfig
+import com.gravatar.restapi.infrastructure.RequestMethod
 import com.gravatar.restapi.models.AssociatedResponse
 import com.gravatar.restapi.models.Profile
-import retrofit2.Response
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import okhttp3.HttpUrl
+import okhttp3.OkHttpClient
+import java.io.IOException
 
-internal interface ProfilesApi {
+internal class ProfilesApi(
+    basePath: kotlin.String = defaultBasePath,
+    client: OkHttpClient = ApiClient.defaultClient,
+) : ApiClient(basePath, client) {
+    internal companion object {
+        @JvmStatic
+        val defaultBasePath: String by lazy {
+            System.getProperties().getProperty(ApiClient.BASE_URL_KEY, "https://api.gravatar.com/v3")
+        }
+    }
+
     /**
+     * GET /me/associated-email
      * Check if the email is associated with the authenticated user
      * Checks if the provided email address is associated with the authenticated user.
-     * Responses:
-     *  - 200: The email is associated with the authenticated user
-     *  - 401: Not Authorized
-     *  - 403: Insufficient Scope
+     * @param emailHash The hash of the email address to check.
+     * @return ApiResponse<AssociatedResponse?>
+     * @throws IllegalStateException If the request is not correctly configured
+     * @throws IOException Rethrows the OkHttp execute method exception
+     */
+    @Suppress("UNCHECKED_CAST")
+    @Throws(IllegalStateException::class, IOException::class)
+    internal suspend fun associatedEmail(emailHash: kotlin.String): ApiResponse<AssociatedResponse> =
+        withContext(Dispatchers.IO) {
+            val localVariableConfig = associatedEmailRequestConfig(emailHash = emailHash)
+
+            return@withContext request<Unit, AssociatedResponse>(
+                localVariableConfig,
+            )
+        }
+
+    /**
+     * To obtain the request config of the operation associatedEmail
      *
      * @param emailHash The hash of the email address to check.
-     * @return [AssociatedResponse]
+     * @return RequestConfig
      */
-    @GET("me/associated-email")
-    suspend fun associatedEmail(
-        @Query("email_hash") emailHash: kotlin.String,
-    ): Response<AssociatedResponse>
+    private fun associatedEmailRequestConfig(emailHash: kotlin.String): RequestConfig<Unit> {
+        val localVariableBody = null
+        val localVariableQuery: MultiValueMap = mutableMapOf<kotlin.String, kotlin.collections.List<kotlin.String>>()
+            .apply {
+                put("email_hash", listOf(emailHash.toString()))
+            }
+        val localVariableHeaders: MutableMap<String, String> = mutableMapOf()
+        localVariableHeaders["Accept"] = "application/json"
+
+        return RequestConfig(
+            method = RequestMethod.GET,
+            path = "/me/associated-email",
+            query = localVariableQuery,
+            headers = localVariableHeaders,
+            requiresAuthentication = true,
+            body = localVariableBody,
+        )
+    }
 
     /**
+     * GET /me/profile
      * Get profile information for the authenticated user
      * Returns the information available for the authenticated user. It&#39;s equivalent to the full profile information available in the &#x60;/profiles/{profileIdentifier}&#x60; endpoint.
-     * Responses:
-     *  - 200: Successful response
-     *  - 401: Not Authorized
-     *  - 403: Insufficient Scope
-     *  - 404: Profile is disabled
-     *
-     * @return [Profile]
+     * @return ApiResponse<Profile?>
+     * @throws IllegalStateException If the request is not correctly configured
+     * @throws IOException Rethrows the OkHttp execute method exception
      */
-    @GET("me/profile")
-    suspend fun getProfile(): Response<Profile>
+    @Suppress("UNCHECKED_CAST")
+    @Throws(IllegalStateException::class, IOException::class)
+    internal suspend fun getProfile(): ApiResponse<Profile> = withContext(Dispatchers.IO) {
+        val localVariableConfig = getProfileRequestConfig()
+
+        return@withContext request<Unit, Profile>(
+            localVariableConfig,
+        )
+    }
 
     /**
+     * To obtain the request config of the operation getProfile
+     *
+     * @return RequestConfig
+     */
+    private fun getProfileRequestConfig(): RequestConfig<Unit> {
+        val localVariableBody = null
+        val localVariableQuery: MultiValueMap = mutableMapOf()
+        val localVariableHeaders: MutableMap<String, String> = mutableMapOf()
+        localVariableHeaders["Accept"] = "application/json"
+
+        return RequestConfig(
+            method = RequestMethod.GET,
+            path = "/me/profile",
+            query = localVariableQuery,
+            headers = localVariableHeaders,
+            requiresAuthentication = true,
+            body = localVariableBody,
+        )
+    }
+
+    /**
+     * GET /profiles/{profileIdentifier}
      * Get profile by identifier
      * Returns a profile by the given identifier.
-     * Responses:
-     *  - 200: Successful response
-     *  - 404: Profile not found
-     *  - 429: Rate limit exceeded
-     *  - 500: Internal server error
+     * @param profileIdentifier This can either be an SHA256 hash of an email address or profile URL slug.
+     * @return ApiResponse<Profile?>
+     * @throws IllegalStateException If the request is not correctly configured
+     * @throws IOException Rethrows the OkHttp execute method exception
+     */
+    @Suppress("UNCHECKED_CAST")
+    @Throws(IllegalStateException::class, IOException::class)
+    internal suspend fun getProfileById(profileIdentifier: kotlin.String): ApiResponse<Profile> =
+        withContext(Dispatchers.IO) {
+            val localVariableConfig = getProfileByIdRequestConfig(profileIdentifier = profileIdentifier)
+
+            return@withContext request<Unit, Profile>(
+                localVariableConfig,
+            )
+        }
+
+    /**
+     * To obtain the request config of the operation getProfileById
      *
      * @param profileIdentifier This can either be an SHA256 hash of an email address or profile URL slug.
-     * @return [Profile]
+     * @return RequestConfig
      */
-    @GET("profiles/{profileIdentifier}")
-    suspend fun getProfileById(
-        @Path("profileIdentifier") profileIdentifier: kotlin.String,
-    ): Response<Profile>
+    private fun getProfileByIdRequestConfig(profileIdentifier: kotlin.String): RequestConfig<Unit> {
+        val localVariableBody = null
+        val localVariableQuery: MultiValueMap = mutableMapOf()
+        val localVariableHeaders: MutableMap<String, String> = mutableMapOf()
+        localVariableHeaders["Accept"] = "application/json"
+
+        return RequestConfig(
+            method = RequestMethod.GET,
+            path = "/profiles/{profileIdentifier}".replace(
+                "{" + "profileIdentifier" + "}",
+                encodeURIComponent(profileIdentifier.toString()),
+            ),
+            query = localVariableQuery,
+            headers = localVariableHeaders,
+            requiresAuthentication = true,
+            body = localVariableBody,
+        )
+    }
+
+    private fun encodeURIComponent(uriComponent: kotlin.String): kotlin.String =
+        HttpUrl.Builder().scheme("http").host("localhost").addPathSegment(uriComponent).build().encodedPathSegments[0]
 }

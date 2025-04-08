@@ -1,0 +1,14 @@
+package {{packageName}}.infrastructure
+
+import okhttp3.ResponseBody
+
+internal data class ApiResponse<T>(
+    val rawResponse: okhttp3.Response,
+    val body: T?,
+    val errorBody: ResponseBody?,
+) {
+
+    val isSuccessful = rawResponse.isSuccessful
+
+    val code = rawResponse.code
+}

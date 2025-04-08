@@ -6,13 +6,13 @@ import com.gravatar.HttpResponseCode.HTTP_NOT_FOUND
 import com.gravatar.HttpResponseCode.HTTP_TOO_MANY_REQUESTS
 import com.gravatar.HttpResponseCode.INVALID_REQUEST
 import com.gravatar.HttpResponseCode.SERVER_ERRORS
+import com.gravatar.restapi.infrastructure.ApiResponse
 import com.gravatar.restapi.models.Error
 import com.squareup.moshi.Moshi
 import io.mockk.every
 import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
-import retrofit2.Response
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
@@ -20,7 +20,7 @@ class ErrorTypeTest {
     private val moshi = Moshi.Builder()
         .build()
 
-    private val errorBody = """
+    private val errorBodyRaw = """
         {
             "error": "Only square images are accepted",
             "code": "uncropped_image"
@@ -31,7 +31,7 @@ class ErrorTypeTest {
         HTTP_CLIENT_TIMEOUT to ErrorType.Timeout,
         HTTP_NOT_FOUND to ErrorType.NotFound,
         HTTP_TOO_MANY_REQUESTS to ErrorType.RateLimitExceeded,
-        600 to ErrorType.Unknown("HTTP Code 600 - ErrorBody $errorBody"),
+        600 to ErrorType.Unknown("HTTP Code 600 - ErrorBody $errorBodyRaw"),
         INVALID_REQUEST to ErrorType.InvalidRequest(
             error = Error {
                 code = "uncropped_image"
@@ -47,11 +47,11 @@ class ErrorTypeTest {
 
     @Test
     fun `given an http code when converting to error type then correct type is returned`() {
-        httpCodeToErrorTypeRelation.forEach { (code, expectedErrorType) ->
-            val response = mockk<Response<Unit>>(relaxed = true) {
-                every { code() } returns code
-                every { errorBody() } returns mockk {
-                    every { string() } returns errorBody
+        httpCodeToErrorTypeRelation.forEach { (httpCode, expectedErrorType) ->
+            val response = mockk<ApiResponse<Unit>>(relaxed = true) {
+                every { code } returns httpCode
+                every { errorBody } returns mockk {
+                    every { string() } returns errorBodyRaw
                 }
             }
             // When
@@ -72,7 +72,7 @@ class ErrorTypeTest {
             httpCodeToErrorTypeRelation.forEach { (code, errorType) ->
                 val exception = mockk<HttpException>(relaxed = true) {
                     every { this@mockk.code } returns code
-                    every { this@mockk.rawErrorBody } returns errorBody
+                    every { this@mockk.rawErrorBody } returns errorBodyRaw
                 }
                 add(exception to errorType)
             }

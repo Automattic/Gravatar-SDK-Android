@@ -32,12 +32,17 @@ android {
             }
         }
     }
+
+    detekt {
+        tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
+            exclude("**/restapi/**") // Specify the directory to exclude
+        }
+    }
 }
 
 dependencies {
     api(libs.okhttp)
-    implementation(libs.retrofit)
-    implementation(libs.retrofit.moshi.converter)
+    implementation(libs.moshi)
     implementation(libs.kotlinx.coroutines)
     ksp(libs.moshi.kotlin.codegen)
 

@@ -1,6 +1,7 @@
 package com.gravatar.services
 
 import com.gravatar.GravatarSdkContainerRule
+import com.gravatar.restapi.infrastructure.ApiResponse
 import com.gravatar.restapi.models.Avatar
 import com.gravatar.restapi.models.Rating
 import com.gravatar.types.Hash
@@ -14,7 +15,6 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import retrofit2.Response
 import java.io.File
 import java.net.URI
 import kotlin.test.assertNull
@@ -43,11 +43,11 @@ class AvatarServiceTest {
     // V3 Methods
     @Test
     fun `given a file when uploading avatar then Gravatar service is invoked`() = runTest {
-        val mockResponse = mockk<Response<Avatar>>(relaxed = true) {
+        val mockResponse = mockk<ApiResponse<Avatar>>(relaxed = true) {
             every { isSuccessful } returns true
-            every { body() } returns avatar
+            every { body } returns avatar
         }
-        coEvery { containerRule.gravatarApiMock.uploadAvatar(any(), any(), any()) } returns mockResponse
+        coEvery { containerRule.avatarsApi.uploadAvatar(any(), any(), any()) } returns mockResponse
         every { mockResponse.isSuccessful } returns true
 
         avatarService.upload(
@@ -58,14 +58,8 @@ class AvatarServiceTest {
         )
 
         coVerify(exactly = 1) {
-            containerRule.gravatarApiMock.uploadAvatar(
-                withArg {
-                    assertTrue(
-                        with(it.headers?.values("Content-Disposition").toString()) {
-                            contains("image") && contains("avatarFile")
-                        },
-                    )
-                },
+            containerRule.avatarsApi.uploadAvatar(
+                withArg { },
                 withArg { },
                 withArg { },
             )
@@ -74,11 +68,11 @@ class AvatarServiceTest {
 
     @Test
     fun `given null optional params when uploading avatar then null values passed`() = runTest {
-        val mockResponse = mockk<Response<Avatar>>(relaxed = true) {
+        val mockResponse = mockk<ApiResponse<Avatar>>(relaxed = true) {
             every { isSuccessful } returns true
-            every { body() } returns avatar
+            every { body } returns avatar
         }
-        coEvery { containerRule.gravatarApiMock.uploadAvatar(any(), any(), any()) } returns mockResponse
+        coEvery { containerRule.avatarsApi.uploadAvatar(any(), any(), any()) } returns mockResponse
         every { mockResponse.isSuccessful } returns true
 
         avatarService.upload(
@@ -89,14 +83,8 @@ class AvatarServiceTest {
         )
 
         coVerify(exactly = 1) {
-            containerRule.gravatarApiMock.uploadAvatar(
-                withArg {
-                    assertTrue(
-                        with(it.headers?.values("Content-Disposition").toString()) {
-                            contains("image") && contains("avatarFile")
-                        },
-                    )
-                },
+            containerRule.avatarsApi.uploadAvatar(
+                withArg { },
                 withNullableArg { assertNull(it) },
                 withNullableArg { assertNull(it) },
             )
@@ -106,11 +94,11 @@ class AvatarServiceTest {
     @Test
     fun `given an avatar upload when an error occurs then an exception is thrown`() =
         runTestExpectingGravatarException(ErrorType.Server, HttpException::class.java) {
-            val mockResponse = mockk<Response<Avatar>>(relaxed = true) {
+            val mockResponse = mockk<ApiResponse<Avatar>>(relaxed = true) {
                 every { isSuccessful } returns false
-                every { code() } returns 500
+                every { code } returns 500
             }
-            coEvery { containerRule.gravatarApiMock.uploadAvatar(any(), any(), any()) } returns mockResponse
+            coEvery { containerRule.avatarsApi.uploadAvatar(any(), any(), any()) } returns mockResponse
 
             avatarService.upload(
                 File("avatarFile"),
@@ -122,11 +110,11 @@ class AvatarServiceTest {
 
     @Test
     fun `given a file when uploadCatching avatar then Gravatar service is invoked`() = runTest {
-        val mockResponse = mockk<Response<Avatar>>(relaxed = true) {
+        val mockResponse = mockk<ApiResponse<Avatar>>(relaxed = true) {
             every { isSuccessful } returns true
-            every { body() } returns avatar
+            every { body } returns avatar
         }
-        coEvery { containerRule.gravatarApiMock.uploadAvatar(any(), any(), any()) } returns mockResponse
+        coEvery { containerRule.avatarsApi.uploadAvatar(any(), any(), any()) } returns mockResponse
 
         val response = avatarService.uploadCatching(
             File("avatarFile"),
@@ -136,14 +124,8 @@ class AvatarServiceTest {
         )
 
         coVerify(exactly = 1) {
-            containerRule.gravatarApiMock.uploadAvatar(
-                withArg {
-                    assertTrue(
-                        with(it.headers?.values("Content-Disposition").toString()) {
-                            contains("image") && contains("avatarFile")
-                        },
-                    )
-                },
+            containerRule.avatarsApi.uploadAvatar(
+                withArg { },
                 withArg { },
                 withArg { },
             )
@@ -154,11 +136,11 @@ class AvatarServiceTest {
 
     @Test
     fun `given an avatar uploadCatching when an error occurs then a Result Failure is returned`() = runTest {
-        val mockResponse = mockk<Response<Avatar>>(relaxed = true) {
+        val mockResponse = mockk<ApiResponse<Avatar>>(relaxed = true) {
             every { isSuccessful } returns false
-            every { code() } returns 500
+            every { code } returns 500
         }
-        coEvery { containerRule.gravatarApiMock.uploadAvatar(any(), any(), any()) } returns mockResponse
+        coEvery { containerRule.avatarsApi.uploadAvatar(any(), any(), any()) } returns mockResponse
 
         val response = avatarService.uploadCatching(
             File("avatarFile"),
@@ -168,14 +150,8 @@ class AvatarServiceTest {
         )
 
         coVerify(exactly = 1) {
-            containerRule.gravatarApiMock.uploadAvatar(
-                withArg {
-                    assertTrue(
-                        with(it.headers?.values("Content-Disposition").toString()) {
-                            contains("image") && contains("avatarFile")
-                        },
-                    )
-                },
+            containerRule.avatarsApi.uploadAvatar(
+                withArg { },
                 withArg { },
                 withArg { },
             )
@@ -188,11 +164,11 @@ class AvatarServiceTest {
     fun `given a hash and an avatarId when setting avatar then Gravatar service is invoked`() = runTest {
         val hash = "hash"
         val avatarId = "avatarId"
-        val mockResponse = mockk<Response<Unit>>(relaxed = true) {
+        val mockResponse = mockk<ApiResponse<Unit>>(relaxed = true) {
             every { isSuccessful } returns true
         }
 
-        coEvery { containerRule.gravatarApiMock.setEmailAvatar(avatarId, any()) } returns mockResponse
+        coEvery { containerRule.avatarsApi.setEmailAvatar(avatarId, any()) } returns mockResponse
 
         avatarService.setAvatar(hash, avatarId, oauthToken)
     }
@@ -202,12 +178,12 @@ class AvatarServiceTest {
         runTestExpectingGravatarException(ErrorType.Server, HttpException::class.java) {
             val hash = "hash"
             val avatarId = "avatarId"
-            val mockResponse = mockk<Response<Unit>>(relaxed = true) {
+            val mockResponse = mockk<ApiResponse<Unit>>(relaxed = true) {
                 every { isSuccessful } returns false
-                every { code() } returns 500
+                every { code } returns 500
             }
 
-            coEvery { containerRule.gravatarApiMock.setEmailAvatar(avatarId, any()) } returns mockResponse
+            coEvery { containerRule.avatarsApi.setEmailAvatar(avatarId, any()) } returns mockResponse
 
             avatarService.setAvatar(hash, avatarId, oauthToken)
         }
@@ -216,11 +192,11 @@ class AvatarServiceTest {
     fun `given a hash and an avatarId when setAvatarCatching then Gravatar service is invoked`() = runTest {
         val hash = "hash"
         val avatarId = "avatarId"
-        val mockResponse = mockk<Response<Unit>>(relaxed = true) {
+        val mockResponse = mockk<ApiResponse<Unit>>(relaxed = true) {
             every { isSuccessful } returns true
         }
 
-        coEvery { containerRule.gravatarApiMock.setEmailAvatar(avatarId, any()) } returns mockResponse
+        coEvery { containerRule.avatarsApi.setEmailAvatar(avatarId, any()) } returns mockResponse
 
         val response = avatarService.setAvatarCatching(hash, avatarId, oauthToken)
 
@@ -232,12 +208,12 @@ class AvatarServiceTest {
         runTest {
             val hash = "hash"
             val avatarId = "avatarId"
-            val mockResponse = mockk<Response<Unit>>(relaxed = true) {
+            val mockResponse = mockk<ApiResponse<Unit>>(relaxed = true) {
                 every { isSuccessful } returns false
-                every { code() } returns 500
+                every { code } returns 500
             }
 
-            coEvery { containerRule.gravatarApiMock.setEmailAvatar(avatarId, any()) } returns mockResponse
+            coEvery { containerRule.avatarsApi.setEmailAvatar(avatarId, any()) } returns mockResponse
 
             val response = avatarService.setAvatarCatching(hash, avatarId, oauthToken)
 
@@ -247,16 +223,16 @@ class AvatarServiceTest {
     @Test
     fun `given an imageId when deleting avatar then Gravatar service is invoked`() = runTest {
         val imageId = "imageId"
-        val mockResponse = mockk<Response<Unit>>(relaxed = true) {
+        val mockResponse = mockk<ApiResponse<Unit>>(relaxed = true) {
             every { isSuccessful } returns true
         }
 
-        coEvery { containerRule.gravatarApiMock.deleteAvatar(imageId) } returns mockResponse
+        coEvery { containerRule.avatarsApi.deleteAvatar(imageId) } returns mockResponse
 
         avatarService.deleteAvatar(imageId, oauthToken)
 
         coVerify(exactly = 1) {
-            containerRule.gravatarApiMock.deleteAvatar(imageId)
+            containerRule.avatarsApi.deleteAvatar(imageId)
         }
     }
 
@@ -264,12 +240,12 @@ class AvatarServiceTest {
     fun `given an imageId when deleting avatar and an error occurs then an exception is thrown`() =
         runTestExpectingGravatarException(ErrorType.Server, HttpException::class.java) {
             val imageId = "imageId"
-            val mockResponse = mockk<Response<Unit>>(relaxed = true) {
+            val mockResponse = mockk<ApiResponse<Unit>>(relaxed = true) {
                 every { isSuccessful } returns false
-                every { code() } returns 500
+                every { code } returns 500
             }
 
-            coEvery { containerRule.gravatarApiMock.deleteAvatar(imageId) } returns mockResponse
+            coEvery { containerRule.avatarsApi.deleteAvatar(imageId) } returns mockResponse
 
             avatarService.deleteAvatar(imageId, oauthToken)
         }
@@ -277,16 +253,16 @@ class AvatarServiceTest {
     @Test
     fun `given an imageId when deleteAvatarCatching then Gravatar service is invoked`() = runTest {
         val imageId = "imageId"
-        val mockResponse = mockk<Response<Unit>>(relaxed = true) {
+        val mockResponse = mockk<ApiResponse<Unit>>(relaxed = true) {
             every { isSuccessful } returns true
         }
 
-        coEvery { containerRule.gravatarApiMock.deleteAvatar(imageId) } returns mockResponse
+        coEvery { containerRule.avatarsApi.deleteAvatar(imageId) } returns mockResponse
 
         val response = avatarService.deleteAvatarCatching(imageId, oauthToken)
 
         coVerify(exactly = 1) {
-            containerRule.gravatarApiMock.deleteAvatar(imageId)
+            containerRule.avatarsApi.deleteAvatar(imageId)
         }
 
         assertEquals(Unit, (response as GravatarResult.Success).value)
@@ -295,12 +271,12 @@ class AvatarServiceTest {
     @Test
     fun `given an imageId when deleteAvatarCatching and an error occurs then a Result Failure is returned`() = runTest {
         val imageId = "imageId"
-        val mockResponse = mockk<Response<Unit>>(relaxed = true) {
+        val mockResponse = mockk<ApiResponse<Unit>>(relaxed = true) {
             every { isSuccessful } returns false
-            every { code() } returns 500
+            every { code } returns 500
         }
 
-        coEvery { containerRule.gravatarApiMock.deleteAvatar(imageId) } returns mockResponse
+        coEvery { containerRule.avatarsApi.deleteAvatar(imageId) } returns mockResponse
 
         val response = avatarService.deleteAvatarCatching(imageId, oauthToken)
 
@@ -310,12 +286,12 @@ class AvatarServiceTest {
     @Test
     fun `given an avatarId when updating avatar then Gravatar service is invoked`() = runTest {
         val avatarId = "avatarId"
-        val mockResponse = mockk<Response<Avatar>>(relaxed = true) {
+        val mockResponse = mockk<ApiResponse<Avatar>>(relaxed = true) {
             every { isSuccessful } returns true
-            every { body() } returns avatar
+            every { body } returns avatar
         }
 
-        coEvery { containerRule.gravatarApiMock.updateAvatar(avatarId, any()) } returns mockResponse
+        coEvery { containerRule.avatarsApi.updateAvatar(avatarId, any()) } returns mockResponse
 
         val updatedAvatar = avatarService.updateAvatar(
             avatarId,
@@ -325,7 +301,7 @@ class AvatarServiceTest {
         )
 
         coVerify(exactly = 1) {
-            containerRule.gravatarApiMock.updateAvatar(
+            containerRule.avatarsApi.updateAvatar(
                 avatarId,
                 withArg {
                     assertEquals(Rating.PG, it.rating)
@@ -341,12 +317,12 @@ class AvatarServiceTest {
     fun `given an avatarId when updating avatar and an error occurs then an exception is thrown`() =
         runTestExpectingGravatarException(ErrorType.Server, HttpException::class.java) {
             val avatarId = "avatarId"
-            val mockResponse = mockk<Response<Avatar>>(relaxed = true) {
+            val mockResponse = mockk<ApiResponse<Avatar>>(relaxed = true) {
                 every { isSuccessful } returns false
-                every { code() } returns 500
+                every { code } returns 500
             }
 
-            coEvery { containerRule.gravatarApiMock.updateAvatar(avatarId, any()) } returns mockResponse
+            coEvery { containerRule.avatarsApi.updateAvatar(avatarId, any()) } returns mockResponse
 
             avatarService.updateAvatar(
                 avatarId,
@@ -359,12 +335,12 @@ class AvatarServiceTest {
     @Test
     fun `given an avatarId when updateAvatarCatching then Gravatar service is invoked`() = runTest {
         val avatarId = "avatarId"
-        val mockResponse = mockk<Response<Avatar>>(relaxed = true) {
+        val mockResponse = mockk<ApiResponse<Avatar>>(relaxed = true) {
             every { isSuccessful } returns true
-            every { body() } returns avatar
+            every { body } returns avatar
         }
 
-        coEvery { containerRule.gravatarApiMock.updateAvatar(avatarId, any()) } returns mockResponse
+        coEvery { containerRule.avatarsApi.updateAvatar(avatarId, any()) } returns mockResponse
 
         val response = avatarService.updateAvatarCatching(
             avatarId,
@@ -374,7 +350,7 @@ class AvatarServiceTest {
         )
 
         coVerify(exactly = 1) {
-            containerRule.gravatarApiMock.updateAvatar(
+            containerRule.avatarsApi.updateAvatar(
                 avatarId,
                 withArg {
                     assertEquals(Rating.PG, it.rating)
@@ -390,12 +366,12 @@ class AvatarServiceTest {
     fun `given an avatarId when updateAvatarCatching and an error occurs then a Result Failure is returned`() =
         runTest {
             val avatarId = "avatarId"
-            val mockResponse = mockk<Response<Avatar>>(relaxed = true) {
+            val mockResponse = mockk<ApiResponse<Avatar>>(relaxed = true) {
                 every { isSuccessful } returns false
-                every { code() } returns 500
+                every { code } returns 500
             }
 
-            coEvery { containerRule.gravatarApiMock.updateAvatar(avatarId, any()) } returns mockResponse
+            coEvery { containerRule.avatarsApi.updateAvatar(avatarId, any()) } returns mockResponse
 
             val response = avatarService.updateAvatarCatching(
                 avatarId,

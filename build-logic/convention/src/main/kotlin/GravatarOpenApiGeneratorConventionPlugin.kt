@@ -23,12 +23,13 @@ class GravatarOpenApiGeneratorConventionPlugin : Plugin<Project> {
                 // Set the generation configuration options
                 configOptions.set(
                     mapOf(
-                        "library" to "jvm-retrofit2",
+                        "library" to "jvm-okhttp4",
                         "serializationLibrary" to "moshi",
                         "groupId" to "com.gravatar",
                         "packageName" to "com.gravatar.restapi",
                         "useCoroutines" to "true",
                         "moshiCodeGen" to "true",
+                        "supportAndroidApiLevel25AndBelow" to "true",
                     ),
                 )
                 importMappings.set(
@@ -49,6 +50,8 @@ class GravatarOpenApiGeneratorConventionPlugin : Plugin<Project> {
                     mapOf(
                         "apis" to "",
                         "models" to "",
+                        "supportingFiles" to "ApiClient.kt,ApiAbstractions.kt,Serializer.kt,ApiResponse.kt," +
+                            "Serializer.kt,PartConfig.kt,RequestConfig.kt,RequestMethod.kt,URIAdapter.kt",
                     ),
                 )
             }

@@ -8,9 +8,7 @@ import com.gravatar.restapi.models.SetEmailAvatarRequest
 import com.gravatar.restapi.models.UpdateAvatarRequest
 import com.gravatar.types.Hash
 import kotlinx.coroutines.withContext
-import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
-import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 import com.gravatar.di.container.GravatarSdkContainer.Companion.instance as GravatarSdkDI
 
@@ -42,19 +40,16 @@ public class AvatarService(private val okHttpClient: OkHttpClient? = null) {
         selectAvatar: Boolean? = null,
     ): Avatar = runThrowingExceptionRequest {
         withContext(GravatarSdkDI.dispatcherIO) {
-            val service = instance.getGravatarV3Service(okHttpClient, oauthToken)
-
-            val filePart =
-                MultipartBody.Part.createFormData("image", file.name, file.asRequestBody())
+            val service = instance.getAvatarsApi(okHttpClient, oauthToken)
 
             val response = service.uploadAvatar(
-                data = filePart,
+                image = file,
                 selectedEmailHash = hash?.toString(),
                 selectAvatar = selectAvatar,
             )
 
-            if (response.isSuccessful && response.body() != null) {
-                response.body()!!
+            if (response.isSuccessful && response.body != null) {
+                response.body
             } else {
                 // Log the response body for debugging purposes if the response is not successful
                 Logger.w(
@@ -97,17 +92,17 @@ public class AvatarService(private val okHttpClient: OkHttpClient? = null) {
      */
     public suspend fun retrieve(oauthToken: String, hash: Hash): List<Avatar> = runThrowingExceptionRequest {
         withContext(GravatarSdkDI.dispatcherIO) {
-            val service = instance.getGravatarV3Service(okHttpClient, oauthToken)
+            val service = instance.getAvatarsApi(okHttpClient, oauthToken)
 
             val response = service.getAvatars(selectedEmailHash = hash.toString())
 
             if (response.isSuccessful) {
-                response.body() ?: error("Response body is null")
+                response.body ?: error("Response body is null")
             } else {
                 // Log the response body for debugging purposes if the response is not successful
                 Logger.w(
                     LOG_TAG,
-                    "Network call unsuccessful trying to get Gravatar avatars: ${response.code()}",
+                    "Network call unsuccessful trying to get Gravatar avatars: ${response.code}",
                 )
                 throw HttpException(response)
             }
@@ -138,7 +133,7 @@ public class AvatarService(private val okHttpClient: OkHttpClient? = null) {
     public suspend fun setAvatar(hash: String, avatarId: String, oauthToken: String): Unit =
         runThrowingExceptionRequest {
             withContext(GravatarSdkDI.dispatcherIO) {
-                val service = GravatarSdkDI.getGravatarV3Service(okHttpClient, oauthToken)
+                val service = GravatarSdkDI.getAvatarsApi(okHttpClient, oauthToken)
 
                 val response = service.setEmailAvatar(avatarId, SetEmailAvatarRequest { emailHash = hash })
 
@@ -181,7 +176,7 @@ public class AvatarService(private val okHttpClient: OkHttpClient? = null) {
      */
     public suspend fun deleteAvatar(avatarId: String, oauthToken: String): Unit = runThrowingExceptionRequest {
         withContext(GravatarSdkDI.dispatcherIO) {
-            val service = GravatarSdkDI.getGravatarV3Service(okHttpClient, oauthToken)
+            val service = GravatarSdkDI.getAvatarsApi(okHttpClient, oauthToken)
 
             val response = service.deleteAvatar(avatarId)
 
@@ -228,7 +223,7 @@ public class AvatarService(private val okHttpClient: OkHttpClient? = null) {
         altText: String? = null,
     ): Avatar = runThrowingExceptionRequest {
         withContext(GravatarSdkDI.dispatcherIO) {
-            val service = GravatarSdkDI.getGravatarV3Service(okHttpClient, oauthToken)
+            val service = GravatarSdkDI.getAvatarsApi(okHttpClient, oauthToken)
 
             val response = service.updateAvatar(
                 avatarId,
@@ -239,7 +234,7 @@ public class AvatarService(private val okHttpClient: OkHttpClient? = null) {
             )
 
             if (response.isSuccessful) {
-                response.body() ?: error("Response body is null")
+                response.body ?: error("Response body is null")
             } else {
                 // Log the response body for debugging purposes if the response is not successful
                 Logger.w(

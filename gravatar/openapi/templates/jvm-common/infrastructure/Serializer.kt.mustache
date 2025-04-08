@@ -1,0 +1,30 @@
+package {{packageName}}.infrastructure
+
+{{#moshi}}
+import com.squareup.moshi.Moshi
+{{#enumUnknownDefaultCase}}
+import com.squareup.moshi.adapters.EnumJsonAdapter
+{{/enumUnknownDefaultCase}}
+{{^moshiCodeGen}}
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+{{/moshiCodeGen}}
+{{/moshi}}
+
+internal object Serializer {
+{{#moshi}}
+    @JvmStatic
+    internal val moshiBuilder: Moshi.Builder = Moshi.Builder()
+        .add(URIAdapter())
+        {{^moshiCodeGen}}
+        .add(KotlinJsonAdapterFactory())
+        {{/moshiCodeGen}}
+
+    @JvmStatic
+    internal val moshi: Moshi by lazy {
+{{#enumUnknownDefaultCase}}
+        SerializerHelper.addEnumUnknownDefaultCase(moshiBuilder)
+{{/enumUnknownDefaultCase}}
+        moshiBuilder.build()
+    }
+{{/moshi}}
+}

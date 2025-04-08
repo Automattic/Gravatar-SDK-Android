@@ -1,8 +1,8 @@
 package com.gravatar.di.container
 
-import com.gravatar.GravatarConstants.GRAVATAR_API_BASE_URL_V3
 import com.gravatar.moshiadapers.URIJsonAdapter
-import com.gravatar.services.GravatarApi
+import com.gravatar.restapi.apis.AvatarsApi
+import com.gravatar.restapi.apis.ProfilesApi
 import com.gravatar.services.interceptors.AuthenticationInterceptor
 import com.gravatar.services.interceptors.AvatarUploadTimeoutInterceptor
 import com.gravatar.services.interceptors.SdkVersionInterceptor
@@ -10,8 +10,6 @@ import com.squareup.moshi.Moshi
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
-import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
 
 internal class GravatarSdkContainer private constructor() {
     companion object {
@@ -24,8 +22,6 @@ internal class GravatarSdkContainer private constructor() {
         .add(URIJsonAdapter())
         .build()
 
-    private fun getRetrofitApiV3Builder() = Retrofit.Builder().baseUrl(GRAVATAR_API_BASE_URL_V3)
-
     val dispatcherMain: CoroutineDispatcher = Dispatchers.Main
     val dispatcherDefault = Dispatchers.Default
     val dispatcherIO = Dispatchers.IO
@@ -33,12 +29,11 @@ internal class GravatarSdkContainer private constructor() {
     var apiKey: String? = null
     var appName: String? = null
 
-    fun getGravatarV3Service(okHttpClient: OkHttpClient? = null, oauthToken: String? = null): GravatarApi {
-        return getRetrofitApiV3Builder().apply {
-            client(okHttpClient.buildOkHttpClient(oauthToken))
-        }.addConverterFactory(MoshiConverterFactory.create(moshi))
-            .build().create(GravatarApi::class.java)
-    }
+    fun getProfilesApi(okHttpClient: OkHttpClient? = null, oauthToken: String? = null): ProfilesApi =
+        ProfilesApi(client = okHttpClient.buildOkHttpClient(oauthToken))
+
+    fun getAvatarsApi(okHttpClient: OkHttpClient?, oauthToken: String?): AvatarsApi =
+        AvatarsApi(client = okHttpClient.buildOkHttpClient(oauthToken))
 
     private fun OkHttpClient?.buildOkHttpClient(oauthToken: String?) = (this ?: OkHttpClient())
         .newBuilder()
