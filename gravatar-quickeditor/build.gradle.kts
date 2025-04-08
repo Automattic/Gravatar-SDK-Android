@@ -36,8 +36,6 @@ dependencies {
     implementation(libs.androidx.startup)
 
     implementation(libs.coil.compose)
-    implementation(libs.retrofit)
-    implementation(libs.retrofit.moshi.converter)
     implementation(libs.ucrop)
 
     // Jetpack Compose

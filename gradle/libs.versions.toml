@@ -28,7 +28,6 @@ moshi = "1.15.1"
 navigationCompose = "2.8.3"
 okhttp = "4.12.0"
 openapi = "7.4.0"
-retrofit = "2.11.0"
 robolectric = "4.12.2"
 roborazzi = "1.26.0"
 startup = "1.1.1"
@@ -73,8 +72,6 @@ mockwebserver = { group = "com.squareup.okhttp3", name = "mockwebserver", versio
 moshi = { group = "com.squareup.moshi", name = "moshi", version.ref = "moshi" }
 moshi-kotlin-codegen = { group = "com.squareup.moshi", name = "moshi-kotlin-codegen", version.ref = "moshi" }
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
-retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
-retrofit-moshi-converter = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "retrofit" }
 robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
 roborazzi = { group = "io.github.takahirom.roborazzi", name = "roborazzi", version.ref = "roborazzi" }
 roborazzi-compose = { group = "io.github.takahirom.roborazzi", name = "roborazzi-compose", version.ref = "roborazzi" }

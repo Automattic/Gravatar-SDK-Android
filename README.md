@@ -142,7 +142,7 @@ The OpenAPI definitions are located in the `openapi` directory. In the same dire
 the custom templates used by the OpenAPI Generator to generate the code that the Gravatar library needs. You can obtain the default templates by running the following command:
 
 ```sh
-openapi-generator author template -g kotlin --library jvm-retrofit2
+openapi-generator author template -g kotlin --library jvm-okhttp4
 ```
 
 The [OpenAPI Generator documentation](https://openapi-generator.tech/docs/templating) provides more information about the templates.
