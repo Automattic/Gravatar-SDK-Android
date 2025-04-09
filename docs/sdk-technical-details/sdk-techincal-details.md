@@ -154,24 +154,6 @@ The published version is calculated depending on the Git context, in this order:
 - if there's a PR, version is `<pr number>-<commit hash>`
 - else `<branch name>-<commit hash>`
 
-To use the repository, it's needed to add the custom repository:
-
-```groovy
-repositories {
-    maven {
-        url "https://a8c-libs.s3.amazonaws.com/android"
-    }
-}
-
-dependencies {
-    implementation ("com.gravatar:gravatar:<version>")
-    // OR
-    implementation ("com.gravatar:gravatar-ui:<version>")
-    // OR
-    implementation ("com.gravatar:gravatar-quickeditor:<version>")
-}
-```
-
 ## Generating the API documentation
 
 We're using [kdoc](https://kotlinlang.org/docs/kotlin-doc.html) to document the library's code. [Dokka](https://kotlinlang.org/docs/dokka-introduction.html) has been setup to generate html documentation from kdoc. To generate the HTML docs in `docs/dokka/`, run the following command:

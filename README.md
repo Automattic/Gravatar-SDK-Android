@@ -15,8 +15,42 @@ If you're also looking to integrate Gravatar in your iOS app, check out our [Gra
     <img src="docs/images/profile_light_demo.png" />
 </p>
 
-## Getting started
-Hi there! If you're here because you want to integrate the Gravatar SDK into your Android application, please take a look at our [Get Started guide](/docs/get-started/get-started.md). You'll find a quick overview of how to get an API key and use the library in your projects.
+## Features
+
+- Ready-to-use asynchronous services for Gravatar REST API based on Kotlin Coroutines.
+- Avatar URL calculator based on email and several query options.
+- Display a profile view or an avatar through ready-to-use Jetpack Compose UI components.
+- QuickEditor: This customizable sheet allows you to manage your avatar and Gravatar profile. You can select an existing avatar or upload a new one, and it provides a summary of your Gravatar profile.
+
+## Installation
+
+To add the Gravatar SDK to your project, you can use the following Gradle dependency:
+
+```groovy
+dependencies {
+    implementation ("com.gravatar:gravatar:<version>")
+    // OR
+    implementation ("com.gravatar:gravatar-ui:<version>")
+    // OR
+    implementation ("com.gravatar:gravatar-quickeditor:<version>")
+}
+```
+
+Additionally, if you're using version 2.3.1 or older of the SDK, you need to add custom Gradle repository:
+
+```groovy
+repositories {
+    maven {
+        url "https://a8c-libs.s3.amazonaws.com/android"
+    }
+}
+```
+
+For further details on how to integrate in your own app please take a look at our [Get Started guide](/docs/get-started/get-started.md). You'll find a quick overview of how to get an API key and use the library in your projects.
+
+## Documentation
+
+You can find the full API documentation [here](https://automattic.github.io/Gravatar-SDK-Android/current/index.html).
 
 ## For Maintainers
 
