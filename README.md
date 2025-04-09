@@ -26,22 +26,22 @@ If you're also looking to integrate Gravatar in your iOS app, check out our [Gra
 
 To add the Gravatar SDK to your project, you can use the following Gradle dependency:
 
-```groovy
+```kotlin
 dependencies {
-    implementation ("com.gravatar:gravatar:<version>")
+    implementation("com.gravatar:gravatar:<version>")
     // OR
-    implementation ("com.gravatar:gravatar-ui:<version>")
+    implementation("com.gravatar:gravatar-ui:<version>")
     // OR
-    implementation ("com.gravatar:gravatar-quickeditor:<version>")
+    implementation("com.gravatar:gravatar-quickeditor:<version>")
 }
 ```
 
 Additionally, if you're using version 2.3.1 or older of the SDK, you need to add custom Gradle repository:
 
-```groovy
+```kotlin
 repositories {
     maven {
-        url "https://a8c-libs.s3.amazonaws.com/android"
+        url = uri("https://a8c-libs.s3.amazonaws.com/android")
     }
 }
 ```
