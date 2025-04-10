@@ -35,7 +35,6 @@ dependencies {
     implementation(libs.security.crypto.datastore)
     implementation(libs.androidx.startup)
 
-    implementation(libs.coil.compose)
     implementation(libs.ucrop)
 
     // Jetpack Compose

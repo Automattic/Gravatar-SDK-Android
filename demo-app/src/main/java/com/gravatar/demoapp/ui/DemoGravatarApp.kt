@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -49,11 +50,6 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImagePainter
-import coil.compose.rememberAsyncImagePainter
-import coil.request.CachePolicy
-import coil.request.ImageRequest
-import coil.size.Size
 import com.gravatar.AvatarQueryOptions
 import com.gravatar.AvatarUrl
 import com.gravatar.DefaultAvatarOption
@@ -65,6 +61,7 @@ import com.gravatar.demoapp.ui.components.ExpandableSection
 import com.gravatar.demoapp.ui.components.GravatarEmailInput
 import com.gravatar.demoapp.ui.model.SettingsState
 import com.gravatar.demoapp.ui.utils.prettyPrint
+import com.gravatar.imageloader.AsyncImage
 import com.gravatar.restapi.models.Profile
 import com.gravatar.services.ErrorType
 import com.gravatar.services.GravatarResult
@@ -434,24 +431,25 @@ fun LabelledText(
 @Composable
 fun GravatarImage(gravatarUrl: String, onError: (String?, Throwable?) -> Unit) {
     val forceRefresh = remember { mutableStateOf(0) }
-    val painter = rememberAsyncImagePainter(
-        model = ImageRequest.Builder(LocalContext.current)
-            .data(gravatarUrl)
-            .memoryCachePolicy(CachePolicy.WRITE_ONLY)
-            .diskCachePolicy(CachePolicy.DISABLED)
-            .setParameter("forceRefresh", forceRefresh)
-            .size(Size.ORIGINAL)
-            .build(),
-        onState = { state ->
-            if (state is AsyncImagePainter.State.Error) {
-                onError(state.result.throwable.message, state.result.throwable)
-                forceRefresh.value++
-            }
-        },
-    )
+//    val painter = rememberAsyncImagePainter(
+//        model = ImageRequest.Builder(LocalContext.current)
+//            .data(gravatarUrl)
+//            .memoryCachePolicy(CachePolicy.WRITE_ONLY)
+//            .diskCachePolicy(CachePolicy.DISABLED)
+//            .setParameter("forceRefresh", forceRefresh)
+//            .size(Size.ORIGINAL)
+//            .build(),
+//        onState = { state ->
+//            if (state is AsyncImagePainter.State.Error) {
+//                onError(state.result.throwable.message, state.result.throwable)
+//                forceRefresh.value++
+//            }
+//        },
+//    )
 
-    Image(
-        painter = painter,
+    AsyncImage(
+        imageSource = gravatarUrl,
         contentDescription = "",
+        modifier = Modifier.wrapContentSize()
     )
 }

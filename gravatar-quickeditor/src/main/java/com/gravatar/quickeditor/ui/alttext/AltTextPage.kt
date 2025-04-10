@@ -45,7 +45,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import coil.compose.AsyncImage
+import com.gravatar.imageloader.AsyncImage
 import com.gravatar.quickeditor.R
 import com.gravatar.quickeditor.ui.components.QEButton
 import com.gravatar.quickeditor.ui.components.QEPage
@@ -199,7 +199,7 @@ internal fun AltTextPage(
                     val avatarSize = 96.dp
                     val sizePx = with(LocalDensity.current) { avatarSize.roundToPx() }
                     AsyncImage(
-                        model = altTextState.imageUrlWithSize(sizePx),
+                        imageSource = altTextState.imageUrlWithSize(sizePx),
                         contentDescription = stringResource(
                             id = R.string.gravatar_qe_selectable_avatar_content_description,
                         ),

@@ -51,7 +51,6 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
 import com.gravatar.AvatarQueryOptions
 import com.gravatar.AvatarUrl
 import com.gravatar.demoapp.BuildConfig
@@ -59,6 +58,7 @@ import com.gravatar.demoapp.R
 import com.gravatar.demoapp.ui.activity.QuickEditorTestActivity
 import com.gravatar.demoapp.ui.components.GravatarEmailInput
 import com.gravatar.demoapp.ui.components.GravatarPasswordInput
+import com.gravatar.imageloader.AsyncImage
 import com.gravatar.quickeditor.GravatarQuickEditor
 import com.gravatar.quickeditor.ui.editor.AuthenticationMethod
 import com.gravatar.quickeditor.ui.editor.AvatarPickerContentLayout
@@ -232,7 +232,7 @@ private fun UpdateAvatarComposable(
             val size = 128.dp
             val sizePx = with(LocalDensity.current) { size.roundToPx() }
             AsyncImage(
-                model = AvatarUrl(
+                imageSource = AvatarUrl(
                     email,
                     AvatarQueryOptions {
                         preferredSize = sizePx

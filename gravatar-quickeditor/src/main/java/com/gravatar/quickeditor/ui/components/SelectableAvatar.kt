@@ -29,7 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
+import com.gravatar.imageloader.AsyncImage
 import com.gravatar.quickeditor.R
 import com.gravatar.quickeditor.ui.avatarpicker.fullList
 import com.gravatar.restapi.models.Avatar
@@ -67,7 +67,7 @@ internal fun SelectableAvatar(
             },
     ) {
         AsyncImage(
-            model = imageUrl,
+            imageSource = imageUrl,
             contentDescription = stringResource(id = R.string.gravatar_qe_selectable_avatar_content_description),
             modifier = Modifier
                 .fillMaxSize()
