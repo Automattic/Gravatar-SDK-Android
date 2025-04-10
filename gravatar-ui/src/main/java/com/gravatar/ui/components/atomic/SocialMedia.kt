@@ -18,17 +18,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
-import coil.decode.SvgDecoder
-import coil.request.ImageRequest
 import com.gravatar.GravatarConstants
 import com.gravatar.extensions.defaultProfile
 import com.gravatar.extensions.profileUrl
+import com.gravatar.imageloader.AsyncImage
 import com.gravatar.restapi.models.Profile
 import com.gravatar.restapi.models.VerifiedAccount
 import com.gravatar.ui.R
@@ -150,10 +147,7 @@ public fun SocialIcon(media: SocialMedia, modifier: Modifier = Modifier) {
             )
         } else {
             AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(media.iconUrl.toString())
-                    .decoderFactory(SvgDecoder.Factory())
-                    .build(),
+                imageSource = media.iconUrl.toString(),
                 contentDescription = media.name,
                 modifier = Modifier.fillMaxSize(),
                 contentScale = androidx.compose.ui.layout.ContentScale.FillHeight,

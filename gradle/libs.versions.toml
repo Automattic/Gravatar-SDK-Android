@@ -36,6 +36,7 @@ turbine = "1.1.0"
 ucrop = "2.2.11"
 mavenPublish = "0.31.0"
 kotlinCompilerExtension = "1.5.15"
+androidSvg = "1.4"
 
 [libraries]
 android-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
@@ -79,6 +80,7 @@ roborazzi-junit-rule = { group = "io.github.takahirom.roborazzi", name = "robora
 security-crypto-datastore = { group = "io.github.osipxd", name = "security-crypto-datastore-preferences", version.ref = "dataStore" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 ucrop = { group = "com.automattic", name = "ucrop", version.ref = "ucrop" }
+androidSvg = { group = "com.caverock", name = "androidsvg", version.ref = "androidSvg" }
 
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }

@@ -14,11 +14,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
 import com.gravatar.AvatarQueryOptions
 import com.gravatar.AvatarUrl
 import com.gravatar.extensions.avatarUrl
 import com.gravatar.extensions.defaultProfile
+import com.gravatar.imageloader.AsyncImage
 import com.gravatar.restapi.models.Profile
 import com.gravatar.types.Email
 import com.gravatar.ui.R
@@ -148,9 +148,9 @@ private fun EmptyAvatar(size: Dp, modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun Avatar(model: Any?, size: Dp, modifier: Modifier) {
+private fun Avatar(model: Any, size: Dp, modifier: Modifier) {
     AsyncImage(
-        model = model,
+        imageSource = model,
         contentDescription = stringResource(R.string.gravatar_ui_avatar_content_description),
         modifier = modifier.size(size),
     )
@@ -187,7 +187,7 @@ public fun Avatar(
         modifier = modifier.size(size),
     ) {
         AsyncImage(
-            model = AvatarUrl(
+            imageSource = AvatarUrl(
                 hash = email.hash(),
                 avatarQueryOptions = AvatarQueryOptions {
                     preferredSize = sizePx
