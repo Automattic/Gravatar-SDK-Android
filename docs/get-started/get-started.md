@@ -22,19 +22,21 @@ First step is to add the maven repositories to the file where you manage your th
 
 ### Add the Gravatar dependencies to your project
 
-```groovy
-repositories {
-    maven {
-        url "https://a8c-libs.s3.amazonaws.com/android"
-    }
+```kotlin
+dependencies {
+    implementation("com.gravatar:gravatar:<version>")
+    implementation("com.gravatar:gravatar-ui:<version>")
+    implementation("com.gravatar:gravatar-quickeditor:<version>")
 }
 ```
 
-```groovy
-dependencies {
-    implementation ("com.gravatar:gravatar:<version>")
-    implementation ("com.gravatar:gravatar-ui:<version>")
-    implementation ("com.gravatar:gravatar-quickeditor:<version>")
+Additionally, if you're using version 2.3.1 or older of the SDK, you need to add custom Gradle repository:
+
+```kotlin
+repositories {
+    maven {
+        url = uri("https://a8c-libs.s3.amazonaws.com/android")
+    }
 }
 ```
 
@@ -50,13 +52,15 @@ gravatar.api.key = REPLACE_ME
 
 Then update your gradle file to read the API key from the `local.properties` file and put it in the generated `BuildConfig` class:
 
-```groovy
+```kotlin
 android {
     buildFeatures.buildConfig = true
 
-    val properties = Properties()
-    properties.load(FileInputStream(project.rootProject.file("local.properties")))
-    buildConfigField("String", "GRAVATAR_API_KEY", "\"${properties["gravatar.api.key"]}\"")
+    defaultConfig {
+        val properties = Properties()
+        properties.load(FileInputStream(project.rootProject.file("local.properties")))
+        buildConfigField("String", "GRAVATAR_API_KEY", "\"${properties["gravatar.api.key"]}\"")
+    }
 }
 ```
 
