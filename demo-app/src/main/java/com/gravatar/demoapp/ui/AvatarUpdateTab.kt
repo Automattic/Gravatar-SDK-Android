@@ -77,7 +77,7 @@ import kotlinx.coroutines.withContext
 fun AvatarUpdateTab(modifier: Modifier = Modifier) {
     var userEmail by remember { mutableStateOf(BuildConfig.DEMO_EMAIL) }
     var userToken by remember { mutableStateOf(BuildConfig.DEMO_BEARER_TOKEN) }
-    var useToken by remember { mutableStateOf(false) }
+    var useToken by rememberSaveable { mutableStateOf(false) }
     var tokenVisible by remember { mutableStateOf(false) }
     val context = LocalContext.current
     var showBottomSheet by rememberSaveable { mutableStateOf(false) }
