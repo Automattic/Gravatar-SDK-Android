@@ -23,6 +23,7 @@ import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -42,6 +43,7 @@ import com.composables.core.SheetDetent
 import com.composables.core.SheetDetent.Companion.FullyExpanded
 import com.composables.core.SheetDetent.Companion.Hidden
 import com.composables.core.rememberModalBottomSheetState
+import com.gravatar.quickeditor.QuickEditorContainer
 import com.gravatar.quickeditor.ui.components.QEDragHandle
 import com.gravatar.quickeditor.ui.editor.AuthenticationMethod
 import com.gravatar.quickeditor.ui.editor.AvatarPickerContentLayout
@@ -97,6 +99,16 @@ internal fun GravatarQuickEditorBottomSheet(
     val onDoneClicked: () -> Unit = {
         coroutineScope.launch {
             modalBottomSheetState.currentDetent = Hidden
+        }
+    }
+
+    DisposableEffect(Unit) {
+        if (authenticationMethod is AuthenticationMethod.Bearer) {
+            QuickEditorContainer.getInstance().useInMemoryTokenStorage()
+        }
+
+        onDispose {
+            QuickEditorContainer.getInstance().resetUseInMemoryTokenStorage()
         }
     }
 

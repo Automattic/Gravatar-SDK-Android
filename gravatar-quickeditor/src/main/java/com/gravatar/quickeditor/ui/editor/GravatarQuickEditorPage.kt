@@ -7,7 +7,6 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -16,7 +15,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.gravatar.quickeditor.QuickEditorContainer
 import com.gravatar.quickeditor.ui.alttext.AltTextPage
 import com.gravatar.quickeditor.ui.avatarpicker.AvatarPicker
 import com.gravatar.quickeditor.ui.navigation.EditorNavDestinations
@@ -110,14 +108,6 @@ internal fun GravatarQuickEditorPage(
     onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit = {},
 ) {
     val navController = rememberNavController()
-
-    DisposableEffect(authToken) {
-        QuickEditorContainer.getInstance().useInMemoryTokenStorage()
-
-        onDispose {
-            QuickEditorContainer.getInstance().resetUseInMemoryTokenStorage()
-        }
-    }
 
     NavHost(
         navController,
