@@ -22,22 +22,26 @@ internal fun CtaSection(
     title: String? = null,
 ) {
     Surface(
-        modifier = modifier
-            .border(
-                width = 1.dp,
-                color = MaterialTheme.colorScheme.surfaceContainerHighest,
-                shape = RoundedCornerShape(8.dp),
-            ),
+        modifier = modifier,
     ) {
-        Column(
-            modifier = Modifier.padding(16.dp),
-        ) {
-            title?.let { QESectionTitle(title = it) }
-            QESectionMessage(message = message, modifier = Modifier.padding(top = 4.dp))
+        Column {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .border(
+                        width = 1.dp,
+                        color = MaterialTheme.colorScheme.surfaceContainerHighest,
+                        shape = RoundedCornerShape(8.dp),
+                    )
+                    .padding(16.dp),
+            ) {
+                title?.let { QESectionTitle(title = it) }
+                QESectionMessage(message = message, modifier = Modifier.padding(top = 4.dp))
+            }
             QEButton(
                 buttonText = buttonText,
                 onClick = onButtonClick,
-                modifier = Modifier.padding(top = if (title == null) 16.dp else 24.dp),
+                modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 24.dp, bottom = 8.dp),
             )
         }
     }
