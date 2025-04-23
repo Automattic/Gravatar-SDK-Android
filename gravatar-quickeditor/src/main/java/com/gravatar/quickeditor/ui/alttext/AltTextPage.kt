@@ -157,107 +157,112 @@ internal fun AltTextPage(
     val uriHandler = LocalUriHandler.current
 
     Surface(modifier = modifier.fillMaxWidth()) {
-        Box(
-            modifier = Modifier
-                .animateContentSize()
-                .verticalScroll(rememberScrollState())
-                .border(
-                    width = 1.dp,
-                    color = MaterialTheme.colorScheme.surfaceContainerHighest,
-                    shape = RoundedCornerShape(8.dp),
-                )
-                .padding(16.dp),
-        ) {
-            Column {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier.fillMaxWidth(),
-                ) {
-                    QESectionTitle(
-                        title = stringResource(R.string.gravatar_qe_avatar_alt_text_section_title),
-                        modifier = Modifier,
+        Column {
+            Box(
+                modifier = Modifier
+                    .animateContentSize()
+                    .verticalScroll(rememberScrollState())
+                    .border(
+                        width = 1.dp,
+                        color = MaterialTheme.colorScheme.surfaceContainerHighest,
+                        shape = RoundedCornerShape(8.dp),
                     )
-                    Icon(
-                        painter = painterResource(id = R.drawable.gravatar_alt_text_help),
-                        tint = MaterialTheme.colorScheme.primary,
-                        contentDescription = stringResource(id = R.string.gravatar_qe_avatar_alt_text_section_what_is),
-                        modifier = Modifier.clickable {
-                            uriHandler.openUri(GRAVATAR_ALT_TEXT_HELP_URL)
-                        },
-                    )
-                }
+                    .padding(16.dp),
+            ) {
+                Column {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        QESectionTitle(
+                            title = stringResource(R.string.gravatar_qe_avatar_alt_text_section_title),
+                            modifier = Modifier,
+                        )
+                        Icon(
+                            painter = painterResource(id = R.drawable.gravatar_alt_text_help),
+                            tint = MaterialTheme.colorScheme.primary,
+                            contentDescription = stringResource(
+                                id = R.string.gravatar_qe_avatar_alt_text_section_what_is,
+                            ),
+                            modifier = Modifier.clickable {
+                                uriHandler.openUri(GRAVATAR_ALT_TEXT_HELP_URL)
+                            },
+                        )
+                    }
 
-                Row(
-                    verticalAlignment = Alignment.Top,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 16.dp)
-                        .height(IntrinsicSize.Min),
-                ) {
-                    val cornerRadius = 8.dp
-                    val avatarSize = 96.dp
-                    val sizePx = with(LocalDensity.current) { avatarSize.roundToPx() }
-                    AsyncImage(
-                        model = altTextState.imageUrlWithSize(sizePx),
-                        contentDescription = stringResource(
-                            id = R.string.gravatar_qe_selectable_avatar_content_description,
-                        ),
+                    Row(
+                        verticalAlignment = Alignment.Top,
                         modifier = Modifier
-                            .size(avatarSize)
-                            .border(
-                                1.dp,
-                                MaterialTheme.colorScheme.surfaceDim,
-                                RoundedCornerShape(cornerRadius),
-                            )
-                            .clip(RoundedCornerShape(cornerRadius)),
-                    )
-                    BasicTextField(
-                        value = altTextState.altText,
-                        onValueChange = { newAltText ->
-                            onEvent(AltTextEvent.AvatarAltTextChange(newAltText))
-                        },
-                        maxLines = 5,
-                        textStyle = LocalTextStyle.current.copy(color = MaterialTheme.colorScheme.onSurface),
-                        modifier = Modifier
-                            .fillMaxSize(),
-                        decorationBox = { innerTextField ->
-                            Column(
-                                modifier = Modifier
-                                    .padding(start = 16.dp, top = 8.dp, bottom = 8.dp),
-                            ) {
-                                Box(
-                                    modifier = Modifier.weight(1f),
-                                ) {
-                                    if (altTextState.altText.isEmpty()) {
-                                        Text(
-                                            text = stringResource(
-                                                R.string.gravatar_qe_avatar_alt_text_section_placeholder,
-                                            ),
-                                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                        )
-                                    }
-                                    innerTextField()
-                                }
-                                Text(
-                                    text = (altTextState.altTextMaxLength - altTextState.altText.count()).toString(),
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f),
-                                    modifier = Modifier
-                                        .align(Alignment.End),
+                            .fillMaxWidth()
+                            .padding(top = 16.dp)
+                            .height(IntrinsicSize.Min),
+                    ) {
+                        val cornerRadius = 8.dp
+                        val avatarSize = 96.dp
+                        val sizePx = with(LocalDensity.current) { avatarSize.roundToPx() }
+                        AsyncImage(
+                            model = altTextState.imageUrlWithSize(sizePx),
+                            contentDescription = stringResource(
+                                id = R.string.gravatar_qe_selectable_avatar_content_description,
+                            ),
+                            modifier = Modifier
+                                .size(avatarSize)
+                                .border(
+                                    1.dp,
+                                    MaterialTheme.colorScheme.surfaceDim,
+                                    RoundedCornerShape(cornerRadius),
                                 )
-                            }
-                        },
-                    )
+                                .clip(RoundedCornerShape(cornerRadius)),
+                        )
+                        BasicTextField(
+                            value = altTextState.altText,
+                            onValueChange = { newAltText ->
+                                onEvent(AltTextEvent.AvatarAltTextChange(newAltText))
+                            },
+                            maxLines = 5,
+                            textStyle = LocalTextStyle.current.copy(color = MaterialTheme.colorScheme.onSurface),
+                            modifier = Modifier
+                                .fillMaxSize(),
+                            decorationBox = { innerTextField ->
+                                Column(
+                                    modifier = Modifier
+                                        .padding(start = 16.dp, top = 8.dp, bottom = 8.dp),
+                                ) {
+                                    Box(
+                                        modifier = Modifier.weight(1f),
+                                    ) {
+                                        if (altTextState.altText.isEmpty()) {
+                                            Text(
+                                                text = stringResource(
+                                                    R.string.gravatar_qe_avatar_alt_text_section_placeholder,
+                                                ),
+                                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                            )
+                                        }
+                                        innerTextField()
+                                    }
+                                    Text(
+                                        text = (altTextState.altTextMaxLength - altTextState.altText.count())
+                                            .toString(),
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f),
+                                        modifier = Modifier
+                                            .align(Alignment.End),
+                                    )
+                                }
+                            },
+                        )
+                    }
                 }
-                QEButton(
-                    buttonText = stringResource(R.string.gravatar_qe_avatar_alt_text_save_button),
-                    onClick = { onEvent(AltTextEvent.AvatarAltTextSaveTapped) },
-                    modifier = Modifier.padding(top = 16.dp),
-                    enabled = altTextState.isSaveButtonEnabled,
-                    loading = altTextState.isUpdating,
-                )
             }
+            QEButton(
+                buttonText = stringResource(R.string.gravatar_qe_avatar_alt_text_save_button),
+                onClick = { onEvent(AltTextEvent.AvatarAltTextSaveTapped) },
+                modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 24.dp, bottom = 8.dp),
+                enabled = altTextState.isSaveButtonEnabled,
+                loading = altTextState.isUpdating,
+            )
         }
     }
 }
@@ -270,15 +275,17 @@ private fun AltTextUiState.imageUrlWithSize(sizePx: Int) = avatarUrl?.toURL()?.l
 @Preview(showBackground = true)
 private fun AltTextPagePreview() {
     GravatarTheme {
-        AltTextPage(
-            altTextState = AltTextUiState(
-                avatarUrl = URI.create("https://gravatar.com/avatar/test"),
-                isUpdating = false,
-                altText = "alt",
-                altTextMaxLength = 125,
-            ),
-            onEvent = { },
-        )
+        Box(modifier = Modifier.padding(10.dp)) {
+            AltTextPage(
+                altTextState = AltTextUiState(
+                    avatarUrl = URI.create("https://gravatar.com/avatar/test"),
+                    isUpdating = false,
+                    altText = "alt",
+                    altTextMaxLength = 125,
+                ),
+                onEvent = { },
+            )
+        }
     }
 }
 
@@ -286,14 +293,16 @@ private fun AltTextPagePreview() {
 @Preview(showBackground = true)
 private fun AltTextPageEmptyAltTextPreview() {
     GravatarTheme {
-        AltTextPage(
-            altTextState = AltTextUiState(
-                avatarUrl = URI.create("https://gravatar.com/avatar/test"),
-                isUpdating = false,
-                altText = "",
-                altTextMaxLength = 125,
-            ),
-            onEvent = { },
-        )
+        Box(modifier = Modifier.padding(10.dp)) {
+            AltTextPage(
+                altTextState = AltTextUiState(
+                    avatarUrl = URI.create("https://gravatar.com/avatar/test"),
+                    isUpdating = false,
+                    altText = "",
+                    altTextMaxLength = 125,
+                ),
+                onEvent = { },
+            )
+        }
     }
 }
