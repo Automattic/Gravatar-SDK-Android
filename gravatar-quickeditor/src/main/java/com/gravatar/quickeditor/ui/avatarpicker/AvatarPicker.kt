@@ -205,25 +205,25 @@ internal fun AvatarPicker(uiState: AvatarPickerUiState, onEvent: (AvatarPickerEv
                     .fillMaxWidth()
                     .padding(bottom = 10.dp),
             )
-            AnimatedVisibility(visible = uiState.nonSelectedAvatarAlertVisible) {
-                AlertBanner(
-                    message = stringResource(id = R.string.gravatar_qe_alert_banner_no_avatar_selected),
-                    onClose = { onEvent(AvatarPickerEvent.AvatarDeleteAlertDismissed) },
-                    modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 24.dp),
-                )
-            }
             ProfileCard(
                 profile = uiState.profile,
                 email = uiState.email,
                 avatarCacheBuster = uiState.avatarCacheBuster.toString(),
-                modifier = Modifier.padding(horizontal = 16.dp),
+                modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
             )
+            AnimatedVisibility(visible = uiState.nonSelectedAvatarAlertVisible) {
+                AlertBanner(
+                    message = stringResource(id = R.string.gravatar_qe_alert_banner_no_avatar_selected),
+                    onClose = { onEvent(AvatarPickerEvent.AvatarDeleteAlertDismissed) },
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                )
+            }
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .animateContentSize(),
             ) {
-                val sectionModifier = Modifier.padding(top = 24.dp, bottom = 10.dp)
+                val sectionModifier = Modifier.padding(top = 16.dp, bottom = 10.dp)
                 when {
                     uiState.isLoading -> Box(
                         modifier = sectionModifier
