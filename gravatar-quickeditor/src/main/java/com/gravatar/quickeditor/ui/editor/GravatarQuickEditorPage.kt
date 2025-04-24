@@ -16,7 +16,6 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.gravatar.quickeditor.ui.alttext.AltTextPage
-import com.gravatar.quickeditor.ui.avatarpicker.AvatarPicker
 import com.gravatar.quickeditor.ui.navigation.EditorNavDestinations
 import com.gravatar.quickeditor.ui.navigation.QuickEditorPage
 import com.gravatar.quickeditor.ui.oauth.OAuthPage
@@ -156,7 +155,8 @@ private fun NavGraphBuilder.addAvatarPickerGraph(
                 slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Start) + shrinkVertically()
             },
         ) {
-            AvatarPicker(
+            it.viewModelStore
+            QuickEditor(
                 gravatarQuickEditorParams = gravatarQuickEditorParams,
                 handleExpiredSession = handleExpiredSession,
                 onAvatarSelected = onAvatarSelected,

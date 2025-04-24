@@ -48,7 +48,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.gravatar.extensions.defaultProfile
 import com.gravatar.quickeditor.R
 import com.gravatar.quickeditor.ui.components.AlertBanner
 import com.gravatar.quickeditor.ui.components.AvatarDeletionConfirmationDialog
@@ -56,11 +55,8 @@ import com.gravatar.quickeditor.ui.components.AvatarOption
 import com.gravatar.quickeditor.ui.components.AvatarsSection
 import com.gravatar.quickeditor.ui.components.CtaSection
 import com.gravatar.quickeditor.ui.components.DownloadManagerDisabledAlertDialog
-import com.gravatar.quickeditor.ui.components.EmailLabel
 import com.gravatar.quickeditor.ui.components.FailedAvatarUploadAlertDialog
 import com.gravatar.quickeditor.ui.components.PermissionRationaleDialog
-import com.gravatar.quickeditor.ui.components.ProfileCard
-import com.gravatar.quickeditor.ui.components.QEPageDefault
 import com.gravatar.quickeditor.ui.cropperlauncher.CropperLauncher
 import com.gravatar.quickeditor.ui.cropperlauncher.UCropCropperLauncher
 import com.gravatar.quickeditor.ui.editor.AvatarPickerContentLayout
@@ -75,7 +71,6 @@ import com.gravatar.quickeditor.ui.withPermission
 import com.gravatar.restapi.models.Avatar
 import com.gravatar.types.Email
 import com.gravatar.ui.GravatarTheme
-import com.gravatar.ui.components.ComponentState
 import com.yalantis.ucrop.UCrop
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -89,8 +84,8 @@ internal fun AvatarPicker(
     handleExpiredSession: Boolean,
     onAvatarSelected: () -> Unit,
     onSessionExpired: () -> Unit,
-    onDoneClicked: () -> Unit,
     onAltTextTapped: (email: String, avatarId: String) -> Unit,
+    onRefresh: () -> Unit,
     viewModel: AvatarPickerViewModel = viewModel(
         factory = AvatarPickerViewModelFactory(gravatarQuickEditorParams, handleExpiredSession),
     ),
@@ -130,23 +125,23 @@ internal fun AvatarPicker(
         }
     }
 
-    GravatarTheme {
-        QEPageDefault(
-            onDoneClicked = onDoneClicked,
-            content = {
-                Box(modifier = Modifier.wrapContentSize()) {
-                    AvatarPicker(
-                        uiState = uiState,
-                        onEvent = viewModel::onEvent,
-                    )
-                    QESnackbarHost(
-                        modifier = Modifier
-                            .align(Alignment.BottomStart),
-                        hostState = snackState,
-                    )
-                }
-            },
-        )
+    Surface {
+        Box(modifier = Modifier.wrapContentSize()) {
+            AvatarPicker(
+                uiState = uiState,
+                onEvent = { event ->
+                    viewModel.onEvent(event)
+                    if (event is AvatarPickerEvent.Refresh) {
+                        onRefresh()
+                    }
+                },
+            )
+            QESnackbarHost(
+                modifier = Modifier
+                    .align(Alignment.BottomStart),
+                hostState = snackState,
+            )
+        }
     }
 }
 
@@ -199,23 +194,11 @@ internal fun AvatarPicker(uiState: AvatarPickerUiState, onEvent: (AvatarPickerEv
             ),
     ) {
         Column {
-            EmailLabel(
-                email = uiState.email,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 10.dp),
-            )
-            ProfileCard(
-                profile = uiState.profile,
-                email = uiState.email,
-                avatarCacheBuster = uiState.avatarCacheBuster.toString(),
-                modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
-            )
             AnimatedVisibility(visible = uiState.nonSelectedAvatarAlertVisible) {
                 AlertBanner(
                     message = stringResource(id = R.string.gravatar_qe_alert_banner_no_avatar_selected),
                     onClose = { onEvent(AvatarPickerEvent.AvatarDeleteAlertDismissed) },
-                    modifier = Modifier.padding(horizontal = 16.dp),
+                    modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
                 )
             }
             Box(
@@ -223,7 +206,7 @@ internal fun AvatarPicker(uiState: AvatarPickerUiState, onEvent: (AvatarPickerEv
                     .fillMaxWidth()
                     .animateContentSize(),
             ) {
-                val sectionModifier = Modifier.padding(top = 16.dp, bottom = 10.dp)
+                val sectionModifier = Modifier.padding(top = 8.dp, bottom = 10.dp)
                 when {
                     uiState.isLoading -> Box(
                         modifier = sectionModifier
@@ -490,13 +473,6 @@ private fun AvatarPickerPreview() {
         AvatarPicker(
             uiState = AvatarPickerUiState(
                 email = Email("henry.a.wallace@example.com"),
-                profile = ComponentState.Loaded(
-                    defaultProfile(
-                        hash = "tetet",
-                        displayName = "Henry Wallace",
-                        location = "London, UK",
-                    ),
-                ),
                 emailAvatars = EmailAvatars(
                     avatars = listOf(
                         Avatar {
@@ -523,7 +499,6 @@ private fun AvatarPickerLoadingPreview() {
         AvatarPicker(
             uiState = AvatarPickerUiState(
                 email = Email("henry.a.wallace@example.com"),
-                profile = ComponentState.Loading,
                 isLoading = true,
                 avatarPickerContentLayout = AvatarPickerContentLayout.Horizontal,
                 emailAvatars = null,
@@ -540,7 +515,6 @@ private fun AvatarPickerErrorPreview() {
         AvatarPicker(
             uiState = AvatarPickerUiState(
                 email = Email("henry.a.wallace@example.com"),
-                profile = null,
                 isLoading = false,
                 emailAvatars = null,
                 error = SectionError.ServerError,
