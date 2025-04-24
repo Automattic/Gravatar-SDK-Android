@@ -155,7 +155,6 @@ private fun NavGraphBuilder.addAvatarPickerGraph(
                 slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Start) + shrinkVertically()
             },
         ) {
-            it.viewModelStore
             QuickEditor(
                 gravatarQuickEditorParams = gravatarQuickEditorParams,
                 handleExpiredSession = handleExpiredSession,

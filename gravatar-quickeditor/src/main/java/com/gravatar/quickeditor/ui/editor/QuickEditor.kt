@@ -3,6 +3,7 @@ package com.gravatar.quickeditor.ui.editor
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -56,20 +57,22 @@ internal fun QuickEditor(
         QEPageDefault(
             onDoneClicked = onDoneClicked,
             content = {
-                Column {
-                    EmailLabel(
-                        email = uiState.email,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 10.dp),
-                    )
-                    ProfileCard(
-                        profile = uiState.profile,
-                        email = uiState.email,
-                        avatarCacheBuster = uiState.avatarCacheBuster.toString(),
-                        modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
-                    )
-                    content()
+                Surface {
+                    Column {
+                        EmailLabel(
+                            email = uiState.email,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 10.dp),
+                        )
+                        ProfileCard(
+                            profile = uiState.profile,
+                            email = uiState.email,
+                            avatarCacheBuster = uiState.avatarCacheBuster.toString(),
+                            modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
+                        )
+                        content()
+                    }
                 }
             },
         )
