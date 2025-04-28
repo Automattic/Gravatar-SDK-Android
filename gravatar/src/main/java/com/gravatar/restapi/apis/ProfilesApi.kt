@@ -26,9 +26,7 @@ internal class ProfilesApi(
 ) : ApiClient(basePath, client) {
     internal companion object {
         @JvmStatic
-        val defaultBasePath: String by lazy {
-            System.getProperties().getProperty(ApiClient.BASE_URL_KEY, "https://api.gravatar.com/v3")
-        }
+        val defaultBasePath: String = "https://api.gravatar.com/v3"
     }
 
     /**
