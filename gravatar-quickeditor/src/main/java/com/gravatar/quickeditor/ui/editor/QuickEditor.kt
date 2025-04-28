@@ -37,7 +37,10 @@ internal fun QuickEditor(
         AvatarPicker(
             gravatarQuickEditorParams = gravatarQuickEditorParams,
             handleExpiredSession = handleExpiredSession,
-            onAvatarSelected = onAvatarSelected,
+            onAvatarSelected = {
+                onAvatarSelected()
+                viewModel.onEvent(QuickEditorEvent.UpdateAvatarCache)
+            },
             onSessionExpired = onSessionExpired,
             onAltTextTapped = onAltTextTapped,
             onRefresh = {
