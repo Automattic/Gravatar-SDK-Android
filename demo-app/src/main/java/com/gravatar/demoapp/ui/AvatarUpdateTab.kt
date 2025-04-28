@@ -50,6 +50,7 @@ import com.gravatar.quickeditor.ui.editor.AuthenticationMethod
 import com.gravatar.quickeditor.ui.editor.AvatarPickerContentLayout
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
 import com.gravatar.quickeditor.ui.editor.GravatarUiMode
+import com.gravatar.quickeditor.ui.editor.QuickEditorScope
 import com.gravatar.quickeditor.ui.editor.bottomsheet.GravatarQuickEditorBottomSheet
 import com.gravatar.quickeditor.ui.oauth.OAuthParams
 import com.gravatar.types.Email
@@ -67,7 +68,7 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
     var tokenVisible by remember { mutableStateOf(false) }
     val context = LocalContext.current
     var showBottomSheet by rememberSaveable { mutableStateOf(false) }
-    val scope = rememberCoroutineScope()
+    val coroutineScope = rememberCoroutineScope()
     var cacheBuster: String? by remember { mutableStateOf(null) }
     val scrollState: ScrollState = rememberScrollState()
     var pickerContentLayout: AvatarPickerContentLayout by rememberSaveable(
@@ -77,6 +78,9 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
     }
     var pickerUiMode: GravatarUiMode by rememberSaveable {
         mutableStateOf(GravatarUiMode.SYSTEM)
+    }
+    var editorScope: QuickEditorScope by rememberSaveable {
+        mutableStateOf(QuickEditorScope.AVATAR)
     }
 
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -126,6 +130,11 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
                     modifier = Modifier.weight(1f),
                 )
             }
+            ScopeDropdown(
+                scope = editorScope,
+                onScopeSelected = { editorScope = it },
+                modifier = Modifier.fillMaxWidth(),
+            )
             Button(
                 onClick = {
                     keyboardController?.hide()
@@ -142,7 +151,7 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
         ) {
             Button(
                 onClick = {
-                    scope.launch {
+                    coroutineScope.launch {
                         GravatarQuickEditor.logout(Email(userEmail))
                         withContext(Dispatchers.Main) {
                             Toast.makeText(context, "Logged out", Toast.LENGTH_SHORT).show()
@@ -190,6 +199,7 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
                     email = Email(userEmail)
                     avatarPickerContentLayout = pickerContentLayout
                     uiMode = pickerUiMode
+                    scope = editorScope
                 },
                 authenticationMethod = authenticationMethod,
                 onAvatarSelected = remember {
@@ -286,6 +296,49 @@ private fun UiModeDropdown(
             uiModeOptions.forEach { selectionOption ->
                 DropdownMenuItem(text = { Text(text = selectionOption.toString()) }, onClick = {
                     onUiModeSelected(selectionOption)
+                    expanded = false
+                })
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ScopeDropdown(
+    scope: QuickEditorScope,
+    onScopeSelected: (QuickEditorScope) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    var expanded by remember { mutableStateOf(false) }
+    val uiModeOptions = listOf(
+        QuickEditorScope.AVATAR,
+        QuickEditorScope.ABOUT,
+    )
+
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = { expanded = it },
+        modifier = modifier,
+    ) {
+        TextField(
+            readOnly = true,
+            value = scope.toString(),
+            onValueChange = { },
+            label = { Text("Editor scope") },
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+            modifier = Modifier
+                .fillMaxWidth()
+                .menuAnchor(),
+        )
+        ExposedDropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+            modifier = Modifier.exposedDropdownSize(),
+        ) {
+            uiModeOptions.forEach { selectionOption ->
+                DropdownMenuItem(text = { Text(text = selectionOption.toString()) }, onClick = {
+                    onScopeSelected(selectionOption)
                     expanded = false
                 })
             }

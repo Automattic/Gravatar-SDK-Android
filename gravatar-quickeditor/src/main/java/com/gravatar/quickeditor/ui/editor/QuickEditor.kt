@@ -34,19 +34,27 @@ internal fun QuickEditor(
         uiState = uiState,
         onDoneClicked = onDoneClicked,
     ) {
-        AvatarPicker(
-            gravatarQuickEditorParams = gravatarQuickEditorParams,
-            handleExpiredSession = handleExpiredSession,
-            onAvatarSelected = {
-                onAvatarSelected()
-                viewModel.onEvent(QuickEditorEvent.UpdateAvatarCache)
-            },
-            onSessionExpired = onSessionExpired,
-            onAltTextTapped = onAltTextTapped,
-            onRefresh = {
-                viewModel.onEvent(QuickEditorEvent.Refresh)
-            },
-        )
+        when (gravatarQuickEditorParams.scope) {
+            QuickEditorScope.AVATAR -> {
+                AvatarPicker(
+                    gravatarQuickEditorParams = gravatarQuickEditorParams,
+                    handleExpiredSession = handleExpiredSession,
+                    onAvatarSelected = {
+                        onAvatarSelected()
+                        viewModel.onEvent(QuickEditorEvent.UpdateAvatarCache)
+                    },
+                    onSessionExpired = onSessionExpired,
+                    onAltTextTapped = onAltTextTapped,
+                    onRefresh = {
+                        viewModel.onEvent(QuickEditorEvent.Refresh)
+                    },
+                )
+            }
+
+            QuickEditorScope.ABOUT -> {
+                
+            }
+        }
     }
 }
 

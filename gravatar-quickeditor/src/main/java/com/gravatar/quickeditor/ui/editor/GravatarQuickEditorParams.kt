@@ -11,26 +11,30 @@ import java.util.Objects
  * @property email The email of the user
  * @property avatarPickerContentLayout The layout direction used in the Avatar Picker.
  * @property uiMode The UI mode to be used in the Quick Editor.
+ * @property scope The scope of the Quick Editor.
  */
 @Parcelize
 public class GravatarQuickEditorParams private constructor(
     public val email: Email,
     public val avatarPickerContentLayout: AvatarPickerContentLayout,
     public val uiMode: GravatarUiMode = GravatarUiMode.SYSTEM,
+    public val scope: QuickEditorScope = QuickEditorScope.AVATAR,
 ) : Parcelable {
     override fun toString(): String = "GravatarQuickEditorParams(" +
         "email='$email', " +
         "avatarPickerContentLayout=$avatarPickerContentLayout, " +
-        "uiMode=$uiMode" +
+        "uiMode=$uiMode, " +
+        "scope=$scope" +
         ")"
 
-    override fun hashCode(): Int = Objects.hash(email, avatarPickerContentLayout)
+    override fun hashCode(): Int = Objects.hash(email, avatarPickerContentLayout, uiMode, scope)
 
     override fun equals(other: Any?): Boolean {
         return other is GravatarQuickEditorParams &&
             email == other.email &&
             avatarPickerContentLayout == other.avatarPickerContentLayout &&
-            uiMode == other.uiMode
+            uiMode == other.uiMode &&
+            scope == other.scope
     }
 
     /**
@@ -56,6 +60,12 @@ public class GravatarQuickEditorParams private constructor(
         public var uiMode: GravatarUiMode = GravatarUiMode.SYSTEM
 
         /**
+         * The scope of the Quick Editor
+         */
+        @set:JvmSynthetic // Hide 'void' setter from Java
+        public var scope: QuickEditorScope = QuickEditorScope.AVATAR
+
+        /**
          * Sets the content layout direction used in the Avatar Picker
          */
         public fun setAvatarPickerContentLayout(avatarPickerContentLayout: AvatarPickerContentLayout): Builder =
@@ -72,12 +82,18 @@ public class GravatarQuickEditorParams private constructor(
         public fun setUiMode(uiMode: GravatarUiMode): Builder = apply { this.uiMode = uiMode }
 
         /**
+         * Sets the scope of the Quick Editor
+         */
+        public fun setScope(scope: QuickEditorScope): Builder = apply { this.scope = scope }
+
+        /**
          * Builds the GravatarQuickEditorParams object
          */
         public fun build(): GravatarQuickEditorParams = GravatarQuickEditorParams(
             email!!,
             avatarPickerContentLayout,
             uiMode,
+            scope,
         )
     }
 }
