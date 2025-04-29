@@ -78,12 +78,7 @@ internal open class ApiClient(
         protected const val OCTET_MEDIA_TYPE: String = "application/octet-stream"
         protected const val TEXT_MEDIA_TYPE: String = "text/plain"
 
-        internal val apiKey: MutableMap<String, String> = mutableMapOf()
-        internal val apiKeyPrefix: MutableMap<String, String> = mutableMapOf()
-        internal var username: String? = null
-        internal var password: String? = null
         internal var accessToken: String? = null
-        internal const val BASE_URL_KEY: String = "{{packageName}}.baseUrl"
 
         @JvmStatic
         internal val defaultClient: OkHttpClient by lazy {
