@@ -86,6 +86,21 @@ class AvatarsSectionTest : RoborazziTest() {
             onAvatarOptionClicked = { _, _ -> },
         )
     }
+
+    @Test
+    fun avatarPickerVerticalEmpty() = gravatarScreenshotTest {
+        AvatarsSection(
+            state = AvatarsSectionUiState(
+                avatars = emptyList(),
+                scrollToIndex = null,
+                uploadButtonEnabled = true,
+                avatarPickerContentLayout = AvatarPickerContentLayout.Vertical,
+            ),
+            onLocalImageSelected = { },
+            onAvatarSelected = { },
+            onAvatarOptionClicked = { _, _ -> },
+        )
+    }
 }
 
 private fun createAvatarList(size: Int): List<AvatarUi> {

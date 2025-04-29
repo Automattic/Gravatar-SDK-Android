@@ -43,49 +43,52 @@ internal fun HorizontalAvatarsSection(
 
     val sectionPadding = 16.dp
     Surface(
-        modifier.border(
-            width = 1.dp,
-            color = MaterialTheme.colorScheme.surfaceContainerHighest,
-            shape = RoundedCornerShape(8.dp),
-        ),
+        modifier = modifier,
     ) {
-        Box {
-            Column(
+        Column {
+            Box(
                 modifier = Modifier
+                    .border(
+                        width = 1.dp,
+                        color = MaterialTheme.colorScheme.surfaceContainerHighest,
+                        shape = RoundedCornerShape(8.dp),
+                    )
                     .padding(vertical = sectionPadding),
             ) {
-                QESectionTitle(
-                    title = stringResource(id = state.titleRes),
-                    modifier = Modifier
-                        .padding(horizontal = sectionPadding),
-                )
-                QESectionMessage(
-                    message = stringResource(R.string.gravatar_qe_avatar_picker_description),
-                    modifier = Modifier
-                        .padding(top = 4.dp)
-                        .padding(horizontal = sectionPadding),
-                )
-                if (state.avatars.isEmpty()) {
-                    ListEmptyStateBox()
-                } else {
-                    LazyAvatarRow(
-                        avatars = state.avatars,
-                        onAvatarSelected = onAvatarSelected,
-                        onAvatarOptionClicked = onAvatarOptionClicked,
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        modifier = Modifier.padding(vertical = 24.dp),
-                        state = listState,
-                        contentPadding = PaddingValues(horizontal = sectionPadding),
+                Column {
+                    QESectionTitle(
+                        title = stringResource(id = state.titleRes),
+                        modifier = Modifier
+                            .padding(horizontal = sectionPadding),
                     )
+                    QESectionMessage(
+                        message = stringResource(R.string.gravatar_qe_avatar_picker_description),
+                        modifier = Modifier
+                            .padding(top = 4.dp)
+                            .padding(horizontal = sectionPadding),
+                    )
+                    if (state.avatars.isEmpty()) {
+                        ListEmptyStateBox()
+                    } else {
+                        LazyAvatarRow(
+                            avatars = state.avatars,
+                            onAvatarSelected = onAvatarSelected,
+                            onAvatarOptionClicked = onAvatarOptionClicked,
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            modifier = Modifier.padding(top = 24.dp),
+                            state = listState,
+                            contentPadding = PaddingValues(horizontal = sectionPadding),
+                        )
+                    }
                 }
-                UploadImageButton(
-                    onTakePhotoClick = onTakePhotoClick,
-                    onChoosePhotoClick = onChoosePhotoClick,
-                    enabled = state.uploadButtonEnabled,
-                    modifier = Modifier
-                        .padding(horizontal = sectionPadding),
-                )
             }
+            UploadImageButton(
+                onTakePhotoClick = onTakePhotoClick,
+                onChoosePhotoClick = onChoosePhotoClick,
+                enabled = state.uploadButtonEnabled,
+                modifier = Modifier
+                    .padding(start = sectionPadding, end = sectionPadding, top = 24.dp, bottom = 8.dp),
+            )
         }
     }
 }
@@ -94,30 +97,32 @@ internal fun HorizontalAvatarsSection(
 @Preview(showBackground = true)
 private fun HorizontalAvatarSectionPreview() {
     GravatarTheme {
-        HorizontalAvatarsSection(
-            state = AvatarsSectionUiState(
-                avatars = List(6) {
-                    AvatarUi.Uploaded(
-                        avatar = Avatar {
-                            imageUrl = URI.create("https://gravatar.com/avatar/test")
-                            imageId = it.toString()
-                            rating = Avatar.Rating.G
-                            altText = "alt"
-                            updatedDate = ""
-                        },
-                        isSelected = it == 0,
-                        isLoading = false,
-                    )
-                },
-                scrollToIndex = null,
-                uploadButtonEnabled = true,
-                avatarPickerContentLayout = AvatarPickerContentLayout.Vertical,
-            ),
-            onTakePhotoClick = { },
-            onChoosePhotoClick = { },
-            onAvatarSelected = { },
-            onAvatarOptionClicked = { _, _ -> },
-        )
+        Box(modifier = Modifier.padding(10.dp)) {
+            HorizontalAvatarsSection(
+                state = AvatarsSectionUiState(
+                    avatars = List(6) {
+                        AvatarUi.Uploaded(
+                            avatar = Avatar {
+                                imageUrl = URI.create("https://gravatar.com/avatar/test")
+                                imageId = it.toString()
+                                rating = Avatar.Rating.G
+                                altText = "alt"
+                                updatedDate = ""
+                            },
+                            isSelected = it == 0,
+                            isLoading = false,
+                        )
+                    },
+                    scrollToIndex = null,
+                    uploadButtonEnabled = true,
+                    avatarPickerContentLayout = AvatarPickerContentLayout.Vertical,
+                ),
+                onTakePhotoClick = { },
+                onChoosePhotoClick = { },
+                onAvatarSelected = { },
+                onAvatarOptionClicked = { _, _ -> },
+            )
+        }
     }
 }
 
@@ -125,17 +130,19 @@ private fun HorizontalAvatarSectionPreview() {
 @Preview(showBackground = true)
 private fun HorizontalAvatarSectionEmptyPreview() {
     GravatarTheme {
-        HorizontalAvatarsSection(
-            state = AvatarsSectionUiState(
-                avatars = emptyList(),
-                scrollToIndex = null,
-                uploadButtonEnabled = true,
-                avatarPickerContentLayout = AvatarPickerContentLayout.Vertical,
-            ),
-            onTakePhotoClick = { },
-            onChoosePhotoClick = { },
-            onAvatarSelected = { },
-            onAvatarOptionClicked = { _, _ -> },
-        )
+        Box(modifier = Modifier.padding(10.dp)) {
+            HorizontalAvatarsSection(
+                state = AvatarsSectionUiState(
+                    avatars = emptyList(),
+                    scrollToIndex = null,
+                    uploadButtonEnabled = true,
+                    avatarPickerContentLayout = AvatarPickerContentLayout.Vertical,
+                ),
+                onTakePhotoClick = { },
+                onChoosePhotoClick = { },
+                onAvatarSelected = { },
+                onAvatarOptionClicked = { _, _ -> },
+            )
+        }
     }
 }
