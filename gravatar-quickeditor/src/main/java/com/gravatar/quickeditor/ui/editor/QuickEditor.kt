@@ -10,6 +10,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.gravatar.quickeditor.ui.abouteditor.AboutEditor
 import com.gravatar.quickeditor.ui.avatarpicker.AvatarPicker
 import com.gravatar.quickeditor.ui.components.EmailLabel
 import com.gravatar.quickeditor.ui.components.ProfileCard
@@ -52,7 +53,9 @@ internal fun QuickEditor(
             }
 
             QuickEditorScope.ABOUT -> {
-                
+                AboutEditor(
+                    quickEditorParams = gravatarQuickEditorParams,
+                )
             }
         }
     }
