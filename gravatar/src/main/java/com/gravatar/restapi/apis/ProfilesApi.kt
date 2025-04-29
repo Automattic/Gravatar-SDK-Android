@@ -14,6 +14,7 @@ import com.gravatar.restapi.infrastructure.RequestConfig
 import com.gravatar.restapi.infrastructure.RequestMethod
 import com.gravatar.restapi.models.AssociatedResponse
 import com.gravatar.restapi.models.Profile
+import com.gravatar.restapi.models.UpdateProfileRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.HttpUrl
@@ -151,6 +152,51 @@ internal class ProfilesApi(
                 "{" + "profileIdentifier" + "}",
                 encodeURIComponent(profileIdentifier.toString()),
             ),
+            query = localVariableQuery,
+            headers = localVariableHeaders,
+            requiresAuthentication = true,
+            body = localVariableBody,
+        )
+    }
+
+    /**
+     * PATCH /me/profile
+     * Update profile information for the authenticated user
+     * Updates the profile information for the authenticated user. Only a subset of &#x60;Profile&#x60; fields are available for update. Partial updates are supported, so only the provided fields will be updated. To unset a field, set it explicitly to an empty string.
+     * @param updateProfileRequest
+     * @return ApiResponse<Profile?>
+     * @throws IllegalStateException If the request is not correctly configured
+     * @throws IOException Rethrows the OkHttp execute method exception
+     */
+    @Suppress("UNCHECKED_CAST")
+    @Throws(IllegalStateException::class, IOException::class)
+    internal suspend fun updateProfile(updateProfileRequest: UpdateProfileRequest): ApiResponse<Profile> =
+        withContext(Dispatchers.IO) {
+            val localVariableConfig = updateProfileRequestConfig(updateProfileRequest = updateProfileRequest)
+
+            return@withContext request<UpdateProfileRequest, Profile>(
+                localVariableConfig,
+            )
+        }
+
+    /**
+     * To obtain the request config of the operation updateProfile
+     *
+     * @param updateProfileRequest
+     * @return RequestConfig
+     */
+    private fun updateProfileRequestConfig(
+        updateProfileRequest: UpdateProfileRequest,
+    ): RequestConfig<UpdateProfileRequest> {
+        val localVariableBody = updateProfileRequest
+        val localVariableQuery: MultiValueMap = mutableMapOf()
+        val localVariableHeaders: MutableMap<String, String> = mutableMapOf()
+        localVariableHeaders["Content-Type"] = "application/json"
+        localVariableHeaders["Accept"] = "application/json"
+
+        return RequestConfig(
+            method = RequestMethod.PATCH,
+            path = "/me/profile",
             query = localVariableQuery,
             headers = localVariableHeaders,
             requiresAuthentication = true,
