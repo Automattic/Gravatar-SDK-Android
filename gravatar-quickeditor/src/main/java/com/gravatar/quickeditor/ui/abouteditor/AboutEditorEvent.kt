@@ -4,4 +4,6 @@ internal sealed class AboutEditorEvent {
     data class OnAboutFieldUpdated(
         val aboutField: AboutInputField,
     ) : AboutEditorEvent()
+
+    data object OnSaveClicked : AboutEditorEvent()
 }

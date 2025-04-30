@@ -1,40 +1,66 @@
 package com.gravatar.quickeditor.ui.abouteditor
 
-import android.view.Surface
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.gravatar.quickeditor.R
 import com.gravatar.quickeditor.ui.abouteditor.components.AboutSection
+import com.gravatar.quickeditor.ui.components.QEButton
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
 import com.gravatar.quickeditor.ui.extensions.QESnackbarHost
+import com.gravatar.restapi.models.Profile
 import com.gravatar.ui.GravatarTheme
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 @Composable
 internal fun AboutEditor(
     quickEditorParams: GravatarQuickEditorParams,
+    onProfileUpdated: (Profile) -> Unit,
     viewModel: AboutEditorViewModel = viewModel(
         factory = AboutEditorViewModelFactory(quickEditorParams),
     ),
 ) {
+    val lifecycle = LocalLifecycleOwner.current.lifecycle
     val snackState = remember { SnackbarHostState() }
     val uiState by viewModel.uiState.collectAsState()
+
+    LaunchedEffect(Unit) {
+        withContext(Dispatchers.Main.immediate) {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.actions.collect { action ->
+                    when (action) {
+                        is AboutEditorAction.ProfileUpdated -> onProfileUpdated(action.profile)
+                    }
+                }
+            }
+        }
+    }
 
     Surface {
         Box(modifier = Modifier.wrapContentSize()) {
@@ -43,6 +69,7 @@ internal fun AboutEditor(
                 onValueChange = { aboutField ->
                     viewModel.onEvent(AboutEditorEvent.OnAboutFieldUpdated(aboutField))
                 },
+                onSaveClick = { viewModel.onEvent(AboutEditorEvent.OnSaveClicked) },
             )
             QESnackbarHost(
                 modifier = Modifier
@@ -54,39 +81,61 @@ internal fun AboutEditor(
 }
 
 @Composable
-internal fun AboutEditor(uiState: AboutEditorUiState, onValueChange: (AboutInputField) -> Unit) {
+internal fun AboutEditor(
+    uiState: AboutEditorUiState,
+    onValueChange: (AboutInputField) -> Unit,
+    onSaveClick: () -> Unit,
+) {
     Surface {
-        when {
-            uiState.isLoading -> {
-                Box(
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                        .border(
-                            width = 1.dp,
-                            color = MaterialTheme.colorScheme.surfaceContainerHighest,
-                            shape = RoundedCornerShape(8.dp),
+        Column {
+            Box(
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+                    .border(
+                        width = 1.dp,
+                        color = MaterialTheme.colorScheme.surfaceContainerHighest,
+                        shape = RoundedCornerShape(8.dp),
+                    )
+                    .weight(1f, fill = false)
+                    .verticalScroll(rememberScrollState()),
+            ) {
+                when {
+                    uiState.isLoading -> {
+                        Box(
+                            modifier = Modifier
+                                .height(300.dp)
+                                .fillMaxWidth(),
+                        ) {
+                            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                        }
+                    }
+
+                    else -> {
+                        AboutSection(
+                            aboutFields = uiState.aboutFields,
+                            formEnabled = uiState.formEnabled,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp),
+                            onValueChange = onValueChange,
                         )
-                        .height(300.dp)
-                        .fillMaxWidth(),
-                ) {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                    }
                 }
             }
-
-            else -> {
-                AboutSection(
-                    aboutFields = uiState.aboutFields,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    onValueChange = onValueChange,
-                )
-            }
+            QEButton(
+                buttonText = stringResource(R.string.gravatar_qe_avatar_alt_text_save_button),
+                onClick = onSaveClick,
+                enabled = uiState.saveEnabled,
+                loading = uiState.savingProfile,
+                modifier = Modifier
+                    .padding(horizontal = 16.dp, vertical = 24.dp)
+                    .fillMaxWidth(),
+            )
         }
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, heightDp = 500)
 @Composable
 internal fun AboutEditorLoadedPreview() {
     GravatarTheme {
@@ -108,6 +157,7 @@ internal fun AboutEditorLoadedPreview() {
                     ),
                 ),
                 onValueChange = { },
+                onSaveClick = { },
             )
         }
     }
@@ -124,6 +174,7 @@ internal fun AboutEditorLoadingPreview() {
                     isLoading = true,
                 ),
                 onValueChange = { },
+                onSaveClick = { },
             )
         }
     }

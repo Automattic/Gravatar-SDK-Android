@@ -1,0 +1,7 @@
+package com.gravatar.quickeditor.ui.abouteditor
+
+import com.gravatar.restapi.models.Profile
+
+internal sealed class AboutEditorAction {
+    data class ProfileUpdated(val profile: Profile) : AboutEditorAction()
+}
