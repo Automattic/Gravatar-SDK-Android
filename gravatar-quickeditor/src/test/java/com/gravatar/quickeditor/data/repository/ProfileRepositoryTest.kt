@@ -6,6 +6,7 @@ import com.gravatar.quickeditor.data.storage.TokenStorage
 import com.gravatar.quickeditor.ui.CoroutineTestRule
 import com.gravatar.quickeditor.ui.avatarpicker.EmailAvatars
 import com.gravatar.restapi.models.Profile
+import com.gravatar.restapi.models.UpdateProfileRequest
 import com.gravatar.services.ErrorType
 import com.gravatar.services.GravatarResult
 import com.gravatar.services.ProfileService
@@ -78,6 +79,53 @@ class ProfileRepositoryTest {
 
         val result = profileRepository.getProfile(email)
 
+        assertEquals(
+            GravatarResult.Failure<Profile, QuickEditorError>(QuickEditorError.Request(ErrorType.Server)),
+            result,
+        )
+    }
+
+    @Test
+    fun `given email and updateProfileRequest when token not found then TokenNotFound result`() = runTest {
+        val updateProfileRequest = mockk<UpdateProfileRequest>()
+        coEvery { tokenStorage.getToken(any()) } returns null
+
+        val result = profileRepository.updateProfile(email, updateProfileRequest)
+
+        assertEquals(
+            GravatarResult.Failure<Profile, QuickEditorError>(QuickEditorError.TokenNotFound),
+            result,
+        )
+    }
+
+    @Test
+    fun `given email and updateProfileRequest when update is successful then result is successful`() = runTest {
+        val oauthToken = "oauth"
+        val updateProfileRequest = mockk<UpdateProfileRequest>()
+        val profileResult = defaultProfile(hash = "hash")
+        coEvery { tokenStorage.getToken(any()) } returns oauthToken
+        coEvery {
+            profileService.updateProfileCatching(oauthToken, updateProfileRequest)
+        } returns GravatarResult.Success(profileResult)
+
+        val result = profileRepository.updateProfile(email, updateProfileRequest)
+
+        coVerify(exactly = 1) { profileService.updateProfileCatching(oauthToken, updateProfileRequest) }
+        assertEquals(GravatarResult.Success<Profile, QuickEditorError>(profileResult), result)
+    }
+
+    @Test
+    fun `given email and updateProfileRequest when update fails then Failure result`() = runTest {
+        val oauthToken = "oauth"
+        val updateProfileRequest = mockk<UpdateProfileRequest>()
+        coEvery { tokenStorage.getToken(any()) } returns oauthToken
+        coEvery {
+            profileService.updateProfileCatching(oauthToken, updateProfileRequest)
+        } returns GravatarResult.Failure(ErrorType.Server)
+
+        val result = profileRepository.updateProfile(email, updateProfileRequest)
+
+        coVerify(exactly = 1) { profileService.updateProfileCatching(oauthToken, updateProfileRequest) }
         assertEquals(
             GravatarResult.Failure<Profile, QuickEditorError>(QuickEditorError.Request(ErrorType.Server)),
             result,
