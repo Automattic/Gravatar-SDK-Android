@@ -10,7 +10,6 @@ import org.junit.Test
 import org.robolectric.annotation.Config
 
 class AboutEditorTest : RoborazziTest() {
-
     private val aboutFields = AboutFields(
         personal = PersonalFields(
             aboutMe = AboutInputField.Personal.AboutMe(value = "My description"),
@@ -74,7 +73,6 @@ class AboutEditorTest : RoborazziTest() {
             onValueChange = { },
         )
     }
-
 
     @Test
     fun aboutEditorSaving() = gravatarScreenshotTest {

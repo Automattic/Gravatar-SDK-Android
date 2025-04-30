@@ -19,8 +19,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -33,9 +35,12 @@ import com.gravatar.quickeditor.ui.abouteditor.components.AboutSection
 import com.gravatar.quickeditor.ui.components.QEButton
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
 import com.gravatar.quickeditor.ui.extensions.QESnackbarHost
+import com.gravatar.quickeditor.ui.extensions.SnackbarType
+import com.gravatar.quickeditor.ui.extensions.showQESnackbar
 import com.gravatar.restapi.models.Profile
 import com.gravatar.ui.GravatarTheme
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @Composable
@@ -49,13 +54,37 @@ internal fun AboutEditor(
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     val snackState = remember { SnackbarHostState() }
     val uiState by viewModel.uiState.collectAsState()
+    val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         withContext(Dispatchers.Main.immediate) {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.actions.collect { action ->
                     when (action) {
-                        is AboutEditorAction.ProfileUpdated -> onProfileUpdated(action.profile)
+                        is AboutEditorAction.ProfileUpdated -> {
+                            onProfileUpdated(action.profile)
+                            coroutineScope.launch {
+                                snackState.showQESnackbar(
+                                    message = context.getString(
+                                        R.string.gravatar_qe_about_save_profile_success_message,
+                                    ),
+                                    withDismissAction = true,
+                                )
+                            }
+                        }
+
+                        AboutEditorAction.ProfileUpdateFailed -> {
+                            coroutineScope.launch {
+                                snackState.showQESnackbar(
+                                    message = context.getString(
+                                        R.string.gravatar_qe_about_save_profile_error_message,
+                                    ),
+                                    withDismissAction = true,
+                                    snackbarType = SnackbarType.Error,
+                                )
+                            }
+                        }
                     }
                 }
             }

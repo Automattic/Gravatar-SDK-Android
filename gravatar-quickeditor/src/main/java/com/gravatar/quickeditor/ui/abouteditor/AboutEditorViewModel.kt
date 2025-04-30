@@ -65,6 +65,7 @@ internal class AboutEditorViewModel(
                             savingProfile = false,
                         )
                     }
+                    _actions.send(AboutEditorAction.ProfileUpdateFailed)
                 }
             }
         }

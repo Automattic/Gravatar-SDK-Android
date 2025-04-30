@@ -4,4 +4,6 @@ import com.gravatar.restapi.models.Profile
 
 internal sealed class AboutEditorAction {
     data class ProfileUpdated(val profile: Profile) : AboutEditorAction()
+
+    data object ProfileUpdateFailed : AboutEditorAction()
 }
