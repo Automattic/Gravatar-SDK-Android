@@ -10,6 +10,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.gravatar.quickeditor.ui.abouteditor.AboutEditor
 import com.gravatar.quickeditor.ui.avatarpicker.AvatarPicker
 import com.gravatar.quickeditor.ui.components.EmailLabel
 import com.gravatar.quickeditor.ui.components.ProfileCard
@@ -34,19 +35,29 @@ internal fun QuickEditor(
         uiState = uiState,
         onDoneClicked = onDoneClicked,
     ) {
-        AvatarPicker(
-            gravatarQuickEditorParams = gravatarQuickEditorParams,
-            handleExpiredSession = handleExpiredSession,
-            onAvatarSelected = {
-                onAvatarSelected()
-                viewModel.onEvent(QuickEditorEvent.UpdateAvatarCache)
-            },
-            onSessionExpired = onSessionExpired,
-            onAltTextTapped = onAltTextTapped,
-            onRefresh = {
-                viewModel.onEvent(QuickEditorEvent.Refresh)
-            },
-        )
+        when (gravatarQuickEditorParams.scope) {
+            QuickEditorScope.AVATAR -> {
+                AvatarPicker(
+                    gravatarQuickEditorParams = gravatarQuickEditorParams,
+                    handleExpiredSession = handleExpiredSession,
+                    onAvatarSelected = {
+                        onAvatarSelected()
+                        viewModel.onEvent(QuickEditorEvent.UpdateAvatarCache)
+                    },
+                    onSessionExpired = onSessionExpired,
+                    onAltTextTapped = onAltTextTapped,
+                    onRefresh = {
+                        viewModel.onEvent(QuickEditorEvent.Refresh)
+                    },
+                )
+            }
+
+            QuickEditorScope.ABOUT -> {
+                AboutEditor(
+                    quickEditorParams = gravatarQuickEditorParams,
+                )
+            }
+        }
     }
 }
 
