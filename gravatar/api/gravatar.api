@@ -758,6 +758,59 @@ public final class com/gravatar/restapi/models/UpdateAvatarRequestKt {
 	public static final synthetic fun UpdateAvatarRequest (Lkotlin/jvm/functions/Function1;)Lcom/gravatar/restapi/models/UpdateAvatarRequest;
 }
 
+public final class com/gravatar/restapi/models/UpdateProfileRequest {
+	public fun <init> ()V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCompany ()Ljava/lang/String;
+	public final fun getDescription ()Ljava/lang/String;
+	public final fun getDisplayName ()Ljava/lang/String;
+	public final fun getJobTitle ()Ljava/lang/String;
+	public final fun getLocation ()Ljava/lang/String;
+	public final fun getPronouns ()Ljava/lang/String;
+	public final fun getPronunciation ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/gravatar/restapi/models/UpdateProfileRequest$Builder {
+	public fun <init> ()V
+	public final fun build ()Lcom/gravatar/restapi/models/UpdateProfileRequest;
+	public final fun getCompany ()Ljava/lang/String;
+	public final fun getDescription ()Ljava/lang/String;
+	public final fun getDisplayName ()Ljava/lang/String;
+	public final fun getJobTitle ()Ljava/lang/String;
+	public final fun getLocation ()Ljava/lang/String;
+	public final fun getPronouns ()Ljava/lang/String;
+	public final fun getPronunciation ()Ljava/lang/String;
+	public final fun setCompany (Ljava/lang/String;)Lcom/gravatar/restapi/models/UpdateProfileRequest$Builder;
+	public final synthetic fun setCompany (Ljava/lang/String;)V
+	public final fun setDescription (Ljava/lang/String;)Lcom/gravatar/restapi/models/UpdateProfileRequest$Builder;
+	public final synthetic fun setDescription (Ljava/lang/String;)V
+	public final fun setDisplayName (Ljava/lang/String;)Lcom/gravatar/restapi/models/UpdateProfileRequest$Builder;
+	public final synthetic fun setDisplayName (Ljava/lang/String;)V
+	public final fun setJobTitle (Ljava/lang/String;)Lcom/gravatar/restapi/models/UpdateProfileRequest$Builder;
+	public final synthetic fun setJobTitle (Ljava/lang/String;)V
+	public final fun setLocation (Ljava/lang/String;)Lcom/gravatar/restapi/models/UpdateProfileRequest$Builder;
+	public final synthetic fun setLocation (Ljava/lang/String;)V
+	public final fun setPronouns (Ljava/lang/String;)Lcom/gravatar/restapi/models/UpdateProfileRequest$Builder;
+	public final synthetic fun setPronouns (Ljava/lang/String;)V
+	public final fun setPronunciation (Ljava/lang/String;)Lcom/gravatar/restapi/models/UpdateProfileRequest$Builder;
+	public final synthetic fun setPronunciation (Ljava/lang/String;)V
+}
+
+public final class com/gravatar/restapi/models/UpdateProfileRequestJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lcom/gravatar/restapi/models/UpdateProfileRequest;
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lcom/gravatar/restapi/models/UpdateProfileRequest;)V
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/gravatar/restapi/models/UpdateProfileRequestKt {
+	public static final synthetic fun UpdateProfileRequest (Lkotlin/jvm/functions/Function1;)Lcom/gravatar/restapi/models/UpdateProfileRequest;
+}
+
 public final class com/gravatar/restapi/models/VerifiedAccount {
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getServiceIcon ()Ljava/net/URI;
@@ -951,6 +1004,8 @@ public final class com/gravatar/services/ProfileService {
 	public final fun retrieveCatching (Lcom/gravatar/types/Email;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun retrieveCatching (Lcom/gravatar/types/Hash;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun retrieveCatching (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun updateProfile (Ljava/lang/String;Lcom/gravatar/restapi/models/UpdateProfileRequest;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun updateProfileCatching (Ljava/lang/String;Lcom/gravatar/restapi/models/UpdateProfileRequest;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class com/gravatar/types/Email : android/os/Parcelable {

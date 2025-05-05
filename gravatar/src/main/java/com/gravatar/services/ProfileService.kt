@@ -4,6 +4,7 @@ import com.gravatar.HttpResponseCode
 import com.gravatar.di.container.GravatarSdkContainer
 import com.gravatar.logger.Logger
 import com.gravatar.restapi.models.Profile
+import com.gravatar.restapi.models.UpdateProfileRequest
 import com.gravatar.types.Email
 import com.gravatar.types.Hash
 import kotlinx.coroutines.withContext
@@ -215,4 +216,44 @@ public class ProfileService(private val okHttpClient: OkHttpClient? = null) {
         runCatchingRequest {
             retrieveAuthenticated(withToken)
         }
+
+    /**
+     * Updates the profile information for the authenticated user.
+     *
+     * @param oauthToken The OAuth token to use for authentication
+     * @param updateProfileRequest The request object containing the updated profile information
+     * @return The updated profile information
+     */
+    public suspend fun updateProfile(oauthToken: String, updateProfileRequest: UpdateProfileRequest): Profile =
+        runThrowingExceptionRequest {
+            withContext(GravatarSdkDI.dispatcherIO) {
+                val service = GravatarSdkDI.getProfilesApi(okHttpClient, oauthToken)
+
+                val response = service.updateProfile(updateProfileRequest = updateProfileRequest)
+                if (response.isSuccessful) {
+                    response.body ?: error("Response body is null")
+                } else {
+                    // Log the response body for debugging purposes if the response is not successful
+                    Logger.w(
+                        LOG_TAG,
+                        "Network call unsuccessful trying to update Gravatar profile: ${response.code}",
+                    )
+                    throw HttpException(response)
+                }
+            }
+        }
+
+    /**
+     * Updates the profile information for the authenticated user.
+     *
+     * @param oauthToken The OAuth token to use for authentication
+     * @param updateProfileRequest The request object containing the updated profile information
+     * @return The GravatarResult with the updated profile information or an error
+     */
+    public suspend fun updateProfileCatching(
+        oauthToken: String,
+        updateProfileRequest: UpdateProfileRequest,
+    ): GravatarResult<Profile, ErrorType> = runCatchingRequest {
+        updateProfile(oauthToken, updateProfileRequest)
+    }
 }
