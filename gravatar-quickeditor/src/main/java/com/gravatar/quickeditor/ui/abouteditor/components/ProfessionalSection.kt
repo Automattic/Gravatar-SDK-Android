@@ -11,7 +11,11 @@ import com.gravatar.quickeditor.ui.abouteditor.AboutInputField
 import com.gravatar.quickeditor.ui.abouteditor.ProfessionalFields
 
 @Composable
-internal fun ProfessionalSection(professionalFields: ProfessionalFields, onValueChange: (AboutInputField) -> Unit) {
+internal fun ProfessionalSection(
+    professionalFields: ProfessionalFields,
+    formEnabled: Boolean,
+    onValueChange: (AboutInputField) -> Unit,
+) {
     Column {
         AboutEditSectionLabel(
             title = stringResource(R.string.gravatar_qe_about_field_section_label_professional),
@@ -20,6 +24,7 @@ internal fun ProfessionalSection(professionalFields: ProfessionalFields, onValue
         AboutEditField(
             label = stringResource(professionalFields.jobTitle.labelRes),
             value = professionalFields.jobTitle.value,
+            enabled = formEnabled,
             maxLines = professionalFields.jobTitle.maxLines,
             description = professionalFields.jobTitle.descriptionRes?.let { stringResource(it) },
             onValueChange = {
@@ -29,6 +34,7 @@ internal fun ProfessionalSection(professionalFields: ProfessionalFields, onValue
         AboutEditField(
             label = stringResource(professionalFields.company.labelRes),
             value = professionalFields.company.value,
+            enabled = formEnabled,
             maxLines = professionalFields.company.maxLines,
             description = professionalFields.company.descriptionRes?.let { stringResource(it) },
             onValueChange = {

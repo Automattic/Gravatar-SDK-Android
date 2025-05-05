@@ -55,6 +55,9 @@ internal fun QuickEditor(
             QuickEditorScope.ABOUT -> {
                 AboutEditor(
                     quickEditorParams = gravatarQuickEditorParams,
+                    onProfileUpdated = {
+                        viewModel.onEvent(QuickEditorEvent.OnProfileUpdated(it))
+                    },
                 )
             }
         }

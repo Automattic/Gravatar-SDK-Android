@@ -8,11 +8,14 @@ import com.gravatar.quickeditor.QuickEditorContainer
 import com.gravatar.quickeditor.data.repository.ProfileRepository
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
 import com.gravatar.restapi.models.Profile
+import com.gravatar.restapi.models.UpdateProfileRequest
 import com.gravatar.services.GravatarResult
 import com.gravatar.types.Email
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -23,6 +26,9 @@ internal class AboutEditorViewModel(
     private val _uiState = MutableStateFlow(AboutEditorUiState())
     val uiState: StateFlow<AboutEditorUiState> = _uiState.asStateFlow()
 
+    private val _actions = Channel<AboutEditorAction>(Channel.BUFFERED)
+    val actions = _actions.receiveAsFlow()
+
     init {
         fetchProfile()
     }
@@ -30,6 +36,38 @@ internal class AboutEditorViewModel(
     fun onEvent(aboutEditorEvent: AboutEditorEvent) {
         when (aboutEditorEvent) {
             is AboutEditorEvent.OnAboutFieldUpdated -> updateAboutField(aboutEditorEvent.aboutField)
+            AboutEditorEvent.OnSaveClicked -> saveProfile()
+        }
+    }
+
+    private fun saveProfile() {
+        viewModelScope.launch {
+            _uiState.update { currentState ->
+                currentState.copy(savingProfile = true)
+            }
+            val updateProfileRequest = uiState.value.aboutFields.updateProfileRequest
+            when (val result = profileRepository.updateProfile(email, updateProfileRequest)) {
+                is GravatarResult.Success -> {
+                    _uiState.update { currentState ->
+                        currentState.copy(
+                            savingProfile = false,
+                            aboutFields = result.value.aboutFields,
+                        )
+                    }
+                    _actions.send(
+                        AboutEditorAction.ProfileUpdated(result.value),
+                    )
+                }
+
+                is GravatarResult.Failure -> {
+                    _uiState.update { currentState ->
+                        currentState.copy(
+                            savingProfile = false,
+                        )
+                    }
+                    _actions.send(AboutEditorAction.ProfileUpdateFailed)
+                }
+            }
         }
     }
 
@@ -87,6 +125,19 @@ private val Profile.aboutFields: AboutFields
                 jobTitle = AboutInputField.Professional.JobTitle(value = jobTitle),
             ),
         )
+    }
+
+private val AboutFields.updateProfileRequest: UpdateProfileRequest
+    get() {
+        return UpdateProfileRequest {
+            displayName = personal.displayName.value
+            description = personal.aboutMe.value
+            pronouns = personal.pronouns.value
+            pronunciation = personal.pronunciation.value
+            location = personal.location.value
+            jobTitle = professional.jobTitle.value
+            company = professional.company.value
+        }
     }
 
 internal class AboutEditorViewModelFactory(

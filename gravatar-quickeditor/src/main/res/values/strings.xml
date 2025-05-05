@@ -86,4 +86,6 @@
     <string name="gravatar_qe_about_field_description_pronunciation">Let them know how your name sounds like.</string>
     <string name="gravatar_qe_about_field_section_label_personal">Personal</string>
     <string name="gravatar_qe_about_field_section_label_professional">Professional</string>
+    <string name="gravatar_qe_about_save_profile_error_message">Error saving the changes.</string>
+    <string name="gravatar_qe_about_save_profile_success_message">Profile updated successfully</string>
 </resources>

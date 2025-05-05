@@ -1,17 +1,12 @@
 package com.gravatar.quickeditor.ui.abouteditor.components
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,26 +21,20 @@ import com.gravatar.ui.GravatarTheme
 @Composable
 internal fun AboutSection(
     aboutFields: AboutFields,
+    formEnabled: Boolean,
     onValueChange: (AboutInputField) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier
-            .border(
-                width = 1.dp,
-                color = MaterialTheme.colorScheme.surfaceContainerHighest,
-                shape = RoundedCornerShape(8.dp),
-            )
-            .padding(horizontal = 16.dp)
-            .verticalScroll(rememberScrollState()),
-    ) {
+    Column(modifier = modifier) {
         PersonalSection(
             personalFields = aboutFields.personal,
+            formEnabled = formEnabled,
             onValueChange = onValueChange,
         )
         Spacer(modifier = Modifier.height(16.dp))
         ProfessionalSection(
             professionalFields = aboutFields.professional,
+            formEnabled = formEnabled,
             onValueChange = onValueChange,
         )
         Spacer(modifier = Modifier.height(8.dp))
@@ -106,6 +95,7 @@ internal fun AboutSectionPreview() {
                         jobTitle = AboutInputField.Professional.JobTitle(value = "Software Engineer"),
                     ),
                 ),
+                formEnabled = true,
                 onValueChange = { },
                 modifier = Modifier.fillMaxWidth(),
             )

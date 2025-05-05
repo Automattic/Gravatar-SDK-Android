@@ -40,6 +40,9 @@ internal class QuickEditorViewModel(
             QuickEditorEvent.UpdateAvatarCache -> _uiState.update { currentState ->
                 currentState.copy(avatarCacheBuster = clock.getTimeMillis())
             }
+            is QuickEditorEvent.OnProfileUpdated -> _uiState.update { currentState ->
+                currentState.copy(profile = ComponentState.Loaded(event.profile))
+            }
         }
     }
 

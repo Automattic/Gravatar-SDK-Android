@@ -23,6 +23,7 @@ import com.gravatar.ui.GravatarTheme
 internal fun AboutEditField(
     label: String,
     value: String,
+    enabled: Boolean,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     maxLines: Int = 1,
@@ -44,6 +45,7 @@ internal fun AboutEditField(
             cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
             maxLines = maxLines,
             singleLine = maxLines == 1,
+            enabled = enabled,
             onValueChange = {
                 Log.d("QuickEditor", "onValueChange: $it")
                 onValueChange(it)
@@ -86,6 +88,7 @@ internal fun AboutEditFieldNoDescriptionPreview() {
             AboutEditField(
                 value = "John Doe",
                 description = null,
+                enabled = true,
                 label = "Display name",
                 onValueChange = {},
             )
@@ -109,6 +112,7 @@ internal fun AboutEditFieldDescriptionPreview() {
                     While oceanographer Steve Zissou is working on his latest,
                 """.trimIndent(),
                 description = "Brief description for your profile.",
+                enabled = true,
                 label = "About me",
                 maxLines = 4,
                 onValueChange = {},

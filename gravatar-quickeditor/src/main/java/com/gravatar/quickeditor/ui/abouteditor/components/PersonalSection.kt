@@ -11,7 +11,11 @@ import com.gravatar.quickeditor.ui.abouteditor.AboutInputField
 import com.gravatar.quickeditor.ui.abouteditor.PersonalFields
 
 @Composable
-internal fun PersonalSection(personalFields: PersonalFields, onValueChange: (AboutInputField) -> Unit) {
+internal fun PersonalSection(
+    personalFields: PersonalFields,
+    formEnabled: Boolean,
+    onValueChange: (AboutInputField) -> Unit,
+) {
     Column {
         AboutEditSectionLabel(
             title = stringResource(R.string.gravatar_qe_about_field_section_label_personal),
@@ -20,6 +24,7 @@ internal fun PersonalSection(personalFields: PersonalFields, onValueChange: (Abo
         AboutEditField(
             label = stringResource(personalFields.displayName.labelRes),
             value = personalFields.displayName.value,
+            enabled = formEnabled,
             maxLines = personalFields.displayName.maxLines,
             description = personalFields.displayName.descriptionRes?.let { stringResource(it) },
             onValueChange = {
@@ -29,6 +34,7 @@ internal fun PersonalSection(personalFields: PersonalFields, onValueChange: (Abo
         AboutEditField(
             label = stringResource(personalFields.aboutMe.labelRes),
             value = personalFields.aboutMe.value,
+            enabled = formEnabled,
             maxLines = personalFields.aboutMe.maxLines,
             description = personalFields.aboutMe.descriptionRes?.let { stringResource(it) },
             onValueChange = {
@@ -38,6 +44,7 @@ internal fun PersonalSection(personalFields: PersonalFields, onValueChange: (Abo
         AboutEditField(
             label = stringResource(personalFields.pronunciation.labelRes),
             value = personalFields.pronunciation.value,
+            enabled = formEnabled,
             maxLines = personalFields.pronunciation.maxLines,
             description = personalFields.pronunciation.descriptionRes?.let { stringResource(it) },
             onValueChange = {
@@ -47,6 +54,7 @@ internal fun PersonalSection(personalFields: PersonalFields, onValueChange: (Abo
         AboutEditField(
             label = stringResource(personalFields.pronouns.labelRes),
             value = personalFields.pronouns.value,
+            enabled = formEnabled,
             maxLines = personalFields.pronouns.maxLines,
             description = personalFields.pronouns.descriptionRes?.let { stringResource(it) },
             onValueChange = {
@@ -56,6 +64,7 @@ internal fun PersonalSection(personalFields: PersonalFields, onValueChange: (Abo
         AboutEditField(
             label = stringResource(personalFields.location.labelRes),
             value = personalFields.location.value,
+            enabled = formEnabled,
             maxLines = personalFields.location.maxLines,
             description = personalFields.location.descriptionRes?.let { stringResource(it) },
             onValueChange = {
