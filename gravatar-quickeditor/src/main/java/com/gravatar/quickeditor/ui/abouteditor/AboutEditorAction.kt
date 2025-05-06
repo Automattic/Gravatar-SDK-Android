@@ -6,4 +6,6 @@ internal sealed class AboutEditorAction {
     data class ProfileUpdated(val profile: Profile) : AboutEditorAction()
 
     data object ProfileUpdateFailed : AboutEditorAction()
+
+    data object CloseEditor : AboutEditorAction()
 }

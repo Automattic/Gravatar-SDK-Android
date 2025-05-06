@@ -6,4 +6,8 @@ internal sealed class AboutEditorEvent {
     ) : AboutEditorEvent()
 
     data object OnSaveClicked : AboutEditorEvent()
+
+    data object OnDoneClicked : AboutEditorEvent()
+
+    data object OnDiscardDialogDismissed : AboutEditorEvent()
 }

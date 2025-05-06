@@ -4,6 +4,7 @@ internal data class AboutEditorUiState(
     val aboutFields: AboutFields = AboutFields.EMPTY,
     val isLoading: Boolean = false,
     val savingProfile: Boolean = false,
+    val discardChangesDialogVisible: Boolean = false,
 ) {
     val formEnabled: Boolean = !savingProfile
 

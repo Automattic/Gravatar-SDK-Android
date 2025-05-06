@@ -29,6 +29,8 @@ internal class AboutEditorViewModel(
     private val _actions = Channel<AboutEditorAction>(Channel.BUFFERED)
     val actions = _actions.receiveAsFlow()
 
+    private var savedProfile: Profile? = null
+
     init {
         fetchProfile()
     }
@@ -37,6 +39,30 @@ internal class AboutEditorViewModel(
         when (aboutEditorEvent) {
             is AboutEditorEvent.OnAboutFieldUpdated -> updateAboutField(aboutEditorEvent.aboutField)
             AboutEditorEvent.OnSaveClicked -> saveProfile()
+            AboutEditorEvent.OnDoneClicked -> checkForUnsavedChanges()
+            AboutEditorEvent.OnDiscardDialogDismissed -> dismissDiscardChangesDialog()
+        }
+    }
+
+    private fun dismissDiscardChangesDialog() {
+        _uiState.update { currentState ->
+            currentState.copy(discardChangesDialogVisible = false)
+        }
+    }
+
+    private fun checkForUnsavedChanges() {
+        val currentProfile = uiState.value.aboutFields
+        val savedProfile = savedProfile?.aboutFields
+        viewModelScope.launch {
+            if (currentProfile != savedProfile) {
+                _uiState.update { currentProfile ->
+                    currentProfile.copy(
+                        discardChangesDialogVisible = true,
+                    )
+                }
+            } else {
+                _actions.send(AboutEditorAction.CloseEditor)
+            }
         }
     }
 
@@ -48,14 +74,16 @@ internal class AboutEditorViewModel(
             val updateProfileRequest = uiState.value.aboutFields.updateProfileRequest
             when (val result = profileRepository.updateProfile(email, updateProfileRequest)) {
                 is GravatarResult.Success -> {
+                    val profile = result.value
+                    savedProfile = profile
                     _uiState.update { currentState ->
                         currentState.copy(
                             savingProfile = false,
-                            aboutFields = result.value.aboutFields,
+                            aboutFields = profile.aboutFields,
                         )
                     }
                     _actions.send(
-                        AboutEditorAction.ProfileUpdated(result.value),
+                        AboutEditorAction.ProfileUpdated(profile),
                     )
                 }
 
@@ -91,9 +119,11 @@ internal class AboutEditorViewModel(
             when (val result = profileRepository.getProfile(email)) {
                 is GravatarResult.Success -> {
                     _uiState.update {
+                        val profile = result.value
+                        savedProfile = profile
                         it.copy(
                             isLoading = false,
-                            aboutFields = result.value.aboutFields,
+                            aboutFields = profile.aboutFields,
                         )
                     }
                 }
@@ -110,7 +140,7 @@ internal class AboutEditorViewModel(
     }
 }
 
-private val Profile.aboutFields: AboutFields
+internal val Profile.aboutFields: AboutFields
     get() {
         return AboutFields(
             personal = PersonalFields(

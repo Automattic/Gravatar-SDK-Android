@@ -32,6 +32,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.gravatar.quickeditor.R
 import com.gravatar.quickeditor.ui.abouteditor.components.AboutSection
+import com.gravatar.quickeditor.ui.abouteditor.components.DiscardChangesAlertDialog
 import com.gravatar.quickeditor.ui.components.QEButton
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
 import com.gravatar.quickeditor.ui.extensions.QESnackbarHost
@@ -47,6 +48,7 @@ import kotlinx.coroutines.withContext
 internal fun AboutEditor(
     quickEditorParams: GravatarQuickEditorParams,
     onProfileUpdated: (Profile) -> Unit,
+    onClose: () -> Unit,
     viewModel: AboutEditorViewModel = viewModel(
         factory = AboutEditorViewModelFactory(quickEditorParams),
     ),
@@ -85,6 +87,10 @@ internal fun AboutEditor(
                                 )
                             }
                         }
+
+                        AboutEditorAction.CloseEditor -> {
+                            onClose()
+                        }
                     }
                 }
             }
@@ -104,6 +110,16 @@ internal fun AboutEditor(
                 modifier = Modifier
                     .align(Alignment.BottomStart),
                 hostState = snackState,
+            )
+            DiscardChangesAlertDialog(
+                visible = uiState.discardChangesDialogVisible,
+                onKeepEditing = {
+                    viewModel.onEvent(AboutEditorEvent.OnDiscardDialogDismissed)
+                },
+                onDiscardClicked = {
+                    viewModel.onEvent(AboutEditorEvent.OnDiscardDialogDismissed)
+                    onClose()
+                },
             )
         }
     }
