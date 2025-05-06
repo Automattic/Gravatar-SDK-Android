@@ -62,7 +62,7 @@ import kotlinx.coroutines.withContext
 
 @Composable
 fun AvatarUpdateTab(modifier: Modifier = Modifier) {
-    var userEmail by remember { mutableStateOf(BuildConfig.DEMO_EMAIL) }
+    var userEmail by rememberSaveable { mutableStateOf(BuildConfig.DEMO_EMAIL) }
     var userToken by remember { mutableStateOf(BuildConfig.DEMO_BEARER_TOKEN) }
     var useToken by rememberSaveable { mutableStateOf(false) }
     var tokenVisible by remember { mutableStateOf(false) }
