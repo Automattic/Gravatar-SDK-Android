@@ -66,7 +66,9 @@ class AboutEditorViewModelTest {
 
     @Test
     fun `given view model initialization when profile fetch fails then uiState is updated`() = runTest {
-        coEvery { profileRepository.getProfile(email) } returns GravatarResult.Failure(QuickEditorError.Unknown)
+        coEvery { profileRepository.getProfile(email) } returns GravatarResult.Failure(
+            QuickEditorError.Unknown,
+        )
 
         viewModel = initViewModel()
 
@@ -84,7 +86,13 @@ class AboutEditorViewModelTest {
         } returns GravatarResult.Success(updatedProfile)
 
         viewModel = initViewModel()
-        viewModel.onEvent(AboutEditorEvent.OnAboutFieldUpdated(AboutInputField.Personal.DisplayName("Updated Name")))
+        viewModel.onEvent(
+            AboutEditorEvent.OnAboutFieldUpdated(
+                AboutInputField.Personal.DisplayName(
+                    "Updated Name",
+                ),
+            ),
+        )
 
         advanceUntilIdle()
 
@@ -93,7 +101,10 @@ class AboutEditorViewModelTest {
         viewModel.uiState.test {
             expectMostRecentItem()
             assertEquals(
-                AboutEditorUiState(savingProfile = true, aboutFields = updatedProfile.aboutFields),
+                AboutEditorUiState(
+                    savingProfile = true,
+                    aboutFields = updatedProfile.aboutFields,
+                ),
                 awaitItem(),
             )
             assertEquals(
@@ -116,7 +127,13 @@ class AboutEditorViewModelTest {
         } returns GravatarResult.Failure(QuickEditorError.Unknown)
 
         viewModel = initViewModel()
-        viewModel.onEvent(AboutEditorEvent.OnAboutFieldUpdated(AboutInputField.Personal.DisplayName("Updated Name")))
+        viewModel.onEvent(
+            AboutEditorEvent.OnAboutFieldUpdated(
+                AboutInputField.Personal.DisplayName(
+                    "Updated Name",
+                ),
+            ),
+        )
 
         advanceUntilIdle()
 
@@ -125,7 +142,10 @@ class AboutEditorViewModelTest {
         viewModel.uiState.test {
             expectMostRecentItem()
             assertEquals(
-                AboutEditorUiState(savingProfile = true, aboutFields = updatedProfile.aboutFields),
+                AboutEditorUiState(
+                    savingProfile = true,
+                    aboutFields = updatedProfile.aboutFields,
+                ),
                 awaitItem(),
             )
             assertEquals(
@@ -158,7 +178,13 @@ class AboutEditorViewModelTest {
     fun `given changes when done clicked then discard changes dialog is shown`() = runTest {
         viewModel = initViewModel()
 
-        viewModel.onEvent(AboutEditorEvent.OnAboutFieldUpdated(AboutInputField.Personal.DisplayName("Updated Name")))
+        viewModel.onEvent(
+            AboutEditorEvent.OnAboutFieldUpdated(
+                AboutInputField.Personal.DisplayName(
+                    "Updated Name",
+                ),
+            ),
+        )
         viewModel.onEvent(AboutEditorEvent.OnDoneClicked)
 
         advanceUntilIdle()
@@ -172,7 +198,13 @@ class AboutEditorViewModelTest {
     fun `given discard changes dialog shown when dismissed then hidden`() = runTest {
         viewModel = initViewModel()
 
-        viewModel.onEvent(AboutEditorEvent.OnAboutFieldUpdated(AboutInputField.Personal.DisplayName("Updated Name")))
+        viewModel.onEvent(
+            AboutEditorEvent.OnAboutFieldUpdated(
+                AboutInputField.Personal.DisplayName(
+                    "Updated Name",
+                ),
+            ),
+        )
         viewModel.onEvent(AboutEditorEvent.OnDoneClicked)
 
         advanceUntilIdle()
@@ -181,6 +213,29 @@ class AboutEditorViewModelTest {
             assertEquals(true, awaitItem().discardChangesDialogVisible)
 
             viewModel.onEvent(AboutEditorEvent.OnDiscardDialogDismissed)
+            assertEquals(false, awaitItem().discardChangesDialogVisible)
+        }
+    }
+
+    @Test
+    fun `given discard changes dialog shown when discard confirmed then hidden`() = runTest {
+        viewModel = initViewModel()
+
+        viewModel.onEvent(
+            AboutEditorEvent.OnAboutFieldUpdated(
+                AboutInputField.Personal.DisplayName(
+                    "Updated Name",
+                ),
+            ),
+        )
+        viewModel.onEvent(AboutEditorEvent.OnDoneClicked)
+
+        advanceUntilIdle()
+
+        viewModel.uiState.test {
+            assertEquals(true, awaitItem().discardChangesDialogVisible)
+
+            viewModel.onEvent(AboutEditorEvent.OnDiscardConfirmed)
             assertEquals(false, awaitItem().discardChangesDialogVisible)
         }
     }

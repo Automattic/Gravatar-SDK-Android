@@ -10,4 +10,6 @@ internal sealed class AboutEditorEvent {
     data object OnDoneClicked : AboutEditorEvent()
 
     data object OnDiscardDialogDismissed : AboutEditorEvent()
+
+    data object OnDiscardConfirmed : AboutEditorEvent()
 }

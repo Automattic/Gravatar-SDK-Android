@@ -117,7 +117,7 @@ internal fun AboutEditor(
                     viewModel.onEvent(AboutEditorEvent.OnDiscardDialogDismissed)
                 },
                 onDiscardClicked = {
-                    viewModel.onEvent(AboutEditorEvent.OnDiscardDialogDismissed)
+                    viewModel.onEvent(AboutEditorEvent.OnDiscardConfirmed)
                     onClose()
                 },
             )
