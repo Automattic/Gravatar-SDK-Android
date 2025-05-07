@@ -25,6 +25,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.gravatar.AvatarQueryOptions
@@ -86,6 +87,9 @@ internal fun ProfileCard(
                                     EditButton(
                                         onClick = onEditAvatarClicked,
                                         backgroundColor = backgroundColor,
+                                        contentDescription = stringResource(
+                                            R.string.gravatar_qe_edit_avatar_content_description,
+                                        ),
                                         modifier = Modifier
                                             .align(Alignment.BottomEnd),
                                     )
@@ -106,6 +110,9 @@ internal fun ProfileCard(
                     EditButton(
                         onClick = onEditAboutClicked,
                         backgroundColor = backgroundColor,
+                        contentDescription = stringResource(
+                            R.string.gravatar_qe_edit_about_content_description,
+                        ),
                         modifier = Modifier.padding(top = 5.dp),
                     )
                 }
@@ -138,10 +145,15 @@ internal fun GravatarCard(modifier: Modifier = Modifier, content: @Composable (C
 }
 
 @Composable
-private fun EditButton(onClick: () -> Unit, backgroundColor: Color, modifier: Modifier = Modifier) {
+private fun EditButton(
+    onClick: () -> Unit,
+    backgroundColor: Color,
+    contentDescription: String?,
+    modifier: Modifier = Modifier,
+) {
     Icon(
         painter = painterResource(R.drawable.ic_edit),
-        contentDescription = null,
+        contentDescription = contentDescription,
         tint = MaterialTheme.colorScheme.onSurface,
         modifier = modifier
             .size(24.dp)
