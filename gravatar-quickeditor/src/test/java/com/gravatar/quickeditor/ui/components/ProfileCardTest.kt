@@ -38,4 +38,27 @@ class ProfileCardTest : RoborazziTest() {
             modifier = Modifier.padding(20.dp),
         )
     }
+
+    @Test
+    fun profileCardWithEditButtons() = gravatarScreenshotTest {
+        ProfileCard(
+            profile = ComponentState.Loaded(profile),
+            email = Email("email"),
+            modifier = Modifier.padding(20.dp),
+            editAvatarEnabled = true,
+            editAboutEnabled = true,
+        )
+    }
+
+    @Config(qualifiers = "+night")
+    @Test
+    fun profileCardWithEditButtonsDarkMode() = gravatarScreenshotTest {
+        ProfileCard(
+            profile = ComponentState.Loaded(profile),
+            email = Email("email"),
+            modifier = Modifier.padding(20.dp),
+            editAvatarEnabled = true,
+            editAboutEnabled = true,
+        )
+    }
 }

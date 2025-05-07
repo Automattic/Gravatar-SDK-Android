@@ -99,6 +99,8 @@ internal fun QuickEditor(
                         ProfileCard(
                             profile = uiState.profile,
                             email = uiState.email,
+                            editAvatarEnabled = true,
+                            editProfileEnabled = true,
                             avatarCacheBuster = uiState.avatarCacheBuster.toString(),
                             modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
                         )

@@ -2,28 +2,36 @@ package com.gravatar.quickeditor.ui.components
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.gravatar.AvatarQueryOptions
 import com.gravatar.DefaultAvatarOption
 import com.gravatar.ImageRating
 import com.gravatar.extensions.defaultProfile
+import com.gravatar.quickeditor.R
 import com.gravatar.restapi.models.Profile
 import com.gravatar.types.Email
 import com.gravatar.ui.GravatarTheme
@@ -37,39 +45,71 @@ internal fun ProfileCard(
     profile: ComponentState<Profile>?,
     email: Email,
     modifier: Modifier = Modifier,
+    editAvatarEnabled: Boolean = false,
+    editAboutEnabled: Boolean = false,
+    onEditAvatarClicked: () -> Unit = { },
+    onEditAboutClicked: () -> Unit = { },
     avatarCacheBuster: String? = null,
 ) {
     GravatarCard(modifier) { backgroundColor ->
         profile?.let {
-            ProfileSummary(
-                state = it,
+            Row(
+                verticalAlignment = Alignment.Top,
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(backgroundColor)
                     .padding(horizontal = 16.dp, vertical = 11.dp),
-                avatar = {
-                    val sizePx = with(LocalDensity.current) { 72.dp.roundToPx() }
-                    Avatar(
-                        email = email,
-                        avatarQueryOptions = AvatarQueryOptions {
-                            preferredSize = sizePx
-                            rating = ImageRating.X
-                            defaultAvatarOption = DefaultAvatarOption.Status404
+            ) {
+                Box(
+                    modifier = Modifier
+                        .weight(1f, fill = true),
+                ) {
+                    ProfileSummary(
+                        state = it,
+                        modifier = Modifier
+                            .background(backgroundColor),
+                        avatar = {
+                            val sizePx = with(LocalDensity.current) { 72.dp.roundToPx() }
+                            Box {
+                                Avatar(
+                                    email = email,
+                                    avatarQueryOptions = AvatarQueryOptions {
+                                        preferredSize = sizePx
+                                        rating = ImageRating.X
+                                        defaultAvatarOption = DefaultAvatarOption.Status404
+                                    },
+                                    size = 72.dp,
+                                    modifier = Modifier.clip(CircleShape),
+                                    cacheBuster = avatarCacheBuster,
+                                )
+                                if (editAvatarEnabled) {
+                                    EditButton(
+                                        onClick = onEditAvatarClicked,
+                                        backgroundColor = backgroundColor,
+                                        modifier = Modifier
+                                            .align(Alignment.BottomEnd),
+                                    )
+                                }
+                            }
                         },
-                        size = 72.dp,
-                        modifier = Modifier.clip(CircleShape),
-                        cacheBuster = avatarCacheBuster,
+                        viewProfile = { state ->
+                            if (state !is ComponentState.Empty) {
+                                ViewProfileButton(
+                                    state = state,
+                                    modifier = Modifier.height(32.dp),
+                                )
+                            }
+                        },
                     )
-                },
-                viewProfile = { state ->
-                    if (state !is ComponentState.Empty) {
-                        ViewProfileButton(
-                            state = state,
-                            modifier = Modifier.height(32.dp),
-                        )
-                    }
-                },
-            )
+                }
+                if (editAboutEnabled) {
+                    EditButton(
+                        onClick = onEditAboutClicked,
+                        backgroundColor = backgroundColor,
+                        modifier = Modifier.padding(top = 5.dp),
+                    )
+                }
+            }
         }
     }
 }
@@ -97,6 +137,21 @@ internal fun GravatarCard(modifier: Modifier = Modifier, content: @Composable (C
     }
 }
 
+@Composable
+private fun EditButton(onClick: () -> Unit, backgroundColor: Color, modifier: Modifier = Modifier) {
+    Icon(
+        painter = painterResource(R.drawable.ic_edit),
+        contentDescription = null,
+        tint = MaterialTheme.colorScheme.onSurface,
+        modifier = modifier
+            .size(24.dp)
+            .clip(CircleShape)
+            .background(backgroundColor)
+            .padding(2.dp)
+            .clickable { onClick() },
+    )
+}
+
 @Preview(showBackground = true, heightDp = 200)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true, backgroundColor = 0xFF000000, heightDp = 200)
 @Composable
@@ -108,6 +163,8 @@ private fun ProfileCardPreview() {
             ),
             email = Email("john.adams@test.com"),
             modifier = Modifier.padding(20.dp),
+            editAvatarEnabled = true,
+            editAboutEnabled = true,
         )
     }
 }
