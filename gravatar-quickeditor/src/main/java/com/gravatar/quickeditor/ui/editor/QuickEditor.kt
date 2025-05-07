@@ -1,5 +1,10 @@
 package com.gravatar.quickeditor.ui.editor
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -40,39 +45,48 @@ internal fun QuickEditor(
     QuickEditor(
         uiState = uiState,
         onDoneClicked = {
-            when (gravatarQuickEditorParams.scope) {
-                QuickEditorScope.AVATAR -> onDoneClicked()
-                QuickEditorScope.ABOUT ->
-                    aboutEditorViewModel.onEvent(AboutEditorEvent.OnDoneClicked)
+            when (uiState.page) {
+                QuickEditorPage.AVATAR_PICKER -> onDoneClicked()
+                QuickEditorPage.ABOUT_EDITOR -> aboutEditorViewModel.onEvent(AboutEditorEvent.OnDoneClicked)
             }
         },
+        onEditAvatarClicked = { viewModel.onEvent(QuickEditorEvent.OnEditAvatarClicked) },
+        onEditAboutClicked = { viewModel.onEvent(QuickEditorEvent.OnEditAboutClicked) },
     ) {
-        when (gravatarQuickEditorParams.scope) {
-            QuickEditorScope.AVATAR -> {
-                AvatarPicker(
-                    gravatarQuickEditorParams = gravatarQuickEditorParams,
-                    handleExpiredSession = handleExpiredSession,
-                    onAvatarSelected = {
-                        onAvatarSelected()
-                        viewModel.onEvent(QuickEditorEvent.UpdateAvatarCache)
-                    },
-                    onSessionExpired = onSessionExpired,
-                    onAltTextTapped = onAltTextTapped,
-                    onRefresh = {
-                        viewModel.onEvent(QuickEditorEvent.Refresh)
-                    },
-                )
-            }
+        AnimatedContent(
+            targetState = uiState.page,
+            transitionSpec = {
+                fadeIn(animationSpec = tween(220, delayMillis = 90))
+                    .togetherWith(fadeOut(animationSpec = tween(90)))
+            },
+        ) { state ->
+            when (state) {
+                QuickEditorPage.AVATAR_PICKER -> {
+                    AvatarPicker(
+                        gravatarQuickEditorParams = gravatarQuickEditorParams,
+                        handleExpiredSession = handleExpiredSession,
+                        onAvatarSelected = {
+                            onAvatarSelected()
+                            viewModel.onEvent(QuickEditorEvent.UpdateAvatarCache)
+                        },
+                        onSessionExpired = onSessionExpired,
+                        onAltTextTapped = onAltTextTapped,
+                        onRefresh = {
+                            viewModel.onEvent(QuickEditorEvent.Refresh)
+                        },
+                    )
+                }
 
-            QuickEditorScope.ABOUT -> {
-                AboutEditor(
-                    quickEditorParams = gravatarQuickEditorParams,
-                    onProfileUpdated = {
-                        viewModel.onEvent(QuickEditorEvent.OnProfileUpdated(it))
-                    },
-                    onClose = onDoneClicked,
-                    viewModel = aboutEditorViewModel,
-                )
+                QuickEditorPage.ABOUT_EDITOR -> {
+                    AboutEditor(
+                        quickEditorParams = gravatarQuickEditorParams,
+                        onProfileUpdated = {
+                            viewModel.onEvent(QuickEditorEvent.OnProfileUpdated(it))
+                        },
+                        onClose = onDoneClicked,
+                        viewModel = aboutEditorViewModel,
+                    )
+                }
             }
         }
     }
@@ -82,6 +96,8 @@ internal fun QuickEditor(
 internal fun QuickEditor(
     uiState: QuickEditorUiState,
     onDoneClicked: () -> Unit,
+    onEditAvatarClicked: () -> Unit,
+    onEditAboutClicked: () -> Unit,
     content: @Composable () -> Unit = {},
 ) {
     GravatarTheme {
@@ -99,9 +115,11 @@ internal fun QuickEditor(
                         ProfileCard(
                             profile = uiState.profile,
                             email = uiState.email,
-                            editAvatarEnabled = true,
-                            editProfileEnabled = true,
+                            editAvatarEnabled = uiState.editAvatarButtonVisible,
+                            editAboutEnabled = uiState.editAboutButtonVisible,
                             avatarCacheBuster = uiState.avatarCacheBuster.toString(),
+                            onEditAvatarClicked = onEditAvatarClicked,
+                            onEditAboutClicked = onEditAboutClicked,
                             modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
                         )
                         content()

@@ -11,4 +11,5 @@ import org.jetbrains.annotations.ApiStatus.Experimental
 public enum class QuickEditorScope {
     AVATAR,
     ABOUT,
+    AVATAR_AND_ABOUT,
 }

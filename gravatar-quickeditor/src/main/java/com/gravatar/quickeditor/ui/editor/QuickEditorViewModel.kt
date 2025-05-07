@@ -21,10 +21,14 @@ internal class QuickEditorViewModel(
     private val email: Email,
     private val profileRepository: ProfileRepository,
     private val clock: Clock,
+    initialPage: QuickEditorPage,
+    navigationEnabled: Boolean,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(
         QuickEditorUiState(
             email = email,
+            page = initialPage,
+            pageNavigationEnabled = navigationEnabled,
             avatarCacheBuster = clock.getTimeMillis(),
         ),
     )
@@ -40,8 +44,20 @@ internal class QuickEditorViewModel(
             QuickEditorEvent.UpdateAvatarCache -> _uiState.update { currentState ->
                 currentState.copy(avatarCacheBuster = clock.getTimeMillis())
             }
+
             is QuickEditorEvent.OnProfileUpdated -> _uiState.update { currentState ->
                 currentState.copy(profile = ComponentState.Loaded(event.profile))
+            }
+
+            QuickEditorEvent.OnEditAboutClicked -> navigateToPage(QuickEditorPage.ABOUT_EDITOR)
+            QuickEditorEvent.OnEditAvatarClicked -> navigateToPage(QuickEditorPage.AVATAR_PICKER)
+        }
+    }
+
+    private fun navigateToPage(page: QuickEditorPage) {
+        if (uiState.value.pageNavigationEnabled) {
+            _uiState.update { currentState ->
+                currentState.copy(page = page)
             }
         }
     }
@@ -80,7 +96,18 @@ internal class QuickEditorViewModelFactory(
         return QuickEditorViewModel(
             email = gravatarQuickEditorParams.email,
             profileRepository = QuickEditorContainer.getInstance().profileRepository,
+            navigationEnabled = gravatarQuickEditorParams.scope == QuickEditorScope.AVATAR_AND_ABOUT,
+            initialPage = gravatarQuickEditorParams.scope.initialPage,
             clock = SystemClock(),
         ) as T
     }
 }
+
+private val QuickEditorScope.initialPage: QuickEditorPage
+    get() {
+        return when (this) {
+            QuickEditorScope.AVATAR -> QuickEditorPage.AVATAR_PICKER
+            QuickEditorScope.ABOUT -> QuickEditorPage.ABOUT_EDITOR
+            QuickEditorScope.AVATAR_AND_ABOUT -> QuickEditorPage.ABOUT_EDITOR
+        }
+    }

@@ -6,6 +6,16 @@ import com.gravatar.ui.components.ComponentState
 
 internal data class QuickEditorUiState(
     val email: Email,
+    val page: QuickEditorPage,
+    val pageNavigationEnabled: Boolean,
     val profile: ComponentState<Profile>? = null,
     val avatarCacheBuster: Long? = null,
-)
+) {
+    val editAvatarButtonVisible: Boolean = pageNavigationEnabled && page == QuickEditorPage.ABOUT_EDITOR
+    val editAboutButtonVisible: Boolean = pageNavigationEnabled && page == QuickEditorPage.AVATAR_PICKER
+}
+
+internal enum class QuickEditorPage {
+    AVATAR_PICKER,
+    ABOUT_EDITOR,
+}

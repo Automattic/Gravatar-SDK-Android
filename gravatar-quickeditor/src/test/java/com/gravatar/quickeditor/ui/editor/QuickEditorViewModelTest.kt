@@ -54,6 +54,8 @@ class QuickEditorViewModelTest {
             val avatarPickerUiState = QuickEditorUiState(
                 email = email,
                 avatarCacheBuster = 0,
+                page = QuickEditorPage.ABOUT_EDITOR,
+                pageNavigationEnabled = false,
             )
             assertEquals(avatarPickerUiState, awaitItem())
             assertEquals(
@@ -81,6 +83,8 @@ class QuickEditorViewModelTest {
             val avatarPickerUiState = QuickEditorUiState(
                 email = email,
                 avatarCacheBuster = 0,
+                page = QuickEditorPage.ABOUT_EDITOR,
+                pageNavigationEnabled = false,
             )
             assertEquals(avatarPickerUiState, awaitItem())
             assertEquals(
@@ -128,9 +132,42 @@ class QuickEditorViewModelTest {
         }
     }
 
-    private fun initViewModel() = QuickEditorViewModel(
+    @Test
+    fun `given initial state when OnEditAboutClicked event then navigates to ABOUT_EDITOR page`() = runTest {
+        viewModel = initViewModel(
+            initialPage = QuickEditorPage.AVATAR_PICKER,
+            navigationEnabled = true,
+        )
+
+        viewModel.onEvent(QuickEditorEvent.OnEditAboutClicked)
+
+        viewModel.uiState.test {
+            assertEquals(QuickEditorPage.ABOUT_EDITOR, awaitItem().page)
+        }
+    }
+
+    @Test
+    fun `given initial state when OnEditAvatarClicked event then navigates to AVATAR_PICKER page`() = runTest {
+        viewModel = initViewModel(
+            initialPage = QuickEditorPage.ABOUT_EDITOR,
+            navigationEnabled = true,
+        )
+
+        viewModel.onEvent(QuickEditorEvent.OnEditAvatarClicked)
+
+        viewModel.uiState.test {
+            assertEquals(QuickEditorPage.AVATAR_PICKER, awaitItem().page)
+        }
+    }
+
+    private fun initViewModel(
+        navigationEnabled: Boolean = false,
+        initialPage: QuickEditorPage = QuickEditorPage.ABOUT_EDITOR,
+    ) = QuickEditorViewModel(
         email = email,
         profileRepository = profileRepository,
         clock = clock,
+        initialPage = initialPage,
+        navigationEnabled = navigationEnabled,
     )
 }
