@@ -49,8 +49,8 @@ internal class QuickEditorViewModel(
                 currentState.copy(profile = ComponentState.Loaded(event.profile))
             }
 
-            QuickEditorEvent.OnEditAboutClicked -> navigateToPage(QuickEditorPage.ABOUT_EDITOR)
-            QuickEditorEvent.OnEditAvatarClicked -> navigateToPage(QuickEditorPage.AVATAR_PICKER)
+            QuickEditorEvent.OnEditAboutClicked -> navigateToPage(QuickEditorPage.AboutEditor)
+            QuickEditorEvent.OnEditAvatarClicked -> navigateToPage(QuickEditorPage.AvatarPicker)
         }
     }
 
@@ -93,21 +93,13 @@ internal class QuickEditorViewModelFactory(
 ) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
+        val scopeConfig = gravatarQuickEditorParams.scopeConfig
         return QuickEditorViewModel(
             email = gravatarQuickEditorParams.email,
             profileRepository = QuickEditorContainer.getInstance().profileRepository,
-            navigationEnabled = gravatarQuickEditorParams.scope == QuickEditorScope.AVATAR_AND_ABOUT,
-            initialPage = gravatarQuickEditorParams.scope.initialPage,
+            navigationEnabled = scopeConfig.scope == QuickEditorScope.AvatarAndAbout,
+            initialPage = scopeConfig.initialPage,
             clock = SystemClock(),
         ) as T
     }
 }
-
-private val QuickEditorScope.initialPage: QuickEditorPage
-    get() {
-        return when (this) {
-            QuickEditorScope.AVATAR -> QuickEditorPage.AVATAR_PICKER
-            QuickEditorScope.ABOUT -> QuickEditorPage.ABOUT_EDITOR
-            QuickEditorScope.AVATAR_AND_ABOUT -> QuickEditorPage.ABOUT_EDITOR
-        }
-    }

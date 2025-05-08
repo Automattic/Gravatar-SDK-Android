@@ -79,7 +79,7 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
     var pickerUiMode: GravatarUiMode by rememberSaveable {
         mutableStateOf(GravatarUiMode.SYSTEM)
     }
-    var editorScope: QuickEditorScope by rememberSaveable {
+    var editorScope: Int by rememberSaveable {
         mutableStateOf(QuickEditorScope.AVATAR)
     }
 

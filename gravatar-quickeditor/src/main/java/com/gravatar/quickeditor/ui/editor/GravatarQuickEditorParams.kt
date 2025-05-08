@@ -11,30 +11,30 @@ import java.util.Objects
  * @property email The email of the user
  * @property avatarPickerContentLayout The layout direction used in the Avatar Picker.
  * @property uiMode The UI mode to be used in the Quick Editor.
- * @property scope The scope of the Quick Editor.
+ * @property scopeConfig The scope configuration for the Quick Editor.
  */
 @Parcelize
 public class GravatarQuickEditorParams private constructor(
     public val email: Email,
     public val avatarPickerContentLayout: AvatarPickerContentLayout,
     public val uiMode: GravatarUiMode = GravatarUiMode.SYSTEM,
-    public val scope: QuickEditorScope = QuickEditorScope.AVATAR,
+    public val scopeConfig: ScopeConfig = ScopeConfig.avatar(),
 ) : Parcelable {
     override fun toString(): String = "GravatarQuickEditorParams(" +
         "email='$email', " +
         "avatarPickerContentLayout=$avatarPickerContentLayout, " +
         "uiMode=$uiMode, " +
-        "scope=$scope" +
+        "scope=$scopeConfig" +
         ")"
 
-    override fun hashCode(): Int = Objects.hash(email, avatarPickerContentLayout, uiMode, scope)
+    override fun hashCode(): Int = Objects.hash(email, avatarPickerContentLayout, uiMode, scopeConfig)
 
     override fun equals(other: Any?): Boolean {
         return other is GravatarQuickEditorParams &&
             email == other.email &&
             avatarPickerContentLayout == other.avatarPickerContentLayout &&
             uiMode == other.uiMode &&
-            scope == other.scope
+            scopeConfig == other.scopeConfig
     }
 
     /**
@@ -50,6 +50,7 @@ public class GravatarQuickEditorParams private constructor(
         /**
          * The content layout direction used in the Avatar Picker
          */
+        @Deprecated(message = "AvatarPickerContentLayout was moved to ScopeConfig")
         @set:JvmSynthetic // Hide 'void' setter from Java
         public var avatarPickerContentLayout: AvatarPickerContentLayout = AvatarPickerContentLayout.Horizontal
 
@@ -60,14 +61,18 @@ public class GravatarQuickEditorParams private constructor(
         public var uiMode: GravatarUiMode = GravatarUiMode.SYSTEM
 
         /**
-         * The scope of the Quick Editor
+         * The scope configuration for the Quick Editor
          */
         @set:JvmSynthetic // Hide 'void' setter from Java
-        public var scope: QuickEditorScope = QuickEditorScope.AVATAR
+        public var scopeConfig: ScopeConfig = ScopeConfig.avatar()
 
         /**
          * Sets the content layout direction used in the Avatar Picker
          */
+        @Deprecated(
+            message = "AvatarPickerContentLayout was moved to ScopeConfig",
+            replaceWith = ReplaceWith("setScopeConfig(scopeConfig)"),
+        )
         public fun setAvatarPickerContentLayout(avatarPickerContentLayout: AvatarPickerContentLayout): Builder =
             apply { this.avatarPickerContentLayout = avatarPickerContentLayout }
 
@@ -84,7 +89,7 @@ public class GravatarQuickEditorParams private constructor(
         /**
          * Sets the scope of the Quick Editor
          */
-        public fun setScope(scope: QuickEditorScope): Builder = apply { this.scope = scope }
+        public fun setScopeConfig(scopeConfig: ScopeConfig): Builder = apply { this.scopeConfig = scopeConfig }
 
         /**
          * Builds the GravatarQuickEditorParams object
@@ -93,8 +98,25 @@ public class GravatarQuickEditorParams private constructor(
             email!!,
             avatarPickerContentLayout,
             uiMode,
-            scope,
+            scopeConfig.withContentLayout(avatarPickerContentLayout),
         )
+
+        private fun ScopeConfig.withContentLayout(
+            deprecatedAvatarPickerContentLayout: AvatarPickerContentLayout,
+        ): ScopeConfig {
+            // AvatarPickerContentLayout.Vertical means non-default value was set so we should make sure to use it
+            // for backwards compatibility
+            val contentLayout = if (deprecatedAvatarPickerContentLayout != AvatarPickerContentLayout.Horizontal) {
+                deprecatedAvatarPickerContentLayout
+            } else {
+                avatarPickerContentLayout
+            }
+            return ScopeConfig {
+                scope = this@withContentLayout.scope
+                initialPage = this@withContentLayout.initialPage
+                avatarPickerContentLayout = contentLayout
+            }
+        }
     }
 }
 
