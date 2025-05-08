@@ -11,6 +11,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.gravatar.quickeditor.ui.abouteditor.AboutEditor
+import com.gravatar.quickeditor.ui.abouteditor.AboutEditorEvent
+import com.gravatar.quickeditor.ui.abouteditor.AboutEditorViewModel
+import com.gravatar.quickeditor.ui.abouteditor.AboutEditorViewModelFactory
 import com.gravatar.quickeditor.ui.avatarpicker.AvatarPicker
 import com.gravatar.quickeditor.ui.components.EmailLabel
 import com.gravatar.quickeditor.ui.components.ProfileCard
@@ -30,10 +33,19 @@ internal fun QuickEditor(
     ),
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val aboutEditorViewModel: AboutEditorViewModel = viewModel(
+        factory = AboutEditorViewModelFactory(gravatarQuickEditorParams),
+    )
 
     QuickEditor(
         uiState = uiState,
-        onDoneClicked = onDoneClicked,
+        onDoneClicked = {
+            when (gravatarQuickEditorParams.scope) {
+                QuickEditorScope.AVATAR -> onDoneClicked()
+                QuickEditorScope.ABOUT ->
+                    aboutEditorViewModel.onEvent(AboutEditorEvent.OnDoneClicked)
+            }
+        },
     ) {
         when (gravatarQuickEditorParams.scope) {
             QuickEditorScope.AVATAR -> {
@@ -58,6 +70,8 @@ internal fun QuickEditor(
                     onProfileUpdated = {
                         viewModel.onEvent(QuickEditorEvent.OnProfileUpdated(it))
                     },
+                    onClose = onDoneClicked,
+                    viewModel = aboutEditorViewModel,
                 )
             }
         }

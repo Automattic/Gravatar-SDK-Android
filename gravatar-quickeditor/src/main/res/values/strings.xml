@@ -88,4 +88,8 @@
     <string name="gravatar_qe_about_field_section_label_professional">Professional</string>
     <string name="gravatar_qe_about_save_profile_error_message">Error saving the changes.</string>
     <string name="gravatar_qe_about_save_profile_success_message">Profile updated successfully</string>
+    <string name="gravatar_qe_about_discard_changes_dialog_title">Unsaved changes!</string>
+    <string name="gravatar_qe_about_discard_changes_dialog_message">You\'ll lose your work if you exit now.</string>
+    <string name="gravatar_qe_about_discard_changes_dialog_confirm">Exit</string>
+    <string name="gravatar_qe_about_discard_changes_dialog_dismiss">Keep editing</string>
 </resources>
