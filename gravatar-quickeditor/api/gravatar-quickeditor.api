@@ -487,6 +487,7 @@ public final class com/gravatar/quickeditor/ui/editor/GravatarUiMode : java/lang
 public final class com/gravatar/quickeditor/ui/editor/QuickEditorScope : java/lang/Enum {
 	public static final field ABOUT Lcom/gravatar/quickeditor/ui/editor/QuickEditorScope;
 	public static final field AVATAR Lcom/gravatar/quickeditor/ui/editor/QuickEditorScope;
+	public static final field AVATAR_AND_ABOUT Lcom/gravatar/quickeditor/ui/editor/QuickEditorScope;
 	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public static fun valueOf (Ljava/lang/String;)Lcom/gravatar/quickeditor/ui/editor/QuickEditorScope;
 	public static fun values ()[Lcom/gravatar/quickeditor/ui/editor/QuickEditorScope;

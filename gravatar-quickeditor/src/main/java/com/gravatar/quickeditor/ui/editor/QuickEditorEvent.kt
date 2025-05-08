@@ -8,4 +8,8 @@ internal sealed class QuickEditorEvent {
     data object UpdateAvatarCache : QuickEditorEvent()
 
     class OnProfileUpdated(val profile: Profile) : QuickEditorEvent()
+
+    data object OnEditAvatarClicked : QuickEditorEvent()
+
+    data object OnEditAboutClicked : QuickEditorEvent()
 }

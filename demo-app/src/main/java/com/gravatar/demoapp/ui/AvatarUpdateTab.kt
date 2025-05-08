@@ -314,6 +314,7 @@ private fun ScopeDropdown(
     val uiModeOptions = listOf(
         QuickEditorScope.AVATAR,
         QuickEditorScope.ABOUT,
+        QuickEditorScope.AVATAR_AND_ABOUT,
     )
 
     ExposedDropdownMenuBox(
