@@ -54,7 +54,7 @@ class QuickEditorViewModelTest {
             val avatarPickerUiState = QuickEditorUiState(
                 email = email,
                 avatarCacheBuster = 0,
-                page = QuickEditorPage.ABOUT_EDITOR,
+                page = QuickEditorPage.AboutEditor,
                 pageNavigationEnabled = false,
             )
             assertEquals(avatarPickerUiState, awaitItem())
@@ -83,7 +83,7 @@ class QuickEditorViewModelTest {
             val avatarPickerUiState = QuickEditorUiState(
                 email = email,
                 avatarCacheBuster = 0,
-                page = QuickEditorPage.ABOUT_EDITOR,
+                page = QuickEditorPage.AboutEditor,
                 pageNavigationEnabled = false,
             )
             assertEquals(avatarPickerUiState, awaitItem())
@@ -135,34 +135,34 @@ class QuickEditorViewModelTest {
     @Test
     fun `given initial state when OnEditAboutClicked event then navigates to ABOUT_EDITOR page`() = runTest {
         viewModel = initViewModel(
-            initialPage = QuickEditorPage.AVATAR_PICKER,
+            initialPage = QuickEditorPage.AvatarPicker,
             navigationEnabled = true,
         )
 
         viewModel.onEvent(QuickEditorEvent.OnEditAboutClicked)
 
         viewModel.uiState.test {
-            assertEquals(QuickEditorPage.ABOUT_EDITOR, awaitItem().page)
+            assertEquals(QuickEditorPage.AboutEditor, awaitItem().page)
         }
     }
 
     @Test
     fun `given initial state when OnEditAvatarClicked event then navigates to AVATAR_PICKER page`() = runTest {
         viewModel = initViewModel(
-            initialPage = QuickEditorPage.ABOUT_EDITOR,
+            initialPage = QuickEditorPage.AboutEditor,
             navigationEnabled = true,
         )
 
         viewModel.onEvent(QuickEditorEvent.OnEditAvatarClicked)
 
         viewModel.uiState.test {
-            assertEquals(QuickEditorPage.AVATAR_PICKER, awaitItem().page)
+            assertEquals(QuickEditorPage.AvatarPicker, awaitItem().page)
         }
     }
 
     private fun initViewModel(
         navigationEnabled: Boolean = false,
-        initialPage: QuickEditorPage = QuickEditorPage.ABOUT_EDITOR,
+        initialPage: QuickEditorPage = QuickEditorPage.AboutEditor,
     ) = QuickEditorViewModel(
         email = email,
         profileRepository = profileRepository,
