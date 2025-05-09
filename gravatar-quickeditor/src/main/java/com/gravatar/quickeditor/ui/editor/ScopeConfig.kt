@@ -11,26 +11,30 @@ import java.util.Objects
  * @property scope The scope of the Quick Editor
  * @property avatarPickerContentLayout The content layout direction used in the Avatar Picker
  * @property initialPage The initial page to be shown in the Quick Editor
+ * @property aboutInputFields The input fields to be shown in the About Editor
  */
 @Parcelize
 public class ScopeConfig private constructor(
     public val scope: QuickEditorScope,
     public val avatarPickerContentLayout: AvatarPickerContentLayout = AvatarPickerContentLayout.Horizontal,
     public val initialPage: QuickEditorPage = QuickEditorPage.AvatarPicker,
+    public val aboutInputFields: Set<AboutInputField> = AboutInputField.all,
 ) : Parcelable {
     override fun toString(): String = "ScopeConfig(" +
         "scope=$scope, " +
         "avatarPickerContentLayout=$avatarPickerContentLayout, " +
-        "initialPage=$initialPage" +
+        "initialPage=$initialPage, " +
+        "aboutInputFields=$aboutInputFields" +
         ")"
 
-    override fun hashCode(): Int = Objects.hash(scope, avatarPickerContentLayout, initialPage)
+    override fun hashCode(): Int = Objects.hash(scope, avatarPickerContentLayout, initialPage, aboutInputFields)
 
     override fun equals(other: Any?): Boolean {
         return other is ScopeConfig &&
             scope == other.scope &&
             avatarPickerContentLayout == other.avatarPickerContentLayout &&
-            initialPage == other.initialPage
+            initialPage == other.initialPage &&
+            aboutInputFields == other.aboutInputFields
     }
 
     /**
@@ -56,6 +60,12 @@ public class ScopeConfig private constructor(
         public var initialPage: QuickEditorPage = QuickEditorPage.AvatarPicker
 
         /**
+         * The input fields to be shown in the About Editor
+         */
+        @set:JvmSynthetic
+        public var aboutInputFields: Set<AboutInputField> = AboutInputField.all
+
+        /**
          * Sets the content layout direction used in the Avatar Picker
          */
         public fun setAvatarPickerContentLayout(avatarPickerContentLayout: AvatarPickerContentLayout): Builder =
@@ -72,6 +82,12 @@ public class ScopeConfig private constructor(
         public fun setInitialPage(initialPage: QuickEditorPage): Builder = apply { this.initialPage = initialPage }
 
         /**
+         * Sets the input fields to be shown in the About Editor
+         */
+        public fun setAboutInputFields(aboutInputFields: Set<AboutInputField>): Builder =
+            apply { this.aboutInputFields = aboutInputFields }
+
+        /**
          * Builds the ScopeConfig object
          */
         public fun build(): ScopeConfig {
@@ -79,6 +95,7 @@ public class ScopeConfig private constructor(
                 scope,
                 avatarPickerContentLayout,
                 scope.derivedInitialPage(initialPage),
+                aboutInputFields,
             )
         }
     }
@@ -103,11 +120,13 @@ public class ScopeConfig private constructor(
         /**
          * Helper function to create a ScopeConfig for the About scope.
          *
+         * @param aboutInputFields The input fields to be shown in the About Editor
          * @return A ScopeConfig object for the About scope
          */
-        public fun about(): ScopeConfig {
+        public fun about(aboutInputFields: Set<AboutInputField> = AboutInputField.all): ScopeConfig {
             return ScopeConfig(
                 scope = QuickEditorScope.About,
+                aboutInputFields = aboutInputFields,
             )
         }
 
@@ -116,17 +135,20 @@ public class ScopeConfig private constructor(
          *
          * @param avatarPickerContentLayout The content layout direction used in the Avatar Picker
          * @param initialPage The initial page to be shown in the Quick Editor
+         * @param aboutInputFields The input fields to be shown in the About Editor
          * @return A ScopeConfig object for the Avatar and About scope
          */
         public fun avatarAndAbout(
             avatarPickerContentLayout: AvatarPickerContentLayout =
                 AvatarPickerContentLayout.Horizontal,
             initialPage: QuickEditorPage = QuickEditorPage.AvatarPicker,
+            aboutInputFields: Set<AboutInputField> = AboutInputField.all,
         ): ScopeConfig {
             return ScopeConfig(
                 scope = QuickEditorScope.AvatarAndAbout,
                 avatarPickerContentLayout = avatarPickerContentLayout,
                 initialPage = initialPage,
+                aboutInputFields = aboutInputFields,
             )
         }
     }
