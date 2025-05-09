@@ -2,6 +2,7 @@ package com.gravatar.demoapp.ui
 
 import android.content.Intent
 import android.widget.Toast
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -50,7 +51,9 @@ import com.gravatar.quickeditor.ui.editor.AuthenticationMethod
 import com.gravatar.quickeditor.ui.editor.AvatarPickerContentLayout
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
 import com.gravatar.quickeditor.ui.editor.GravatarUiMode
+import com.gravatar.quickeditor.ui.editor.QuickEditorPage
 import com.gravatar.quickeditor.ui.editor.QuickEditorScope
+import com.gravatar.quickeditor.ui.editor.ScopeConfig
 import com.gravatar.quickeditor.ui.editor.bottomsheet.GravatarQuickEditorBottomSheet
 import com.gravatar.quickeditor.ui.oauth.OAuthParams
 import com.gravatar.types.Email
@@ -79,8 +82,13 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
     var pickerUiMode: GravatarUiMode by rememberSaveable {
         mutableStateOf(GravatarUiMode.SYSTEM)
     }
-    var editorScope: Int by rememberSaveable {
-        mutableStateOf(QuickEditorScope.AVATAR)
+
+    var editorScope: QuickEditorScope by rememberSaveable {
+        mutableStateOf(QuickEditorScope.Avatar)
+    }
+
+    var editorInitialPage: QuickEditorPage by rememberSaveable {
+        mutableStateOf(QuickEditorPage.AvatarPicker)
     }
 
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -135,6 +143,13 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
                 onScopeSelected = { editorScope = it },
                 modifier = Modifier.fillMaxWidth(),
             )
+            AnimatedVisibility(editorScope == QuickEditorScope.AvatarAndAbout) {
+                InitialPageDropdown(
+                    page = editorInitialPage,
+                    onPageSelected = { editorInitialPage = it },
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }
             Button(
                 onClick = {
                     keyboardController?.hide()
@@ -197,9 +212,12 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
             GravatarQuickEditorBottomSheet(
                 gravatarQuickEditorParams = GravatarQuickEditorParams {
                     email = Email(userEmail)
-                    avatarPickerContentLayout = pickerContentLayout
                     uiMode = pickerUiMode
-                    scope = editorScope
+                    scopeConfig = ScopeConfig {
+                        scope = editorScope
+                        initialPage = editorInitialPage
+                        avatarPickerContentLayout = pickerContentLayout
+                    }
                 },
                 authenticationMethod = authenticationMethod,
                 onAvatarSelected = remember {
@@ -312,9 +330,9 @@ private fun ScopeDropdown(
 ) {
     var expanded by remember { mutableStateOf(false) }
     val uiModeOptions = listOf(
-        QuickEditorScope.AVATAR,
-        QuickEditorScope.ABOUT,
-        QuickEditorScope.AVATAR_AND_ABOUT,
+        QuickEditorScope.Avatar,
+        QuickEditorScope.About,
+        QuickEditorScope.AvatarAndAbout,
     )
 
     ExposedDropdownMenuBox(
@@ -324,7 +342,7 @@ private fun ScopeDropdown(
     ) {
         TextField(
             readOnly = true,
-            value = scope.toString(),
+            value = scope.value.uppercase(),
             onValueChange = { },
             label = { Text("Editor scope") },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
@@ -338,8 +356,51 @@ private fun ScopeDropdown(
             modifier = Modifier.exposedDropdownSize(),
         ) {
             uiModeOptions.forEach { selectionOption ->
-                DropdownMenuItem(text = { Text(text = selectionOption.toString()) }, onClick = {
+                DropdownMenuItem(text = { Text(text = selectionOption.value.uppercase()) }, onClick = {
                     onScopeSelected(selectionOption)
+                    expanded = false
+                })
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun InitialPageDropdown(
+    page: QuickEditorPage,
+    onPageSelected: (QuickEditorPage) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    var expanded by remember { mutableStateOf(false) }
+    val uiModeOptions = listOf(
+        QuickEditorPage.AvatarPicker,
+        QuickEditorPage.AboutEditor,
+    )
+
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = { expanded = it },
+        modifier = modifier,
+    ) {
+        TextField(
+            readOnly = true,
+            value = page.value.uppercase(),
+            onValueChange = { },
+            label = { Text("Initial editor page") },
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+            modifier = Modifier
+                .fillMaxWidth()
+                .menuAnchor(),
+        )
+        ExposedDropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+            modifier = Modifier.exposedDropdownSize(),
+        ) {
+            uiModeOptions.forEach { selectionOption ->
+                DropdownMenuItem(text = { Text(text = selectionOption.value.uppercase()) }, onClick = {
+                    onPageSelected(selectionOption)
                     expanded = false
                 })
             }
