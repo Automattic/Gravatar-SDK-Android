@@ -26,8 +26,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.neverEqualPolicy
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.Saver
@@ -48,19 +50,25 @@ import com.gravatar.demoapp.ui.components.GravatarEmailInput
 import com.gravatar.demoapp.ui.components.GravatarPasswordInput
 import com.gravatar.quickeditor.GravatarQuickEditor
 import com.gravatar.quickeditor.ui.editor.AboutEditorConfiguration
+import com.gravatar.quickeditor.ui.editor.AboutEditorResult
 import com.gravatar.quickeditor.ui.editor.AboutInputField
 import com.gravatar.quickeditor.ui.editor.AuthenticationMethod
 import com.gravatar.quickeditor.ui.editor.AvatarPickerAndAboutEditorConfiguration
 import com.gravatar.quickeditor.ui.editor.AvatarPickerConfiguration
 import com.gravatar.quickeditor.ui.editor.AvatarPickerContentLayout
+import com.gravatar.quickeditor.ui.editor.AvatarPickerResult
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
 import com.gravatar.quickeditor.ui.editor.GravatarUiMode
 import com.gravatar.quickeditor.ui.editor.QuickEditorScopeOption
 import com.gravatar.quickeditor.ui.editor.bottomsheet.GravatarQuickEditorBottomSheet
 import com.gravatar.quickeditor.ui.oauth.OAuthParams
+import com.gravatar.restapi.models.Profile
+import com.gravatar.services.GravatarResult
+import com.gravatar.services.ProfileService
 import com.gravatar.types.Email
 import com.gravatar.ui.GravatarTheme
 import com.gravatar.ui.LocalGravatarTheme
+import com.gravatar.ui.components.ComponentState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -95,6 +103,25 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
 
     val keyboardController = LocalSoftwareKeyboardController.current
 
+    val profileService = ProfileService()
+
+    var profileState: ComponentState<Profile> by remember { mutableStateOf(ComponentState.Loading, neverEqualPolicy()) }
+
+    LaunchedEffect(userEmail) {
+        profileState = ComponentState.Loading
+        when (val result = profileService.retrieveCatching(Email(userEmail))) {
+            is GravatarResult.Success -> {
+                result.value.let {
+                    profileState = ComponentState.Loaded(it)
+                }
+            }
+
+            is GravatarResult.Failure -> {
+                profileState = ComponentState.Empty
+            }
+        }
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -109,6 +136,7 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
         ) {
             DemoProfileSummaryCard(
                 email = userEmail,
+                profileState = profileState,
                 avatarCache = cacheBuster,
                 modifier = Modifier.padding(bottom = 16.dp),
             )
@@ -242,9 +270,15 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
                     }
                 },
                 authenticationMethod = authenticationMethod,
-                onAvatarSelected = remember {
-                    {
-                        cacheBuster = System.currentTimeMillis().toString()
+                updateHandler = { result ->
+                    when (result) {
+                        is AvatarPickerResult -> {
+                            cacheBuster = System.currentTimeMillis().toString()
+                        }
+
+                        is AboutEditorResult -> {
+                            profileState = ComponentState.Loaded(result.profile)
+                        }
                     }
                 },
                 onDismiss = remember {
