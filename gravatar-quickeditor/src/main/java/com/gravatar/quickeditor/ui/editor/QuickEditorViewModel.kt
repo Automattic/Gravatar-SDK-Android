@@ -93,11 +93,11 @@ internal class QuickEditorViewModelFactory(
 ) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
-        val scopeConfig = gravatarQuickEditorParams.scopeConfig
+        val scopeConfig = gravatarQuickEditorParams.scopeOption
         return QuickEditorViewModel(
             email = gravatarQuickEditorParams.email,
             profileRepository = QuickEditorContainer.getInstance().profileRepository,
-            navigationEnabled = scopeConfig.scope == QuickEditorScope.AvatarAndAbout,
+            navigationEnabled = scopeConfig.scope is QuickEditorScopeOption.Scope.AvatarPickerAndAboutEditor,
             initialPage = scopeConfig.initialPage,
             clock = SystemClock(),
         ) as T

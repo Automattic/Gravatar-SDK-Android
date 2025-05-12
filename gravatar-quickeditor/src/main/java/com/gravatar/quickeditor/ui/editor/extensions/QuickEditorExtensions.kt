@@ -49,7 +49,7 @@ private fun GravatarQuickEditorBottomSheetWrapper(
     val coroutineScope = rememberCoroutineScope()
 
     val modalBottomSheetState = rememberGravatarModalBottomSheetState(
-        avatarPickerContentLayout = gravatarQuickEditorParams.scopeConfig.avatarPickerContentLayout,
+        avatarPickerContentLayout = gravatarQuickEditorParams.scopeOption.avatarPickerContentLayout,
     )
 
     GravatarQuickEditorBottomSheet(

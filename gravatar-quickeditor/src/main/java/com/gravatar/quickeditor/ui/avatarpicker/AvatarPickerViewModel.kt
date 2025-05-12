@@ -429,7 +429,7 @@ internal class AvatarPickerViewModelFactory(
         return AvatarPickerViewModel(
             handleExpiredSession = handleExpiredSession,
             email = gravatarQuickEditorParams.email,
-            avatarPickerContentLayout = gravatarQuickEditorParams.scopeConfig.avatarPickerContentLayout,
+            avatarPickerContentLayout = gravatarQuickEditorParams.scopeOption.avatarPickerContentLayout,
             avatarRepository = QuickEditorContainer.getInstance().avatarRepository,
             imageDownloader = QuickEditorContainer.getInstance().imageDownloader,
             fileUtils = QuickEditorContainer.getInstance().fileUtils,

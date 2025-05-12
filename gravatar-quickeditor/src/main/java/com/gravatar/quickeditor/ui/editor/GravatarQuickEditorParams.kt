@@ -11,30 +11,30 @@ import java.util.Objects
  * @property email The email of the user
  * @property avatarPickerContentLayout The layout direction used in the Avatar Picker.
  * @property uiMode The UI mode to be used in the Quick Editor.
- * @property scopeConfig The scope configuration for the Quick Editor.
+ * @property scopeOption The scope option for the Quick Editor.
  */
 @Parcelize
 public class GravatarQuickEditorParams private constructor(
     public val email: Email,
     public val avatarPickerContentLayout: AvatarPickerContentLayout,
     public val uiMode: GravatarUiMode = GravatarUiMode.SYSTEM,
-    public val scopeConfig: ScopeConfig = ScopeConfig.avatar(),
+    public val scopeOption: QuickEditorScopeOption = QuickEditorScopeOption.default,
 ) : Parcelable {
     override fun toString(): String = "GravatarQuickEditorParams(" +
         "email='$email', " +
         "avatarPickerContentLayout=$avatarPickerContentLayout, " +
         "uiMode=$uiMode, " +
-        "scope=$scopeConfig" +
+        "scopeOption=$scopeOption" +
         ")"
 
-    override fun hashCode(): Int = Objects.hash(email, avatarPickerContentLayout, uiMode, scopeConfig)
+    override fun hashCode(): Int = Objects.hash(email, avatarPickerContentLayout, uiMode, scopeOption)
 
     override fun equals(other: Any?): Boolean {
         return other is GravatarQuickEditorParams &&
             email == other.email &&
             avatarPickerContentLayout == other.avatarPickerContentLayout &&
             uiMode == other.uiMode &&
-            scopeConfig == other.scopeConfig
+            scopeOption == other.scopeOption
     }
 
     /**
@@ -61,10 +61,10 @@ public class GravatarQuickEditorParams private constructor(
         public var uiMode: GravatarUiMode = GravatarUiMode.SYSTEM
 
         /**
-         * The scope configuration for the Quick Editor
+         * The scope option for the Quick Editor
          */
         @set:JvmSynthetic // Hide 'void' setter from Java
-        public var scopeConfig: ScopeConfig = ScopeConfig.avatar()
+        public var scopeConfig: QuickEditorScopeOption = QuickEditorScopeOption.default
 
         /**
          * Sets the content layout direction used in the Avatar Picker
@@ -89,7 +89,8 @@ public class GravatarQuickEditorParams private constructor(
         /**
          * Sets the scope of the Quick Editor
          */
-        public fun setScopeConfig(scopeConfig: ScopeConfig): Builder = apply { this.scopeConfig = scopeConfig }
+        public fun setScopeConfig(scopeConfig: QuickEditorScopeOption): Builder =
+            apply { this.scopeConfig = scopeConfig }
 
         /**
          * Builds the GravatarQuickEditorParams object
@@ -101,20 +102,22 @@ public class GravatarQuickEditorParams private constructor(
             scopeConfig.withContentLayout(avatarPickerContentLayout),
         )
 
-        private fun ScopeConfig.withContentLayout(
+        private fun QuickEditorScopeOption.withContentLayout(
             deprecatedAvatarPickerContentLayout: AvatarPickerContentLayout,
-        ): ScopeConfig {
+        ): QuickEditorScopeOption {
             // AvatarPickerContentLayout.Vertical means non-default value was set so we should make sure to use it
             // for backwards compatibility
-            val contentLayout = if (deprecatedAvatarPickerContentLayout != AvatarPickerContentLayout.Horizontal) {
-                deprecatedAvatarPickerContentLayout
+            return if (this == QuickEditorScopeOption.default) {
+                val contentLayout = if (deprecatedAvatarPickerContentLayout == AvatarPickerContentLayout.Vertical) {
+                    deprecatedAvatarPickerContentLayout
+                } else {
+                    avatarPickerContentLayout
+                }
+                QuickEditorScopeOption.avatarPicker(
+                    AvatarPickerConfiguration(contentLayout = contentLayout),
+                )
             } else {
-                avatarPickerContentLayout
-            }
-            return ScopeConfig {
-                scope = this@withContentLayout.scope
-                initialPage = this@withContentLayout.initialPage
-                avatarPickerContentLayout = contentLayout
+                this
             }
         }
     }
