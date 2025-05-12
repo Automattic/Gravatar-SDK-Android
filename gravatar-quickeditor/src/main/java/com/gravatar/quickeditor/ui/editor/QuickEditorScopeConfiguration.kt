@@ -2,6 +2,7 @@ package com.gravatar.quickeditor.ui.editor
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
+import java.util.Objects
 
 /**
  * Configuration which will be applied to the avatar picker.
@@ -12,6 +13,13 @@ import kotlinx.parcelize.Parcelize
 public class AvatarPickerConfiguration(
     public val contentLayout: AvatarPickerContentLayout,
 ) : Parcelable {
+    override fun toString(): String = "AvatarPickerConfiguration(contentLayout=$contentLayout)"
+
+    override fun hashCode(): Int = Objects.hash(contentLayout)
+
+    override fun equals(other: Any?): Boolean = other is AvatarPickerConfiguration &&
+        contentLayout == other.contentLayout
+
     internal companion object {
         val default = AvatarPickerConfiguration(
             contentLayout = AvatarPickerContentLayout.Horizontal,
@@ -28,6 +36,13 @@ public class AvatarPickerConfiguration(
 public class AboutEditorConfiguration(
     public val fields: Set<AboutInputField>,
 ) : Parcelable {
+    override fun toString(): String = "AboutEditorConfiguration(fields=$fields)"
+
+    override fun hashCode(): Int = Objects.hash(fields)
+
+    override fun equals(other: Any?): Boolean = other is AboutEditorConfiguration &&
+        fields == other.fields
+
     internal companion object {
         val default = AboutEditorConfiguration(
             fields = AboutInputField.all,
@@ -48,6 +63,19 @@ public class AvatarPickerAndAboutEditorConfiguration(
     public val fields: Set<AboutInputField>,
     public val initialPage: QuickEditorPage,
 ) : Parcelable {
+    override fun toString(): String = "AvatarPickerAndAboutEditorConfiguration(" +
+        "contentLayout=$contentLayout, " +
+        "fields=$fields, " +
+        "initialPage=$initialPage" +
+        ")"
+
+    override fun hashCode(): Int = Objects.hash(contentLayout, fields, initialPage)
+
+    override fun equals(other: Any?): Boolean = other is AvatarPickerAndAboutEditorConfiguration &&
+        contentLayout == other.contentLayout &&
+        fields == other.fields &&
+        initialPage == other.initialPage
+
     internal companion object {
         val default = AvatarPickerAndAboutEditorConfiguration(
             contentLayout = AvatarPickerContentLayout.Horizontal,
