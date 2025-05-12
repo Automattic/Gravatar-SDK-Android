@@ -47,13 +47,16 @@ import com.gravatar.demoapp.ui.activity.QuickEditorTestActivity
 import com.gravatar.demoapp.ui.components.GravatarEmailInput
 import com.gravatar.demoapp.ui.components.GravatarPasswordInput
 import com.gravatar.quickeditor.GravatarQuickEditor
+import com.gravatar.quickeditor.ui.editor.AboutEditorConfiguration
+import com.gravatar.quickeditor.ui.editor.AboutInputField
 import com.gravatar.quickeditor.ui.editor.AuthenticationMethod
+import com.gravatar.quickeditor.ui.editor.AvatarPickerAndAboutEditorConfiguration
+import com.gravatar.quickeditor.ui.editor.AvatarPickerConfiguration
 import com.gravatar.quickeditor.ui.editor.AvatarPickerContentLayout
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
 import com.gravatar.quickeditor.ui.editor.GravatarUiMode
 import com.gravatar.quickeditor.ui.editor.QuickEditorPage
-import com.gravatar.quickeditor.ui.editor.QuickEditorScope
-import com.gravatar.quickeditor.ui.editor.ScopeConfig
+import com.gravatar.quickeditor.ui.editor.QuickEditorScopeOption
 import com.gravatar.quickeditor.ui.editor.bottomsheet.GravatarQuickEditorBottomSheet
 import com.gravatar.quickeditor.ui.oauth.OAuthParams
 import com.gravatar.types.Email
@@ -213,10 +216,26 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
                 gravatarQuickEditorParams = GravatarQuickEditorParams {
                     email = Email(userEmail)
                     uiMode = pickerUiMode
-                    scopeConfig = ScopeConfig {
-                        scope = editorScope
-                        initialPage = editorInitialPage
-                        avatarPickerContentLayout = pickerContentLayout
+                    scopeConfig = when (editorScope) {
+                        QuickEditorScope.Avatar -> QuickEditorScopeOption.avatarPicker(
+                            config = AvatarPickerConfiguration(
+                                contentLayout = pickerContentLayout,
+                            ),
+                        )
+
+                        QuickEditorScope.About -> QuickEditorScopeOption.aboutEditor(
+                            config = AboutEditorConfiguration(
+                                fields = AboutInputField.all,
+                            ),
+                        )
+
+                        QuickEditorScope.AvatarAndAbout -> QuickEditorScopeOption.avatarAndAbout(
+                            config = AvatarPickerAndAboutEditorConfiguration(
+                                contentLayout = pickerContentLayout,
+                                initialPage = editorInitialPage,
+                                fields = AboutInputField.all,
+                            ),
+                        )
                     }
                 },
                 authenticationMethod = authenticationMethod,
@@ -342,7 +361,7 @@ private fun ScopeDropdown(
     ) {
         TextField(
             readOnly = true,
-            value = scope.value.uppercase(),
+            value = scope.name,
             onValueChange = { },
             label = { Text("Editor scope") },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
@@ -356,7 +375,7 @@ private fun ScopeDropdown(
             modifier = Modifier.exposedDropdownSize(),
         ) {
             uiModeOptions.forEach { selectionOption ->
-                DropdownMenuItem(text = { Text(text = selectionOption.value.uppercase()) }, onClick = {
+                DropdownMenuItem(text = { Text(text = selectionOption.name) }, onClick = {
                     onScopeSelected(selectionOption)
                     expanded = false
                 })
@@ -425,6 +444,12 @@ private val AvatarPickerContentLayoutSaver: Saver<AvatarPickerContentLayout, Str
             }
         },
     )
+}
+
+private enum class QuickEditorScope {
+    Avatar,
+    About,
+    AvatarAndAbout,
 }
 
 @Preview
