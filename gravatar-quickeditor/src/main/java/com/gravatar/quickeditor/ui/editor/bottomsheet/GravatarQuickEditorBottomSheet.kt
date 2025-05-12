@@ -47,14 +47,46 @@ import com.gravatar.quickeditor.QuickEditorContainer
 import com.gravatar.quickeditor.ui.components.QEDragHandle
 import com.gravatar.quickeditor.ui.editor.AuthenticationMethod
 import com.gravatar.quickeditor.ui.editor.AvatarPickerContentLayout
+import com.gravatar.quickeditor.ui.editor.AvatarPickerResult
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorDismissReason
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorPage
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
 import com.gravatar.quickeditor.ui.editor.GravatarUiMode
+import com.gravatar.quickeditor.ui.editor.UpdateHandler
 import com.gravatar.ui.GravatarTheme
 import com.gravatar.ui.LocalGravatarTheme
 import com.gravatar.ui.mainGravatarTheme
 import kotlinx.coroutines.launch
+
+/**
+ * ModalBottomSheet component for the Gravatar Quick Editor that enables the user to
+ * modify their Avatar.
+ *
+ * The bottom sheet is configured to take 70% of the screen height and skips the partially expanded state.
+ *
+ * @param gravatarQuickEditorParams The Quick Editor parameters.
+ * @param authenticationMethod The method used for authentication with the Gravatar REST API.
+ * @param updateHandler The callback for the Quick Editor updates.
+ *                       Can be invoked multiple times while the Quick Editor is open.
+ * @param onDismiss The callback for the dismiss action containing [GravatarQuickEditorDismissReason]
+ */
+@Composable
+public fun GravatarQuickEditorBottomSheet(
+    gravatarQuickEditorParams: GravatarQuickEditorParams,
+    authenticationMethod: AuthenticationMethod,
+    updateHandler: UpdateHandler,
+    onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit = {},
+) {
+    GravatarQuickEditorBottomSheet(
+        gravatarQuickEditorParams = gravatarQuickEditorParams,
+        authenticationMethod = authenticationMethod,
+        updateHandler = updateHandler,
+        onDismiss = onDismiss,
+        modalBottomSheetState = rememberGravatarModalBottomSheetState(
+            avatarPickerContentLayout = gravatarQuickEditorParams.scopeOption.avatarPickerContentLayout,
+        ),
+    )
+}
 
 /**
  * ModalBottomSheet component for the Gravatar Quick Editor that enables the user to
@@ -78,7 +110,11 @@ public fun GravatarQuickEditorBottomSheet(
     GravatarQuickEditorBottomSheet(
         gravatarQuickEditorParams = gravatarQuickEditorParams,
         authenticationMethod = authenticationMethod,
-        onAvatarSelected = onAvatarSelected,
+        updateHandler = { quickEditorUpdateType ->
+            if (quickEditorUpdateType is AvatarPickerResult) {
+                onAvatarSelected()
+            }
+        },
         onDismiss = onDismiss,
         modalBottomSheetState = rememberGravatarModalBottomSheetState(
             avatarPickerContentLayout = gravatarQuickEditorParams.scopeOption.avatarPickerContentLayout,
@@ -90,7 +126,7 @@ public fun GravatarQuickEditorBottomSheet(
 internal fun GravatarQuickEditorBottomSheet(
     gravatarQuickEditorParams: GravatarQuickEditorParams,
     authenticationMethod: AuthenticationMethod,
-    onAvatarSelected: () -> Unit,
+    updateHandler: UpdateHandler,
     onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit = {},
     modalBottomSheetState: ModalBottomSheetState,
 ) {
@@ -124,7 +160,7 @@ internal fun GravatarQuickEditorBottomSheet(
                         gravatarQuickEditorParams = gravatarQuickEditorParams,
                         authToken = authenticationMethod.token,
                         onDismiss = onDismiss,
-                        onAvatarSelected = onAvatarSelected,
+                        updateHandler = updateHandler,
                         onDoneClicked = onDoneClicked,
                     )
                 }
@@ -134,7 +170,7 @@ internal fun GravatarQuickEditorBottomSheet(
                         gravatarQuickEditorParams = gravatarQuickEditorParams,
                         oAuthParams = authenticationMethod.oAuthParams,
                         onDismiss = onDismiss,
-                        onAvatarSelected = onAvatarSelected,
+                        updateHandler = updateHandler,
                         onDoneClicked = onDoneClicked,
                     )
                 }

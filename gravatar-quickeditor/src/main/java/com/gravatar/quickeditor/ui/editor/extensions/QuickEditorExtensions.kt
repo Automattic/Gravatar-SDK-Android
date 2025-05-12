@@ -10,6 +10,7 @@ import com.composables.core.SheetDetent.Companion.Hidden
 import com.gravatar.quickeditor.ui.editor.AuthenticationMethod
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorDismissReason
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
+import com.gravatar.quickeditor.ui.editor.UpdateHandler
 import com.gravatar.quickeditor.ui.editor.bottomsheet.GravatarQuickEditorBottomSheet
 import com.gravatar.quickeditor.ui.editor.bottomsheet.rememberGravatarModalBottomSheetState
 import kotlinx.coroutines.launch
@@ -18,7 +19,7 @@ internal fun addQuickEditorToView(
     viewGroup: ViewGroup,
     gravatarQuickEditorParams: GravatarQuickEditorParams,
     authenticationMethod: AuthenticationMethod,
-    onAvatarUpdate: () -> Unit,
+    updateHandler: UpdateHandler,
     onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit,
 ) {
     viewGroup.addView(
@@ -29,7 +30,7 @@ internal fun addQuickEditorToView(
                     composeView = this,
                     gravatarQuickEditorParams = gravatarQuickEditorParams,
                     authenticationMethod = authenticationMethod,
-                    onAvatarUpdate = onAvatarUpdate,
+                    updateHandler = updateHandler,
                     onDismiss = onDismiss,
                 )
             }
@@ -43,7 +44,7 @@ private fun GravatarQuickEditorBottomSheetWrapper(
     composeView: ComposeView,
     gravatarQuickEditorParams: GravatarQuickEditorParams,
     authenticationMethod: AuthenticationMethod,
-    onAvatarUpdate: () -> Unit,
+    updateHandler: UpdateHandler,
     onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -55,7 +56,7 @@ private fun GravatarQuickEditorBottomSheetWrapper(
     GravatarQuickEditorBottomSheet(
         gravatarQuickEditorParams = gravatarQuickEditorParams,
         authenticationMethod = authenticationMethod,
-        onAvatarSelected = onAvatarUpdate,
+        updateHandler = updateHandler,
         onDismiss = onDismiss,
         modalBottomSheetState = modalBottomSheetState,
     )

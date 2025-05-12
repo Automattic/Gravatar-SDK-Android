@@ -4,8 +4,10 @@ import android.app.Activity
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.gravatar.quickeditor.ui.editor.AuthenticationMethod
+import com.gravatar.quickeditor.ui.editor.AvatarPickerResult
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorDismissReason
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
+import com.gravatar.quickeditor.ui.editor.UpdateHandler
 import com.gravatar.quickeditor.ui.editor.extensions.addQuickEditorToView
 import com.gravatar.types.Email
 
@@ -19,7 +21,7 @@ public object GravatarQuickEditor {
      * @param activity The activity to launch the Gravatar Quick Editor from.
      * @param gravatarQuickEditorParams The parameters to configure the Quick Editor.
      * @param authenticationMethod The method used for authentication with the Gravatar REST API.
-     * @param onAvatarSelected The callback for the avatar update.
+     * @param updateHandler The callback for the Quick Editor updates.
      *                       Can be invoked multiple times while the Quick Editor is open.
      * @param onDismiss The callback for the dismiss action containing [GravatarQuickEditorDismissReason]
      */
@@ -29,11 +31,84 @@ public object GravatarQuickEditor {
         activity: Activity,
         gravatarQuickEditorParams: GravatarQuickEditorParams,
         authenticationMethod: AuthenticationMethod,
+        updateHandler: UpdateHandler,
+        onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit = {},
+    ) {
+        val viewGroup: ViewGroup = activity.findViewById(android.R.id.content)
+        addQuickEditorToView(
+            viewGroup = viewGroup,
+            gravatarQuickEditorParams = gravatarQuickEditorParams,
+            authenticationMethod = authenticationMethod,
+            updateHandler = updateHandler,
+            onDismiss = onDismiss,
+        )
+    }
+
+    /**
+     * Helper function to launch the Gravatar Quick Editor from the fragment. Internally it uses
+     *      * `Activity.requireActivity()` to get the activity.
+     *
+     * @param fragment The fragment to launch the Gravatar Quick Editor from.
+     * @param gravatarQuickEditorParams The parameters to configure the Quick Editor.
+     * @param authenticationMethod The method used for authentication with the Gravatar REST API.
+     * @param updateHandler The callback for the Quick Editor updates.
+     *                       Can be invoked multiple times while the Quick Editor is open.
+     * @param onDismiss The callback for the dismiss action containing [GravatarQuickEditorDismissReason]
+     */
+    @JvmStatic
+    @JvmOverloads
+    public fun show(
+        fragment: Fragment,
+        gravatarQuickEditorParams: GravatarQuickEditorParams,
+        authenticationMethod: AuthenticationMethod,
+        updateHandler: UpdateHandler,
+        onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit = {},
+    ) {
+        val viewGroup: ViewGroup = fragment.requireActivity().findViewById(android.R.id.content)
+        addQuickEditorToView(
+            viewGroup = viewGroup,
+            gravatarQuickEditorParams = gravatarQuickEditorParams,
+            authenticationMethod = authenticationMethod,
+            updateHandler = updateHandler,
+            onDismiss = onDismiss,
+        )
+    }
+
+    /**
+     * Helper function to launch the Gravatar Quick Editor from the activity.
+     *
+     * @param activity The activity to launch the Gravatar Quick Editor from.
+     * @param gravatarQuickEditorParams The parameters to configure the Quick Editor.
+     * @param authenticationMethod The method used for authentication with the Gravatar REST API.
+     * @param onAvatarSelected The callback for the avatar update.
+     *                       Can be invoked multiple times while the Quick Editor is open.
+     * @param onDismiss The callback for the dismiss action containing [GravatarQuickEditorDismissReason]
+     */
+    @JvmStatic
+    @JvmOverloads
+    @Deprecated(
+        message = "This function is deprecated and will be removed in a future release.",
+        replaceWith = ReplaceWith("GravatarQuickEditor.show()"),
+    )
+    public fun show(
+        activity: Activity,
+        gravatarQuickEditorParams: GravatarQuickEditorParams,
+        authenticationMethod: AuthenticationMethod,
         onAvatarSelected: () -> Unit,
         onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit = {},
     ) {
         val viewGroup: ViewGroup = activity.findViewById(android.R.id.content)
-        addQuickEditorToView(viewGroup, gravatarQuickEditorParams, authenticationMethod, onAvatarSelected, onDismiss)
+        addQuickEditorToView(
+            viewGroup = viewGroup,
+            gravatarQuickEditorParams = gravatarQuickEditorParams,
+            authenticationMethod = authenticationMethod,
+            updateHandler = {
+                if (it is AvatarPickerResult) {
+                    onAvatarSelected()
+                }
+            },
+            onDismiss = onDismiss,
+        )
     }
 
     /**
@@ -49,6 +124,10 @@ public object GravatarQuickEditor {
      */
     @JvmStatic
     @JvmOverloads
+    @Deprecated(
+        message = "This function is deprecated and will be removed in a future release.",
+        replaceWith = ReplaceWith("GravatarQuickEditor.show()"),
+    )
     public fun show(
         fragment: Fragment,
         gravatarQuickEditorParams: GravatarQuickEditorParams,
@@ -57,7 +136,17 @@ public object GravatarQuickEditor {
         onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit = {},
     ) {
         val viewGroup: ViewGroup = fragment.requireActivity().findViewById(android.R.id.content)
-        addQuickEditorToView(viewGroup, gravatarQuickEditorParams, authenticationMethod, onAvatarSelected, onDismiss)
+        addQuickEditorToView(
+            viewGroup = viewGroup,
+            gravatarQuickEditorParams = gravatarQuickEditorParams,
+            authenticationMethod = authenticationMethod,
+            updateHandler = {
+                if (it is AvatarPickerResult) {
+                    onAvatarSelected()
+                }
+            },
+            onDismiss = onDismiss,
+        )
     }
 
     /**
