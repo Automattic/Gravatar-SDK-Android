@@ -2,9 +2,7 @@ package com.gravatar.quickeditor.ui.editor.bottomsheet
 
 import android.content.res.Configuration
 import android.graphics.Color
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
@@ -82,9 +80,7 @@ public fun GravatarQuickEditorBottomSheet(
         authenticationMethod = authenticationMethod,
         updateHandler = updateHandler,
         onDismiss = onDismiss,
-        modalBottomSheetState = rememberGravatarModalBottomSheetState(
-            avatarPickerContentLayout = gravatarQuickEditorParams.scopeOption.avatarPickerContentLayout,
-        ),
+        modalDetents = gravatarQuickEditorParams.scopeOption.avatarPickerContentLayout.modalDetents(),
     )
 }
 
@@ -120,9 +116,7 @@ public fun GravatarQuickEditorBottomSheet(
             }
         },
         onDismiss = onDismiss,
-        modalBottomSheetState = rememberGravatarModalBottomSheetState(
-            avatarPickerContentLayout = gravatarQuickEditorParams.scopeOption.avatarPickerContentLayout,
-        ),
+        modalDetents = gravatarQuickEditorParams.scopeOption.avatarPickerContentLayout.modalDetents(),
     )
 }
 
@@ -131,15 +125,28 @@ internal fun GravatarQuickEditorBottomSheet(
     gravatarQuickEditorParams: GravatarQuickEditorParams,
     authenticationMethod: AuthenticationMethod,
     updateHandler: UpdateHandler,
+    modalDetents: ModalDetents,
     onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit = {},
-    modalBottomSheetState: ModalBottomSheetState,
+    onCurrentDetentChanged: (sheetDetent: SheetDetent) -> Unit = {},
 ) {
     val coroutineScope = rememberCoroutineScope()
 
+    val modalBottomSheetState: ModalBottomSheetState = rememberModalBottomSheetState(
+        initialDetent = modalDetents.initialDetent,
+        detents = modalDetents.detents,
+        confirmDetentChange = {
+            true
+        },
+    )
+
     val onDoneClicked: () -> Unit = {
         coroutineScope.launch {
-            modalBottomSheetState.currentDetent = Hidden
+            modalBottomSheetState.animateTo(Hidden)
         }
+    }
+
+    LaunchedEffect(modalBottomSheetState.currentDetent) {
+        onCurrentDetentChanged(modalBottomSheetState.currentDetent)
     }
 
     DisposableEffect(Unit) {
@@ -190,8 +197,6 @@ private fun GravatarModalBottomSheet(
     modalBottomSheetState: ModalBottomSheetState,
     content: @Composable () -> Unit,
 ) {
-    val coroutineScope = rememberCoroutineScope()
-
     LaunchedEffect(modalBottomSheetState.currentDetent) {
         if (modalBottomSheetState.currentDetent == Hidden) {
             onDismiss(GravatarQuickEditorDismissReason.Finished)
@@ -211,20 +216,17 @@ private fun GravatarModalBottomSheet(
         GravatarTheme {
             ModalBottomSheet(
                 state = modalBottomSheetState,
-                properties = ModalSheetProperties(dismissOnBackPress = false),
+                properties = ModalSheetProperties(
+                    dismissOnBackPress = true,
+                    dismissOnClickOutside = true,
+                ),
             ) {
-                BackHandler {
-                    coroutineScope.launch {
-                        modalBottomSheetState.animateTo(Hidden)
-                    }
-                }
                 // Modal content must be taking the uiMode from Activity and doesn't respect
                 // the above set CompositionLocalProvider
                 CompositionLocalProvider(
                     LocalConfiguration provides configuration,
                 ) {
                     Scrim(
-                        modifier = Modifier.clickable { modalBottomSheetState.currentDetent = Hidden },
                         scrimColor = MaterialTheme.colorScheme.scrim.copy(alpha = 0.32f),
                     )
                     Sheet(
@@ -266,38 +268,40 @@ private fun GravatarModalBottomSheet(
     }
 }
 
-@Composable
-internal fun rememberGravatarModalBottomSheetState(
-    avatarPickerContentLayout: AvatarPickerContentLayout,
-): ModalBottomSheetState {
-    val windowHeightSizeClass = currentWindowAdaptiveInfo().windowSizeClass.windowHeightSizeClass
-    val peek = SheetDetent(identifier = "peek") { containerHeight, _ ->
-        containerHeight * 0.6f
-    }
+internal val peek = SheetDetent(identifier = "peek") { containerHeight, _ ->
+    containerHeight * 0.6f
+}
 
-    val initialDetent =
-        if (windowHeightSizeClass == WindowHeightSizeClass.COMPACT) {
-            FullyExpanded
-        } else {
-            when (avatarPickerContentLayout) {
-                AvatarPickerContentLayout.Horizontal -> FullyExpanded
-                AvatarPickerContentLayout.Vertical -> peek
-            }
+@Composable
+internal fun AvatarPickerContentLayout.modalDetents(): ModalDetents {
+    val windowHeightSizeClass = currentWindowAdaptiveInfo().windowSizeClass.windowHeightSizeClass
+    val initialDetent = if (windowHeightSizeClass == WindowHeightSizeClass.COMPACT) {
+        FullyExpanded
+    } else {
+        when (this) {
+            AvatarPickerContentLayout.Horizontal -> FullyExpanded
+            AvatarPickerContentLayout.Vertical -> peek
         }
+    }
 
     val detents = buildList {
         add(Hidden)
-        if (avatarPickerContentLayout == AvatarPickerContentLayout.Horizontal) {
+        if (this@modalDetents == AvatarPickerContentLayout.Horizontal) {
             add(FullyExpanded)
         } else {
             add(peek)
             add(FullyExpanded)
         }
     }
-    return rememberModalBottomSheetState(
+    return ModalDetents(
         initialDetent = initialDetent,
         detents = detents,
     )
 }
+
+internal data class ModalDetents(
+    val initialDetent: SheetDetent,
+    val detents: List<SheetDetent>,
+)
 
 internal val DEFAULT_PAGE_HEIGHT = 250.dp

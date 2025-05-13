@@ -73,7 +73,7 @@ internal fun GravatarQuickEditorPage(
                 onDoneClicked = onDoneClicked,
             )
         }
-        addAvatarPickerGraph(
+        addEditorGraph(
             gravatarQuickEditorParams = gravatarQuickEditorParams,
             handleExpiredSession = true,
             navController = navController,
@@ -123,7 +123,7 @@ internal fun GravatarQuickEditorPage(
                 navController.navigateAndPopupTo(QuickEditorPage.EDITOR.name, QuickEditorPage.SPLASH.name)
             }
         }
-        addAvatarPickerGraph(
+        addEditorGraph(
             gravatarQuickEditorParams = gravatarQuickEditorParams,
             handleExpiredSession = false,
             navController = navController,
@@ -135,7 +135,7 @@ internal fun GravatarQuickEditorPage(
 }
 
 @Suppress("LongParameterList")
-private fun NavGraphBuilder.addAvatarPickerGraph(
+private fun NavGraphBuilder.addEditorGraph(
     navController: NavHostController,
     gravatarQuickEditorParams: GravatarQuickEditorParams,
     handleExpiredSession: Boolean,
