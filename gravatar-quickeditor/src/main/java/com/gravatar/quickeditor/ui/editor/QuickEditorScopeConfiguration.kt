@@ -61,7 +61,7 @@ public class AboutEditorConfiguration(
 public class AvatarPickerAndAboutEditorConfiguration(
     public val contentLayout: AvatarPickerContentLayout,
     public val fields: Set<AboutInputField>,
-    public val initialPage: QuickEditorPage,
+    public val initialPage: Page,
 ) : Parcelable {
     override fun toString(): String = "AvatarPickerAndAboutEditorConfiguration(" +
         "contentLayout=$contentLayout, " +
@@ -76,11 +76,37 @@ public class AvatarPickerAndAboutEditorConfiguration(
         fields == other.fields &&
         initialPage == other.initialPage
 
+    /**
+     * The page of the AvatarPickerAndAboutEditor scope.
+     * The page corresponds to the part of your Gravatar profile that will be shown.
+     *
+     * @property value The value of the page.
+     */
+    @Parcelize
+    @JvmInline
+    public value class Page private constructor(
+        public val value: String,
+    ) : Parcelable {
+        public companion object {
+            /**
+             * Avatar Picker page.
+             */
+            @JvmStatic
+            public val AvatarPicker: Page = Page("avatar_picker")
+
+            /**
+             * About Editor page.
+             */
+            @JvmStatic
+            public val AboutEditor: Page = Page("about_editor")
+        }
+    }
+
     internal companion object {
         val default = AvatarPickerAndAboutEditorConfiguration(
             contentLayout = AvatarPickerContentLayout.Horizontal,
             fields = AboutInputField.all,
-            initialPage = QuickEditorPage.AvatarPicker,
+            initialPage = Page.AvatarPicker,
         )
     }
 }

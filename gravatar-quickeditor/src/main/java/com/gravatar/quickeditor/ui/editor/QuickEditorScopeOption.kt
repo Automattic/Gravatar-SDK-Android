@@ -33,13 +33,6 @@ public class QuickEditorScopeOption private constructor(
             scope == other.scope
     }
 
-    internal val initialPage: QuickEditorPage
-        get() = when (scope) {
-            is Scope.AvatarPicker -> QuickEditorPage.AvatarPicker
-            is Scope.AboutEditor -> QuickEditorPage.AboutEditor
-            is Scope.AvatarPickerAndAboutEditor -> scope.config.initialPage
-        }
-
     internal val avatarPickerContentLayout: AvatarPickerContentLayout
         get() = when (scope) {
             is Scope.AvatarPicker -> scope.config.contentLayout

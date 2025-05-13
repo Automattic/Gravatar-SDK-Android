@@ -6,6 +6,9 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.gravatar.quickeditor.QuickEditorContainer
 import com.gravatar.quickeditor.data.repository.ProfileRepository
+import com.gravatar.quickeditor.ui.editor.AvatarPickerAndAboutEditorConfiguration.Page.Companion.AboutEditor
+import com.gravatar.quickeditor.ui.editor.AvatarPickerAndAboutEditorConfiguration.Page.Companion.AvatarPicker
+import com.gravatar.quickeditor.ui.editor.QuickEditorScopeOption.Scope
 import com.gravatar.quickeditor.ui.time.Clock
 import com.gravatar.quickeditor.ui.time.SystemClock
 import com.gravatar.services.GravatarResult
@@ -97,9 +100,23 @@ internal class QuickEditorViewModelFactory(
         return QuickEditorViewModel(
             email = gravatarQuickEditorParams.email,
             profileRepository = QuickEditorContainer.getInstance().profileRepository,
-            navigationEnabled = scopeConfig.scope is QuickEditorScopeOption.Scope.AvatarPickerAndAboutEditor,
+            navigationEnabled = scopeConfig.scope is Scope.AvatarPickerAndAboutEditor,
             initialPage = scopeConfig.initialPage,
             clock = SystemClock(),
         ) as T
     }
 }
+
+private val QuickEditorScopeOption.initialPage: QuickEditorPage
+    get() = when (scope) {
+        is Scope.AvatarPicker -> QuickEditorPage.AvatarPicker
+        is Scope.AboutEditor -> QuickEditorPage.AboutEditor
+        is Scope.AvatarPickerAndAboutEditor -> scope.config.initialPage.internalType
+    }
+
+private val AvatarPickerAndAboutEditorConfiguration.Page.internalType: QuickEditorPage
+    get() = when (this) {
+        AvatarPicker -> QuickEditorPage.AvatarPicker
+        AboutEditor -> QuickEditorPage.AboutEditor
+        else -> QuickEditorPage.AvatarPicker
+    }

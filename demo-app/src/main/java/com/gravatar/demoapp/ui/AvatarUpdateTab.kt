@@ -55,7 +55,6 @@ import com.gravatar.quickeditor.ui.editor.AvatarPickerConfiguration
 import com.gravatar.quickeditor.ui.editor.AvatarPickerContentLayout
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
 import com.gravatar.quickeditor.ui.editor.GravatarUiMode
-import com.gravatar.quickeditor.ui.editor.QuickEditorPage
 import com.gravatar.quickeditor.ui.editor.QuickEditorScopeOption
 import com.gravatar.quickeditor.ui.editor.bottomsheet.GravatarQuickEditorBottomSheet
 import com.gravatar.quickeditor.ui.oauth.OAuthParams
@@ -90,8 +89,8 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
         mutableStateOf(QuickEditorScope.Avatar)
     }
 
-    var editorInitialPage: QuickEditorPage by rememberSaveable {
-        mutableStateOf(QuickEditorPage.AvatarPicker)
+    var editorInitialPage: AvatarPickerAndAboutEditorConfiguration.Page by rememberSaveable {
+        mutableStateOf(AvatarPickerAndAboutEditorConfiguration.Page.AvatarPicker)
     }
 
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -387,14 +386,14 @@ private fun ScopeDropdown(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun InitialPageDropdown(
-    page: QuickEditorPage,
-    onPageSelected: (QuickEditorPage) -> Unit,
+    page: AvatarPickerAndAboutEditorConfiguration.Page,
+    onPageSelected: (AvatarPickerAndAboutEditorConfiguration.Page) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var expanded by remember { mutableStateOf(false) }
     val uiModeOptions = listOf(
-        QuickEditorPage.AvatarPicker,
-        QuickEditorPage.AboutEditor,
+        AvatarPickerAndAboutEditorConfiguration.Page.AvatarPicker,
+        AvatarPickerAndAboutEditorConfiguration.Page.AboutEditor,
     )
 
     ExposedDropdownMenuBox(
