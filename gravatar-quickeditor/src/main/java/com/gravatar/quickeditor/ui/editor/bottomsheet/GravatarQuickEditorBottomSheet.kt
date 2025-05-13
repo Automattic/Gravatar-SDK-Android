@@ -100,6 +100,10 @@ public fun GravatarQuickEditorBottomSheet(
  *                       Can be invoked multiple times while the Quick Editor is open.
  * @param onDismiss The callback for the dismiss action containing [GravatarQuickEditorDismissReason]
  */
+@Deprecated(
+    message = "Use the new GravatarQuickEditorBottomSheet with UpdateHandler param instead.",
+    replaceWith = ReplaceWith(expression = "GravatarQuickEditorBottomSheet()"),
+)
 @Composable
 public fun GravatarQuickEditorBottomSheet(
     gravatarQuickEditorParams: GravatarQuickEditorParams,
