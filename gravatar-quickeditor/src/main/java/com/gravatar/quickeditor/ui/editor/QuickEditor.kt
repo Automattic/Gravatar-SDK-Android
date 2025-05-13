@@ -46,8 +46,8 @@ internal fun QuickEditor(
         uiState = uiState,
         onDoneClicked = {
             when (uiState.page) {
-                QuickEditorPage.AVATAR_PICKER -> onDoneClicked()
-                QuickEditorPage.ABOUT_EDITOR -> aboutEditorViewModel.onEvent(AboutEditorEvent.OnDoneClicked)
+                QuickEditorPage.AvatarPicker -> onDoneClicked()
+                QuickEditorPage.AboutEditor -> aboutEditorViewModel.onEvent(AboutEditorEvent.OnDoneClicked)
             }
         },
         onEditAvatarClicked = { viewModel.onEvent(QuickEditorEvent.OnEditAvatarClicked) },
@@ -61,7 +61,7 @@ internal fun QuickEditor(
             },
         ) { state ->
             when (state) {
-                QuickEditorPage.AVATAR_PICKER -> {
+                QuickEditorPage.AvatarPicker -> {
                     AvatarPicker(
                         gravatarQuickEditorParams = gravatarQuickEditorParams,
                         handleExpiredSession = handleExpiredSession,
@@ -77,7 +77,7 @@ internal fun QuickEditor(
                     )
                 }
 
-                QuickEditorPage.ABOUT_EDITOR -> {
+                QuickEditorPage.AboutEditor -> {
                     AboutEditor(
                         quickEditorParams = gravatarQuickEditorParams,
                         onProfileUpdated = {

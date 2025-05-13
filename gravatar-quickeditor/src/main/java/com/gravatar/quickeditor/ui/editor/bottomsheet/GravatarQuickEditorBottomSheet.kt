@@ -81,7 +81,7 @@ public fun GravatarQuickEditorBottomSheet(
         onAvatarSelected = onAvatarSelected,
         onDismiss = onDismiss,
         modalBottomSheetState = rememberGravatarModalBottomSheetState(
-            avatarPickerContentLayout = gravatarQuickEditorParams.avatarPickerContentLayout,
+            avatarPickerContentLayout = gravatarQuickEditorParams.scopeOption.avatarPickerContentLayout,
         ),
     )
 }

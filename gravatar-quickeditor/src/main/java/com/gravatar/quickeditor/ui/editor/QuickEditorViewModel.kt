@@ -6,6 +6,9 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.gravatar.quickeditor.QuickEditorContainer
 import com.gravatar.quickeditor.data.repository.ProfileRepository
+import com.gravatar.quickeditor.ui.editor.AvatarPickerAndAboutEditorConfiguration.Page.Companion.AboutEditor
+import com.gravatar.quickeditor.ui.editor.AvatarPickerAndAboutEditorConfiguration.Page.Companion.AvatarPicker
+import com.gravatar.quickeditor.ui.editor.QuickEditorScopeOption.Scope
 import com.gravatar.quickeditor.ui.time.Clock
 import com.gravatar.quickeditor.ui.time.SystemClock
 import com.gravatar.services.GravatarResult
@@ -49,8 +52,8 @@ internal class QuickEditorViewModel(
                 currentState.copy(profile = ComponentState.Loaded(event.profile))
             }
 
-            QuickEditorEvent.OnEditAboutClicked -> navigateToPage(QuickEditorPage.ABOUT_EDITOR)
-            QuickEditorEvent.OnEditAvatarClicked -> navigateToPage(QuickEditorPage.AVATAR_PICKER)
+            QuickEditorEvent.OnEditAboutClicked -> navigateToPage(QuickEditorPage.AboutEditor)
+            QuickEditorEvent.OnEditAvatarClicked -> navigateToPage(QuickEditorPage.AvatarPicker)
         }
     }
 
@@ -93,21 +96,27 @@ internal class QuickEditorViewModelFactory(
 ) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
+        val scopeConfig = gravatarQuickEditorParams.scopeOption
         return QuickEditorViewModel(
             email = gravatarQuickEditorParams.email,
             profileRepository = QuickEditorContainer.getInstance().profileRepository,
-            navigationEnabled = gravatarQuickEditorParams.scope == QuickEditorScope.AVATAR_AND_ABOUT,
-            initialPage = gravatarQuickEditorParams.scope.initialPage,
+            navigationEnabled = scopeConfig.scope is Scope.AvatarPickerAndAboutEditor,
+            initialPage = scopeConfig.initialPage,
             clock = SystemClock(),
         ) as T
     }
 }
 
-private val QuickEditorScope.initialPage: QuickEditorPage
-    get() {
-        return when (this) {
-            QuickEditorScope.AVATAR -> QuickEditorPage.AVATAR_PICKER
-            QuickEditorScope.ABOUT -> QuickEditorPage.ABOUT_EDITOR
-            QuickEditorScope.AVATAR_AND_ABOUT -> QuickEditorPage.ABOUT_EDITOR
-        }
+private val QuickEditorScopeOption.initialPage: QuickEditorPage
+    get() = when (scope) {
+        is Scope.AvatarPicker -> QuickEditorPage.AvatarPicker
+        is Scope.AboutEditor -> QuickEditorPage.AboutEditor
+        is Scope.AvatarPickerAndAboutEditor -> scope.config.initialPage.internalType
+    }
+
+private val AvatarPickerAndAboutEditorConfiguration.Page.internalType: QuickEditorPage
+    get() = when (this) {
+        AvatarPicker -> QuickEditorPage.AvatarPicker
+        AboutEditor -> QuickEditorPage.AboutEditor
+        else -> QuickEditorPage.AvatarPicker
     }

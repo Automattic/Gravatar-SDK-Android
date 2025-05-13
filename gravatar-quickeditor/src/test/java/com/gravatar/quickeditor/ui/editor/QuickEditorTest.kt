@@ -22,7 +22,7 @@ class QuickEditorTest : RoborazziTest() {
     private val uiState = QuickEditorUiState(
         email = Email("william.henry.harrison@example.com"),
         profile = ComponentState.Loaded(profile),
-        page = QuickEditorPage.AVATAR_PICKER,
+        page = QuickEditorPage.AvatarPicker,
         pageNavigationEnabled = false,
     )
 
