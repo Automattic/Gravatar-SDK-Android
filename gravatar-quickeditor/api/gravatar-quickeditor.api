@@ -314,7 +314,10 @@ public final class com/gravatar/quickeditor/ui/editor/AboutEditorConfiguration :
 	public static final field CREATOR Landroid/os/Parcelable$Creator;
 	public fun <init> (Ljava/util/Set;)V
 	public fun describeContents ()I
+	public fun equals (Ljava/lang/Object;)Z
 	public final fun getFields ()Ljava/util/Set;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
 	public fun writeToParcel (Landroid/os/Parcel;I)V
 }
 
@@ -426,9 +429,12 @@ public final class com/gravatar/quickeditor/ui/editor/AvatarPickerAndAboutEditor
 	public static final field CREATOR Landroid/os/Parcelable$Creator;
 	public synthetic fun <init> (Lcom/gravatar/quickeditor/ui/editor/AvatarPickerContentLayout;Ljava/util/Set;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun describeContents ()I
+	public fun equals (Ljava/lang/Object;)Z
 	public final fun getContentLayout ()Lcom/gravatar/quickeditor/ui/editor/AvatarPickerContentLayout;
 	public final fun getFields ()Ljava/util/Set;
 	public final fun getInitialPage-TvM7f30 ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
 	public fun writeToParcel (Landroid/os/Parcel;I)V
 }
 
@@ -445,7 +451,10 @@ public final class com/gravatar/quickeditor/ui/editor/AvatarPickerConfiguration 
 	public static final field CREATOR Landroid/os/Parcelable$Creator;
 	public fun <init> (Lcom/gravatar/quickeditor/ui/editor/AvatarPickerContentLayout;)V
 	public fun describeContents ()I
+	public fun equals (Ljava/lang/Object;)Z
 	public final fun getContentLayout ()Lcom/gravatar/quickeditor/ui/editor/AvatarPickerContentLayout;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
 	public fun writeToParcel (Landroid/os/Parcel;I)V
 }
 
