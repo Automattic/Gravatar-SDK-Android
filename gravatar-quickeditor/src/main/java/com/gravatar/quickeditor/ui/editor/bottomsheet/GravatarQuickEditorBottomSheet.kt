@@ -33,7 +33,6 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.window.core.layout.WindowHeightSizeClass
-import com.composables.core.LocalModalWindow
 import com.composables.core.ModalBottomSheet
 import com.composables.core.ModalBottomSheetState
 import com.composables.core.ModalSheetProperties
@@ -43,6 +42,7 @@ import com.composables.core.SheetDetent
 import com.composables.core.SheetDetent.Companion.FullyExpanded
 import com.composables.core.SheetDetent.Companion.Hidden
 import com.composables.core.rememberModalBottomSheetState
+import com.composeunstyled.LocalModalWindow
 import com.gravatar.quickeditor.QuickEditorContainer
 import com.gravatar.quickeditor.ui.components.QEDragHandle
 import com.gravatar.quickeditor.ui.editor.AuthenticationMethod
