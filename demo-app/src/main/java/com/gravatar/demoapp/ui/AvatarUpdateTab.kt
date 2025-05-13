@@ -129,9 +129,9 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
-                ContentLayoutDropdown(
-                    selectedContentLayout = pickerContentLayout,
-                    onContentLayoutSelected = { pickerContentLayout = it },
+                ScopeDropdown(
+                    scope = editorScope,
+                    onScopeSelected = { editorScope = it },
                     modifier = Modifier.weight(1f),
                 )
                 UiModeDropdown(
@@ -140,11 +140,15 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
                     modifier = Modifier.weight(1f),
                 )
             }
-            ScopeDropdown(
-                scope = editorScope,
-                onScopeSelected = { editorScope = it },
-                modifier = Modifier.fillMaxWidth(),
-            )
+            AnimatedVisibility(
+                visible = editorScope == QuickEditorScope.Avatar || editorScope == QuickEditorScope.AvatarAndAbout,
+            ) {
+                ContentLayoutDropdown(
+                    selectedContentLayout = pickerContentLayout,
+                    onContentLayoutSelected = { pickerContentLayout = it },
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }
             AnimatedVisibility(editorScope == QuickEditorScope.AvatarAndAbout) {
                 InitialPageDropdown(
                     page = editorInitialPage,
@@ -279,6 +283,7 @@ private fun ContentLayoutDropdown(
             label = { Text("Content Layout") },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             modifier = Modifier
+                .fillMaxWidth()
                 .menuAnchor(),
         )
         ExposedDropdownMenu(
@@ -322,6 +327,7 @@ private fun UiModeDropdown(
             label = { Text("UI mode") },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             modifier = Modifier
+                .fillMaxWidth()
                 .menuAnchor(),
         )
         ExposedDropdownMenu(
