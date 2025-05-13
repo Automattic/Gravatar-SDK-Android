@@ -88,7 +88,7 @@ class QuickEditorTestActivity : AppCompatActivity() {
                     },
                 ),
                 onAvatarSelected = {
-                    Toast.makeText(this, it.toString(), Toast.LENGTH_SHORT).show()
+                    profileChanges++
                 },
                 onDismiss = {
                     Toast.makeText(this, it.toString(), Toast.LENGTH_SHORT).show()
