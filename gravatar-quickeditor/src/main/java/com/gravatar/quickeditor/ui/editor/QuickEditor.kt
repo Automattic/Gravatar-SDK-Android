@@ -10,10 +10,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.gravatar.quickeditor.ui.abouteditor.AboutEditor
 import com.gravatar.quickeditor.ui.abouteditor.AboutEditorEvent
@@ -24,12 +28,17 @@ import com.gravatar.quickeditor.ui.components.EmailLabel
 import com.gravatar.quickeditor.ui.components.ProfileCard
 import com.gravatar.quickeditor.ui.components.QEPageDefault
 import com.gravatar.ui.GravatarTheme
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.withContext
 
 @Composable
 internal fun QuickEditor(
     gravatarQuickEditorParams: GravatarQuickEditorParams,
     handleExpiredSession: Boolean,
     updateHandler: UpdateHandler,
+    confirmDismissal: Boolean,
+    onDismissIgnored: () -> Unit,
     onSessionExpired: () -> Unit,
     onDoneClicked: () -> Unit,
     onAltTextTapped: (email: String, avatarId: String) -> Unit,
@@ -37,19 +46,39 @@ internal fun QuickEditor(
         factory = QuickEditorViewModelFactory(gravatarQuickEditorParams),
     ),
 ) {
+    val lifecycle = LocalLifecycleOwner.current.lifecycle
     val uiState by viewModel.uiState.collectAsState()
     val aboutEditorViewModel: AboutEditorViewModel = viewModel(
         factory = AboutEditorViewModelFactory(gravatarQuickEditorParams),
     )
 
+    LaunchedEffect(confirmDismissal) {
+        if (confirmDismissal) {
+            viewModel.onEvent(QuickEditorEvent.OnConfirmDismissal)
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        withContext(Dispatchers.Main.immediate) {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.actions.collectLatest { action ->
+                    when (action) {
+                        QuickEditorAction.ConfirmEditorDismissal -> {
+                            aboutEditorViewModel.onEvent(AboutEditorEvent.OnDoneClicked)
+                        }
+
+                        QuickEditorAction.DismissEditor -> {
+                            onDoneClicked()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     QuickEditor(
         uiState = uiState,
-        onDoneClicked = {
-            when (uiState.page) {
-                QuickEditorPage.AvatarPicker -> onDoneClicked()
-                QuickEditorPage.AboutEditor -> aboutEditorViewModel.onEvent(AboutEditorEvent.OnDoneClicked)
-            }
-        },
+        onDoneClicked = { viewModel.onEvent(QuickEditorEvent.OnConfirmDismissal) },
         onEditAvatarClicked = { viewModel.onEvent(QuickEditorEvent.OnEditAvatarClicked) },
         onEditAboutClicked = { viewModel.onEvent(QuickEditorEvent.OnEditAboutClicked) },
     ) {
@@ -80,11 +109,12 @@ internal fun QuickEditor(
                 QuickEditorPage.AboutEditor -> {
                     AboutEditor(
                         quickEditorParams = gravatarQuickEditorParams,
+                        onDismissIgnored = onDismissIgnored,
                         onProfileUpdated = { profile ->
                             updateHandler(AboutEditorResult(profile))
                             viewModel.onEvent(QuickEditorEvent.OnProfileUpdated(profile))
                         },
-                        onClose = onDoneClicked,
+                        onClose = { onDoneClicked() },
                         viewModel = aboutEditorViewModel,
                     )
                 }

@@ -212,13 +212,17 @@ class AboutEditorViewModelTest {
         viewModel.uiState.test {
             assertEquals(true, awaitItem().discardChangesDialogVisible)
 
-            viewModel.onEvent(AboutEditorEvent.OnDiscardDialogDismissed)
+            viewModel.onEvent(AboutEditorEvent.OnUnsavedChangesDialogDismissed)
             assertEquals(false, awaitItem().discardChangesDialogVisible)
+        }
+
+        viewModel.actions.test {
+            assertEquals(AboutEditorAction.NotifyDismissIgnored, awaitItem())
         }
     }
 
     @Test
-    fun `given discard changes dialog shown when discard confirmed then hidden`() = runTest {
+    fun `given unsaved changes dialog shown when discard confirmed then hidden`() = runTest {
         viewModel = initViewModel()
 
         viewModel.onEvent(
@@ -235,7 +239,7 @@ class AboutEditorViewModelTest {
         viewModel.uiState.test {
             assertEquals(true, awaitItem().discardChangesDialogVisible)
 
-            viewModel.onEvent(AboutEditorEvent.OnDiscardConfirmed)
+            viewModel.onEvent(AboutEditorEvent.OnUnsavedChangesDialogDiscarded)
             assertEquals(false, awaitItem().discardChangesDialogVisible)
         }
     }

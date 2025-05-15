@@ -23,7 +23,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -120,6 +124,12 @@ public fun GravatarQuickEditorBottomSheet(
     )
 }
 
+internal enum class DismissConfirmationState {
+    Delegate,
+    Confirm,
+    Delegated,
+}
+
 @Composable
 internal fun GravatarQuickEditorBottomSheet(
     gravatarQuickEditorParams: GravatarQuickEditorParams,
@@ -130,16 +140,34 @@ internal fun GravatarQuickEditorBottomSheet(
     onCurrentDetentChanged: (sheetDetent: SheetDetent) -> Unit = {},
 ) {
     val coroutineScope = rememberCoroutineScope()
+    var dismissState: DismissConfirmationState by remember { mutableStateOf(DismissConfirmationState.Delegate) }
+
+    val onDismissIgnored = {
+        dismissState = DismissConfirmationState.Delegate
+    }
 
     val modalBottomSheetState: ModalBottomSheetState = rememberModalBottomSheetState(
         initialDetent = modalDetents.initialDetent,
         detents = modalDetents.detents,
-        confirmDetentChange = {
-            true
+        confirmDetentChange = { sheetDetent ->
+            // We only care about the Hidden state
+            if (sheetDetent == Hidden) {
+                when (dismissState) {
+                    DismissConfirmationState.Confirm -> true
+                    DismissConfirmationState.Delegated -> false
+                    DismissConfirmationState.Delegate -> {
+                        dismissState = DismissConfirmationState.Delegated
+                        false
+                    }
+                }
+            } else {
+                true
+            }
         },
     )
 
     val onDoneClicked: () -> Unit = {
+        dismissState = DismissConfirmationState.Confirm
         coroutineScope.launch {
             modalBottomSheetState.animateTo(Hidden)
         }
@@ -172,6 +200,8 @@ internal fun GravatarQuickEditorBottomSheet(
                         authToken = authenticationMethod.token,
                         onDismiss = onDismiss,
                         updateHandler = updateHandler,
+                        confirmDismissal = dismissState == DismissConfirmationState.Delegated,
+                        onDismissIgnored = onDismissIgnored,
                         onDoneClicked = onDoneClicked,
                     )
                 }
@@ -182,6 +212,8 @@ internal fun GravatarQuickEditorBottomSheet(
                         oAuthParams = authenticationMethod.oAuthParams,
                         onDismiss = onDismiss,
                         updateHandler = updateHandler,
+                        confirmDismissal = dismissState == DismissConfirmationState.Delegated,
+                        onDismissIgnored = onDismissIgnored,
                         onDoneClicked = onDoneClicked,
                     )
                 }

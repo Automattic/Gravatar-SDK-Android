@@ -40,23 +40,34 @@ internal class AboutEditorViewModel(
             is AboutEditorEvent.OnAboutFieldUpdated -> updateAboutField(aboutEditorEvent.aboutField)
             AboutEditorEvent.OnSaveClicked -> saveProfile()
             AboutEditorEvent.OnDoneClicked -> checkForUnsavedChanges()
-            AboutEditorEvent.OnDiscardDialogDismissed,
-            AboutEditorEvent.OnDiscardConfirmed,
-            -> dismissDiscardChangesDialog()
+            AboutEditorEvent.OnUnsavedChangesDialogDismissed -> dismissUnsavedChangesDialog()
+            AboutEditorEvent.OnUnsavedChangesDialogDiscarded -> discardUnsavedChangesDialog()
         }
     }
 
-    private fun dismissDiscardChangesDialog() {
+    private fun discardUnsavedChangesDialog() {
+        viewModelScope.launch {
+            _actions.send(AboutEditorAction.CloseEditor)
+        }
+        _uiState.update { currentState ->
+            currentState.copy(discardChangesDialogVisible = false)
+        }
+    }
+
+    private fun dismissUnsavedChangesDialog() {
+        viewModelScope.launch {
+            _actions.send(AboutEditorAction.NotifyDismissIgnored)
+        }
         _uiState.update { currentState ->
             currentState.copy(discardChangesDialogVisible = false)
         }
     }
 
     private fun checkForUnsavedChanges() {
-        val currentProfile = uiState.value.aboutFields
-        val savedProfile = savedProfile?.aboutFields
         viewModelScope.launch {
-            if (currentProfile != savedProfile) {
+            val currentProfile = uiState.value.aboutFields
+            val savedProfile = savedProfile?.aboutFields
+            if (savedProfile != null && currentProfile != savedProfile) {
                 _uiState.update { currentProfile ->
                     currentProfile.copy(
                         discardChangesDialogVisible = true,
