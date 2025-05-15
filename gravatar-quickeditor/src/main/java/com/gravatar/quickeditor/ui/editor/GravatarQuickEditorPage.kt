@@ -28,7 +28,7 @@ import com.gravatar.quickeditor.ui.splash.SplashPage
  *
  * @param gravatarQuickEditorParams The Quick Editor parameters.
  * @param oAuthParams The OAuth parameters.
- * @param onAvatarSelected The callback for the avatar update.
+ * @param updateHandler The callback for the Quick Editor updates.
  *                       Can be invoked multiple times while the Quick Editor is open
  * @param onDoneClicked The callback for the done action.
  * @param onDismiss The callback for the dismiss action.
@@ -38,7 +38,7 @@ import com.gravatar.quickeditor.ui.splash.SplashPage
 internal fun GravatarQuickEditorPage(
     gravatarQuickEditorParams: GravatarQuickEditorParams,
     oAuthParams: OAuthParams,
-    onAvatarSelected: () -> Unit,
+    updateHandler: UpdateHandler,
     onDoneClicked: () -> Unit,
     onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit = {},
 ) {
@@ -77,7 +77,7 @@ internal fun GravatarQuickEditorPage(
             gravatarQuickEditorParams = gravatarQuickEditorParams,
             handleExpiredSession = true,
             navController = navController,
-            onAvatarSelected = onAvatarSelected,
+            updateHandler = updateHandler,
             onSessionExpired = {
                 navController.navigateAndPopupTo(QuickEditorPage.OAUTH.name, QuickEditorPage.EDITOR.name)
             },
@@ -92,7 +92,7 @@ internal fun GravatarQuickEditorPage(
  *
  * @param gravatarQuickEditorParams The Quick Editor parameters.
  * @param authToken The authentication token.
- * @param onAvatarSelected The callback for the avatar update.
+ * @param updateHandler The callback for the Quick Editor updates.
  *                       Can be invoked multiple times while the Quick Editor is open
  * @param onDoneClicked The callback for the done action.
  * @param onDismiss The callback for the dismiss action.
@@ -102,7 +102,7 @@ internal fun GravatarQuickEditorPage(
 internal fun GravatarQuickEditorPage(
     gravatarQuickEditorParams: GravatarQuickEditorParams,
     authToken: String,
-    onAvatarSelected: () -> Unit,
+    updateHandler: UpdateHandler,
     onDoneClicked: () -> Unit,
     onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit = {},
 ) {
@@ -127,7 +127,7 @@ internal fun GravatarQuickEditorPage(
             gravatarQuickEditorParams = gravatarQuickEditorParams,
             handleExpiredSession = false,
             navController = navController,
-            onAvatarSelected = onAvatarSelected,
+            updateHandler = updateHandler,
             onSessionExpired = { onDismiss(GravatarQuickEditorDismissReason.InvalidToken) },
             onDoneClicked = onDoneClicked,
         )
@@ -139,7 +139,7 @@ private fun NavGraphBuilder.addAvatarPickerGraph(
     navController: NavHostController,
     gravatarQuickEditorParams: GravatarQuickEditorParams,
     handleExpiredSession: Boolean,
-    onAvatarSelected: () -> Unit,
+    updateHandler: UpdateHandler,
     onSessionExpired: () -> Unit,
     onDoneClicked: () -> Unit,
 ) {
@@ -158,7 +158,7 @@ private fun NavGraphBuilder.addAvatarPickerGraph(
             QuickEditor(
                 gravatarQuickEditorParams = gravatarQuickEditorParams,
                 handleExpiredSession = handleExpiredSession,
-                onAvatarSelected = onAvatarSelected,
+                updateHandler = updateHandler,
                 onSessionExpired = onSessionExpired,
                 onAltTextTapped = { email, avatarId ->
                     navController.navigate(

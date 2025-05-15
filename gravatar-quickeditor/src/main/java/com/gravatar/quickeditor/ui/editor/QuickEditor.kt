@@ -29,7 +29,7 @@ import com.gravatar.ui.GravatarTheme
 internal fun QuickEditor(
     gravatarQuickEditorParams: GravatarQuickEditorParams,
     handleExpiredSession: Boolean,
-    onAvatarSelected: () -> Unit,
+    updateHandler: UpdateHandler,
     onSessionExpired: () -> Unit,
     onDoneClicked: () -> Unit,
     onAltTextTapped: (email: String, avatarId: String) -> Unit,
@@ -66,7 +66,7 @@ internal fun QuickEditor(
                         gravatarQuickEditorParams = gravatarQuickEditorParams,
                         handleExpiredSession = handleExpiredSession,
                         onAvatarSelected = {
-                            onAvatarSelected()
+                            updateHandler(AvatarPickerResult)
                             viewModel.onEvent(QuickEditorEvent.UpdateAvatarCache)
                         },
                         onSessionExpired = onSessionExpired,
@@ -80,8 +80,9 @@ internal fun QuickEditor(
                 QuickEditorPage.AboutEditor -> {
                     AboutEditor(
                         quickEditorParams = gravatarQuickEditorParams,
-                        onProfileUpdated = {
-                            viewModel.onEvent(QuickEditorEvent.OnProfileUpdated(it))
+                        onProfileUpdated = { profile ->
+                            updateHandler(AboutEditorResult(profile))
+                            viewModel.onEvent(QuickEditorEvent.OnProfileUpdated(profile))
                         },
                         onClose = onDoneClicked,
                         viewModel = aboutEditorViewModel,
