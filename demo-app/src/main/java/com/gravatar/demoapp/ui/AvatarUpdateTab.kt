@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,6 +25,7 @@ import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -46,8 +48,10 @@ import androidx.compose.ui.unit.dp
 import com.gravatar.demoapp.BuildConfig
 import com.gravatar.demoapp.R
 import com.gravatar.demoapp.ui.activity.QuickEditorTestActivity
+import com.gravatar.demoapp.ui.components.AboutFieldsBottomSheet
 import com.gravatar.demoapp.ui.components.GravatarEmailInput
 import com.gravatar.demoapp.ui.components.GravatarPasswordInput
+import com.gravatar.demoapp.ui.components.translatedValue
 import com.gravatar.quickeditor.GravatarQuickEditor
 import com.gravatar.quickeditor.ui.editor.AboutEditorConfiguration
 import com.gravatar.quickeditor.ui.editor.AboutEditorResult
@@ -81,9 +85,11 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
     var tokenVisible by remember { mutableStateOf(false) }
     val context = LocalContext.current
     var showBottomSheet by rememberSaveable { mutableStateOf(false) }
+    var showAboutFieldsPicker by rememberSaveable { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
     var cacheBuster: String? by remember { mutableStateOf(null) }
     val scrollState: ScrollState = rememberScrollState()
+    var aboutFields: Set<AboutInputField> by rememberSaveable { mutableStateOf(AboutInputField.personal) }
     var pickerContentLayout: AvatarPickerContentLayout by rememberSaveable(
         stateSaver = AvatarPickerContentLayoutSaver,
     ) {
@@ -184,6 +190,27 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
                     modifier = Modifier.fillMaxWidth(),
                 )
             }
+            AnimatedVisibility(
+                visible = editorScope == QuickEditorScope.AvatarAndAbout || editorScope == QuickEditorScope.About,
+            ) {
+                TextField(
+                    enabled = false,
+                    value = aboutFields.joinToString(", ") { it.translatedValue(context) },
+                    maxLines = 1,
+                    singleLine = true,
+                    onValueChange = { },
+                    colors = TextFieldDefaults.colors(
+                        disabledTextColor = MaterialTheme.colorScheme.onSurface,
+                        disabledLabelColor = MaterialTheme.colorScheme.onSurface,
+                    ),
+                    label = { Text("About fields") },
+                    modifier = Modifier
+                        .clickable {
+                            showAboutFieldsPicker = true
+                        }
+                        .fillMaxWidth(),
+                )
+            }
             Button(
                 onClick = {
                     keyboardController?.hide()
@@ -222,6 +249,15 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
             }
         }
     }
+    if (showAboutFieldsPicker) {
+        AboutFieldsBottomSheet(
+            aboutFields = aboutFields,
+            onDismiss = { showAboutFieldsPicker = false },
+            onFieldsChanged = { fields ->
+                aboutFields = fields
+            },
+        )
+    }
     if (showBottomSheet) {
         val authenticationMethod = if (useToken) {
             AuthenticationMethod.Bearer(userToken)
@@ -256,7 +292,7 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
 
                         QuickEditorScope.About -> QuickEditorScopeOption.aboutEditor(
                             config = AboutEditorConfiguration(
-                                fields = AboutInputField.all,
+                                fields = aboutFields,
                             ),
                         )
 
@@ -264,7 +300,7 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
                             config = AvatarPickerAndAboutEditorConfiguration(
                                 contentLayout = pickerContentLayout,
                                 initialPage = editorInitialPage,
-                                fields = AboutInputField.all,
+                                fields = aboutFields,
                             ),
                         )
                     }
