@@ -84,8 +84,10 @@ public final class com/gravatar/quickeditor/ui/abouteditor/components/Composable
 public final class com/gravatar/quickeditor/ui/abouteditor/components/ComposableSingletons$AboutSectionKt {
 	public static final field INSTANCE Lcom/gravatar/quickeditor/ui/abouteditor/components/ComposableSingletons$AboutSectionKt;
 	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
 	public final fun getLambda-1$gravatar_quickeditor_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-2$gravatar_quickeditor_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/gravatar/quickeditor/ui/abouteditor/components/ComposableSingletons$DiscardChangesAlertDialogKt {
