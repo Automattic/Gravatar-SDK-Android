@@ -118,7 +118,13 @@ internal class AboutEditorViewModel(
         viewModelScope.launch {
             _uiState.update { currentState ->
                 currentState.copy(
-                    aboutFields = currentState.aboutFields.update(aboutField),
+                    aboutFields = currentState.aboutFields.map {
+                        if (it.type == aboutField.type) {
+                            it.copy(value = aboutField.value)
+                        } else {
+                            it
+                        }
+                    }.toSet(),
                 )
             }
         }
@@ -155,53 +161,41 @@ internal class AboutEditorViewModel(
     }
 }
 
-internal fun Profile.aboutFields(visibleAboutFields: Set<AboutInputField>): AboutFields {
-    return AboutFields(
-        personal = PersonalFields(
-            displayName = AboutEditorField.Personal.DisplayName(
-                value = displayName,
-                visible = visibleAboutFields.contains(AboutInputField.DisplayName),
-            ),
-            aboutMe = AboutEditorField.Personal.AboutMe(
-                value = description,
-                visible = visibleAboutFields.contains(AboutInputField.AboutMe),
-            ),
-            location = AboutEditorField.Personal.Location(
-                value = location,
-                visible = visibleAboutFields.contains(AboutInputField.Location),
-            ),
-            pronouns = AboutEditorField.Personal.Pronouns(
-                value = pronouns,
-                visible = visibleAboutFields.contains(AboutInputField.Pronouns),
-            ),
-            pronunciation = AboutEditorField.Personal.Pronunciation(
-                value = pronunciation,
-                visible = visibleAboutFields.contains(AboutInputField.Pronunciation),
-            ),
-        ),
-        professional = ProfessionalFields(
-            company = AboutEditorField.Professional.Company(
-                value = company,
-                visible = visibleAboutFields.contains(AboutInputField.Company),
-            ),
-            jobTitle = AboutEditorField.Professional.JobTitle(
-                value = jobTitle,
-                visible = visibleAboutFields.contains(AboutInputField.JobTitle),
-            ),
-        ),
-    )
+internal fun Profile.aboutFields(visibleAboutFields: Set<AboutInputField>): Set<AboutEditorField> {
+    return visibleAboutFields
+        .map {
+            AboutEditorField(
+                type = it,
+                value = when (it) {
+                    AboutInputField.DisplayName -> displayName
+                    AboutInputField.AboutMe -> description
+                    AboutInputField.Pronouns -> pronouns
+                    AboutInputField.Pronunciation -> pronunciation
+                    AboutInputField.Location -> location
+                    AboutInputField.JobTitle -> jobTitle
+                    AboutInputField.Company -> company
+                    else -> ""
+                },
+                maxLines = when (it) {
+                    AboutInputField.AboutMe -> 3
+                    else -> 1
+                },
+            )
+        }
+        .sortedBy { it.type.order }
+        .toSet()
 }
 
-private val AboutFields.updateProfileRequest: UpdateProfileRequest
+private val Set<AboutEditorField>.updateProfileRequest: UpdateProfileRequest
     get() {
         return UpdateProfileRequest {
-            displayName = personal.displayName.value
-            description = personal.aboutMe.value
-            pronouns = personal.pronouns.value
-            pronunciation = personal.pronunciation.value
-            location = personal.location.value
-            jobTitle = professional.jobTitle.value
-            company = professional.company.value
+            displayName = this@updateProfileRequest.find { it.type == AboutInputField.DisplayName }?.value
+            description = this@updateProfileRequest.find { it.type == AboutInputField.AboutMe }?.value
+            pronouns = this@updateProfileRequest.find { it.type == AboutInputField.Pronouns }?.value
+            pronunciation = this@updateProfileRequest.find { it.type == AboutInputField.Pronunciation }?.value
+            location = this@updateProfileRequest.find { it.type == AboutInputField.Location }?.value
+            jobTitle = this@updateProfileRequest.find { it.type == AboutInputField.JobTitle }?.value
+            company = this@updateProfileRequest.find { it.type == AboutInputField.Company }?.value
         }
     }
 

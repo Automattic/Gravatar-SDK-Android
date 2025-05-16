@@ -1,7 +1,7 @@
 package com.gravatar.quickeditor.ui.abouteditor
 
 internal data class AboutEditorUiState(
-    val aboutFields: AboutFields = AboutFields.EMPTY,
+    val aboutFields: Set<AboutEditorField> = emptySet(),
     val isLoading: Boolean = false,
     val savingProfile: Boolean = false,
     val discardChangesDialogVisible: Boolean = false,

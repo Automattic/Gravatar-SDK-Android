@@ -4,23 +4,43 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.gravatar.quickeditor.ui.editor.AboutInputField
 import com.gravatar.quickeditor.ui.gravatarScreenshotTest
 import com.gravatar.uitestutils.RoborazziTest
 import org.junit.Test
 import org.robolectric.annotation.Config
 
 class AboutEditorTest : RoborazziTest() {
-    private val aboutFields = AboutFields(
-        personal = PersonalFields(
-            aboutMe = AboutEditorField.Personal.AboutMe(value = "My description"),
-            displayName = AboutEditorField.Personal.DisplayName(value = "John Doe"),
-            location = AboutEditorField.Personal.Location(value = "San Francisco, CA"),
-            pronunciation = AboutEditorField.Personal.Pronunciation(value = "John Doe"),
-            pronouns = AboutEditorField.Personal.Pronouns(value = "he/him"),
+    private val aboutFields = setOf(
+        AboutEditorField(
+            type = AboutInputField.DisplayName,
+            value = "John Doe",
+            maxLines = 1,
         ),
-        professional = ProfessionalFields(
-            company = AboutEditorField.Professional.Company(value = "Automattic"),
-            jobTitle = AboutEditorField.Professional.JobTitle(value = "Software Engineer"),
+        AboutEditorField(
+            type = AboutInputField.AboutMe,
+            value = "My description",
+            maxLines = 3,
+        ),
+        AboutEditorField(
+            type = AboutInputField.Pronunciation,
+            value = "John Doe",
+        ),
+        AboutEditorField(
+            type = AboutInputField.Pronouns,
+            value = "he/him",
+        ),
+        AboutEditorField(
+            type = AboutInputField.Location,
+            value = "San Francisco, CA",
+        ),
+        AboutEditorField(
+            type = AboutInputField.JobTitle,
+            value = "Software Engineer",
+        ),
+        AboutEditorField(
+            type = AboutInputField.Company,
+            value = "Automattic",
         ),
     )
 
@@ -40,12 +60,7 @@ class AboutEditorTest : RoborazziTest() {
     fun aboutEditorPersonalLoaded() = gravatarScreenshotTest {
         AboutEditor(
             uiState = AboutEditorUiState(
-                aboutFields = aboutFields.copy(
-                    professional = ProfessionalFields(
-                        company = AboutEditorField.Professional.Company(value = "Automattic", visible = false),
-                        jobTitle = AboutEditorField.Professional.JobTitle(value = "Software Engineer", visible = false),
-                    ),
-                ),
+                aboutFields = aboutFields.filter { it.type.isPersonal }.toSet(),
                 isLoading = false,
             ),
             onSaveClick = { },

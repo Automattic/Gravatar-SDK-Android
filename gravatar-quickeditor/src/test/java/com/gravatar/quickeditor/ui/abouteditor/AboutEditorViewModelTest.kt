@@ -90,8 +90,9 @@ class AboutEditorViewModelTest {
         viewModel = initViewModel()
         viewModel.onEvent(
             AboutEditorEvent.OnAboutFieldUpdated(
-                AboutEditorField.Personal.DisplayName(
-                    "Updated Name",
+                AboutEditorField(
+                    type = AboutInputField.DisplayName,
+                    value = "Updated Name",
                 ),
             ),
         )
@@ -131,8 +132,9 @@ class AboutEditorViewModelTest {
         viewModel = initViewModel()
         viewModel.onEvent(
             AboutEditorEvent.OnAboutFieldUpdated(
-                AboutEditorField.Personal.DisplayName(
-                    "Updated Name",
+                AboutEditorField(
+                    type = AboutInputField.DisplayName,
+                    value = "Updated Name",
                 ),
             ),
         )
@@ -182,8 +184,9 @@ class AboutEditorViewModelTest {
 
         viewModel.onEvent(
             AboutEditorEvent.OnAboutFieldUpdated(
-                AboutEditorField.Personal.DisplayName(
-                    "Updated Name",
+                AboutEditorField(
+                    type = AboutInputField.DisplayName,
+                    value = "Updated Name",
                 ),
             ),
         )
@@ -202,8 +205,9 @@ class AboutEditorViewModelTest {
 
         viewModel.onEvent(
             AboutEditorEvent.OnAboutFieldUpdated(
-                AboutEditorField.Personal.DisplayName(
-                    "Updated Name",
+                AboutEditorField(
+                    type = AboutInputField.DisplayName,
+                    value = "Updated Name",
                 ),
             ),
         )
@@ -229,8 +233,9 @@ class AboutEditorViewModelTest {
 
         viewModel.onEvent(
             AboutEditorEvent.OnAboutFieldUpdated(
-                AboutEditorField.Personal.DisplayName(
-                    "Updated Name",
+                AboutEditorField(
+                    type = AboutInputField.DisplayName,
+                    value = "Updated Name",
                 ),
             ),
         )
@@ -257,38 +262,28 @@ class AboutEditorViewModelTest {
             assertEquals(AboutEditorUiState(isLoading = false), awaitItem())
             assertEquals(AboutEditorUiState(isLoading = true), awaitItem())
             assertEquals(
-                AboutFields(
-                    personal = PersonalFields(
-                        displayName = AboutEditorField.Personal.DisplayName(
-                            value = profile.displayName,
-                            visible = true,
-                        ),
-                        aboutMe = AboutEditorField.Personal.AboutMe(
-                            value = profile.description,
-                            visible = true,
-                        ),
-                        location = AboutEditorField.Personal.Location(
-                            value = profile.location,
-                            visible = true,
-                        ),
-                        pronunciation = AboutEditorField.Personal.Pronunciation(
-                            value = profile.pronunciation,
-                            visible = true,
-                        ),
-                        pronouns = AboutEditorField.Personal.Pronouns(
-                            value = profile.pronouns,
-                            visible = true,
-                        ),
+                setOf(
+                    AboutEditorField(
+                        type = AboutInputField.DisplayName,
+                        value = profile.displayName,
+                        maxLines = 1,
                     ),
-                    professional = ProfessionalFields(
-                        jobTitle = AboutEditorField.Professional.JobTitle(
-                            value = profile.jobTitle,
-                            visible = false,
-                        ),
-                        company = AboutEditorField.Professional.Company(
-                            value = profile.company,
-                            visible = false,
-                        ),
+                    AboutEditorField(
+                        type = AboutInputField.AboutMe,
+                        value = profile.description,
+                        maxLines = 3,
+                    ),
+                    AboutEditorField(
+                        type = AboutInputField.Pronunciation,
+                        value = profile.pronunciation,
+                    ),
+                    AboutEditorField(
+                        type = AboutInputField.Pronouns,
+                        value = profile.pronouns,
+                    ),
+                    AboutEditorField(
+                        type = AboutInputField.Location,
+                        value = profile.location,
                     ),
                 ),
                 awaitItem().aboutFields,
