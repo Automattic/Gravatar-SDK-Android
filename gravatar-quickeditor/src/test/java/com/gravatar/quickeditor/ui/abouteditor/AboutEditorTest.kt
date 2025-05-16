@@ -12,15 +12,15 @@ import org.robolectric.annotation.Config
 class AboutEditorTest : RoborazziTest() {
     private val aboutFields = AboutFields(
         personal = PersonalFields(
-            aboutMe = AboutInputField.Personal.AboutMe(value = "My description"),
-            displayName = AboutInputField.Personal.DisplayName(value = "John Doe"),
-            location = AboutInputField.Personal.Location(value = "San Francisco, CA"),
-            pronunciation = AboutInputField.Personal.Pronunciation(value = "John Doe"),
-            pronouns = AboutInputField.Personal.Pronouns(value = "he/him"),
+            aboutMe = AboutEditorField.Personal.AboutMe(value = "My description"),
+            displayName = AboutEditorField.Personal.DisplayName(value = "John Doe"),
+            location = AboutEditorField.Personal.Location(value = "San Francisco, CA"),
+            pronunciation = AboutEditorField.Personal.Pronunciation(value = "John Doe"),
+            pronouns = AboutEditorField.Personal.Pronouns(value = "he/him"),
         ),
         professional = ProfessionalFields(
-            company = AboutInputField.Professional.Company(value = "Automattic"),
-            jobTitle = AboutInputField.Professional.JobTitle(value = "Software Engineer"),
+            company = AboutEditorField.Professional.Company(value = "Automattic"),
+            jobTitle = AboutEditorField.Professional.JobTitle(value = "Software Engineer"),
         ),
     )
 
@@ -29,6 +29,23 @@ class AboutEditorTest : RoborazziTest() {
         AboutEditor(
             uiState = AboutEditorUiState(
                 aboutFields = aboutFields,
+                isLoading = false,
+            ),
+            onSaveClick = { },
+            onValueChange = { },
+        )
+    }
+
+    @Test
+    fun aboutEditorPersonalLoaded() = gravatarScreenshotTest {
+        AboutEditor(
+            uiState = AboutEditorUiState(
+                aboutFields = aboutFields.copy(
+                    professional = ProfessionalFields(
+                        company = AboutEditorField.Professional.Company(value = "Automattic", visible = false),
+                        jobTitle = AboutEditorField.Professional.JobTitle(value = "Software Engineer", visible = false),
+                    ),
+                ),
                 isLoading = false,
             ),
             onSaveClick = { },

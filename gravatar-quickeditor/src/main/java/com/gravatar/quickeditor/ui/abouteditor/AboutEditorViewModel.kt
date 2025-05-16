@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.gravatar.quickeditor.QuickEditorContainer
 import com.gravatar.quickeditor.data.repository.ProfileRepository
+import com.gravatar.quickeditor.ui.editor.AboutInputField
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
 import com.gravatar.restapi.models.Profile
 import com.gravatar.restapi.models.UpdateProfileRequest
@@ -21,6 +22,7 @@ import kotlinx.coroutines.launch
 
 internal class AboutEditorViewModel(
     private val email: Email,
+    private val visibleAboutFields: Set<AboutInputField>,
     private val profileRepository: ProfileRepository,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(AboutEditorUiState())
@@ -66,10 +68,10 @@ internal class AboutEditorViewModel(
     private fun checkForUnsavedChanges() {
         viewModelScope.launch {
             val currentProfile = uiState.value.aboutFields
-            val savedProfile = savedProfile?.aboutFields
+            val savedProfile = savedProfile?.aboutFields(visibleAboutFields)
             if (savedProfile != null && currentProfile != savedProfile) {
-                _uiState.update { currentProfile ->
-                    currentProfile.copy(
+                _uiState.update { currentState ->
+                    currentState.copy(
                         discardChangesDialogVisible = true,
                     )
                 }
@@ -92,7 +94,7 @@ internal class AboutEditorViewModel(
                     _uiState.update { currentState ->
                         currentState.copy(
                             savingProfile = false,
-                            aboutFields = profile.aboutFields,
+                            aboutFields = profile.aboutFields(visibleAboutFields),
                         )
                     }
                     _actions.send(
@@ -112,7 +114,7 @@ internal class AboutEditorViewModel(
         }
     }
 
-    private fun updateAboutField(aboutField: AboutInputField) {
+    private fun updateAboutField(aboutField: AboutEditorField) {
         viewModelScope.launch {
             _uiState.update { currentState ->
                 currentState.copy(
@@ -136,7 +138,7 @@ internal class AboutEditorViewModel(
                         savedProfile = profile
                         it.copy(
                             isLoading = false,
-                            aboutFields = profile.aboutFields,
+                            aboutFields = profile.aboutFields(visibleAboutFields),
                         )
                     }
                 }
@@ -153,22 +155,42 @@ internal class AboutEditorViewModel(
     }
 }
 
-internal val Profile.aboutFields: AboutFields
-    get() {
-        return AboutFields(
-            personal = PersonalFields(
-                displayName = AboutInputField.Personal.DisplayName(value = displayName),
-                aboutMe = AboutInputField.Personal.AboutMe(value = description),
-                location = AboutInputField.Personal.Location(value = location),
-                pronouns = AboutInputField.Personal.Pronouns(value = pronouns),
-                pronunciation = AboutInputField.Personal.Pronunciation(value = pronunciation),
+internal fun Profile.aboutFields(visibleAboutFields: Set<AboutInputField>): AboutFields {
+    return AboutFields(
+        personal = PersonalFields(
+            displayName = AboutEditorField.Personal.DisplayName(
+                value = displayName,
+                visible = visibleAboutFields.contains(AboutInputField.DisplayName),
             ),
-            professional = ProfessionalFields(
-                company = AboutInputField.Professional.Company(value = company),
-                jobTitle = AboutInputField.Professional.JobTitle(value = jobTitle),
+            aboutMe = AboutEditorField.Personal.AboutMe(
+                value = description,
+                visible = visibleAboutFields.contains(AboutInputField.AboutMe),
             ),
-        )
-    }
+            location = AboutEditorField.Personal.Location(
+                value = location,
+                visible = visibleAboutFields.contains(AboutInputField.Location),
+            ),
+            pronouns = AboutEditorField.Personal.Pronouns(
+                value = pronouns,
+                visible = visibleAboutFields.contains(AboutInputField.Pronouns),
+            ),
+            pronunciation = AboutEditorField.Personal.Pronunciation(
+                value = pronunciation,
+                visible = visibleAboutFields.contains(AboutInputField.Pronunciation),
+            ),
+        ),
+        professional = ProfessionalFields(
+            company = AboutEditorField.Professional.Company(
+                value = company,
+                visible = visibleAboutFields.contains(AboutInputField.Company),
+            ),
+            jobTitle = AboutEditorField.Professional.JobTitle(
+                value = jobTitle,
+                visible = visibleAboutFields.contains(AboutInputField.JobTitle),
+            ),
+        ),
+    )
+}
 
 private val AboutFields.updateProfileRequest: UpdateProfileRequest
     get() {
@@ -191,6 +213,7 @@ internal class AboutEditorViewModelFactory(
         return AboutEditorViewModel(
             email = gravatarQuickEditorParams.email,
             profileRepository = QuickEditorContainer.getInstance().profileRepository,
+            visibleAboutFields = gravatarQuickEditorParams.scopeOption.aboutFields,
         ) as T
     }
 }

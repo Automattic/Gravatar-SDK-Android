@@ -7,72 +7,75 @@ internal data class AboutFields(
     companion object {
         val EMPTY: AboutFields = AboutFields(
             personal = PersonalFields(
-                displayName = AboutInputField.Personal.DisplayName(value = ""),
-                aboutMe = AboutInputField.Personal.AboutMe(value = ""),
-                pronunciation = AboutInputField.Personal.Pronunciation(value = ""),
-                pronouns = AboutInputField.Personal.Pronouns(value = ""),
-                location = AboutInputField.Personal.Location(value = ""),
+                displayName = AboutEditorField.Personal.DisplayName(value = ""),
+                aboutMe = AboutEditorField.Personal.AboutMe(value = ""),
+                pronunciation = AboutEditorField.Personal.Pronunciation(value = ""),
+                pronouns = AboutEditorField.Personal.Pronouns(value = ""),
+                location = AboutEditorField.Personal.Location(value = ""),
             ),
             professional = ProfessionalFields(
-                jobTitle = AboutInputField.Professional.JobTitle(value = ""),
-                company = AboutInputField.Professional.Company(value = ""),
+                jobTitle = AboutEditorField.Professional.JobTitle(value = ""),
+                company = AboutEditorField.Professional.Company(value = ""),
             ),
         )
     }
 
-    fun update(field: AboutInputField): AboutFields {
+    fun update(field: AboutEditorField): AboutFields {
         return when (field) {
-            is AboutInputField.Personal.DisplayName ->
+            is AboutEditorField.Personal.DisplayName ->
                 copy(personal = personal.copy(displayName = field))
 
-            is AboutInputField.Personal.AboutMe ->
+            is AboutEditorField.Personal.AboutMe ->
                 copy(personal = personal.copy(aboutMe = field))
 
-            is AboutInputField.Personal.Pronunciation ->
+            is AboutEditorField.Personal.Pronunciation ->
                 copy(personal = personal.copy(pronunciation = field))
 
-            is AboutInputField.Personal.Pronouns ->
+            is AboutEditorField.Personal.Pronouns ->
                 copy(personal = personal.copy(pronouns = field))
 
-            is AboutInputField.Personal.Location ->
+            is AboutEditorField.Personal.Location ->
                 copy(personal = personal.copy(location = field))
 
-            is AboutInputField.Professional.JobTitle ->
+            is AboutEditorField.Professional.JobTitle ->
                 copy(professional = professional.copy(jobTitle = field))
 
-            is AboutInputField.Professional.Company ->
+            is AboutEditorField.Professional.Company ->
                 copy(professional = professional.copy(company = field))
         }
     }
 }
 
 internal data class PersonalFields(
-    val displayName: AboutInputField.Personal.DisplayName,
-    val aboutMe: AboutInputField.Personal.AboutMe,
-    val pronunciation: AboutInputField.Personal.Pronunciation,
-    val pronouns: AboutInputField.Personal.Pronouns,
-    val location: AboutInputField.Personal.Location,
+    val displayName: AboutEditorField.Personal.DisplayName,
+    val aboutMe: AboutEditorField.Personal.AboutMe,
+    val pronunciation: AboutEditorField.Personal.Pronunciation,
+    val pronouns: AboutEditorField.Personal.Pronouns,
+    val location: AboutEditorField.Personal.Location,
 )
 
 internal data class ProfessionalFields(
-    val jobTitle: AboutInputField.Professional.JobTitle,
-    val company: AboutInputField.Professional.Company,
+    val jobTitle: AboutEditorField.Professional.JobTitle,
+    val company: AboutEditorField.Professional.Company,
 )
 
-internal sealed class AboutInputField {
+internal sealed class AboutEditorField {
     abstract val value: String
     open val maxLines: Int = 1
+    abstract val visible: Boolean
     abstract val order: Int
 
-    sealed class Personal : AboutInputField() {
+    sealed class Personal : AboutEditorField() {
         data class DisplayName(
             override val value: String,
+            override val visible: Boolean = true,
         ) : Personal() {
             override val order: Int = 0
         }
 
         data class AboutMe(
             override val value: String,
+            override val visible: Boolean = true,
         ) : Personal() {
             override val order: Int = 1
             override val maxLines: Int = 4
@@ -80,32 +83,37 @@ internal sealed class AboutInputField {
 
         data class Pronunciation(
             override val value: String,
+            override val visible: Boolean = true,
         ) : Personal() {
             override val order: Int = 2
         }
 
         data class Pronouns(
             override val value: String,
+            override val visible: Boolean = true,
         ) : Personal() {
             override val order: Int = 3
         }
 
         data class Location(
             override val value: String,
+            override val visible: Boolean = true,
         ) : Personal() {
             override val order: Int = 4
         }
     }
 
-    sealed class Professional : AboutInputField() {
+    sealed class Professional : AboutEditorField() {
         data class JobTitle(
             override val value: String,
+            override val visible: Boolean = true,
         ) : Professional() {
             override val order: Int = 0
         }
 
         data class Company(
             override val value: String,
+            override val visible: Boolean = true,
         ) : Professional() {
             override val order: Int = 1
         }

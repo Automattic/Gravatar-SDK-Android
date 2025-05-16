@@ -5,6 +5,7 @@ import com.gravatar.extensions.defaultProfile
 import com.gravatar.quickeditor.data.models.QuickEditorError
 import com.gravatar.quickeditor.data.repository.ProfileRepository
 import com.gravatar.quickeditor.ui.CoroutineTestRule
+import com.gravatar.quickeditor.ui.editor.AboutInputField
 import com.gravatar.restapi.models.UpdateProfileRequest
 import com.gravatar.services.GravatarResult
 import com.gravatar.types.Email
@@ -41,6 +42,7 @@ class AboutEditorViewModelTest {
         pronunciation = ""
         pronouns = ""
     }
+    private val visibleAboutFields = AboutInputField.all
 
     @Before
     fun setup() {
@@ -57,7 +59,7 @@ class AboutEditorViewModelTest {
             assertEquals(
                 AboutEditorUiState(
                     isLoading = false,
-                    aboutFields = profile.aboutFields,
+                    aboutFields = profile.aboutFields(visibleAboutFields),
                 ),
                 awaitItem(),
             )
@@ -88,7 +90,7 @@ class AboutEditorViewModelTest {
         viewModel = initViewModel()
         viewModel.onEvent(
             AboutEditorEvent.OnAboutFieldUpdated(
-                AboutInputField.Personal.DisplayName(
+                AboutEditorField.Personal.DisplayName(
                     "Updated Name",
                 ),
             ),
@@ -103,14 +105,14 @@ class AboutEditorViewModelTest {
             assertEquals(
                 AboutEditorUiState(
                     savingProfile = true,
-                    aboutFields = updatedProfile.aboutFields,
+                    aboutFields = updatedProfile.aboutFields(visibleAboutFields),
                 ),
                 awaitItem(),
             )
             assertEquals(
                 AboutEditorUiState(
                     savingProfile = false,
-                    aboutFields = updatedProfile.aboutFields,
+                    aboutFields = updatedProfile.aboutFields(visibleAboutFields),
                 ),
                 awaitItem(),
             )
@@ -129,7 +131,7 @@ class AboutEditorViewModelTest {
         viewModel = initViewModel()
         viewModel.onEvent(
             AboutEditorEvent.OnAboutFieldUpdated(
-                AboutInputField.Personal.DisplayName(
+                AboutEditorField.Personal.DisplayName(
                     "Updated Name",
                 ),
             ),
@@ -144,14 +146,14 @@ class AboutEditorViewModelTest {
             assertEquals(
                 AboutEditorUiState(
                     savingProfile = true,
-                    aboutFields = updatedProfile.aboutFields,
+                    aboutFields = updatedProfile.aboutFields(visibleAboutFields),
                 ),
                 awaitItem(),
             )
             assertEquals(
                 AboutEditorUiState(
                     savingProfile = false,
-                    aboutFields = updatedProfile.aboutFields,
+                    aboutFields = updatedProfile.aboutFields(visibleAboutFields),
                 ),
                 awaitItem(),
             )
@@ -180,7 +182,7 @@ class AboutEditorViewModelTest {
 
         viewModel.onEvent(
             AboutEditorEvent.OnAboutFieldUpdated(
-                AboutInputField.Personal.DisplayName(
+                AboutEditorField.Personal.DisplayName(
                     "Updated Name",
                 ),
             ),
@@ -200,7 +202,7 @@ class AboutEditorViewModelTest {
 
         viewModel.onEvent(
             AboutEditorEvent.OnAboutFieldUpdated(
-                AboutInputField.Personal.DisplayName(
+                AboutEditorField.Personal.DisplayName(
                     "Updated Name",
                 ),
             ),
@@ -227,7 +229,7 @@ class AboutEditorViewModelTest {
 
         viewModel.onEvent(
             AboutEditorEvent.OnAboutFieldUpdated(
-                AboutInputField.Personal.DisplayName(
+                AboutEditorField.Personal.DisplayName(
                     "Updated Name",
                 ),
             ),
@@ -247,8 +249,56 @@ class AboutEditorViewModelTest {
         }
     }
 
-    private fun initViewModel() = AboutEditorViewModel(
+    @Test
+    fun `given only personal about section visible when profile fetched then uiState is updated`() = runTest {
+        viewModel = initViewModel(aboutFields = AboutInputField.personal)
+
+        viewModel.uiState.test {
+            assertEquals(AboutEditorUiState(isLoading = false), awaitItem())
+            assertEquals(AboutEditorUiState(isLoading = true), awaitItem())
+            assertEquals(
+                AboutFields(
+                    personal = PersonalFields(
+                        displayName = AboutEditorField.Personal.DisplayName(
+                            value = profile.displayName,
+                            visible = true,
+                        ),
+                        aboutMe = AboutEditorField.Personal.AboutMe(
+                            value = profile.description,
+                            visible = true,
+                        ),
+                        location = AboutEditorField.Personal.Location(
+                            value = profile.location,
+                            visible = true,
+                        ),
+                        pronunciation = AboutEditorField.Personal.Pronunciation(
+                            value = profile.pronunciation,
+                            visible = true,
+                        ),
+                        pronouns = AboutEditorField.Personal.Pronouns(
+                            value = profile.pronouns,
+                            visible = true,
+                        ),
+                    ),
+                    professional = ProfessionalFields(
+                        jobTitle = AboutEditorField.Professional.JobTitle(
+                            value = profile.jobTitle,
+                            visible = false,
+                        ),
+                        company = AboutEditorField.Professional.Company(
+                            value = profile.company,
+                            visible = false,
+                        ),
+                    ),
+                ),
+                awaitItem().aboutFields,
+            )
+        }
+    }
+
+    private fun initViewModel(aboutFields: Set<AboutInputField> = visibleAboutFields) = AboutEditorViewModel(
         email = email,
         profileRepository = profileRepository,
+        visibleAboutFields = aboutFields,
     )
 }

@@ -89,7 +89,7 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
     val coroutineScope = rememberCoroutineScope()
     var cacheBuster: String? by remember { mutableStateOf(null) }
     val scrollState: ScrollState = rememberScrollState()
-    var aboutFields: Set<AboutInputField> by rememberSaveable { mutableStateOf(AboutInputField.personal) }
+    var aboutFields: Set<AboutInputField> by rememberSaveable { mutableStateOf(AboutInputField.all) }
     var pickerContentLayout: AvatarPickerContentLayout by rememberSaveable(
         stateSaver = AvatarPickerContentLayoutSaver,
     ) {
