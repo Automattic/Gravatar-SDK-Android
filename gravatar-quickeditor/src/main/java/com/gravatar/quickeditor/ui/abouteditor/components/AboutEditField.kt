@@ -1,6 +1,5 @@
 package com.gravatar.quickeditor.ui.abouteditor.components
 
-import android.util.Log
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -46,10 +45,7 @@ internal fun AboutEditField(
             maxLines = maxLines,
             singleLine = maxLines == 1,
             enabled = enabled,
-            onValueChange = {
-                Log.d("QuickEditor", "onValueChange: $it")
-                onValueChange(it)
-            },
+            onValueChange = onValueChange,
             decorationBox = { innerTextField ->
                 Box(
                     modifier = Modifier

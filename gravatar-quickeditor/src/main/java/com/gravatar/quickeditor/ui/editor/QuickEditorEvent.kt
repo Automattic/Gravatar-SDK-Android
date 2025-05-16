@@ -12,4 +12,6 @@ internal sealed class QuickEditorEvent {
     data object OnEditAvatarClicked : QuickEditorEvent()
 
     data object OnEditAboutClicked : QuickEditorEvent()
+
+    data object OnConfirmDismissal : QuickEditorEvent()
 }

@@ -9,7 +9,7 @@ internal sealed class AboutEditorEvent {
 
     data object OnDoneClicked : AboutEditorEvent()
 
-    data object OnDiscardDialogDismissed : AboutEditorEvent()
+    data object OnUnsavedChangesKeepEditingClicked : AboutEditorEvent()
 
-    data object OnDiscardConfirmed : AboutEditorEvent()
+    data object OnUnsavedChangesExitClicked : AboutEditorEvent()
 }

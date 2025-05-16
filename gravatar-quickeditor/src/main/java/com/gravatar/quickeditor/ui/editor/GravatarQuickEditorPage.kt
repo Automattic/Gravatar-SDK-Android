@@ -30,6 +30,8 @@ import com.gravatar.quickeditor.ui.splash.SplashPage
  * @param oAuthParams The OAuth parameters.
  * @param updateHandler The callback for the Quick Editor updates.
  *                       Can be invoked multiple times while the Quick Editor is open
+ * @param confirmDismissal Whether to show the confirmation dialog when dismissing the Quick Editor.
+ * @param onDismissIgnored The callback for the dismiss action when the Quick Editor is ignored.
  * @param onDoneClicked The callback for the done action.
  * @param onDismiss The callback for the dismiss action.
  *                  [GravatarQuickEditorError] will be non-null if the dismiss was caused by an error.
@@ -39,6 +41,8 @@ internal fun GravatarQuickEditorPage(
     gravatarQuickEditorParams: GravatarQuickEditorParams,
     oAuthParams: OAuthParams,
     updateHandler: UpdateHandler,
+    confirmDismissal: Boolean,
+    onDismissIgnored: () -> Unit,
     onDoneClicked: () -> Unit,
     onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit = {},
 ) {
@@ -73,11 +77,13 @@ internal fun GravatarQuickEditorPage(
                 onDoneClicked = onDoneClicked,
             )
         }
-        addAvatarPickerGraph(
+        addEditorGraph(
             gravatarQuickEditorParams = gravatarQuickEditorParams,
             handleExpiredSession = true,
             navController = navController,
             updateHandler = updateHandler,
+            confirmDismissal = confirmDismissal,
+            onDismissIgnored = onDismissIgnored,
             onSessionExpired = {
                 navController.navigateAndPopupTo(QuickEditorPage.OAUTH.name, QuickEditorPage.EDITOR.name)
             },
@@ -94,6 +100,8 @@ internal fun GravatarQuickEditorPage(
  * @param authToken The authentication token.
  * @param updateHandler The callback for the Quick Editor updates.
  *                       Can be invoked multiple times while the Quick Editor is open
+ * @param confirmDismissal Whether to show the confirmation dialog when dismissing the Quick Editor.
+ * @param onDismissIgnored The callback for the dismiss action when the Quick Editor is ignored.
  * @param onDoneClicked The callback for the done action.
  * @param onDismiss The callback for the dismiss action.
  *                  [GravatarQuickEditorError] will be non-null if the dismiss was caused by an error.
@@ -103,6 +111,8 @@ internal fun GravatarQuickEditorPage(
     gravatarQuickEditorParams: GravatarQuickEditorParams,
     authToken: String,
     updateHandler: UpdateHandler,
+    confirmDismissal: Boolean,
+    onDismissIgnored: () -> Unit,
     onDoneClicked: () -> Unit,
     onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit = {},
 ) {
@@ -123,11 +133,13 @@ internal fun GravatarQuickEditorPage(
                 navController.navigateAndPopupTo(QuickEditorPage.EDITOR.name, QuickEditorPage.SPLASH.name)
             }
         }
-        addAvatarPickerGraph(
+        addEditorGraph(
             gravatarQuickEditorParams = gravatarQuickEditorParams,
             handleExpiredSession = false,
             navController = navController,
             updateHandler = updateHandler,
+            confirmDismissal = confirmDismissal,
+            onDismissIgnored = onDismissIgnored,
             onSessionExpired = { onDismiss(GravatarQuickEditorDismissReason.InvalidToken) },
             onDoneClicked = onDoneClicked,
         )
@@ -135,11 +147,13 @@ internal fun GravatarQuickEditorPage(
 }
 
 @Suppress("LongParameterList")
-private fun NavGraphBuilder.addAvatarPickerGraph(
+private fun NavGraphBuilder.addEditorGraph(
     navController: NavHostController,
     gravatarQuickEditorParams: GravatarQuickEditorParams,
     handleExpiredSession: Boolean,
     updateHandler: UpdateHandler,
+    confirmDismissal: Boolean,
+    onDismissIgnored: () -> Unit,
     onSessionExpired: () -> Unit,
     onDoneClicked: () -> Unit,
 ) {
@@ -159,6 +173,8 @@ private fun NavGraphBuilder.addAvatarPickerGraph(
                 gravatarQuickEditorParams = gravatarQuickEditorParams,
                 handleExpiredSession = handleExpiredSession,
                 updateHandler = updateHandler,
+                confirmDismissal = confirmDismissal,
+                onDismissIgnored = onDismissIgnored,
                 onSessionExpired = onSessionExpired,
                 onAltTextTapped = { email, avatarId ->
                     navController.navigate(

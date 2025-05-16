@@ -48,6 +48,7 @@ import kotlinx.coroutines.withContext
 internal fun AboutEditor(
     quickEditorParams: GravatarQuickEditorParams,
     onProfileUpdated: (Profile) -> Unit,
+    onDismissIgnored: () -> Unit,
     onClose: () -> Unit,
     viewModel: AboutEditorViewModel = viewModel(
         factory = AboutEditorViewModelFactory(quickEditorParams),
@@ -91,6 +92,8 @@ internal fun AboutEditor(
                         AboutEditorAction.CloseEditor -> {
                             onClose()
                         }
+
+                        AboutEditorAction.NotifyDismissIgnored -> onDismissIgnored()
                     }
                 }
             }
@@ -114,11 +117,10 @@ internal fun AboutEditor(
             DiscardChangesAlertDialog(
                 visible = uiState.discardChangesDialogVisible,
                 onKeepEditing = {
-                    viewModel.onEvent(AboutEditorEvent.OnDiscardDialogDismissed)
+                    viewModel.onEvent(AboutEditorEvent.OnUnsavedChangesKeepEditingClicked)
                 },
                 onDiscardClicked = {
-                    viewModel.onEvent(AboutEditorEvent.OnDiscardConfirmed)
-                    onClose()
+                    viewModel.onEvent(AboutEditorEvent.OnUnsavedChangesExitClicked)
                 },
             )
         }

@@ -160,6 +160,30 @@ class QuickEditorViewModelTest {
         }
     }
 
+    @Test
+    fun `given current page is AvatarPicker when OnConfirmDismissal event then DismissEditor action is sent`() =
+        runTest {
+            viewModel = initViewModel(initialPage = QuickEditorPage.AvatarPicker)
+
+            viewModel.actions.test {
+                viewModel.onEvent(QuickEditorEvent.OnConfirmDismissal)
+
+                assertEquals(QuickEditorAction.DismissEditor, awaitItem())
+            }
+        }
+
+    @Test
+    fun `given current page is AboutEditor when OnConfirmDismissal event then ConfirmEditorDismissal action is sent`() =
+        runTest {
+            viewModel = initViewModel(initialPage = QuickEditorPage.AboutEditor)
+
+            viewModel.actions.test {
+                viewModel.onEvent(QuickEditorEvent.OnConfirmDismissal)
+
+                assertEquals(QuickEditorAction.ConfirmEditorDismissal, awaitItem())
+            }
+        }
+
     private fun initViewModel(
         navigationEnabled: Boolean = false,
         initialPage: QuickEditorPage = QuickEditorPage.AboutEditor,

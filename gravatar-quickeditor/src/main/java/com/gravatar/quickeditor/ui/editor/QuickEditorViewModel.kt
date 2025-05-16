@@ -14,9 +14,12 @@ import com.gravatar.quickeditor.ui.time.SystemClock
 import com.gravatar.services.GravatarResult
 import com.gravatar.types.Email
 import com.gravatar.ui.components.ComponentState
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -37,6 +40,9 @@ internal class QuickEditorViewModel(
     )
     val uiState: StateFlow<QuickEditorUiState> = _uiState.asStateFlow()
 
+    private val _actions = Channel<QuickEditorAction>(Channel.BUFFERED)
+    val actions = _actions.receiveAsFlow()
+
     init {
         refresh()
     }
@@ -54,6 +60,14 @@ internal class QuickEditorViewModel(
 
             QuickEditorEvent.OnEditAboutClicked -> navigateToPage(QuickEditorPage.AboutEditor)
             QuickEditorEvent.OnEditAvatarClicked -> navigateToPage(QuickEditorPage.AvatarPicker)
+            QuickEditorEvent.OnConfirmDismissal -> {
+                viewModelScope.launch(Dispatchers.Main.immediate) {
+                    when (uiState.value.page) {
+                        QuickEditorPage.AvatarPicker -> _actions.send(QuickEditorAction.DismissEditor)
+                        QuickEditorPage.AboutEditor -> _actions.send(QuickEditorAction.ConfirmEditorDismissal)
+                    }
+                }
+            }
         }
     }
 

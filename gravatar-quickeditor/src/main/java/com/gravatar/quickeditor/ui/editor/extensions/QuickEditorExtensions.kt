@@ -1,10 +1,6 @@
 package com.gravatar.quickeditor.ui.editor.extensions
 
 import android.view.ViewGroup
-import androidx.activity.compose.BackHandler
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.ComposeView
 import com.composables.core.SheetDetent.Companion.Hidden
 import com.gravatar.quickeditor.ui.editor.AuthenticationMethod
@@ -12,8 +8,7 @@ import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorDismissReason
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
 import com.gravatar.quickeditor.ui.editor.UpdateHandler
 import com.gravatar.quickeditor.ui.editor.bottomsheet.GravatarQuickEditorBottomSheet
-import com.gravatar.quickeditor.ui.editor.bottomsheet.rememberGravatarModalBottomSheetState
-import kotlinx.coroutines.launch
+import com.gravatar.quickeditor.ui.editor.bottomsheet.modalDetents
 
 internal fun addQuickEditorToView(
     viewGroup: ViewGroup,
@@ -25,53 +20,19 @@ internal fun addQuickEditorToView(
     viewGroup.addView(
         ComposeView(viewGroup.context).apply {
             setContent {
-                GravatarQuickEditorBottomSheetWrapper(
-                    parent = viewGroup,
-                    composeView = this,
+                GravatarQuickEditorBottomSheet(
                     gravatarQuickEditorParams = gravatarQuickEditorParams,
                     authenticationMethod = authenticationMethod,
                     updateHandler = updateHandler,
                     onDismiss = onDismiss,
+                    modalDetents = gravatarQuickEditorParams.scopeOption.avatarPickerContentLayout.modalDetents(),
+                    onCurrentDetentChanged = {
+                        if (it == Hidden) {
+                            viewGroup.removeView(this)
+                        }
+                    },
                 )
             }
         },
     )
-}
-
-@Composable
-private fun GravatarQuickEditorBottomSheetWrapper(
-    parent: ViewGroup,
-    composeView: ComposeView,
-    gravatarQuickEditorParams: GravatarQuickEditorParams,
-    authenticationMethod: AuthenticationMethod,
-    updateHandler: UpdateHandler,
-    onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit,
-) {
-    val coroutineScope = rememberCoroutineScope()
-
-    val modalBottomSheetState = rememberGravatarModalBottomSheetState(
-        avatarPickerContentLayout = gravatarQuickEditorParams.scopeOption.avatarPickerContentLayout,
-    )
-
-    GravatarQuickEditorBottomSheet(
-        gravatarQuickEditorParams = gravatarQuickEditorParams,
-        authenticationMethod = authenticationMethod,
-        updateHandler = updateHandler,
-        onDismiss = onDismiss,
-        modalBottomSheetState = modalBottomSheetState,
-    )
-
-    BackHandler {
-        coroutineScope.launch {
-            modalBottomSheetState.currentDetent = Hidden
-        }
-    }
-
-    LaunchedEffect(modalBottomSheetState.currentDetent) {
-        when (modalBottomSheetState.currentDetent) {
-            Hidden -> {
-                parent.removeView(composeView)
-            }
-        }
-    }
 }
