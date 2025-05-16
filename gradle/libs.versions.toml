@@ -34,7 +34,7 @@ startup = "1.1.1"
 testCoreKtx = "1.6.1"
 turbine = "1.1.0"
 ucrop = "2.2.11"
-mavenPublish = "0.31.0"
+mavenPublish = "0.32.0"
 kotlinCompilerExtension = "1.5.15"
 
 [libraries]
