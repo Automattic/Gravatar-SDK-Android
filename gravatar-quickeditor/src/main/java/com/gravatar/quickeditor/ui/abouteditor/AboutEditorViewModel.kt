@@ -40,8 +40,8 @@ internal class AboutEditorViewModel(
             is AboutEditorEvent.OnAboutFieldUpdated -> updateAboutField(aboutEditorEvent.aboutField)
             AboutEditorEvent.OnSaveClicked -> saveProfile()
             AboutEditorEvent.OnDoneClicked -> checkForUnsavedChanges()
-            AboutEditorEvent.OnUnsavedChangesDialogDismissed -> dismissUnsavedChangesDialog()
-            AboutEditorEvent.OnUnsavedChangesDialogDiscarded -> discardUnsavedChangesDialog()
+            AboutEditorEvent.OnUnsavedChangesKeepEditingClicked -> dismissUnsavedChangesDialog()
+            AboutEditorEvent.OnUnsavedChangesExitClicked -> discardUnsavedChangesDialog()
         }
     }
 

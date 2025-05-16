@@ -117,10 +117,10 @@ internal fun AboutEditor(
             DiscardChangesAlertDialog(
                 visible = uiState.discardChangesDialogVisible,
                 onKeepEditing = {
-                    viewModel.onEvent(AboutEditorEvent.OnUnsavedChangesDialogDismissed)
+                    viewModel.onEvent(AboutEditorEvent.OnUnsavedChangesKeepEditingClicked)
                 },
                 onDiscardClicked = {
-                    viewModel.onEvent(AboutEditorEvent.OnUnsavedChangesDialogDiscarded)
+                    viewModel.onEvent(AboutEditorEvent.OnUnsavedChangesExitClicked)
                 },
             )
         }
