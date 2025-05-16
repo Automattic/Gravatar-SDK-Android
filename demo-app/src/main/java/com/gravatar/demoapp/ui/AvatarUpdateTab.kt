@@ -89,7 +89,9 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
     val coroutineScope = rememberCoroutineScope()
     var cacheBuster: String? by remember { mutableStateOf(null) }
     val scrollState: ScrollState = rememberScrollState()
-    var aboutFields: Set<AboutInputField> by rememberSaveable { mutableStateOf(AboutInputField.all) }
+    var aboutFields: Set<AboutInputField> by rememberSaveable(stateSaver = AboutInputFieldSetSaver) {
+        mutableStateOf(AboutInputField.all)
+    }
     var pickerContentLayout: AvatarPickerContentLayout by rememberSaveable(
         stateSaver = AvatarPickerContentLayoutSaver,
     ) {
@@ -501,6 +503,11 @@ private fun InitialPageDropdown(
         }
     }
 }
+
+private val AboutInputFieldSetSaver = Saver<Set<AboutInputField>, List<AboutInputField>>(
+    save = { it.toList() },
+    restore = { it.toSet() },
+)
 
 private val AvatarPickerContentLayoutSaver: Saver<AvatarPickerContentLayout, String> = run {
     val horizontalKey = "horizontal"
