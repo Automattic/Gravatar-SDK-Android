@@ -23,11 +23,6 @@ internal fun CtaSection(
 ) {
     Surface(
         modifier = modifier
-            .border(
-                width = 1.dp,
-                color = MaterialTheme.colorScheme.surfaceContainerHighest,
-                shape = RoundedCornerShape(8.dp),
-            ),
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -43,6 +38,15 @@ internal fun CtaSection(
     }
 }
 
+@Composable
+internal fun Modifier.withBorder(): Modifier {
+    return this.border(
+        width = 1.dp,
+        color = MaterialTheme.colorScheme.surfaceContainerHighest,
+        shape = RoundedCornerShape(8.dp),
+    )
+}
+
 @PreviewLightDark
 @Composable
 private fun CtaSectionPreview() {
@@ -51,7 +55,8 @@ private fun CtaSectionPreview() {
             CtaSection(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(20.dp),
+                    .padding(20.dp)
+                    .withBorder(),
                 title = "Oooops",
                 message = "Something went wrong and we couldn't connect to Gravatar servers.",
                 buttonText = "Retry",
@@ -69,7 +74,8 @@ private fun CtaSectionNoTitlePreview() {
             CtaSection(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(20.dp),
+                    .padding(20.dp)
+                    .withBorder(),
                 message = "Manage your profile for the web in one place.",
                 buttonText = "Continue",
                 onButtonClick = {},

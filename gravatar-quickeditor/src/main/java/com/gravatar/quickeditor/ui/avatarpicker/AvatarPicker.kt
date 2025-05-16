@@ -57,6 +57,7 @@ import com.gravatar.quickeditor.ui.components.CtaSection
 import com.gravatar.quickeditor.ui.components.DownloadManagerDisabledAlertDialog
 import com.gravatar.quickeditor.ui.components.FailedAvatarUploadAlertDialog
 import com.gravatar.quickeditor.ui.components.PermissionRationaleDialog
+import com.gravatar.quickeditor.ui.components.withBorder
 import com.gravatar.quickeditor.ui.cropperlauncher.CropperLauncher
 import com.gravatar.quickeditor.ui.cropperlauncher.UCropCropperLauncher
 import com.gravatar.quickeditor.ui.editor.AvatarPickerContentLayout
@@ -223,6 +224,7 @@ internal fun AvatarPicker(uiState: AvatarPickerUiState, onEvent: (AvatarPickerEv
                         onButtonClick = { onEvent(uiState.error.event) },
                         modifier = sectionModifier
                             .padding(horizontal = 16.dp)
+                            .withBorder()
                             .onSizeChanged { size ->
                                 loadingSectionHeight = size.height.pxToDp(context)
                             },
@@ -421,7 +423,7 @@ private fun AvatarPickerAction.handle(
 private fun Int.pxToDp(context: Context): Dp =
     (this / (context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)).dp
 
-private val SectionError.titleRes: Int
+internal val SectionError.titleRes: Int
     @StringRes get() = when (this) {
         is SectionError.InvalidToken -> R.string.gravatar_qe_avatar_picker_session_error_title
         SectionError.NoInternetConnection -> R.string.gravatar_qe_avatar_picker_network_error_title
@@ -430,7 +432,7 @@ private val SectionError.titleRes: Int
         -> R.string.gravatar_qe_avatar_picker_server_error_title
     }
 
-private val SectionError.messageRes: Int
+internal val SectionError.messageRes: Int
     @StringRes get() = when (this) {
         is SectionError.InvalidToken -> if (showLogin) {
             R.string.gravatar_qe_avatar_picker_session_error_message
@@ -443,7 +445,7 @@ private val SectionError.messageRes: Int
         SectionError.Unknown -> R.string.gravatar_qe_avatar_picker_unknown_error_message
     }
 
-private val SectionError.buttonTextRes: Int
+internal val SectionError.buttonTextRes: Int
     @StringRes get() = when (this) {
         is SectionError.InvalidToken -> if (showLogin) {
             R.string.gravatar_qe_avatar_picker_session_error_cta
