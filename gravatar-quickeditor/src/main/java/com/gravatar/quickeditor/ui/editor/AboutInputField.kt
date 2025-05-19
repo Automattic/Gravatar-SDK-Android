@@ -91,4 +91,22 @@ public value class AboutInputField(
             Company,
         )
     }
+
+    internal val isPersonal: Boolean
+        get() = personal.contains(this)
+
+    internal val isProfessional: Boolean
+        get() = professional.contains(this)
+
+    internal val order: Int
+        get() = when (this) {
+            DisplayName -> 0
+            AboutMe -> 1
+            Pronunciation -> 2
+            Pronouns -> 3
+            Location -> 4
+            JobTitle -> 100
+            Company -> 101
+            else -> -1
+        }
 }

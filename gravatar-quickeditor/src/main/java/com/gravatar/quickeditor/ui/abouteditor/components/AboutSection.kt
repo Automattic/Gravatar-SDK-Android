@@ -1,104 +1,162 @@
 package com.gravatar.quickeditor.ui.abouteditor.components
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.gravatar.quickeditor.R
-import com.gravatar.quickeditor.ui.abouteditor.AboutFields
-import com.gravatar.quickeditor.ui.abouteditor.AboutInputField
-import com.gravatar.quickeditor.ui.abouteditor.PersonalFields
-import com.gravatar.quickeditor.ui.abouteditor.ProfessionalFields
+import com.gravatar.quickeditor.ui.abouteditor.AboutEditorField
+import com.gravatar.quickeditor.ui.editor.AboutInputField
 import com.gravatar.ui.GravatarTheme
 
 @Composable
 internal fun AboutSection(
-    aboutFields: AboutFields,
+    aboutFields: Set<AboutEditorField>,
     formEnabled: Boolean,
-    onValueChange: (AboutInputField) -> Unit,
+    onValueChange: (AboutEditorField) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(modifier = modifier) {
-        PersonalSection(
-            personalFields = aboutFields.personal,
-            formEnabled = formEnabled,
-            onValueChange = onValueChange,
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        ProfessionalSection(
-            professionalFields = aboutFields.professional,
-            formEnabled = formEnabled,
-            onValueChange = onValueChange,
-        )
-        Spacer(modifier = Modifier.height(8.dp))
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(32.dp),
+    ) {
+        if (aboutFields.any { it.type.isPersonal }) {
+            AboutFieldsSection(
+                label = aboutFields.personalLabelRes?.let { stringResource(it) },
+                fields = aboutFields.filter { it.type.isPersonal }.toSet(),
+                formEnabled = formEnabled,
+                onValueChange = onValueChange,
+                modifier = Modifier,
+            )
+        }
+        if (aboutFields.any { it.type.isProfessional }) {
+            AboutFieldsSection(
+                label = aboutFields.professionalLabelRes?.let { stringResource(it) },
+                fields = aboutFields.filter { it.type.isProfessional }.toSet(),
+                formEnabled = formEnabled,
+                onValueChange = onValueChange,
+            )
+        }
     }
 }
 
-internal val AboutInputField.labelRes: Int
-    @StringRes get() = when (this) {
-        is AboutInputField.Personal.AboutMe -> R.string.gravatar_qe_about_field_label_about_me
-        is AboutInputField.Personal.DisplayName -> R.string.gravatar_qe_about_field_label_display_name
-        is AboutInputField.Personal.Location -> R.string.gravatar_qe_about_field_label_location
-        is AboutInputField.Personal.Pronouns -> R.string.gravatar_qe_about_field_label_pronouns
-        is AboutInputField.Personal.Pronunciation -> R.string.gravatar_qe_about_field_label_pronunciation
-        is AboutInputField.Professional.Company -> R.string.gravatar_qe_about_field_label_company
-        is AboutInputField.Professional.JobTitle -> R.string.gravatar_qe_about_field_label_job_title
+private val Set<AboutEditorField>.personalLabelRes: Int?
+    @StringRes get() = if (hasPersonalAndProfessional) {
+        R.string.gravatar_qe_about_field_section_label_personal
+    } else {
+        null
     }
 
-internal val AboutInputField.descriptionRes: Int?
-    @StringRes get() = when (this) {
-        is AboutInputField.Personal.AboutMe -> R.string.gravatar_qe_about_field_description_about_me
-        is AboutInputField.Personal.Pronunciation -> R.string.gravatar_qe_about_field_description_pronunciation
-        is AboutInputField.Personal.DisplayName,
-        is AboutInputField.Personal.Location,
-        is AboutInputField.Personal.Pronouns,
-        is AboutInputField.Professional.Company,
-        is AboutInputField.Professional.JobTitle,
-        -> null
+private val Set<AboutEditorField>.professionalLabelRes: Int?
+    @StringRes get() = if (hasPersonalAndProfessional) {
+        R.string.gravatar_qe_about_field_section_label_professional
+    } else {
+        null
     }
 
-internal fun AboutInputField.copy(value: String): AboutInputField {
-    return when (this) {
-        is AboutInputField.Personal.AboutMe -> AboutInputField.Personal.AboutMe(value)
-        is AboutInputField.Personal.DisplayName -> AboutInputField.Personal.DisplayName(value)
-        is AboutInputField.Personal.Location -> AboutInputField.Personal.Location(value)
-        is AboutInputField.Personal.Pronouns -> AboutInputField.Personal.Pronouns(value)
-        is AboutInputField.Personal.Pronunciation -> AboutInputField.Personal.Pronunciation(value)
-        is AboutInputField.Professional.Company -> AboutInputField.Professional.Company(value)
-        is AboutInputField.Professional.JobTitle -> AboutInputField.Professional.JobTitle(value)
+private val Set<AboutEditorField>.hasPersonalAndProfessional: Boolean
+    get() = any { it.type.isPersonal } && any { it.type.isProfessional }
+
+internal val AboutEditorField.labelRes: Int
+    @StringRes get() = when (this.type) {
+        AboutInputField.AboutMe -> R.string.gravatar_qe_about_field_label_about_me
+        AboutInputField.DisplayName -> R.string.gravatar_qe_about_field_label_display_name
+        AboutInputField.Location -> R.string.gravatar_qe_about_field_label_location
+        AboutInputField.Pronouns -> R.string.gravatar_qe_about_field_label_pronouns
+        AboutInputField.Pronunciation -> R.string.gravatar_qe_about_field_label_pronunciation
+        AboutInputField.Company -> R.string.gravatar_qe_about_field_label_company
+        AboutInputField.JobTitle -> R.string.gravatar_qe_about_field_label_job_title
+        else -> R.string.gravatar_qe_about_field_label_display_name
     }
-}
+
+internal val AboutEditorField.descriptionRes: Int?
+    @StringRes get() = when (this.type) {
+        AboutInputField.AboutMe -> R.string.gravatar_qe_about_field_description_about_me
+        AboutInputField.Pronunciation -> R.string.gravatar_qe_about_field_description_pronunciation
+        else -> null
+    }
 
 @Preview(showBackground = true)
 @Composable
 internal fun AboutSectionPreview() {
     GravatarTheme {
-        Box(modifier = Modifier.padding(10.dp)) {
-            AboutSection(
-                aboutFields = AboutFields(
-                    personal = PersonalFields(
-                        aboutMe = AboutInputField.Personal.AboutMe(value = "My description"),
-                        displayName = AboutInputField.Personal.DisplayName(value = "John Doe"),
-                        pronunciation = AboutInputField.Personal.Pronunciation(value = "John Doe"),
-                        pronouns = AboutInputField.Personal.Pronouns(value = "he/him"),
-                        location = AboutInputField.Personal.Location(value = "San Francisco, CA"),
-                    ),
-                    professional = ProfessionalFields(
-                        company = AboutInputField.Professional.Company(value = "Automattic"),
-                        jobTitle = AboutInputField.Professional.JobTitle(value = "Software Engineer"),
-                    ),
+        AboutSection(
+            aboutFields = setOf(
+                AboutEditorField(
+                    type = AboutInputField.DisplayName,
+                    value = "John Doe",
+                    maxLines = 1,
                 ),
-                formEnabled = true,
-                onValueChange = { },
-                modifier = Modifier.fillMaxWidth(),
-            )
-        }
+                AboutEditorField(
+                    type = AboutInputField.AboutMe,
+                    value = "My description",
+                    maxLines = 3,
+                ),
+                AboutEditorField(
+                    type = AboutInputField.Pronunciation,
+                    value = "John Doe",
+                ),
+                AboutEditorField(
+                    type = AboutInputField.Pronouns,
+                    value = "he/him",
+                ),
+                AboutEditorField(
+                    type = AboutInputField.Location,
+                    value = "San Francisco, CA",
+                ),
+                AboutEditorField(
+                    type = AboutInputField.Company,
+                    value = "Automattic",
+                ),
+                AboutEditorField(
+                    type = AboutInputField.JobTitle,
+                    value = "Software Engineer",
+                ),
+            ),
+            formEnabled = true,
+            onValueChange = { },
+            modifier = Modifier.fillMaxWidth(),
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+internal fun AboutSectionPersonalOnlyPreview() {
+    GravatarTheme {
+        AboutSection(
+            aboutFields = setOf(
+                AboutEditorField(
+                    type = AboutInputField.DisplayName,
+                    value = "John Doe",
+                    maxLines = 1,
+                ),
+                AboutEditorField(
+                    type = AboutInputField.AboutMe,
+                    value = "My description",
+                    maxLines = 3,
+                ),
+                AboutEditorField(
+                    type = AboutInputField.Pronunciation,
+                    value = "John Doe",
+                ),
+                AboutEditorField(
+                    type = AboutInputField.Pronouns,
+                    value = "he/him",
+                ),
+                AboutEditorField(
+                    type = AboutInputField.Location,
+                    value = "San Francisco, CA",
+                ),
+            ),
+            formEnabled = true,
+            onValueChange = { },
+            modifier = Modifier.fillMaxWidth(),
+        )
     }
 }

@@ -34,6 +34,7 @@ import com.gravatar.quickeditor.R
 import com.gravatar.quickeditor.ui.abouteditor.components.AboutSection
 import com.gravatar.quickeditor.ui.abouteditor.components.DiscardChangesAlertDialog
 import com.gravatar.quickeditor.ui.components.QEButton
+import com.gravatar.quickeditor.ui.editor.AboutInputField
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
 import com.gravatar.quickeditor.ui.extensions.QESnackbarHost
 import com.gravatar.quickeditor.ui.extensions.SnackbarType
@@ -130,7 +131,7 @@ internal fun AboutEditor(
 @Composable
 internal fun AboutEditor(
     uiState: AboutEditorUiState,
-    onValueChange: (AboutInputField) -> Unit,
+    onValueChange: (AboutEditorField) -> Unit,
     onSaveClick: () -> Unit,
 ) {
     Surface {
@@ -163,7 +164,7 @@ internal fun AboutEditor(
                             formEnabled = uiState.formEnabled,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(horizontal = 16.dp),
+                                .padding(16.dp),
                             onValueChange = onValueChange,
                         )
                     }
@@ -189,17 +190,36 @@ internal fun AboutEditorLoadedPreview() {
         Box(modifier = Modifier.padding(10.dp)) {
             AboutEditor(
                 uiState = AboutEditorUiState(
-                    aboutFields = AboutFields(
-                        personal = PersonalFields(
-                            aboutMe = AboutInputField.Personal.AboutMe(value = "My description"),
-                            displayName = AboutInputField.Personal.DisplayName(value = "John Doe"),
-                            location = AboutInputField.Personal.Location(value = "San Francisco, CA"),
-                            pronunciation = AboutInputField.Personal.Pronunciation(value = "John Doe"),
-                            pronouns = AboutInputField.Personal.Pronouns(value = "he/him"),
+                    aboutFields = setOf(
+                        AboutEditorField(
+                            type = AboutInputField.DisplayName,
+                            value = "John Doe",
+                            maxLines = 1,
                         ),
-                        professional = ProfessionalFields(
-                            company = AboutInputField.Professional.Company(value = "Automattic"),
-                            jobTitle = AboutInputField.Professional.JobTitle(value = "Software Engineer"),
+                        AboutEditorField(
+                            type = AboutInputField.AboutMe,
+                            value = "My description",
+                            maxLines = 3,
+                        ),
+                        AboutEditorField(
+                            type = AboutInputField.Pronunciation,
+                            value = "John Doe",
+                        ),
+                        AboutEditorField(
+                            type = AboutInputField.Pronouns,
+                            value = "he/him",
+                        ),
+                        AboutEditorField(
+                            type = AboutInputField.Location,
+                            value = "San Francisco, CA",
+                        ),
+                        AboutEditorField(
+                            type = AboutInputField.Company,
+                            value = "Automattic",
+                        ),
+                        AboutEditorField(
+                            type = AboutInputField.JobTitle,
+                            value = "Software Engineer",
                         ),
                     ),
                 ),
@@ -217,7 +237,7 @@ internal fun AboutEditorLoadingPreview() {
         Box(modifier = Modifier.padding(10.dp)) {
             AboutEditor(
                 uiState = AboutEditorUiState(
-                    aboutFields = AboutFields.EMPTY,
+                    aboutFields = emptySet(),
                     isLoading = true,
                 ),
                 onValueChange = { },

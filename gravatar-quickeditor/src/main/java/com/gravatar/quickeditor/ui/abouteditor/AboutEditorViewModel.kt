@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.gravatar.quickeditor.QuickEditorContainer
 import com.gravatar.quickeditor.data.repository.ProfileRepository
+import com.gravatar.quickeditor.ui.editor.AboutInputField
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
 import com.gravatar.restapi.models.Profile
 import com.gravatar.restapi.models.UpdateProfileRequest
@@ -21,6 +22,7 @@ import kotlinx.coroutines.launch
 
 internal class AboutEditorViewModel(
     private val email: Email,
+    private val visibleAboutFields: Set<AboutInputField>,
     private val profileRepository: ProfileRepository,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(AboutEditorUiState())
@@ -66,10 +68,10 @@ internal class AboutEditorViewModel(
     private fun checkForUnsavedChanges() {
         viewModelScope.launch {
             val currentProfile = uiState.value.aboutFields
-            val savedProfile = savedProfile?.aboutFields
+            val savedProfile = savedProfile?.aboutFields(visibleAboutFields)
             if (savedProfile != null && currentProfile != savedProfile) {
-                _uiState.update { currentProfile ->
-                    currentProfile.copy(
+                _uiState.update { currentState ->
+                    currentState.copy(
                         discardChangesDialogVisible = true,
                     )
                 }
@@ -92,7 +94,7 @@ internal class AboutEditorViewModel(
                     _uiState.update { currentState ->
                         currentState.copy(
                             savingProfile = false,
-                            aboutFields = profile.aboutFields,
+                            aboutFields = profile.aboutFields(visibleAboutFields),
                         )
                     }
                     _actions.send(
@@ -112,11 +114,17 @@ internal class AboutEditorViewModel(
         }
     }
 
-    private fun updateAboutField(aboutField: AboutInputField) {
+    private fun updateAboutField(aboutField: AboutEditorField) {
         viewModelScope.launch {
             _uiState.update { currentState ->
                 currentState.copy(
-                    aboutFields = currentState.aboutFields.update(aboutField),
+                    aboutFields = currentState.aboutFields.map {
+                        if (it.type == aboutField.type) {
+                            it.copy(value = aboutField.value)
+                        } else {
+                            it
+                        }
+                    }.toSet(),
                 )
             }
         }
@@ -136,7 +144,7 @@ internal class AboutEditorViewModel(
                         savedProfile = profile
                         it.copy(
                             isLoading = false,
-                            aboutFields = profile.aboutFields,
+                            aboutFields = profile.aboutFields(visibleAboutFields),
                         )
                     }
                 }
@@ -153,33 +161,41 @@ internal class AboutEditorViewModel(
     }
 }
 
-internal val Profile.aboutFields: AboutFields
-    get() {
-        return AboutFields(
-            personal = PersonalFields(
-                displayName = AboutInputField.Personal.DisplayName(value = displayName),
-                aboutMe = AboutInputField.Personal.AboutMe(value = description),
-                location = AboutInputField.Personal.Location(value = location),
-                pronouns = AboutInputField.Personal.Pronouns(value = pronouns),
-                pronunciation = AboutInputField.Personal.Pronunciation(value = pronunciation),
-            ),
-            professional = ProfessionalFields(
-                company = AboutInputField.Professional.Company(value = company),
-                jobTitle = AboutInputField.Professional.JobTitle(value = jobTitle),
-            ),
-        )
-    }
+internal fun Profile.aboutFields(visibleAboutFields: Set<AboutInputField>): Set<AboutEditorField> {
+    return visibleAboutFields
+        .map {
+            AboutEditorField(
+                type = it,
+                value = when (it) {
+                    AboutInputField.DisplayName -> displayName
+                    AboutInputField.AboutMe -> description
+                    AboutInputField.Pronouns -> pronouns
+                    AboutInputField.Pronunciation -> pronunciation
+                    AboutInputField.Location -> location
+                    AboutInputField.JobTitle -> jobTitle
+                    AboutInputField.Company -> company
+                    else -> ""
+                },
+                maxLines = when (it) {
+                    AboutInputField.AboutMe -> 3
+                    else -> 1
+                },
+            )
+        }
+        .sortedBy { it.type.order }
+        .toSet()
+}
 
-private val AboutFields.updateProfileRequest: UpdateProfileRequest
+private val Set<AboutEditorField>.updateProfileRequest: UpdateProfileRequest
     get() {
         return UpdateProfileRequest {
-            displayName = personal.displayName.value
-            description = personal.aboutMe.value
-            pronouns = personal.pronouns.value
-            pronunciation = personal.pronunciation.value
-            location = personal.location.value
-            jobTitle = professional.jobTitle.value
-            company = professional.company.value
+            displayName = this@updateProfileRequest.find { it.type == AboutInputField.DisplayName }?.value
+            description = this@updateProfileRequest.find { it.type == AboutInputField.AboutMe }?.value
+            pronouns = this@updateProfileRequest.find { it.type == AboutInputField.Pronouns }?.value
+            pronunciation = this@updateProfileRequest.find { it.type == AboutInputField.Pronunciation }?.value
+            location = this@updateProfileRequest.find { it.type == AboutInputField.Location }?.value
+            jobTitle = this@updateProfileRequest.find { it.type == AboutInputField.JobTitle }?.value
+            company = this@updateProfileRequest.find { it.type == AboutInputField.Company }?.value
         }
     }
 
@@ -191,6 +207,7 @@ internal class AboutEditorViewModelFactory(
         return AboutEditorViewModel(
             email = gravatarQuickEditorParams.email,
             profileRepository = QuickEditorContainer.getInstance().profileRepository,
+            visibleAboutFields = gravatarQuickEditorParams.scopeOption.aboutFields,
         ) as T
     }
 }

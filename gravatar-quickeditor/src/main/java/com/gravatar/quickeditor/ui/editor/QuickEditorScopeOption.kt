@@ -40,6 +40,13 @@ public class QuickEditorScopeOption private constructor(
             is Scope.AboutEditor -> AvatarPickerContentLayout.Horizontal
         }
 
+    internal val aboutFields: Set<AboutInputField>
+        get() = when (scope) {
+            is Scope.AboutEditor -> scope.config.fields
+            is Scope.AvatarPickerAndAboutEditor -> scope.config.fields
+            is Scope.AvatarPicker -> AboutInputField.all
+        }
+
     public companion object {
         internal val default = QuickEditorScopeOption(
             scope = Scope.AvatarPicker(AvatarPickerConfiguration.default),

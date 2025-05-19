@@ -2,7 +2,7 @@ package com.gravatar.quickeditor.ui.abouteditor
 
 internal sealed class AboutEditorEvent {
     data class OnAboutFieldUpdated(
-        val aboutField: AboutInputField,
+        val aboutField: AboutEditorField,
     ) : AboutEditorEvent()
 
     data object OnSaveClicked : AboutEditorEvent()
