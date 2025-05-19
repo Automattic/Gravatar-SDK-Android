@@ -113,6 +113,7 @@ internal fun QuickEditor(
                             updateHandler(AboutEditorResult(profile))
                             viewModel.onEvent(QuickEditorEvent.OnProfileUpdated(profile))
                         },
+                        onRefresh = { viewModel.onEvent(QuickEditorEvent.Refresh) },
                         onSessionExpired = onSessionExpired,
                         onClose = { onDoneClicked() },
                         viewModel = aboutEditorViewModel,

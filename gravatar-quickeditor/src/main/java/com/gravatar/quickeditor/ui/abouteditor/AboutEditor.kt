@@ -53,6 +53,7 @@ internal fun AboutEditor(
     onProfileUpdated: (Profile) -> Unit,
     onDismissIgnored: () -> Unit,
     onSessionExpired: () -> Unit,
+    onRefresh: () -> Unit,
     onClose: () -> Unit,
     viewModel: AboutEditorViewModel,
 ) {
@@ -107,7 +108,10 @@ internal fun AboutEditor(
         Box(modifier = Modifier.wrapContentSize()) {
             AboutEditor(
                 uiState = uiState,
-                onEvent = viewModel::onEvent,
+                onEvent = { event ->
+                    viewModel.onEvent(event)
+                    if (event is AboutEditorEvent.Refresh) onRefresh()
+                },
             )
             QESnackbarHost(
                 modifier = Modifier
