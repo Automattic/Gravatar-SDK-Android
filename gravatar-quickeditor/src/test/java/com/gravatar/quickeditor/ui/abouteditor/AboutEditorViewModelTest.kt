@@ -5,8 +5,10 @@ import com.gravatar.extensions.defaultProfile
 import com.gravatar.quickeditor.data.models.QuickEditorError
 import com.gravatar.quickeditor.data.repository.ProfileRepository
 import com.gravatar.quickeditor.ui.CoroutineTestRule
+import com.gravatar.quickeditor.ui.avatarpicker.SectionError
 import com.gravatar.quickeditor.ui.editor.AboutInputField
 import com.gravatar.restapi.models.UpdateProfileRequest
+import com.gravatar.services.ErrorType
 import com.gravatar.services.GravatarResult
 import com.gravatar.types.Email
 import io.mockk.coEvery
@@ -77,9 +79,37 @@ class AboutEditorViewModelTest {
         viewModel.uiState.test {
             assertEquals(AboutEditorUiState(isLoading = false), awaitItem())
             assertEquals(AboutEditorUiState(isLoading = true), awaitItem())
-            assertEquals(AboutEditorUiState(isLoading = false), awaitItem())
+            assertEquals(
+                AboutEditorUiState(
+                    isLoading = false,
+                    error = SectionError.Unknown,
+                ),
+                awaitItem(),
+            )
         }
     }
+
+    @Test
+    fun `given view model initialization when profile fetch fails with unauthorized then uiState is updated`() =
+        runTest {
+            coEvery { profileRepository.getProfile(email) } returns GravatarResult.Failure(
+                QuickEditorError.Request(ErrorType.Unauthorized),
+            )
+
+            viewModel = initViewModel()
+
+            viewModel.uiState.test {
+                assertEquals(AboutEditorUiState(isLoading = false), awaitItem())
+                assertEquals(AboutEditorUiState(isLoading = true), awaitItem())
+                assertEquals(
+                    AboutEditorUiState(
+                        isLoading = false,
+                        error = SectionError.InvalidToken(true),
+                    ),
+                    awaitItem(),
+                )
+            }
+        }
 
     @Test
     fun `given updated about field when save clicked and update succeeds then uiState is updated`() = runTest {
@@ -295,5 +325,6 @@ class AboutEditorViewModelTest {
         email = email,
         profileRepository = profileRepository,
         visibleAboutFields = aboutFields,
+        handleExpiredSession = true,
     )
 }

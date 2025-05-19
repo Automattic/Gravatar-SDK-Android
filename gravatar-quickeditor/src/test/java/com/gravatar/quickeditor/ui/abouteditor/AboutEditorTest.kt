@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.gravatar.quickeditor.ui.avatarpicker.SectionError
 import com.gravatar.quickeditor.ui.editor.AboutInputField
 import com.gravatar.quickeditor.ui.gravatarScreenshotTest
 import com.gravatar.uitestutils.RoborazziTest
@@ -51,8 +52,7 @@ class AboutEditorTest : RoborazziTest() {
                 aboutFields = aboutFields,
                 isLoading = false,
             ),
-            onSaveClick = { },
-            onValueChange = { },
+            onEvent = { },
         )
     }
 
@@ -63,8 +63,7 @@ class AboutEditorTest : RoborazziTest() {
                 aboutFields = aboutFields.filter { it.type.isPersonal }.toSet(),
                 isLoading = false,
             ),
-            onSaveClick = { },
-            onValueChange = { },
+            onEvent = { },
         )
     }
 
@@ -76,8 +75,7 @@ class AboutEditorTest : RoborazziTest() {
                 aboutFields = aboutFields,
                 isLoading = false,
             ),
-            onSaveClick = { },
-            onValueChange = { },
+            onEvent = { },
         )
     }
 
@@ -89,8 +87,7 @@ class AboutEditorTest : RoborazziTest() {
                     aboutFields = aboutFields,
                     isLoading = false,
                 ),
-                onSaveClick = { },
-                onValueChange = { },
+                onEvent = { },
             )
         }
     }
@@ -101,8 +98,7 @@ class AboutEditorTest : RoborazziTest() {
             uiState = AboutEditorUiState(
                 isLoading = true,
             ),
-            onSaveClick = { },
-            onValueChange = { },
+            onEvent = { },
         )
     }
 
@@ -114,8 +110,20 @@ class AboutEditorTest : RoborazziTest() {
                 isLoading = false,
                 savingProfile = true,
             ),
-            onSaveClick = { },
-            onValueChange = { },
+            onEvent = { },
+        )
+    }
+
+    @Test
+    fun aboutEditorNoInternetError() = gravatarScreenshotTest {
+        AboutEditor(
+            uiState = AboutEditorUiState(
+                aboutFields = aboutFields,
+                isLoading = false,
+                savingProfile = true,
+                error = SectionError.NoInternetConnection,
+            ),
+            onEvent = { },
         )
     }
 }

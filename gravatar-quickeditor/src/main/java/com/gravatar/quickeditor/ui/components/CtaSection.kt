@@ -22,7 +22,7 @@ internal fun CtaSection(
     title: String? = null,
 ) {
     Surface(
-        modifier = modifier
+        modifier = modifier,
     ) {
         Column(
             modifier = Modifier.padding(16.dp),

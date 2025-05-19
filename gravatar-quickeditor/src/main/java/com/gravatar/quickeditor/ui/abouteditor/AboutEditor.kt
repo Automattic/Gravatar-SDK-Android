@@ -29,13 +29,16 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.gravatar.quickeditor.R
 import com.gravatar.quickeditor.ui.abouteditor.components.AboutSection
 import com.gravatar.quickeditor.ui.abouteditor.components.DiscardChangesAlertDialog
+import com.gravatar.quickeditor.ui.avatarpicker.SectionError
+import com.gravatar.quickeditor.ui.avatarpicker.buttonTextRes
+import com.gravatar.quickeditor.ui.avatarpicker.messageRes
+import com.gravatar.quickeditor.ui.avatarpicker.titleRes
+import com.gravatar.quickeditor.ui.components.CtaSection
 import com.gravatar.quickeditor.ui.components.QEButton
 import com.gravatar.quickeditor.ui.editor.AboutInputField
-import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
 import com.gravatar.quickeditor.ui.extensions.QESnackbarHost
 import com.gravatar.quickeditor.ui.extensions.SnackbarType
 import com.gravatar.quickeditor.ui.extensions.showQESnackbar
@@ -47,13 +50,11 @@ import kotlinx.coroutines.withContext
 
 @Composable
 internal fun AboutEditor(
-    quickEditorParams: GravatarQuickEditorParams,
     onProfileUpdated: (Profile) -> Unit,
     onDismissIgnored: () -> Unit,
+    onSessionExpired: () -> Unit,
     onClose: () -> Unit,
-    viewModel: AboutEditorViewModel = viewModel(
-        factory = AboutEditorViewModelFactory(quickEditorParams),
-    ),
+    viewModel: AboutEditorViewModel,
 ) {
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     val snackState = remember { SnackbarHostState() }
@@ -95,6 +96,7 @@ internal fun AboutEditor(
                         }
 
                         AboutEditorAction.NotifyDismissIgnored -> onDismissIgnored()
+                        AboutEditorAction.InvokeAuthFailed -> onSessionExpired()
                     }
                 }
             }
@@ -105,10 +107,7 @@ internal fun AboutEditor(
         Box(modifier = Modifier.wrapContentSize()) {
             AboutEditor(
                 uiState = uiState,
-                onValueChange = { aboutField ->
-                    viewModel.onEvent(AboutEditorEvent.OnAboutFieldUpdated(aboutField))
-                },
-                onSaveClick = { viewModel.onEvent(AboutEditorEvent.OnSaveClicked) },
+                onEvent = viewModel::onEvent,
             )
             QESnackbarHost(
                 modifier = Modifier
@@ -129,13 +128,11 @@ internal fun AboutEditor(
 }
 
 @Composable
-internal fun AboutEditor(
-    uiState: AboutEditorUiState,
-    onValueChange: (AboutEditorField) -> Unit,
-    onSaveClick: () -> Unit,
-) {
+internal fun AboutEditor(uiState: AboutEditorUiState, onEvent: (AboutEditorEvent) -> Unit) {
     Surface {
-        Column {
+        Column(
+            modifier = Modifier.padding(bottom = 24.dp),
+        ) {
             Box(
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
@@ -158,6 +155,16 @@ internal fun AboutEditor(
                         }
                     }
 
+                    uiState.error != null -> CtaSection(
+                        title = stringResource(id = uiState.error.titleRes),
+                        message = stringResource(id = uiState.error.messageRes),
+                        buttonText = stringResource(id = uiState.error.buttonTextRes),
+                        onButtonClick = { onEvent(uiState.error.event) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 10.dp),
+                    )
+
                     else -> {
                         AboutSection(
                             aboutFields = uiState.aboutFields,
@@ -165,23 +172,34 @@ internal fun AboutEditor(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(16.dp),
-                            onValueChange = onValueChange,
+                            onValueChange = { onEvent(AboutEditorEvent.OnAboutFieldUpdated(it)) },
                         )
                     }
                 }
             }
-            QEButton(
-                buttonText = stringResource(R.string.gravatar_qe_avatar_alt_text_save_button),
-                onClick = onSaveClick,
-                enabled = uiState.saveEnabled,
-                loading = uiState.savingProfile,
-                modifier = Modifier
-                    .padding(horizontal = 16.dp, vertical = 24.dp)
-                    .fillMaxWidth(),
-            )
+            if (uiState.error == null) {
+                QEButton(
+                    buttonText = stringResource(R.string.gravatar_qe_avatar_alt_text_save_button),
+                    onClick = { onEvent(AboutEditorEvent.OnSaveClicked) },
+                    enabled = uiState.saveEnabled,
+                    loading = uiState.savingProfile,
+                    modifier = Modifier
+                        .padding(start = 32.dp, end = 32.dp, top = 24.dp)
+                        .fillMaxWidth(),
+                )
+            }
         }
     }
 }
+
+private val SectionError.event: AboutEditorEvent
+    get() = when (this) {
+        is SectionError.InvalidToken -> AboutEditorEvent.HandleAuthFailureTapped
+        SectionError.ServerError,
+        SectionError.Unknown,
+        SectionError.NoInternetConnection,
+        -> AboutEditorEvent.Refresh
+    }
 
 @Preview(showBackground = true, heightDp = 500)
 @Composable
@@ -223,8 +241,7 @@ internal fun AboutEditorLoadedPreview() {
                         ),
                     ),
                 ),
-                onValueChange = { },
-                onSaveClick = { },
+                onEvent = { },
             )
         }
     }
@@ -240,8 +257,7 @@ internal fun AboutEditorLoadingPreview() {
                     aboutFields = emptySet(),
                     isLoading = true,
                 ),
-                onValueChange = { },
-                onSaveClick = { },
+                onEvent = { },
             )
         }
     }

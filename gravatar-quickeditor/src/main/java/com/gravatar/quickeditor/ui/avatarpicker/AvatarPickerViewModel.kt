@@ -291,7 +291,11 @@ internal class AvatarPickerViewModel(
 
             is GravatarResult.Failure -> {
                 _uiState.update { currentState ->
-                    currentState.copy(emailAvatars = null, isLoading = false, error = result.error.asSectionError)
+                    currentState.copy(
+                        emailAvatars = null,
+                        isLoading = false,
+                        error = result.error.asSectionError(handleExpiredSession),
+                    )
                 }
             }
         }
@@ -403,20 +407,21 @@ internal class AvatarPickerViewModel(
         }
     }
 
-    private val QuickEditorError.asSectionError: SectionError
-        get() = when (this) {
-            QuickEditorError.TokenNotFound -> SectionError.InvalidToken(handleExpiredSession)
-            QuickEditorError.Unknown -> SectionError.Unknown
-            is QuickEditorError.Request -> when (type) {
-                ErrorType.Server -> SectionError.ServerError
-                ErrorType.Network -> SectionError.NoInternetConnection
-                ErrorType.Unauthorized -> SectionError.InvalidToken(handleExpiredSession)
-                else -> SectionError.Unknown
-            }
-        }
-
     private fun Avatar?.shouldUpdateRating(newRating: Avatar.Rating?): Boolean {
         return newRating != null && this?.rating != newRating
+    }
+}
+
+internal fun QuickEditorError.asSectionError(handleExpiredSession: Boolean): SectionError {
+    return when (this) {
+        QuickEditorError.TokenNotFound -> SectionError.InvalidToken(handleExpiredSession)
+        QuickEditorError.Unknown -> SectionError.Unknown
+        is QuickEditorError.Request -> when (type) {
+            ErrorType.Server -> SectionError.ServerError
+            ErrorType.Network -> SectionError.NoInternetConnection
+            ErrorType.Unauthorized -> SectionError.InvalidToken(handleExpiredSession)
+            else -> SectionError.Unknown
+        }
     }
 }
 
