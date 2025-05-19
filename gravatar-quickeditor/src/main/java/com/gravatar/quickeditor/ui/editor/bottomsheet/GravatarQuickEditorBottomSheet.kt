@@ -4,7 +4,9 @@ import android.content.res.Configuration
 import android.graphics.Color
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.asPaddingValues
@@ -13,6 +15,7 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -261,36 +264,49 @@ private fun GravatarModalBottomSheet(
                     Scrim(
                         scrimColor = MaterialTheme.colorScheme.scrim.copy(alpha = 0.32f),
                     )
-                    Sheet(
+                    Box(
                         modifier = Modifier
-                            .imePadding()
-                            .clip(RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp))
-                            .background(MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp))
-                            .widthIn(max = 640.dp)
-                            .fillMaxWidth()
                             .padding(
-                                WindowInsets.navigationBars
-                                    .only(WindowInsetsSides.Vertical)
-                                    .asPaddingValues(),
+                                paddingValues = if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                                    PaddingValues(0.dp)
+                                } else {
+                                    WindowInsets.statusBars
+                                        .only(WindowInsetsSides.Top)
+                                        .asPaddingValues()
+                                },
                             ),
                     ) {
-                        val window = LocalModalWindow.current
-                        val isDarkTheme = isSystemInDarkTheme()
-                        LaunchedEffect(Unit) {
-                            window.navigationBarColor = Color.TRANSPARENT
-                            WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightNavigationBars =
-                                !isDarkTheme
-                        }
-                        Surface(
+                        Sheet(
                             modifier = Modifier
-                                .fillMaxWidth(),
-                            tonalElevation = 1.dp,
+                                .imePadding()
+                                .clip(RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp))
+                                .background(MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp))
+                                .widthIn(max = 640.dp)
+                                .fillMaxWidth()
+                                .padding(
+                                    WindowInsets.navigationBars
+                                        .only(WindowInsetsSides.Vertical)
+                                        .asPaddingValues(),
+                                ),
                         ) {
-                            Column(
-                                horizontalAlignment = Alignment.CenterHorizontally,
+                            val window = LocalModalWindow.current
+                            val isDarkTheme = isSystemInDarkTheme()
+                            LaunchedEffect(Unit) {
+                                window.navigationBarColor = Color.TRANSPARENT
+                                WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightNavigationBars =
+                                    !isDarkTheme
+                            }
+                            Surface(
+                                modifier = Modifier
+                                    .fillMaxWidth(),
+                                tonalElevation = 1.dp,
                             ) {
-                                QEDragHandle()
-                                content()
+                                Column(
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                ) {
+                                    QEDragHandle()
+                                    content()
+                                }
                             }
                         }
                     }
@@ -300,12 +316,11 @@ private fun GravatarModalBottomSheet(
     }
 }
 
-internal val peek = SheetDetent(identifier = "peek") { containerHeight, _ ->
-    containerHeight * 0.6f
-}
-
 @Composable
 internal fun AvatarPickerContentLayout.modalDetents(): ModalDetents {
+    val peek = SheetDetent(identifier = "peek") { containerHeight, sheetHeight ->
+        containerHeight * 0.6f
+    }
     val windowHeightSizeClass = currentWindowAdaptiveInfo().windowSizeClass.windowHeightSizeClass
     val initialDetent = if (windowHeightSizeClass == WindowHeightSizeClass.COMPACT) {
         FullyExpanded
