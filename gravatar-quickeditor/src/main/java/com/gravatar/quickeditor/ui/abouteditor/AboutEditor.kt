@@ -1,5 +1,6 @@
 package com.gravatar.quickeditor.ui.abouteditor
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -105,7 +106,10 @@ internal fun AboutEditor(
     }
 
     Surface {
-        Box(modifier = Modifier.wrapContentSize()) {
+        Box(modifier = Modifier
+            .wrapContentSize()
+            .animateContentSize()
+        ) {
             AboutEditor(
                 uiState = uiState,
                 onEvent = { event ->
