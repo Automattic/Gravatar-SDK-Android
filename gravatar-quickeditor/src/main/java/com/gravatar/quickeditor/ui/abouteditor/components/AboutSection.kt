@@ -1,12 +1,9 @@
 package com.gravatar.quickeditor.ui.abouteditor.components
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -24,28 +21,46 @@ internal fun AboutSection(
     onValueChange: (AboutEditorField) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(modifier = modifier) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(32.dp),
+    ) {
         if (aboutFields.any { it.type.isPersonal }) {
             AboutFieldsSection(
-                label = stringResource(R.string.gravatar_qe_about_field_section_label_personal),
+                label = aboutFields.personalLabelRes?.let { stringResource(it) },
                 fields = aboutFields.filter { it.type.isPersonal }.toSet(),
                 formEnabled = formEnabled,
                 onValueChange = onValueChange,
-                modifier = Modifier.padding(top = 16.dp),
+                modifier = Modifier,
             )
         }
         if (aboutFields.any { it.type.isProfessional }) {
-            Spacer(modifier = Modifier.height(16.dp))
             AboutFieldsSection(
-                label = stringResource(R.string.gravatar_qe_about_field_section_label_professional),
+                label = aboutFields.professionalLabelRes?.let { stringResource(it) },
                 fields = aboutFields.filter { it.type.isProfessional }.toSet(),
                 formEnabled = formEnabled,
                 onValueChange = onValueChange,
             )
         }
-        Spacer(modifier = Modifier.height(8.dp))
     }
 }
+
+private val Set<AboutEditorField>.personalLabelRes: Int?
+    @StringRes get() = if (hasPersonalAndProfessional) {
+        R.string.gravatar_qe_about_field_section_label_personal
+    } else {
+        null
+    }
+
+private val Set<AboutEditorField>.professionalLabelRes: Int?
+    @StringRes get() = if (hasPersonalAndProfessional) {
+        R.string.gravatar_qe_about_field_section_label_professional
+    } else {
+        null
+    }
+
+private val Set<AboutEditorField>.hasPersonalAndProfessional: Boolean
+    get() = any { it.type.isPersonal } && any { it.type.isProfessional }
 
 internal val AboutEditorField.labelRes: Int
     @StringRes get() = when (this.type) {
@@ -70,45 +85,43 @@ internal val AboutEditorField.descriptionRes: Int?
 @Composable
 internal fun AboutSectionPreview() {
     GravatarTheme {
-        Box(modifier = Modifier.padding(10.dp)) {
-            AboutSection(
-                aboutFields = setOf(
-                    AboutEditorField(
-                        type = AboutInputField.DisplayName,
-                        value = "John Doe",
-                        maxLines = 1,
-                    ),
-                    AboutEditorField(
-                        type = AboutInputField.AboutMe,
-                        value = "My description",
-                        maxLines = 3,
-                    ),
-                    AboutEditorField(
-                        type = AboutInputField.Pronunciation,
-                        value = "John Doe",
-                    ),
-                    AboutEditorField(
-                        type = AboutInputField.Pronouns,
-                        value = "he/him",
-                    ),
-                    AboutEditorField(
-                        type = AboutInputField.Location,
-                        value = "San Francisco, CA",
-                    ),
-                    AboutEditorField(
-                        type = AboutInputField.Company,
-                        value = "Automattic",
-                    ),
-                    AboutEditorField(
-                        type = AboutInputField.JobTitle,
-                        value = "Software Engineer",
-                    ),
+        AboutSection(
+            aboutFields = setOf(
+                AboutEditorField(
+                    type = AboutInputField.DisplayName,
+                    value = "John Doe",
+                    maxLines = 1,
                 ),
-                formEnabled = true,
-                onValueChange = { },
-                modifier = Modifier.fillMaxWidth(),
-            )
-        }
+                AboutEditorField(
+                    type = AboutInputField.AboutMe,
+                    value = "My description",
+                    maxLines = 3,
+                ),
+                AboutEditorField(
+                    type = AboutInputField.Pronunciation,
+                    value = "John Doe",
+                ),
+                AboutEditorField(
+                    type = AboutInputField.Pronouns,
+                    value = "he/him",
+                ),
+                AboutEditorField(
+                    type = AboutInputField.Location,
+                    value = "San Francisco, CA",
+                ),
+                AboutEditorField(
+                    type = AboutInputField.Company,
+                    value = "Automattic",
+                ),
+                AboutEditorField(
+                    type = AboutInputField.JobTitle,
+                    value = "Software Engineer",
+                ),
+            ),
+            formEnabled = true,
+            onValueChange = { },
+            modifier = Modifier.fillMaxWidth(),
+        )
     }
 }
 
@@ -116,36 +129,34 @@ internal fun AboutSectionPreview() {
 @Composable
 internal fun AboutSectionPersonalOnlyPreview() {
     GravatarTheme {
-        Box(modifier = Modifier.padding(10.dp)) {
-            AboutSection(
-                aboutFields = setOf(
-                    AboutEditorField(
-                        type = AboutInputField.DisplayName,
-                        value = "John Doe",
-                        maxLines = 1,
-                    ),
-                    AboutEditorField(
-                        type = AboutInputField.AboutMe,
-                        value = "My description",
-                        maxLines = 3,
-                    ),
-                    AboutEditorField(
-                        type = AboutInputField.Pronunciation,
-                        value = "John Doe",
-                    ),
-                    AboutEditorField(
-                        type = AboutInputField.Pronouns,
-                        value = "he/him",
-                    ),
-                    AboutEditorField(
-                        type = AboutInputField.Location,
-                        value = "San Francisco, CA",
-                    ),
+        AboutSection(
+            aboutFields = setOf(
+                AboutEditorField(
+                    type = AboutInputField.DisplayName,
+                    value = "John Doe",
+                    maxLines = 1,
                 ),
-                formEnabled = true,
-                onValueChange = { },
-                modifier = Modifier.fillMaxWidth(),
-            )
-        }
+                AboutEditorField(
+                    type = AboutInputField.AboutMe,
+                    value = "My description",
+                    maxLines = 3,
+                ),
+                AboutEditorField(
+                    type = AboutInputField.Pronunciation,
+                    value = "John Doe",
+                ),
+                AboutEditorField(
+                    type = AboutInputField.Pronouns,
+                    value = "he/him",
+                ),
+                AboutEditorField(
+                    type = AboutInputField.Location,
+                    value = "San Francisco, CA",
+                ),
+            ),
+            formEnabled = true,
+            onValueChange = { },
+            modifier = Modifier.fillMaxWidth(),
+        )
     }
 }

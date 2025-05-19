@@ -30,8 +30,7 @@ internal fun AboutEditField(
 ) {
     Column(
         modifier = modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp),
+            .fillMaxWidth(),
     ) {
         Text(
             text = label,
@@ -62,11 +61,11 @@ internal fun AboutEditField(
             },
         )
         if (!description.isNullOrEmpty()) {
-            Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = description,
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(vertical = 8.dp),
             )
         }
     }

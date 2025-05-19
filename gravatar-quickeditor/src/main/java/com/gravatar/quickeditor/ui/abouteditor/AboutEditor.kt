@@ -164,7 +164,7 @@ internal fun AboutEditor(
                             formEnabled = uiState.formEnabled,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(horizontal = 16.dp),
+                                .padding(16.dp),
                             onValueChange = onValueChange,
                         )
                     }

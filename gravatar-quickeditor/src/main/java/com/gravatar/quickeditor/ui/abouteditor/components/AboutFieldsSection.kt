@@ -1,7 +1,7 @@
 package com.gravatar.quickeditor.ui.abouteditor.components
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -10,7 +10,7 @@ import com.gravatar.quickeditor.ui.abouteditor.AboutEditorField
 
 @Composable
 internal fun AboutFieldsSection(
-    label: String,
+    label: String?,
     fields: Set<AboutEditorField>,
     formEnabled: Boolean,
     onValueChange: (AboutEditorField) -> Unit,
@@ -18,11 +18,13 @@ internal fun AboutFieldsSection(
 ) {
     Column(
         modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        AboutEditSectionLabel(
-            title = label,
-            modifier = Modifier.padding(bottom = 8.dp),
-        )
+        label?.let {
+            AboutEditSectionLabel(
+                title = it,
+            )
+        }
         fields.forEach { editorField ->
             AboutEditField(
                 label = stringResource(editorField.labelRes),
