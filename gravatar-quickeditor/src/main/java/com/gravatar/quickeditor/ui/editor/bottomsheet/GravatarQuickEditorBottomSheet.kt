@@ -249,7 +249,7 @@ private fun GravatarModalBottomSheet(
             ModalBottomSheet(
                 state = modalBottomSheetState,
                 properties = ModalSheetProperties(
-                    dismissOnBackPress = true,
+                    dismissOnBackPress = false,
                     dismissOnClickOutside = true,
                 ),
             ) {
