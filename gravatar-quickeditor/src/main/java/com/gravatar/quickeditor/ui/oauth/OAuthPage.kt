@@ -42,6 +42,7 @@ import com.gravatar.quickeditor.ui.components.CtaSection
 import com.gravatar.quickeditor.ui.components.ProfileCard
 import com.gravatar.quickeditor.ui.components.QEPageDefault
 import com.gravatar.quickeditor.ui.components.QESectionMessage
+import com.gravatar.quickeditor.ui.components.withBorder
 import com.gravatar.types.Email
 import com.gravatar.ui.GravatarTheme
 import kotlinx.coroutines.Dispatchers
@@ -197,7 +198,7 @@ internal fun OauthPage(
                                     message = stringResource(R.string.gravatar_qe_login_required_message_v2),
                                     buttonText = stringResource(id = R.string.gravatar_qe_login_required_cta),
                                     onButtonClick = onStartOAuthClicked,
-                                    modifier = sectionModifier,
+                                    modifier = sectionModifier.withBorder(),
                                 )
                             }
 
@@ -212,7 +213,7 @@ internal fun OauthPage(
                                         id = R.string.gravatar_qe_avatar_picker_session_error_cta,
                                     ),
                                     onButtonClick = onStartOAuthClicked,
-                                    modifier = sectionModifier,
+                                    modifier = sectionModifier.withBorder(),
                                 )
                             }
 
@@ -224,7 +225,7 @@ internal fun OauthPage(
                                 ),
                                 buttonText = stringResource(id = R.string.gravatar_qe_avatar_picker_error_retry_cta),
                                 onButtonClick = { onEmailAssociationCheckClicked(status.token) },
-                                modifier = sectionModifier,
+                                modifier = sectionModifier.withBorder(),
                             )
                         }
                     }

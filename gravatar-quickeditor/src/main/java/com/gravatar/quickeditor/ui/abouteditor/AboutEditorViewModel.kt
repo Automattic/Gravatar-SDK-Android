@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.gravatar.quickeditor.QuickEditorContainer
 import com.gravatar.quickeditor.data.repository.ProfileRepository
+import com.gravatar.quickeditor.ui.avatarpicker.asSectionError
 import com.gravatar.quickeditor.ui.editor.AboutInputField
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
 import com.gravatar.restapi.models.Profile
@@ -22,6 +23,7 @@ import kotlinx.coroutines.launch
 
 internal class AboutEditorViewModel(
     private val email: Email,
+    private val handleExpiredSession: Boolean,
     private val visibleAboutFields: Set<AboutInputField>,
     private val profileRepository: ProfileRepository,
 ) : ViewModel() {
@@ -44,6 +46,13 @@ internal class AboutEditorViewModel(
             AboutEditorEvent.OnDoneClicked -> checkForUnsavedChanges()
             AboutEditorEvent.OnUnsavedChangesKeepEditingClicked -> dismissUnsavedChangesDialog()
             AboutEditorEvent.OnUnsavedChangesExitClicked -> discardUnsavedChangesDialog()
+            AboutEditorEvent.HandleAuthFailureTapped -> {
+                viewModelScope.launch {
+                    _actions.send(AboutEditorAction.InvokeAuthFailed)
+                }
+            }
+
+            AboutEditorEvent.Refresh -> fetchProfile()
         }
     }
 
@@ -145,14 +154,16 @@ internal class AboutEditorViewModel(
                         it.copy(
                             isLoading = false,
                             aboutFields = profile.aboutFields(visibleAboutFields),
+                            error = null,
                         )
                     }
                 }
 
                 is GravatarResult.Failure -> {
-                    _uiState.update {
-                        it.copy(
+                    _uiState.update { currentState ->
+                        currentState.copy(
                             isLoading = false,
+                            error = result.error.asSectionError(handleExpiredSession),
                         )
                     }
                 }
@@ -201,6 +212,7 @@ private val Set<AboutEditorField>.updateProfileRequest: UpdateProfileRequest
 
 internal class AboutEditorViewModelFactory(
     private val gravatarQuickEditorParams: GravatarQuickEditorParams,
+    private val handleExpiredSession: Boolean,
 ) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
@@ -208,6 +220,7 @@ internal class AboutEditorViewModelFactory(
             email = gravatarQuickEditorParams.email,
             profileRepository = QuickEditorContainer.getInstance().profileRepository,
             visibleAboutFields = gravatarQuickEditorParams.scopeOption.aboutFields,
+            handleExpiredSession = handleExpiredSession,
         ) as T
     }
 }

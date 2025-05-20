@@ -49,7 +49,7 @@ internal fun QuickEditor(
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     val uiState by viewModel.uiState.collectAsState()
     val aboutEditorViewModel: AboutEditorViewModel = viewModel(
-        factory = AboutEditorViewModelFactory(gravatarQuickEditorParams),
+        factory = AboutEditorViewModelFactory(gravatarQuickEditorParams, handleExpiredSession),
     )
 
     LaunchedEffect(confirmDismissal) {
@@ -108,12 +108,13 @@ internal fun QuickEditor(
 
                 QuickEditorPage.AboutEditor -> {
                     AboutEditor(
-                        quickEditorParams = gravatarQuickEditorParams,
                         onDismissIgnored = onDismissIgnored,
                         onProfileUpdated = { profile ->
                             updateHandler(AboutEditorResult(profile))
                             viewModel.onEvent(QuickEditorEvent.OnProfileUpdated(profile))
                         },
+                        onRefresh = { viewModel.onEvent(QuickEditorEvent.Refresh) },
+                        onSessionExpired = onSessionExpired,
                         onClose = { onDoneClicked() },
                         viewModel = aboutEditorViewModel,
                     )

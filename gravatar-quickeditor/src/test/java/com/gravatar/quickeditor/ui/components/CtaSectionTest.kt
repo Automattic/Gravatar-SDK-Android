@@ -1,5 +1,6 @@
 package com.gravatar.quickeditor.ui.components
 
+import androidx.compose.ui.Modifier
 import com.gravatar.quickeditor.ui.gravatarScreenshotTest
 import com.gravatar.uitestutils.RoborazziTest
 import org.junit.Test
@@ -13,6 +14,7 @@ class CtaSectionTest : RoborazziTest() {
             message = "Something went wrong and we couldn't connect to Gravatar servers.",
             buttonText = "Retry",
             onButtonClick = {},
+            modifier = Modifier.withBorder(),
         )
     }
 
@@ -24,6 +26,7 @@ class CtaSectionTest : RoborazziTest() {
             message = "Something went wrong and we couldn't connect to Gravatar servers.",
             buttonText = "Retry",
             onButtonClick = {},
+            modifier = Modifier.withBorder(),
         )
     }
 
@@ -33,6 +36,7 @@ class CtaSectionTest : RoborazziTest() {
             message = "Manage your profile for the web in one place.",
             buttonText = "Continue",
             onButtonClick = {},
+            modifier = Modifier.withBorder(),
         )
     }
 }
