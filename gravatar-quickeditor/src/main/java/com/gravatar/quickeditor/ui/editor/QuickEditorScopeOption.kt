@@ -47,6 +47,13 @@ public class QuickEditorScopeOption private constructor(
             is Scope.AvatarPicker -> AboutInputField.all
         }
 
+    internal val initialPage: QuickEditorPage
+        get() = when (scope) {
+            is Scope.AvatarPicker -> QuickEditorPage.AvatarPicker
+            is Scope.AboutEditor -> QuickEditorPage.AboutEditor
+            is Scope.AvatarPickerAndAboutEditor -> scope.config.initialPage.internalType
+        }
+
     public companion object {
         internal val default = QuickEditorScopeOption(
             scope = Scope.AvatarPicker(AvatarPickerConfiguration.default),

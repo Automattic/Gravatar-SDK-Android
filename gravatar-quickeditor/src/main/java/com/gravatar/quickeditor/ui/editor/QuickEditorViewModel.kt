@@ -121,14 +121,7 @@ internal class QuickEditorViewModelFactory(
     }
 }
 
-private val QuickEditorScopeOption.initialPage: QuickEditorPage
-    get() = when (scope) {
-        is Scope.AvatarPicker -> QuickEditorPage.AvatarPicker
-        is Scope.AboutEditor -> QuickEditorPage.AboutEditor
-        is Scope.AvatarPickerAndAboutEditor -> scope.config.initialPage.internalType
-    }
-
-private val AvatarPickerAndAboutEditorConfiguration.Page.internalType: QuickEditorPage
+internal val AvatarPickerAndAboutEditorConfiguration.Page.internalType: QuickEditorPage
     get() = when (this) {
         AvatarPicker -> QuickEditorPage.AvatarPicker
         AboutEditor -> QuickEditorPage.AboutEditor

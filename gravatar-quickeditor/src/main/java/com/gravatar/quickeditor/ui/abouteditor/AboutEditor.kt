@@ -106,9 +106,10 @@ internal fun AboutEditor(
     }
 
     Surface {
-        Box(modifier = Modifier
-            .wrapContentSize()
-            .animateContentSize()
+        Box(
+            modifier = Modifier
+                .wrapContentSize()
+                .animateContentSize(),
         ) {
             AboutEditor(
                 uiState = uiState,

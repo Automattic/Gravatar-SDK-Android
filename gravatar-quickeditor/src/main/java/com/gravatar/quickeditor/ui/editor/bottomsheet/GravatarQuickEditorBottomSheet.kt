@@ -57,6 +57,8 @@ import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorDismissReason
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorPage
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
 import com.gravatar.quickeditor.ui.editor.GravatarUiMode
+import com.gravatar.quickeditor.ui.editor.QuickEditorPage
+import com.gravatar.quickeditor.ui.editor.QuickEditorScopeOption
 import com.gravatar.quickeditor.ui.editor.UpdateHandler
 import com.gravatar.ui.GravatarTheme
 import com.gravatar.ui.LocalGravatarTheme
@@ -87,7 +89,7 @@ public fun GravatarQuickEditorBottomSheet(
         authenticationMethod = authenticationMethod,
         updateHandler = updateHandler,
         onDismiss = onDismiss,
-        modalDetents = gravatarQuickEditorParams.scopeOption.avatarPickerContentLayout.modalDetents(),
+        modalDetents = gravatarQuickEditorParams.scopeOption.modalDetents(),
     )
 }
 
@@ -123,7 +125,7 @@ public fun GravatarQuickEditorBottomSheet(
             }
         },
         onDismiss = onDismiss,
-        modalDetents = gravatarQuickEditorParams.scopeOption.avatarPickerContentLayout.modalDetents(),
+        modalDetents = gravatarQuickEditorParams.scopeOption.modalDetents(),
     )
 }
 
@@ -316,34 +318,63 @@ private fun GravatarModalBottomSheet(
     }
 }
 
-@Composable
-internal fun AvatarPickerContentLayout.modalDetents(): ModalDetents {
-    val peek = SheetDetent(identifier = "peek") { containerHeight, sheetHeight ->
-        containerHeight * 0.6f
-    }
-    val windowHeightSizeClass = currentWindowAdaptiveInfo().windowSizeClass.windowHeightSizeClass
-    val initialDetent = if (windowHeightSizeClass == WindowHeightSizeClass.COMPACT) {
-        FullyExpanded
-    } else {
-        when (this) {
-            AvatarPickerContentLayout.Horizontal -> FullyExpanded
-            AvatarPickerContentLayout.Vertical -> peek
-        }
-    }
+private val peek = SheetDetent(identifier = "peek") { containerHeight, _ ->
+    containerHeight * 0.6f
+}
 
-    val detents = buildList {
-        add(Hidden)
-        if (this@modalDetents == AvatarPickerContentLayout.Horizontal) {
-            add(FullyExpanded)
-        } else {
+@Composable
+internal fun QuickEditorScopeOption.modalDetents(): ModalDetents {
+    val windowHeightSizeClass = currentWindowAdaptiveInfo().windowSizeClass.windowHeightSizeClass
+
+    val detents = buildDetentsList()
+    val initialDetent = initialDetent(windowHeightSizeClass)
+
+    return ModalDetents(
+        initialDetent = if (detents.contains(initialDetent)) initialDetent else detents.last(),
+        detents = detents,
+    )
+}
+
+private fun QuickEditorScopeOption.buildDetentsList(): List<SheetDetent> {
+    return when (this.scope) {
+        is QuickEditorScopeOption.Scope.AvatarPickerAndAboutEditor,
+        is QuickEditorScopeOption.Scope.AboutEditor,
+        -> buildList {
+            add(Hidden)
             add(peek)
             add(FullyExpanded)
         }
+
+        is QuickEditorScopeOption.Scope.AvatarPicker -> buildList {
+            add(Hidden)
+            if (avatarPickerContentLayout == AvatarPickerContentLayout.Vertical) {
+                add(peek)
+            }
+            add(FullyExpanded)
+        }
     }
-    return ModalDetents(
-        initialDetent = initialDetent,
-        detents = detents,
-    )
+}
+
+private fun QuickEditorScopeOption.initialDetent(windowHeightSizeClass: WindowHeightSizeClass): SheetDetent {
+    return if (windowHeightSizeClass == WindowHeightSizeClass.COMPACT) {
+        FullyExpanded
+    } else {
+        when (this.scope) {
+            is QuickEditorScopeOption.Scope.AboutEditor -> peek
+            is QuickEditorScopeOption.Scope.AvatarPickerAndAboutEditor,
+            is QuickEditorScopeOption.Scope.AvatarPicker,
+            -> {
+                if (
+                    this.avatarPickerContentLayout == AvatarPickerContentLayout.Horizontal &&
+                    this.initialPage == QuickEditorPage.AvatarPicker
+                ) {
+                    FullyExpanded
+                } else {
+                    peek
+                }
+            }
+        }
+    }
 }
 
 internal data class ModalDetents(
