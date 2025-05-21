@@ -7,6 +7,7 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -47,6 +48,12 @@ internal fun GravatarQuickEditorPage(
     onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit = {},
 ) {
     val navController = rememberNavController()
+
+    LaunchedEffect(confirmDismissal) {
+        if (confirmDismissal && navController.currentDestination?.route != EditorNavDestinations.QUICK_EDITOR.name) {
+            onDoneClicked()
+        }
+    }
 
     NavHost(
         navController,
@@ -159,10 +166,10 @@ private fun NavGraphBuilder.addEditorGraph(
 ) {
     navigation(
         route = QuickEditorPage.EDITOR.name,
-        startDestination = EditorNavDestinations.AVATAR_SELECTION.name,
+        startDestination = EditorNavDestinations.QUICK_EDITOR.name,
     ) {
         composable(
-            route = EditorNavDestinations.AVATAR_SELECTION.name,
+            route = EditorNavDestinations.QUICK_EDITOR.name,
             enterTransition = { fadeIn() },
             popEnterTransition = { fadeIn() + expandVertically() },
             exitTransition = {
