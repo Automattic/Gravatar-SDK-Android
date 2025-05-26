@@ -25,7 +25,7 @@ internal fun addQuickEditorToView(
                     authenticationMethod = authenticationMethod,
                     updateHandler = updateHandler,
                     onDismiss = onDismiss,
-                    modalDetents = gravatarQuickEditorParams.scopeOption.avatarPickerContentLayout.modalDetents(),
+                    modalDetents = gravatarQuickEditorParams.scopeOption.modalDetents(),
                     onCurrentDetentChanged = {
                         if (it == Hidden) {
                             viewGroup.removeView(this)
