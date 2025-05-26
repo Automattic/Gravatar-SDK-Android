@@ -848,6 +848,20 @@
                 "type": "object",
                 "description": "The subset of data available for update. Field names match the ones in `Profile`. Only the provided fields will be updated.",
                 "properties": {
+                  "first_name": {
+                    "type": "string",
+                    "description": "The user's first name.",
+                    "examples": [
+                      "Alex"
+                    ]
+                  },
+                  "last_name": {
+                    "type": "string",
+                    "description": "The user's last name.",
+                    "examples": [
+                      "Morgan"
+                    ]
+                  },
                   "display_name": {
                     "type": "string",
                     "description": "The user's display name. This is the name that is displayed on their profile.",

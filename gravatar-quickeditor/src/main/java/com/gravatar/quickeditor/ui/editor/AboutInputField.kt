@@ -57,6 +57,18 @@ public value class AboutInputField(
         public val Company: AboutInputField = AboutInputField("company")
 
         /**
+         * User's first name. This is only provided in authenticated API requests.
+         */
+        @JvmStatic
+        public val FirstName: AboutInputField = AboutInputField("first_name")
+
+        /**
+         * User's last name. This is only provided in authenticated API requests.
+         */
+        @JvmStatic
+        public val LastName: AboutInputField = AboutInputField("last_name")
+
+        /**
          * A convenience set representing all possible about info fields.
          */
         @JvmStatic
@@ -68,6 +80,8 @@ public value class AboutInputField(
             Location,
             JobTitle,
             Company,
+            FirstName,
+            LastName,
         )
 
         /**
@@ -90,6 +104,15 @@ public value class AboutInputField(
             JobTitle,
             Company,
         )
+
+        /**
+         * A convenience set representing extra fields.
+         */
+        @JvmStatic
+        public val extra: Set<AboutInputField> = setOf(
+            FirstName,
+            LastName,
+        )
     }
 
     internal val isPersonal: Boolean
@@ -97,6 +120,9 @@ public value class AboutInputField(
 
     internal val isProfessional: Boolean
         get() = professional.contains(this)
+
+    internal val isExtra: Boolean
+        get() = extra.contains(this)
 
     internal val order: Int
         get() = when (this) {
@@ -107,6 +133,8 @@ public value class AboutInputField(
             Location -> 4
             JobTitle -> 100
             Company -> 101
+            FirstName -> 200
+            LastName -> 201
             else -> -1
         }
 }

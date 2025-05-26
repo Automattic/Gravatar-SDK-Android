@@ -764,7 +764,9 @@ public final class com/gravatar/restapi/models/UpdateProfileRequest {
 	public final fun getCompany ()Ljava/lang/String;
 	public final fun getDescription ()Ljava/lang/String;
 	public final fun getDisplayName ()Ljava/lang/String;
+	public final fun getFirstName ()Ljava/lang/String;
 	public final fun getJobTitle ()Ljava/lang/String;
+	public final fun getLastName ()Ljava/lang/String;
 	public final fun getLocation ()Ljava/lang/String;
 	public final fun getPronouns ()Ljava/lang/String;
 	public final fun getPronunciation ()Ljava/lang/String;
@@ -778,7 +780,9 @@ public final class com/gravatar/restapi/models/UpdateProfileRequest$Builder {
 	public final fun getCompany ()Ljava/lang/String;
 	public final fun getDescription ()Ljava/lang/String;
 	public final fun getDisplayName ()Ljava/lang/String;
+	public final fun getFirstName ()Ljava/lang/String;
 	public final fun getJobTitle ()Ljava/lang/String;
+	public final fun getLastName ()Ljava/lang/String;
 	public final fun getLocation ()Ljava/lang/String;
 	public final fun getPronouns ()Ljava/lang/String;
 	public final fun getPronunciation ()Ljava/lang/String;
@@ -788,8 +792,12 @@ public final class com/gravatar/restapi/models/UpdateProfileRequest$Builder {
 	public final synthetic fun setDescription (Ljava/lang/String;)V
 	public final fun setDisplayName (Ljava/lang/String;)Lcom/gravatar/restapi/models/UpdateProfileRequest$Builder;
 	public final synthetic fun setDisplayName (Ljava/lang/String;)V
+	public final fun setFirstName (Ljava/lang/String;)Lcom/gravatar/restapi/models/UpdateProfileRequest$Builder;
+	public final synthetic fun setFirstName (Ljava/lang/String;)V
 	public final fun setJobTitle (Ljava/lang/String;)Lcom/gravatar/restapi/models/UpdateProfileRequest$Builder;
 	public final synthetic fun setJobTitle (Ljava/lang/String;)V
+	public final fun setLastName (Ljava/lang/String;)Lcom/gravatar/restapi/models/UpdateProfileRequest$Builder;
+	public final synthetic fun setLastName (Ljava/lang/String;)V
 	public final fun setLocation (Ljava/lang/String;)Lcom/gravatar/restapi/models/UpdateProfileRequest$Builder;
 	public final synthetic fun setLocation (Ljava/lang/String;)V
 	public final fun setPronouns (Ljava/lang/String;)Lcom/gravatar/restapi/models/UpdateProfileRequest$Builder;
