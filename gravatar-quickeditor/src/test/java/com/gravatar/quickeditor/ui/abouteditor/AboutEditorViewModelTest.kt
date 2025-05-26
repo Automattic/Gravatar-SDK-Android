@@ -36,6 +36,8 @@ class AboutEditorViewModelTest {
     private val profile = defaultProfile(hash = "hash")
     private val updatedProfile = defaultProfile(hash = "hash", displayName = "Updated Name")
     private val updateProfileRequest = UpdateProfileRequest {
+        firstName = ""
+        lastName = ""
         displayName = "Updated Name"
         jobTitle = ""
         company = ""
