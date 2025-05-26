@@ -85,9 +85,11 @@ public final class com/gravatar/quickeditor/ui/abouteditor/components/Composable
 	public static final field INSTANCE Lcom/gravatar/quickeditor/ui/abouteditor/components/ComposableSingletons$AboutSectionKt;
 	public static field lambda-1 Lkotlin/jvm/functions/Function2;
 	public static field lambda-2 Lkotlin/jvm/functions/Function2;
+	public static field lambda-3 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
 	public final fun getLambda-1$gravatar_quickeditor_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-2$gravatar_quickeditor_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-3$gravatar_quickeditor_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/gravatar/quickeditor/ui/abouteditor/components/ComposableSingletons$DiscardChangesAlertDialogKt {
@@ -360,7 +362,10 @@ public final class com/gravatar/quickeditor/ui/editor/AboutInputField : android/
 	public static final fun getAll ()Ljava/util/Set;
 	public static final fun getCompany-K9h-Scs ()Ljava/lang/String;
 	public static final fun getDisplayName-K9h-Scs ()Ljava/lang/String;
+	public static final fun getExtra ()Ljava/util/Set;
+	public static final fun getFirstName-K9h-Scs ()Ljava/lang/String;
 	public static final fun getJobTitle-K9h-Scs ()Ljava/lang/String;
+	public static final fun getLastName-K9h-Scs ()Ljava/lang/String;
 	public static final fun getLocation-K9h-Scs ()Ljava/lang/String;
 	public static final fun getPersonal ()Ljava/util/Set;
 	public static final fun getProfessional ()Ljava/util/Set;
@@ -381,7 +386,10 @@ public final class com/gravatar/quickeditor/ui/editor/AboutInputField$Companion 
 	public final fun getAll ()Ljava/util/Set;
 	public final fun getCompany-K9h-Scs ()Ljava/lang/String;
 	public final fun getDisplayName-K9h-Scs ()Ljava/lang/String;
+	public final fun getExtra ()Ljava/util/Set;
+	public final fun getFirstName-K9h-Scs ()Ljava/lang/String;
 	public final fun getJobTitle-K9h-Scs ()Ljava/lang/String;
+	public final fun getLastName-K9h-Scs ()Ljava/lang/String;
 	public final fun getLocation-K9h-Scs ()Ljava/lang/String;
 	public final fun getPersonal ()Ljava/util/Set;
 	public final fun getProfessional ()Ljava/util/Set;
