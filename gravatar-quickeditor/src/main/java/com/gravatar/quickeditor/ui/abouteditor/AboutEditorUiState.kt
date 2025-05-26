@@ -8,8 +8,11 @@ internal data class AboutEditorUiState(
     val savingProfile: Boolean = false,
     val discardChangesDialogVisible: Boolean = false,
     val error: SectionError? = null,
+    val savedAboutFields: Set<AboutEditorField> = emptySet(),
 ) {
     val formEnabled: Boolean = !savingProfile
 
-    val saveEnabled: Boolean = !isLoading
+    val unsavedChanges: Boolean = aboutFields != savedAboutFields
+
+    val saveEnabled: Boolean = !isLoading && unsavedChanges
 }

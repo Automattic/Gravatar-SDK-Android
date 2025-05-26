@@ -60,10 +60,12 @@ class AboutEditorViewModelTest {
         viewModel.uiState.test {
             assertEquals(AboutEditorUiState(isLoading = false), awaitItem())
             assertEquals(AboutEditorUiState(isLoading = true), awaitItem())
+            val aboutFields = profile.aboutFields(visibleAboutFields)
             assertEquals(
                 AboutEditorUiState(
                     isLoading = false,
-                    aboutFields = profile.aboutFields(visibleAboutFields),
+                    aboutFields = aboutFields,
+                    savedAboutFields = aboutFields,
                 ),
                 awaitItem(),
             )
@@ -135,17 +137,20 @@ class AboutEditorViewModelTest {
 
         viewModel.uiState.test {
             expectMostRecentItem()
+            val aboutFields = updatedProfile.aboutFields(visibleAboutFields)
             assertEquals(
                 AboutEditorUiState(
                     savingProfile = true,
-                    aboutFields = updatedProfile.aboutFields(visibleAboutFields),
+                    aboutFields = aboutFields,
+                    savedAboutFields = profile.aboutFields(visibleAboutFields),
                 ),
                 awaitItem(),
             )
             assertEquals(
                 AboutEditorUiState(
                     savingProfile = false,
-                    aboutFields = updatedProfile.aboutFields(visibleAboutFields),
+                    aboutFields = aboutFields,
+                    savedAboutFields = aboutFields,
                 ),
                 awaitItem(),
             )
@@ -177,17 +182,20 @@ class AboutEditorViewModelTest {
 
         viewModel.uiState.test {
             expectMostRecentItem()
+            val aboutFields = updatedProfile.aboutFields(visibleAboutFields)
             assertEquals(
                 AboutEditorUiState(
                     savingProfile = true,
-                    aboutFields = updatedProfile.aboutFields(visibleAboutFields),
+                    aboutFields = aboutFields,
+                    savedAboutFields = profile.aboutFields(visibleAboutFields),
                 ),
                 awaitItem(),
             )
             assertEquals(
                 AboutEditorUiState(
                     savingProfile = false,
-                    aboutFields = updatedProfile.aboutFields(visibleAboutFields),
+                    aboutFields = aboutFields,
+                    savedAboutFields = profile.aboutFields(visibleAboutFields),
                 ),
                 awaitItem(),
             )
@@ -218,18 +226,22 @@ class AboutEditorViewModelTest {
         viewModel.onEvent(AboutEditorEvent.OnSaveClicked)
 
         viewModel.uiState.test {
+            val aboutFields = updatedProfile.aboutFields(visibleAboutFields)
             expectMostRecentItem()
+            val savedAboutFields = profile.aboutFields(visibleAboutFields)
             assertEquals(
                 AboutEditorUiState(
                     savingProfile = true,
-                    aboutFields = updatedProfile.aboutFields(visibleAboutFields),
+                    aboutFields = aboutFields,
+                    savedAboutFields = savedAboutFields,
                 ),
                 awaitItem(),
             )
             assertEquals(
                 AboutEditorUiState(
                     savingProfile = false,
-                    aboutFields = updatedProfile.aboutFields(visibleAboutFields),
+                    aboutFields = aboutFields,
+                    savedAboutFields = savedAboutFields,
                     error = SectionError.InvalidToken(
                         showLogin = true,
                     ),
@@ -365,6 +377,37 @@ class AboutEditorViewModelTest {
                 ),
                 awaitItem().aboutFields,
             )
+        }
+    }
+
+    @Test
+    fun `given no changes when state update then save button is disabled`() = runTest {
+        viewModel = initViewModel()
+
+        advanceUntilIdle()
+
+        viewModel.uiState.test {
+            assertEquals(false, awaitItem().saveEnabled)
+        }
+    }
+
+    @Test
+    fun `given changes when state update then save button is enabled`() = runTest {
+        viewModel = initViewModel()
+
+        viewModel.onEvent(
+            AboutEditorEvent.OnAboutFieldUpdated(
+                AboutEditorField(
+                    type = AboutInputField.DisplayName,
+                    value = "New Display Name",
+                ),
+            ),
+        )
+
+        advanceUntilIdle()
+
+        viewModel.uiState.test {
+            assertEquals(true, awaitItem().saveEnabled)
         }
     }
 
