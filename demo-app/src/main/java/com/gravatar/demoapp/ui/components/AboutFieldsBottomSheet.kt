@@ -138,6 +138,8 @@ internal fun AboutInputField.translatedValue(context: Context): String {
         AboutInputField.Location -> com.gravatar.quickeditor.R.string.gravatar_qe_about_field_label_location
         AboutInputField.JobTitle -> com.gravatar.quickeditor.R.string.gravatar_qe_about_field_label_job_title
         AboutInputField.Company -> com.gravatar.quickeditor.R.string.gravatar_qe_about_field_label_company
+        AboutInputField.FirstName -> com.gravatar.quickeditor.R.string.gravatar_qe_about_field_label_first_name
+        AboutInputField.LastName -> com.gravatar.quickeditor.R.string.gravatar_qe_about_field_label_last_name
         else -> com.gravatar.quickeditor.R.string.gravatar_qe_about_field_label_display_name
     }.let { context.getString(it) }
 }
@@ -154,6 +156,8 @@ private fun AboutFieldsBottomSheetPreview() {
             AboutInputField.Location,
             AboutInputField.JobTitle,
             AboutInputField.Company,
+            AboutInputField.FirstName,
+            AboutInputField.LastName,
         ),
         onFieldsChanged = {},
     )
