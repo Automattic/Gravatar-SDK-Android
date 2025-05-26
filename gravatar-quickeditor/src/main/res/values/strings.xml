@@ -82,10 +82,14 @@
     <string name="gravatar_qe_about_field_label_location">Location</string>
     <string name="gravatar_qe_about_field_label_company">Company/Organization</string>
     <string name="gravatar_qe_about_field_label_job_title">Job Title</string>
+    <string name="gravatar_qe_about_field_label_first_name">First Name</string>
+    <string name="gravatar_qe_about_field_label_last_name">Last Name</string>
     <string name="gravatar_qe_about_field_description_about_me">Brief description for your profile.</string>
     <string name="gravatar_qe_about_field_description_pronunciation">Let them know how your name sounds like.</string>
     <string name="gravatar_qe_about_field_section_label_personal">Personal</string>
     <string name="gravatar_qe_about_field_section_label_professional">Professional</string>
+    <string name="gravatar_qe_about_field_section_label_extras">Extras</string>
+    <string name="gravatar_qe_about_field_section_description_extras">This information will not appear on your Gravatar Web Profile, but other apps and services can use it.</string>
     <string name="gravatar_qe_about_save_profile_error_message">Error saving the changes.</string>
     <string name="gravatar_qe_about_save_profile_success_message">Profile updated successfully</string>
     <string name="gravatar_qe_about_discard_changes_dialog_title">Unsaved changes!</string>
