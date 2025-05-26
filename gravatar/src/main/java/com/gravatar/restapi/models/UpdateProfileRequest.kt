@@ -14,6 +14,8 @@ import java.util.Objects
 /**
  * The subset of data available for update. Field names match the ones in `Profile`. Only the provided fields will be updated.
  *
+ * @param firstName The user's first name.
+ * @param lastName The user's last name.
  * @param displayName The user's display name. This is the name that is displayed on their profile.
  * @param description The about section on a user's profile.
  * @param pronunciation The phonetic pronunciation of the user's name.
@@ -24,6 +26,12 @@ import java.util.Objects
  */
 @JsonClass(generateAdapter = true)
 public class UpdateProfileRequest internal constructor(
+    // The user's first name.
+    @Json(name = "first_name")
+    public val firstName: kotlin.String? = null,
+    // The user's last name.
+    @Json(name = "last_name")
+    public val lastName: kotlin.String? = null,
     // The user's display name. This is the name that is displayed on their profile.
     @Json(name = "display_name")
     public val displayName: kotlin.String? = null,
@@ -46,9 +54,11 @@ public class UpdateProfileRequest internal constructor(
     @Json(name = "company")
     public val company: kotlin.String? = null,
 ) {
-    override fun toString(): String = "UpdateProfileRequest(displayName=$displayName, description=$description, pronunciation=$pronunciation, pronouns=$pronouns, location=$location, jobTitle=$jobTitle, company=$company)"
+    override fun toString(): String = "UpdateProfileRequest(firstName=$firstName, lastName=$lastName, displayName=$displayName, description=$description, pronunciation=$pronunciation, pronouns=$pronouns, location=$location, jobTitle=$jobTitle, company=$company)"
 
     override fun equals(other: Any?): Boolean = other is UpdateProfileRequest &&
+        firstName == other.firstName &&
+        lastName == other.lastName &&
         displayName == other.displayName &&
         description == other.description &&
         pronunciation == other.pronunciation &&
@@ -57,9 +67,17 @@ public class UpdateProfileRequest internal constructor(
         jobTitle == other.jobTitle &&
         company == other.company
 
-    override fun hashCode(): Int = Objects.hash(displayName, description, pronunciation, pronouns, location, jobTitle, company)
+    override fun hashCode(): Int = Objects.hash(firstName, lastName, displayName, description, pronunciation, pronouns, location, jobTitle, company)
 
     public class Builder {
+        // The user's first name.
+        @set:JvmSynthetic // Hide 'void' setter from Java
+        public var firstName: kotlin.String? = null
+
+        // The user's last name.
+        @set:JvmSynthetic // Hide 'void' setter from Java
+        public var lastName: kotlin.String? = null
+
         // The user's display name. This is the name that is displayed on their profile.
         @set:JvmSynthetic // Hide 'void' setter from Java
         public var displayName: kotlin.String? = null
@@ -88,6 +106,10 @@ public class UpdateProfileRequest internal constructor(
         @set:JvmSynthetic // Hide 'void' setter from Java
         public var company: kotlin.String? = null
 
+        public fun setFirstName(firstName: kotlin.String?): Builder = apply { this.firstName = firstName }
+
+        public fun setLastName(lastName: kotlin.String?): Builder = apply { this.lastName = lastName }
+
         public fun setDisplayName(displayName: kotlin.String?): Builder = apply { this.displayName = displayName }
 
         public fun setDescription(description: kotlin.String?): Builder = apply { this.description = description }
@@ -102,7 +124,7 @@ public class UpdateProfileRequest internal constructor(
 
         public fun setCompany(company: kotlin.String?): Builder = apply { this.company = company }
 
-        public fun build(): UpdateProfileRequest = UpdateProfileRequest(displayName, description, pronunciation, pronouns, location, jobTitle, company)
+        public fun build(): UpdateProfileRequest = UpdateProfileRequest(firstName, lastName, displayName, description, pronunciation, pronouns, location, jobTitle, company)
     }
 }
 
