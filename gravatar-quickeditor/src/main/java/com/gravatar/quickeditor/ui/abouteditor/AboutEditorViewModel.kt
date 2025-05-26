@@ -185,6 +185,8 @@ internal fun Profile.aboutFields(visibleAboutFields: Set<AboutInputField>): Set<
                     AboutInputField.Location -> location
                     AboutInputField.JobTitle -> jobTitle
                     AboutInputField.Company -> company
+                    AboutInputField.FirstName -> firstName.orEmpty()
+                    AboutInputField.LastName -> lastName.orEmpty()
                     else -> ""
                 },
                 maxLines = when (it) {
@@ -200,6 +202,8 @@ internal fun Profile.aboutFields(visibleAboutFields: Set<AboutInputField>): Set<
 private val Set<AboutEditorField>.updateProfileRequest: UpdateProfileRequest
     get() {
         return UpdateProfileRequest {
+            firstName = this@updateProfileRequest.find { it.type == AboutInputField.FirstName }?.value
+            lastName = this@updateProfileRequest.find { it.type == AboutInputField.LastName }?.value
             displayName = this@updateProfileRequest.find { it.type == AboutInputField.DisplayName }?.value
             description = this@updateProfileRequest.find { it.type == AboutInputField.AboutMe }?.value
             pronouns = this@updateProfileRequest.find { it.type == AboutInputField.Pronouns }?.value
