@@ -43,6 +43,14 @@ class AboutEditorTest : RoborazziTest() {
             type = AboutInputField.Company,
             value = "Automattic",
         ),
+        AboutEditorField(
+            type = AboutInputField.FirstName,
+            value = "John",
+        ),
+        AboutEditorField(
+            type = AboutInputField.LastName,
+            value = "Doe",
+        ),
     )
 
     @Test
@@ -61,6 +69,28 @@ class AboutEditorTest : RoborazziTest() {
         AboutEditor(
             uiState = AboutEditorUiState(
                 aboutFields = aboutFields.filter { it.type.isPersonal }.toSet(),
+                isLoading = false,
+            ),
+            onEvent = { },
+        )
+    }
+
+    @Test
+    fun aboutEditorExtrasLoaded() = gravatarScreenshotTest {
+        AboutEditor(
+            uiState = AboutEditorUiState(
+                aboutFields = aboutFields.filter { it.type.isExtra }.toSet(),
+                isLoading = false,
+            ),
+            onEvent = { },
+        )
+    }
+
+    @Test
+    fun aboutEditorExtrasAndOtherSectionLoaded() = gravatarScreenshotTest {
+        AboutEditor(
+            uiState = AboutEditorUiState(
+                aboutFields = aboutFields.filter { it.type.isExtra || it.type == AboutInputField.DisplayName }.toSet(),
                 isLoading = false,
             ),
             onEvent = { },
