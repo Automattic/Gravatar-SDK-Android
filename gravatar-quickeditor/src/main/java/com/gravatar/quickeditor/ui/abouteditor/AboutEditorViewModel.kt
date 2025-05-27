@@ -54,6 +54,9 @@ internal class AboutEditorViewModel(
             }
 
             AboutEditorEvent.Refresh -> fetchProfile()
+            is AboutEditorEvent.OnCompactWindowEnabled -> _uiState.update { currentState ->
+                currentState.copy(compactWindow = aboutEditorEvent.enabled)
+            }
         }
     }
 

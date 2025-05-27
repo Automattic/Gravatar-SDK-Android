@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -15,6 +16,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -30,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.window.core.layout.WindowHeightSizeClass
 import com.gravatar.quickeditor.R
 import com.gravatar.quickeditor.ui.abouteditor.components.AboutSection
 import com.gravatar.quickeditor.ui.abouteditor.components.DiscardChangesAlertDialog
@@ -63,6 +66,11 @@ internal fun AboutEditor(
     val uiState by viewModel.uiState.collectAsState()
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
+
+    val windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass.windowHeightSizeClass
+    LaunchedEffect(windowSizeClass) {
+        viewModel.onEvent(AboutEditorEvent.OnCompactWindowEnabled(windowSizeClass == WindowHeightSizeClass.COMPACT))
+    }
 
     LaunchedEffect(Unit) {
         withContext(Dispatchers.Main.immediate) {
@@ -139,7 +147,9 @@ internal fun AboutEditor(
 internal fun AboutEditor(uiState: AboutEditorUiState, onEvent: (AboutEditorEvent) -> Unit) {
     Surface {
         Column(
-            modifier = Modifier.padding(bottom = 24.dp),
+            modifier = Modifier
+                .padding(bottom = 24.dp)
+                .then(if (uiState.compactWindow) Modifier.verticalScroll(rememberScrollState()) else Modifier),
         ) {
             Box(
                 modifier = Modifier
@@ -149,8 +159,15 @@ internal fun AboutEditor(uiState: AboutEditorUiState, onEvent: (AboutEditorEvent
                         color = MaterialTheme.colorScheme.surfaceContainerHighest,
                         shape = RoundedCornerShape(8.dp),
                     )
-                    .weight(1f, fill = false)
-                    .verticalScroll(rememberScrollState())
+                    .then(
+                        if (uiState.compactWindow) {
+                            Modifier.wrapContentHeight()
+                        } else {
+                            Modifier
+                                .weight(1f, fill = false)
+                                .verticalScroll(rememberScrollState())
+                        },
+                    )
                     .animateContentSize(),
             ) {
                 when {

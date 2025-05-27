@@ -65,6 +65,19 @@ class AboutEditorTest : RoborazziTest() {
     }
 
     @Test
+    @Config(qualifiers = "+land")
+    fun aboutEditorLoadedLandscape() = gravatarScreenshotTest {
+        AboutEditor(
+            uiState = AboutEditorUiState(
+                aboutFields = aboutFields,
+                isLoading = false,
+                compactWindow = true,
+            ),
+            onEvent = { },
+        )
+    }
+
+    @Test
     fun aboutEditorPersonalLoaded() = gravatarScreenshotTest {
         AboutEditor(
             uiState = AboutEditorUiState(
