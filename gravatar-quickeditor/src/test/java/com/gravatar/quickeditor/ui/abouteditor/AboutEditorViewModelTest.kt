@@ -198,6 +198,51 @@ class AboutEditorViewModelTest {
     }
 
     @Test
+    fun `given updated about field when save clicked and update fails with 401 then uiState is updated`() = runTest {
+        coEvery {
+            profileRepository.updateProfile(email, updateProfileRequest)
+        } returns GravatarResult.Failure(QuickEditorError.Request(ErrorType.Unauthorized))
+
+        viewModel = initViewModel()
+        viewModel.onEvent(
+            AboutEditorEvent.OnAboutFieldUpdated(
+                AboutEditorField(
+                    type = AboutInputField.DisplayName,
+                    value = "Updated Name",
+                ),
+            ),
+        )
+
+        advanceUntilIdle()
+
+        viewModel.onEvent(AboutEditorEvent.OnSaveClicked)
+
+        viewModel.uiState.test {
+            expectMostRecentItem()
+            assertEquals(
+                AboutEditorUiState(
+                    savingProfile = true,
+                    aboutFields = updatedProfile.aboutFields(visibleAboutFields),
+                ),
+                awaitItem(),
+            )
+            assertEquals(
+                AboutEditorUiState(
+                    savingProfile = false,
+                    aboutFields = updatedProfile.aboutFields(visibleAboutFields),
+                    error = SectionError.InvalidToken(
+                        showLogin = true,
+                    ),
+                ),
+                awaitItem(),
+            )
+        }
+        viewModel.actions.test {
+            expectNoEvents()
+        }
+    }
+
+    @Test
     fun `given no changes when done clicked then editor is closed`() = runTest {
         viewModel = initViewModel()
 

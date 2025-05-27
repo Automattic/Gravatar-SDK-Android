@@ -5,12 +5,15 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.gravatar.quickeditor.QuickEditorContainer
+import com.gravatar.quickeditor.data.models.QuickEditorError
 import com.gravatar.quickeditor.data.repository.ProfileRepository
+import com.gravatar.quickeditor.ui.avatarpicker.SectionError
 import com.gravatar.quickeditor.ui.avatarpicker.asSectionError
 import com.gravatar.quickeditor.ui.editor.AboutInputField
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
 import com.gravatar.restapi.models.Profile
 import com.gravatar.restapi.models.UpdateProfileRequest
+import com.gravatar.services.ErrorType
 import com.gravatar.services.GravatarResult
 import com.gravatar.types.Email
 import kotlinx.coroutines.channels.Channel
@@ -112,12 +115,18 @@ internal class AboutEditorViewModel(
                 }
 
                 is GravatarResult.Failure -> {
+                    var sectionError: SectionError? = null
+                    if ((result.error as? QuickEditorError.Request)?.type is ErrorType.Unauthorized) {
+                        sectionError = SectionError.InvalidToken(showLogin = handleExpiredSession)
+                    } else {
+                        _actions.send(AboutEditorAction.ProfileUpdateFailed)
+                    }
                     _uiState.update { currentState ->
                         currentState.copy(
                             savingProfile = false,
+                            error = sectionError,
                         )
                     }
-                    _actions.send(AboutEditorAction.ProfileUpdateFailed)
                 }
             }
         }
