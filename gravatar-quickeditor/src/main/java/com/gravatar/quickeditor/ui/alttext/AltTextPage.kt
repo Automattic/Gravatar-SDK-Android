@@ -52,6 +52,7 @@ import com.gravatar.quickeditor.ui.components.QEPage
 import com.gravatar.quickeditor.ui.components.QESectionTitle
 import com.gravatar.quickeditor.ui.components.QETopBar
 import com.gravatar.quickeditor.ui.components.QETopBarTextButton
+import com.gravatar.quickeditor.ui.editor.bottomsheet.positionAwareImePadding
 import com.gravatar.quickeditor.ui.extensions.QESnackbarHost
 import com.gravatar.quickeditor.ui.extensions.SnackbarType
 import com.gravatar.quickeditor.ui.extensions.showQESnackbar
@@ -159,8 +160,9 @@ internal fun AltTextPage(
     Surface(modifier = modifier.fillMaxWidth()) {
         Box(
             modifier = Modifier
-                .animateContentSize()
+                .positionAwareImePadding()
                 .verticalScroll(rememberScrollState())
+                .animateContentSize()
                 .border(
                     width = 1.dp,
                     color = MaterialTheme.colorScheme.surfaceContainerHighest,
