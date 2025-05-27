@@ -2,6 +2,9 @@ package com.gravatar.quickeditor.ui.editor
 
 import androidx.compose.runtime.Composable
 import com.gravatar.extensions.defaultProfile
+import com.gravatar.quickeditor.ui.abouteditor.AboutEditor
+import com.gravatar.quickeditor.ui.abouteditor.AboutEditorUiState
+import com.gravatar.quickeditor.ui.abouteditor.aboutFields
 import com.gravatar.quickeditor.ui.avatarpicker.AvatarPicker
 import com.gravatar.quickeditor.ui.avatarpicker.AvatarPickerUiState
 import com.gravatar.quickeditor.ui.avatarpicker.EmailAvatars
@@ -11,6 +14,7 @@ import com.gravatar.types.Email
 import com.gravatar.ui.components.ComponentState
 import com.gravatar.uitestutils.RoborazziTest
 import org.junit.Test
+import org.robolectric.annotation.Config
 import java.net.URI
 
 class QuickEditorTest : RoborazziTest() {
@@ -52,6 +56,31 @@ class QuickEditorTest : RoborazziTest() {
         }
     }
 
+    @Test
+    fun quickEditorWithAboutEditor() = gravatarScreenshotTest {
+        QuickEditor(
+            uiState = uiState,
+            onDoneClicked = { },
+            onEditAvatarClicked = { },
+            onEditAboutClicked = { },
+        ) {
+            AboutEditorComponent()
+        }
+    }
+
+    @Test
+    @Config(qualifiers = "+land")
+    fun quickEditorWithAboutEditorLandscape() = gravatarScreenshotTest {
+        QuickEditor(
+            uiState = uiState.copy(compactWindow = true),
+            onDoneClicked = { },
+            onEditAvatarClicked = { },
+            onEditAboutClicked = { },
+        ) {
+            AboutEditorComponent(compactWindow = true)
+        }
+    }
+
     @Composable
     private fun AvatarPickerComponent() {
         AvatarPicker(
@@ -77,6 +106,19 @@ class QuickEditorTest : RoborazziTest() {
                     ),
                     selectedAvatarId = "1",
                 ),
+            ),
+            onEvent = { },
+        )
+    }
+
+    @Composable
+    private fun AboutEditorComponent(compactWindow: Boolean = false) {
+        AboutEditor(
+            uiState = AboutEditorUiState(
+                aboutFields = profile.aboutFields(AboutInputField.all),
+                isLoading = false,
+                error = null,
+                compactWindow = compactWindow,
             ),
             onEvent = { },
         )

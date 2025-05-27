@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Surface
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -19,6 +20,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.window.core.layout.WindowHeightSizeClass
 import com.gravatar.quickeditor.ui.abouteditor.AboutEditor
 import com.gravatar.quickeditor.ui.abouteditor.AboutEditorEvent
 import com.gravatar.quickeditor.ui.abouteditor.AboutEditorViewModel
@@ -42,8 +44,12 @@ internal fun QuickEditor(
     onSessionExpired: () -> Unit,
     onDoneClicked: () -> Unit,
     onAltTextTapped: (email: String, avatarId: String) -> Unit,
+    windowSizeClass: WindowHeightSizeClass = currentWindowAdaptiveInfo().windowSizeClass.windowHeightSizeClass,
     viewModel: QuickEditorViewModel = viewModel(
-        factory = QuickEditorViewModelFactory(gravatarQuickEditorParams),
+        factory = QuickEditorViewModelFactory(
+            gravatarQuickEditorParams = gravatarQuickEditorParams,
+            compactWindowEnabled = windowSizeClass == WindowHeightSizeClass.COMPACT,
+        ),
     ),
 ) {
     val lifecycle = LocalLifecycleOwner.current.lifecycle
@@ -51,6 +57,10 @@ internal fun QuickEditor(
     val aboutEditorViewModel: AboutEditorViewModel = viewModel(
         factory = AboutEditorViewModelFactory(gravatarQuickEditorParams, handleExpiredSession),
     )
+
+    LaunchedEffect(windowSizeClass) {
+        viewModel.onEvent(QuickEditorEvent.OnCompactWindowEnabled(windowSizeClass == WindowHeightSizeClass.COMPACT))
+    }
 
     LaunchedEffect(confirmDismissal) {
         if (confirmDismissal) {
@@ -138,22 +148,24 @@ internal fun QuickEditor(
             content = {
                 Surface {
                     Column {
-                        EmailLabel(
-                            email = uiState.email,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(bottom = 10.dp),
-                        )
-                        ProfileCard(
-                            profile = uiState.profile,
-                            email = uiState.email,
-                            editAvatarEnabled = uiState.editAvatarButtonVisible,
-                            editAboutEnabled = uiState.editAboutButtonVisible,
-                            avatarCacheBuster = uiState.avatarCacheBuster.toString(),
-                            onEditAvatarClicked = onEditAvatarClicked,
-                            onEditAboutClicked = onEditAboutClicked,
-                            modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
-                        )
+                        if (!uiState.compactWindow) {
+                            EmailLabel(
+                                email = uiState.email,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(bottom = 10.dp),
+                            )
+                            ProfileCard(
+                                profile = uiState.profile,
+                                email = uiState.email,
+                                editAvatarEnabled = uiState.editAvatarButtonVisible,
+                                editAboutEnabled = uiState.editAboutButtonVisible,
+                                avatarCacheBuster = uiState.avatarCacheBuster.toString(),
+                                onEditAvatarClicked = onEditAvatarClicked,
+                                onEditAboutClicked = onEditAboutClicked,
+                                modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
+                            )
+                        }
                         content()
                     }
                 }

@@ -14,4 +14,6 @@ internal sealed class QuickEditorEvent {
     data object OnEditAboutClicked : QuickEditorEvent()
 
     data object OnConfirmDismissal : QuickEditorEvent()
+
+    data class OnCompactWindowEnabled(val enabled: Boolean) : QuickEditorEvent()
 }

@@ -29,6 +29,7 @@ internal class QuickEditorViewModel(
     private val clock: Clock,
     initialPage: QuickEditorPage,
     navigationEnabled: Boolean,
+    compactWindowEnabled: Boolean,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(
         QuickEditorUiState(
@@ -36,6 +37,7 @@ internal class QuickEditorViewModel(
             page = initialPage,
             pageNavigationEnabled = navigationEnabled,
             avatarCacheBuster = clock.getTimeMillis(),
+            compactWindow = compactWindowEnabled,
         ),
     )
     val uiState: StateFlow<QuickEditorUiState> = _uiState.asStateFlow()
@@ -67,6 +69,10 @@ internal class QuickEditorViewModel(
                         QuickEditorPage.AboutEditor -> _actions.send(QuickEditorAction.ConfirmEditorDismissal)
                     }
                 }
+            }
+
+            is QuickEditorEvent.OnCompactWindowEnabled -> _uiState.update { currentState ->
+                currentState.copy(compactWindow = event.enabled)
             }
         }
     }
@@ -107,6 +113,7 @@ internal class QuickEditorViewModel(
 
 internal class QuickEditorViewModelFactory(
     private val gravatarQuickEditorParams: GravatarQuickEditorParams,
+    private val compactWindowEnabled: Boolean,
 ) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
@@ -117,6 +124,7 @@ internal class QuickEditorViewModelFactory(
             navigationEnabled = scopeConfig.scope is Scope.AvatarPickerAndAboutEditor,
             initialPage = scopeConfig.initialPage,
             clock = SystemClock(),
+            compactWindowEnabled = compactWindowEnabled,
         ) as T
     }
 }

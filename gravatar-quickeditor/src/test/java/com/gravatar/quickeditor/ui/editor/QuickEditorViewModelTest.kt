@@ -193,5 +193,6 @@ class QuickEditorViewModelTest {
         clock = clock,
         initialPage = initialPage,
         navigationEnabled = navigationEnabled,
+        compactWindowEnabled = false,
     )
 }
