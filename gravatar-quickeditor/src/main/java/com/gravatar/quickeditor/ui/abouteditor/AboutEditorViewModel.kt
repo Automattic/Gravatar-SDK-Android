@@ -36,8 +36,6 @@ internal class AboutEditorViewModel(
     private val _actions = Channel<AboutEditorAction>(Channel.BUFFERED)
     val actions = _actions.receiveAsFlow()
 
-    private var savedProfile: Profile? = null
-
     init {
         fetchProfile()
     }
@@ -79,9 +77,7 @@ internal class AboutEditorViewModel(
 
     private fun checkForUnsavedChanges() {
         viewModelScope.launch {
-            val currentProfile = uiState.value.aboutFields
-            val savedProfile = savedProfile?.aboutFields(visibleAboutFields)
-            if (savedProfile != null && currentProfile != savedProfile) {
+            if (uiState.value.unsavedChanges) {
                 _uiState.update { currentState ->
                     currentState.copy(
                         discardChangesDialogVisible = true,
@@ -102,11 +98,12 @@ internal class AboutEditorViewModel(
             when (val result = profileRepository.updateProfile(email, updateProfileRequest)) {
                 is GravatarResult.Success -> {
                     val profile = result.value
-                    savedProfile = profile
+                    val aboutFields = profile.aboutFields(visibleAboutFields)
                     _uiState.update { currentState ->
                         currentState.copy(
                             savingProfile = false,
-                            aboutFields = profile.aboutFields(visibleAboutFields),
+                            aboutFields = aboutFields,
+                            savedAboutFields = aboutFields,
                         )
                     }
                     _actions.send(
@@ -159,11 +156,12 @@ internal class AboutEditorViewModel(
                 is GravatarResult.Success -> {
                     _uiState.update {
                         val profile = result.value
-                        savedProfile = profile
+                        val aboutFields = profile.aboutFields(visibleAboutFields)
                         it.copy(
                             isLoading = false,
-                            aboutFields = profile.aboutFields(visibleAboutFields),
+                            aboutFields = aboutFields,
                             error = null,
+                            savedAboutFields = aboutFields,
                         )
                     }
                 }
