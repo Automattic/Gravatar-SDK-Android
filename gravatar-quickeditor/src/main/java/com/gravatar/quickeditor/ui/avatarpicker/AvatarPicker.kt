@@ -420,7 +420,7 @@ private fun AvatarPickerAction.handle(
     }
 }
 
-private fun Int.pxToDp(context: Context): Dp =
+internal fun Int.pxToDp(context: Context): Dp =
     (this / (context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)).dp
 
 internal val SectionError.titleRes: Int

@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -43,6 +42,7 @@ import com.gravatar.quickeditor.ui.avatarpicker.titleRes
 import com.gravatar.quickeditor.ui.components.CtaSection
 import com.gravatar.quickeditor.ui.components.QEButton
 import com.gravatar.quickeditor.ui.editor.AboutInputField
+import com.gravatar.quickeditor.ui.editor.bottomsheet.positionAwareImePadding
 import com.gravatar.quickeditor.ui.extensions.QESnackbarHost
 import com.gravatar.quickeditor.ui.extensions.SnackbarType
 import com.gravatar.quickeditor.ui.extensions.showQESnackbar
@@ -148,6 +148,7 @@ internal fun AboutEditor(uiState: AboutEditorUiState, onEvent: (AboutEditorEvent
     Surface {
         Column(
             modifier = Modifier
+                .positionAwareImePadding()
                 .padding(bottom = 24.dp)
                 .then(if (uiState.compactWindow) Modifier.verticalScroll(rememberScrollState()) else Modifier),
         ) {
@@ -161,7 +162,7 @@ internal fun AboutEditor(uiState: AboutEditorUiState, onEvent: (AboutEditorEvent
                     )
                     .then(
                         if (uiState.compactWindow) {
-                            Modifier.wrapContentHeight()
+                            Modifier
                         } else {
                             Modifier
                                 .weight(1f, fill = false)
