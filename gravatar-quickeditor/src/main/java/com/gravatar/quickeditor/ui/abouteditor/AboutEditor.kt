@@ -108,8 +108,7 @@ internal fun AboutEditor(
     Surface {
         Box(
             modifier = Modifier
-                .wrapContentSize()
-                .animateContentSize(),
+                .wrapContentSize(),
         ) {
             AboutEditor(
                 uiState = uiState,
@@ -151,7 +150,8 @@ internal fun AboutEditor(uiState: AboutEditorUiState, onEvent: (AboutEditorEvent
                         shape = RoundedCornerShape(8.dp),
                     )
                     .weight(1f, fill = false)
-                    .verticalScroll(rememberScrollState()),
+                    .verticalScroll(rememberScrollState())
+                    .animateContentSize(),
             ) {
                 when {
                     uiState.isLoading -> {
