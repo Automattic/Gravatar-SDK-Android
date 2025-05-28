@@ -186,6 +186,14 @@ internal fun GravatarQuickEditorBottomSheet(
         }
     }
 
+    val internalOnDismiss: (GravatarQuickEditorDismissReason) -> Unit = { dismissReason ->
+        dismissState = DismissConfirmationState.Confirm
+        coroutineScope.launch {
+            modalBottomSheetState.animateTo(Hidden)
+            onDismiss(dismissReason)
+        }
+    }
+
     LaunchedEffect(modalBottomSheetState.currentDetent) {
         onCurrentDetentChanged(modalBottomSheetState.currentDetent)
     }
@@ -211,7 +219,7 @@ internal fun GravatarQuickEditorBottomSheet(
                     GravatarQuickEditorPage(
                         gravatarQuickEditorParams = gravatarQuickEditorParams,
                         authToken = authenticationMethod.token,
-                        onDismiss = onDismiss,
+                        onDismiss = internalOnDismiss,
                         updateHandler = updateHandler,
                         confirmDismissal = dismissState == DismissConfirmationState.Delegated,
                         onDismissIgnored = onDismissIgnored,
@@ -223,7 +231,7 @@ internal fun GravatarQuickEditorBottomSheet(
                     GravatarQuickEditorPage(
                         gravatarQuickEditorParams = gravatarQuickEditorParams,
                         oAuthParams = authenticationMethod.oAuthParams,
-                        onDismiss = onDismiss,
+                        onDismiss = internalOnDismiss,
                         updateHandler = updateHandler,
                         confirmDismissal = dismissState == DismissConfirmationState.Delegated,
                         onDismissIgnored = onDismissIgnored,
@@ -242,12 +250,6 @@ private fun GravatarModalBottomSheet(
     modalBottomSheetState: ModalBottomSheetState,
     content: @Composable () -> Unit,
 ) {
-    LaunchedEffect(modalBottomSheetState.currentDetent) {
-        if (modalBottomSheetState.currentDetent == Hidden) {
-            onDismiss(GravatarQuickEditorDismissReason.Finished)
-        }
-    }
-
     val configuration = Configuration(LocalConfiguration.current).apply {
         uiMode = when (colorScheme) {
             GravatarUiMode.LIGHT -> Configuration.UI_MODE_NIGHT_NO
@@ -261,6 +263,7 @@ private fun GravatarModalBottomSheet(
         GravatarTheme {
             ModalBottomSheet(
                 state = modalBottomSheetState,
+                onDismiss = { onDismiss(GravatarQuickEditorDismissReason.Finished) },
                 properties = ModalSheetProperties(
                     dismissOnBackPress = false,
                     dismissOnClickOutside = true,
