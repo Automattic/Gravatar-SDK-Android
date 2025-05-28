@@ -222,11 +222,6 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
             ) {
                 Text(text = stringResource(R.string.open_qe_label))
             }
-        }
-        Column(
-            modifier = Modifier.align(Alignment.BottomCenter),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
             Button(
                 onClick = {
                     coroutineScope.launch {

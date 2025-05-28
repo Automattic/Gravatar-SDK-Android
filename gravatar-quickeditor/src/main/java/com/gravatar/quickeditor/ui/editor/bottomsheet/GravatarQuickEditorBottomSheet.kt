@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBars
@@ -27,14 +28,20 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.findRootCoordinates
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.window.core.layout.WindowHeightSizeClass
@@ -49,6 +56,7 @@ import com.composables.core.SheetDetent.Companion.Hidden
 import com.composables.core.rememberModalBottomSheetState
 import com.composeunstyled.LocalModalWindow
 import com.gravatar.quickeditor.QuickEditorContainer
+import com.gravatar.quickeditor.ui.avatarpicker.pxToDp
 import com.gravatar.quickeditor.ui.components.QEDragHandle
 import com.gravatar.quickeditor.ui.editor.AuthenticationMethod
 import com.gravatar.quickeditor.ui.editor.AvatarPickerContentLayout
@@ -280,7 +288,6 @@ private fun GravatarModalBottomSheet(
                     ) {
                         Sheet(
                             modifier = Modifier
-                                .imePadding()
                                 .clip(RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp))
                                 .background(MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp))
                                 .widthIn(max = 640.dp)
@@ -375,6 +382,23 @@ private fun QuickEditorScopeOption.initialDetent(windowHeightSizeClass: WindowHe
             }
         }
     }
+}
+
+/**
+ * The default .imePadding adds a lot of extra padding to the bottom of the screen
+ * This is a workaround, see https://stackoverflow.com/questions/76014880/enormous-ime-padding-in-jetpack-compose
+ */
+internal fun Modifier.positionAwareImePadding(): Modifier = composed {
+    var consumePadding by remember { mutableIntStateOf(0) }
+
+    this
+        .onGloballyPositioned { coordinates ->
+            val root = coordinates.findRootCoordinates()
+            val bottom = coordinates.positionInWindow().y + coordinates.size.height
+            consumePadding = (root.size.height - bottom).toInt().coerceAtLeast(0)
+        }
+        .consumeWindowInsets(PaddingValues(bottom = consumePadding.pxToDp(LocalContext.current)))
+        .imePadding()
 }
 
 internal data class ModalDetents(

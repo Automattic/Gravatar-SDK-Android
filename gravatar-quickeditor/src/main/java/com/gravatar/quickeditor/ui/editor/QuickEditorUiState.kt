@@ -10,6 +10,7 @@ internal data class QuickEditorUiState(
     val pageNavigationEnabled: Boolean,
     val profile: ComponentState<Profile>? = null,
     val avatarCacheBuster: Long? = null,
+    val compactWindow: Boolean = false,
 ) {
     val editAvatarButtonVisible: Boolean = pageNavigationEnabled && page == QuickEditorPage.AboutEditor
     val editAboutButtonVisible: Boolean = pageNavigationEnabled && page == QuickEditorPage.AvatarPicker

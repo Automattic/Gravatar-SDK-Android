@@ -16,4 +16,6 @@ internal sealed class AboutEditorEvent {
     data object HandleAuthFailureTapped : AboutEditorEvent()
 
     data object Refresh : AboutEditorEvent()
+
+    data class OnCompactWindowEnabled(val enabled: Boolean) : AboutEditorEvent()
 }

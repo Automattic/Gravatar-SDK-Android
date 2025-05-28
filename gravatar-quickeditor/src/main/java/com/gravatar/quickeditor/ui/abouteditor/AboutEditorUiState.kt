@@ -9,6 +9,7 @@ internal data class AboutEditorUiState(
     val discardChangesDialogVisible: Boolean = false,
     val error: SectionError? = null,
     val savedAboutFields: Set<AboutEditorField> = emptySet(),
+    val compactWindow: Boolean = false,
 ) {
     val formEnabled: Boolean = !savingProfile
 
