@@ -15,14 +15,14 @@ import java.util.Objects
  * An interest the user has added to their profile.
  *
  * @param id The unique identifier for the interest.
- * @param name The name of the interest.
+ * @param name The name of the interest as originally defined (most often in English).
  */
 @JsonClass(generateAdapter = true)
 public class Interest internal constructor(
     // The unique identifier for the interest.
     @Json(name = "id")
     public val id: kotlin.Int,
-    // The name of the interest.
+    // The name of the interest as originally defined (most often in English).
     @Json(name = "name")
     public val name: kotlin.String,
 ) {
@@ -39,7 +39,7 @@ public class Interest internal constructor(
         @set:JvmSynthetic // Hide 'void' setter from Java
         public var id: kotlin.Int? = null
 
-        // The name of the interest.
+        // The name of the interest as originally defined (most often in English).
         @set:JvmSynthetic // Hide 'void' setter from Java
         public var name: kotlin.String? = null
 

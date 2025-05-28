@@ -3,6 +3,7 @@ package com.gravatar.quickeditor.ui.components
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -40,71 +41,72 @@ internal fun VerticalAvatarsSection(
     val itemSpacing = 8.dp
 
     Surface(modifier = modifier) {
-        Box {
-            LazyVerticalGrid(
-                columns = GridCells.Adaptive(minSize = avatarSize),
-                modifier = Modifier.border(
-                    width = 1.dp,
-                    color = MaterialTheme.colorScheme.surfaceContainerHighest,
-                    shape = RoundedCornerShape(8.dp),
-                ),
-                state = gridState,
-                contentPadding = contentPadding,
-                horizontalArrangement = Arrangement.spacedBy(itemSpacing),
-                verticalArrangement = Arrangement.spacedBy(itemSpacing),
-            ) {
-                item(
-                    span = { GridItemSpan((maxLineSpan)) },
+        Column {
+            Box {
+                LazyVerticalGrid(
+                    columns = GridCells.Adaptive(minSize = avatarSize),
+                    modifier = Modifier.border(
+                        width = 1.dp,
+                        color = MaterialTheme.colorScheme.surfaceContainerHighest,
+                        shape = RoundedCornerShape(8.dp),
+                    ),
+                    state = gridState,
+                    contentPadding = contentPadding,
+                    horizontalArrangement = Arrangement.spacedBy(itemSpacing),
+                    verticalArrangement = Arrangement.spacedBy(itemSpacing),
                 ) {
-                    QESectionTitle(
-                        title = stringResource(id = state.titleRes),
-                        modifier = Modifier,
-                    )
-                }
-                item(
-                    span = { GridItemSpan(maxLineSpan) },
-                ) {
-                    QESectionMessage(
-                        message = stringResource(R.string.gravatar_qe_avatar_picker_description),
-                        modifier = Modifier
-                            .padding(top = 4.dp),
-                    )
-                }
-                if (state.avatars.isEmpty()) {
                     item(
-                        span = { GridItemSpan(maxLineSpan) },
+                        span = { GridItemSpan((maxLineSpan)) },
                     ) {
-                        ListEmptyStateBox()
-                    }
-                    item(
-                        span = { GridItemSpan(maxLineSpan) },
-                    ) {
-                        UploadImageButton(
-                            onTakePhotoClick = onTakePhotoClick,
-                            onChoosePhotoClick = onChoosePhotoClick,
-                            enabled = state.uploadButtonEnabled,
-                        )
-                    }
-                } else {
-                    item(
-                        span = { GridItemSpan(1) },
-                    ) {
-                        UploadImageGridButton(
-                            onChoosePhotoClick = onChoosePhotoClick,
-                            onTakePhotoClick = onTakePhotoClick,
-                            enabled = state.uploadButtonEnabled,
-                        )
-                    }
-                    items(items = state.avatars, key = { it.avatarId }) { avatarModel ->
-                        Avatar(
-                            avatar = avatarModel,
-                            onAvatarSelected = { onAvatarSelected(avatarModel) },
-                            onAvatarOptionClicked = { avatar, option -> onAvatarOptionClicked(avatar, option) },
-                            size = avatarSize,
+                        QESectionTitle(
+                            title = stringResource(id = state.titleRes),
                             modifier = Modifier,
                         )
                     }
+                    item(
+                        span = { GridItemSpan(maxLineSpan) },
+                    ) {
+                        QESectionMessage(
+                            message = stringResource(R.string.gravatar_qe_avatar_picker_description),
+                            modifier = Modifier
+                                .padding(top = 4.dp),
+                        )
+                    }
+                    if (state.avatars.isEmpty()) {
+                        item(
+                            span = { GridItemSpan(maxLineSpan) },
+                        ) {
+                            ListEmptyStateBox()
+                        }
+                    } else {
+                        item(
+                            span = { GridItemSpan(1) },
+                        ) {
+                            UploadImageGridButton(
+                                onChoosePhotoClick = onChoosePhotoClick,
+                                onTakePhotoClick = onTakePhotoClick,
+                                enabled = state.uploadButtonEnabled,
+                            )
+                        }
+                        items(items = state.avatars, key = { it.avatarId }) { avatarModel ->
+                            Avatar(
+                                avatar = avatarModel,
+                                onAvatarSelected = { onAvatarSelected(avatarModel) },
+                                onAvatarOptionClicked = { avatar, option -> onAvatarOptionClicked(avatar, option) },
+                                size = avatarSize,
+                                modifier = Modifier,
+                            )
+                        }
+                    }
                 }
+            }
+            if (state.avatars.isEmpty()) {
+                UploadImageButton(
+                    onTakePhotoClick = onTakePhotoClick,
+                    onChoosePhotoClick = onChoosePhotoClick,
+                    enabled = state.uploadButtonEnabled,
+                    modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 24.dp, bottom = 8.dp),
+                )
             }
         }
     }
@@ -114,30 +116,34 @@ internal fun VerticalAvatarsSection(
 @Preview(showBackground = true)
 private fun VerticalAvatarSectionPreview() {
     GravatarTheme {
-        VerticalAvatarsSection(
-            state = AvatarsSectionUiState(
-                avatars = List(6) {
-                    AvatarUi.Uploaded(
-                        avatar = Avatar {
-                            imageUrl = URI.create("https://gravatar.com/avatar/test")
-                            imageId = it.toString()
-                            rating = Avatar.Rating.G
-                            altText = "alt"
-                            updatedDate = ""
-                        },
-                        isSelected = it == 0,
-                        isLoading = false,
-                    )
-                },
-                scrollToIndex = null,
-                uploadButtonEnabled = true,
-                avatarPickerContentLayout = AvatarPickerContentLayout.Vertical,
-            ),
-            onTakePhotoClick = { },
-            onChoosePhotoClick = { },
-            onAvatarSelected = { },
-            onAvatarOptionClicked = { _, _ -> },
-        )
+        Box(
+            modifier = Modifier.padding(10.dp),
+        ) {
+            VerticalAvatarsSection(
+                state = AvatarsSectionUiState(
+                    avatars = List(6) {
+                        AvatarUi.Uploaded(
+                            avatar = Avatar {
+                                imageUrl = URI.create("https://gravatar.com/avatar/test")
+                                imageId = it.toString()
+                                rating = Avatar.Rating.G
+                                altText = "alt"
+                                updatedDate = ""
+                            },
+                            isSelected = it == 0,
+                            isLoading = false,
+                        )
+                    },
+                    scrollToIndex = null,
+                    uploadButtonEnabled = true,
+                    avatarPickerContentLayout = AvatarPickerContentLayout.Vertical,
+                ),
+                onTakePhotoClick = { },
+                onChoosePhotoClick = { },
+                onAvatarSelected = { },
+                onAvatarOptionClicked = { _, _ -> },
+            )
+        }
     }
 }
 
@@ -145,17 +151,21 @@ private fun VerticalAvatarSectionPreview() {
 @Preview(showBackground = true)
 private fun VerticalAvatarSectionEmptyPreview() {
     GravatarTheme {
-        VerticalAvatarsSection(
-            state = AvatarsSectionUiState(
-                avatars = emptyList(),
-                scrollToIndex = null,
-                uploadButtonEnabled = true,
-                avatarPickerContentLayout = AvatarPickerContentLayout.Vertical,
-            ),
-            onTakePhotoClick = { },
-            onChoosePhotoClick = { },
-            onAvatarSelected = { },
-            onAvatarOptionClicked = { _, _ -> },
-        )
+        Box(
+            modifier = Modifier.padding(10.dp),
+        ) {
+            VerticalAvatarsSection(
+                state = AvatarsSectionUiState(
+                    avatars = emptyList(),
+                    scrollToIndex = null,
+                    uploadButtonEnabled = true,
+                    avatarPickerContentLayout = AvatarPickerContentLayout.Vertical,
+                ),
+                onTakePhotoClick = { },
+                onChoosePhotoClick = { },
+                onAvatarSelected = { },
+                onAvatarOptionClicked = { _, _ -> },
+            )
+        }
     }
 }

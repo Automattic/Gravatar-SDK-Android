@@ -48,7 +48,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.gravatar.extensions.defaultProfile
 import com.gravatar.quickeditor.R
 import com.gravatar.quickeditor.ui.components.AlertBanner
 import com.gravatar.quickeditor.ui.components.AvatarDeletionConfirmationDialog
@@ -56,11 +55,9 @@ import com.gravatar.quickeditor.ui.components.AvatarOption
 import com.gravatar.quickeditor.ui.components.AvatarsSection
 import com.gravatar.quickeditor.ui.components.CtaSection
 import com.gravatar.quickeditor.ui.components.DownloadManagerDisabledAlertDialog
-import com.gravatar.quickeditor.ui.components.EmailLabel
 import com.gravatar.quickeditor.ui.components.FailedAvatarUploadAlertDialog
 import com.gravatar.quickeditor.ui.components.PermissionRationaleDialog
-import com.gravatar.quickeditor.ui.components.ProfileCard
-import com.gravatar.quickeditor.ui.components.QEPageDefault
+import com.gravatar.quickeditor.ui.components.withBorder
 import com.gravatar.quickeditor.ui.cropperlauncher.CropperLauncher
 import com.gravatar.quickeditor.ui.cropperlauncher.UCropCropperLauncher
 import com.gravatar.quickeditor.ui.editor.AvatarPickerContentLayout
@@ -75,7 +72,6 @@ import com.gravatar.quickeditor.ui.withPermission
 import com.gravatar.restapi.models.Avatar
 import com.gravatar.types.Email
 import com.gravatar.ui.GravatarTheme
-import com.gravatar.ui.components.ComponentState
 import com.yalantis.ucrop.UCrop
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -89,8 +85,8 @@ internal fun AvatarPicker(
     handleExpiredSession: Boolean,
     onAvatarSelected: () -> Unit,
     onSessionExpired: () -> Unit,
-    onDoneClicked: () -> Unit,
     onAltTextTapped: (email: String, avatarId: String) -> Unit,
+    onRefresh: () -> Unit,
     viewModel: AvatarPickerViewModel = viewModel(
         factory = AvatarPickerViewModelFactory(gravatarQuickEditorParams, handleExpiredSession),
     ),
@@ -130,23 +126,23 @@ internal fun AvatarPicker(
         }
     }
 
-    GravatarTheme {
-        QEPageDefault(
-            onDoneClicked = onDoneClicked,
-            content = {
-                Box(modifier = Modifier.wrapContentSize()) {
-                    AvatarPicker(
-                        uiState = uiState,
-                        onEvent = viewModel::onEvent,
-                    )
-                    QESnackbarHost(
-                        modifier = Modifier
-                            .align(Alignment.BottomStart),
-                        hostState = snackState,
-                    )
-                }
-            },
-        )
+    Surface {
+        Box(modifier = Modifier.wrapContentSize()) {
+            AvatarPicker(
+                uiState = uiState,
+                onEvent = { event ->
+                    viewModel.onEvent(event)
+                    if (event is AvatarPickerEvent.Refresh) {
+                        onRefresh()
+                    }
+                },
+            )
+            QESnackbarHost(
+                modifier = Modifier
+                    .align(Alignment.BottomStart),
+                hostState = snackState,
+            )
+        }
     }
 }
 
@@ -199,31 +195,19 @@ internal fun AvatarPicker(uiState: AvatarPickerUiState, onEvent: (AvatarPickerEv
             ),
     ) {
         Column {
-            EmailLabel(
-                email = uiState.email,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 10.dp),
-            )
             AnimatedVisibility(visible = uiState.nonSelectedAvatarAlertVisible) {
                 AlertBanner(
                     message = stringResource(id = R.string.gravatar_qe_alert_banner_no_avatar_selected),
                     onClose = { onEvent(AvatarPickerEvent.AvatarDeleteAlertDismissed) },
-                    modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 24.dp),
+                    modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
                 )
             }
-            ProfileCard(
-                profile = uiState.profile,
-                email = uiState.email,
-                avatarCacheBuster = uiState.avatarCacheBuster.toString(),
-                modifier = Modifier.padding(horizontal = 16.dp),
-            )
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .animateContentSize(),
             ) {
-                val sectionModifier = Modifier.padding(top = 24.dp, bottom = 10.dp)
+                val sectionModifier = Modifier.padding(top = 8.dp, bottom = 10.dp)
                 when {
                     uiState.isLoading -> Box(
                         modifier = sectionModifier
@@ -240,6 +224,7 @@ internal fun AvatarPicker(uiState: AvatarPickerUiState, onEvent: (AvatarPickerEv
                         onButtonClick = { onEvent(uiState.error.event) },
                         modifier = sectionModifier
                             .padding(horizontal = 16.dp)
+                            .withBorder()
                             .onSizeChanged { size ->
                                 loadingSectionHeight = size.height.pxToDp(context)
                             },
@@ -435,10 +420,10 @@ private fun AvatarPickerAction.handle(
     }
 }
 
-private fun Int.pxToDp(context: Context): Dp =
+internal fun Int.pxToDp(context: Context): Dp =
     (this / (context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)).dp
 
-private val SectionError.titleRes: Int
+internal val SectionError.titleRes: Int
     @StringRes get() = when (this) {
         is SectionError.InvalidToken -> R.string.gravatar_qe_avatar_picker_session_error_title
         SectionError.NoInternetConnection -> R.string.gravatar_qe_avatar_picker_network_error_title
@@ -447,7 +432,7 @@ private val SectionError.titleRes: Int
         -> R.string.gravatar_qe_avatar_picker_server_error_title
     }
 
-private val SectionError.messageRes: Int
+internal val SectionError.messageRes: Int
     @StringRes get() = when (this) {
         is SectionError.InvalidToken -> if (showLogin) {
             R.string.gravatar_qe_avatar_picker_session_error_message
@@ -460,7 +445,7 @@ private val SectionError.messageRes: Int
         SectionError.Unknown -> R.string.gravatar_qe_avatar_picker_unknown_error_message
     }
 
-private val SectionError.buttonTextRes: Int
+internal val SectionError.buttonTextRes: Int
     @StringRes get() = when (this) {
         is SectionError.InvalidToken -> if (showLogin) {
             R.string.gravatar_qe_avatar_picker_session_error_cta
@@ -490,13 +475,6 @@ private fun AvatarPickerPreview() {
         AvatarPicker(
             uiState = AvatarPickerUiState(
                 email = Email("henry.a.wallace@example.com"),
-                profile = ComponentState.Loaded(
-                    defaultProfile(
-                        hash = "tetet",
-                        displayName = "Henry Wallace",
-                        location = "London, UK",
-                    ),
-                ),
                 emailAvatars = EmailAvatars(
                     avatars = listOf(
                         Avatar {
@@ -523,7 +501,6 @@ private fun AvatarPickerLoadingPreview() {
         AvatarPicker(
             uiState = AvatarPickerUiState(
                 email = Email("henry.a.wallace@example.com"),
-                profile = ComponentState.Loading,
                 isLoading = true,
                 avatarPickerContentLayout = AvatarPickerContentLayout.Horizontal,
                 emailAvatars = null,
@@ -540,7 +517,6 @@ private fun AvatarPickerErrorPreview() {
         AvatarPicker(
             uiState = AvatarPickerUiState(
                 email = Email("henry.a.wallace@example.com"),
-                profile = null,
                 isLoading = false,
                 emailAvatars = null,
                 error = SectionError.ServerError,

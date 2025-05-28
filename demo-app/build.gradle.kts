@@ -118,6 +118,7 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.ucrop)
+    implementation(libs.composables.core)
     implementation(project(":gravatar"))
     implementation(project(":gravatar-ui"))
     implementation(project(":gravatar-quickeditor"))

@@ -4,6 +4,7 @@ import com.gravatar.GravatarSdkContainerRule
 import com.gravatar.restapi.infrastructure.ApiResponse
 import com.gravatar.restapi.models.AssociatedResponse
 import com.gravatar.restapi.models.Profile
+import com.gravatar.restapi.models.UpdateProfileRequest
 import com.gravatar.types.Email
 import com.gravatar.types.Hash
 import io.mockk.coEvery
@@ -395,4 +396,125 @@ class ProfileServiceTests {
         assertTrue(result is GravatarResult.Success)
         assertEquals(mockResponse.body, (result as GravatarResult.Success).value)
     }
+
+    @Test
+    fun `given updateProfileRequest when updating profile and response is successful then Profile is returned`() =
+        runTest {
+            val oauthToken = "oauth"
+            val updateProfileRequest = mockk<UpdateProfileRequest>()
+            val mockResponse = mockk<ApiResponse<Profile>> {
+                every { isSuccessful } returns true
+                every { body } returns mockk()
+            }
+
+            coEvery {
+                containerRule.profilesApi.updateProfile(updateProfileRequest)
+            } returns mockResponse
+
+            val result = profileService.updateProfile(oauthToken, updateProfileRequest)
+
+            coVerify(exactly = 1) { containerRule.profilesApi.updateProfile(updateProfileRequest) }
+            assertEquals(mockResponse.body, result)
+        }
+
+    @Test
+    fun `given updateProfileRequest when response body is null then IllegalStateException is thrown`() =
+        runTestExpectingGravatarException(
+            ErrorType.Unknown("Response body is null"),
+            IllegalStateException::class.java,
+        ) {
+            val oauthToken = "oauth"
+            val updateProfileRequest = mockk<UpdateProfileRequest>()
+            val mockResponse = mockk<ApiResponse<Profile>> {
+                every { isSuccessful } returns true
+                every { body } returns null
+            }
+
+            coEvery {
+                containerRule.profilesApi.updateProfile(updateProfileRequest)
+            } returns mockResponse
+
+            profileService.updateProfile(oauthToken, updateProfileRequest)
+        }
+
+    @Test
+    fun `given updateProfileRequest when updating profile and response is unsuccessful then HttpException is thrown`() =
+        runTestExpectingGravatarException(ErrorType.Unauthorized, HttpException::class.java) {
+            val oauthToken = "oauth"
+            val updateProfileRequest = mockk<UpdateProfileRequest>()
+            val mockResponse = mockk<ApiResponse<Profile>> {
+                every { isSuccessful } returns false
+                every { code } returns 401
+                every { errorBody } returns mockk(relaxed = true)
+            }
+
+            coEvery {
+                containerRule.profilesApi.updateProfile(updateProfileRequest)
+            } returns mockResponse
+
+            profileService.updateProfile(oauthToken, updateProfileRequest)
+        }
+
+    @Test
+    fun `given updateProfileRequest when updating profile and response is successful then result is successful`() =
+        runTest {
+            val oauthToken = "oauth"
+            val updateProfileRequest = mockk<UpdateProfileRequest>()
+            val mockResponse = mockk<ApiResponse<Profile>> {
+                every { isSuccessful } returns true
+                every { body } returns mockk()
+            }
+
+            coEvery {
+                containerRule.profilesApi.updateProfile(updateProfileRequest)
+            } returns mockResponse
+
+            val result = profileService.updateProfileCatching(oauthToken, updateProfileRequest)
+
+            coVerify(exactly = 1) { containerRule.profilesApi.updateProfile(updateProfileRequest) }
+            assertTrue(result is GravatarResult.Success)
+            assertEquals(mockResponse.body, (result as GravatarResult.Success).value)
+        }
+
+    @Test
+    fun `given updateProfileRequest when updating profile and response body is null then result is failure`() =
+        runTest {
+            val oauthToken = "oauth"
+            val updateProfileRequest = mockk<UpdateProfileRequest>()
+            val mockResponse = mockk<ApiResponse<Profile>> {
+                every { isSuccessful } returns true
+                every { body } returns null
+            }
+
+            coEvery {
+                containerRule.profilesApi.updateProfile(updateProfileRequest)
+            } returns mockResponse
+
+            val result = profileService.updateProfileCatching(oauthToken, updateProfileRequest)
+
+            coVerify(exactly = 1) { containerRule.profilesApi.updateProfile(updateProfileRequest) }
+            assertTrue((result as GravatarResult.Failure).error == ErrorType.Unknown("Response body is null"))
+        }
+
+    @Test
+    fun `given updateProfileRequest when updating profile and response is unsuccessful then result is failure`() =
+        runTest {
+            val oauthToken = "oauth"
+            val updateProfileRequest = mockk<UpdateProfileRequest>()
+            val mockResponse = mockk<ApiResponse<Profile>> {
+                every { isSuccessful } returns false
+                every { code } returns 401
+                every { errorBody } returns mockk(relaxed = true)
+            }
+
+            coEvery {
+                containerRule.profilesApi.updateProfile(updateProfileRequest)
+            } returns mockResponse
+
+            val result = profileService.updateProfileCatching(oauthToken, updateProfileRequest)
+
+            coVerify(exactly = 1) { containerRule.profilesApi.updateProfile(updateProfileRequest) }
+            assertTrue(result is GravatarResult.Failure)
+            assertTrue((result as GravatarResult.Failure).error is ErrorType.Unauthorized)
+        }
 }

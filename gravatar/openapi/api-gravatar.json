@@ -160,9 +160,9 @@
           },
           "name": {
             "type": "string",
-            "description": "The name of the interest.",
+            "description": "The name of the interest as originally defined (most often in English).",
             "examples": [
-              "Photography"
+              "photography"
             ]
           }
         }
@@ -796,6 +796,143 @@
                 "schema": {
                   "type": "object",
                   "$ref": "#/components/schemas/Profile"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not Authorized",
+            "$ref": "#/components/responses/not_authorized"
+          },
+          "403": {
+            "description": "Insufficient Scope",
+            "$ref": "#/components/responses/insufficient_scope"
+          },
+          "404": {
+            "description": "Profile is disabled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "disabled": {
+                    "value": {
+                      "error": "Profile is disabled",
+                      "code": "disabled"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update profile information for the authenticated user",
+        "description": "Updates the profile information for the authenticated user. Only a subset of `Profile` fields are available for update. Partial updates are supported, so only the provided fields will be updated. To unset a field, set it explicitly to an empty string.",
+        "tags": [
+          "profiles"
+        ],
+        "operationId": "updateProfile",
+        "security": [
+          {
+            "oauth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "The subset of data available for update. Field names match the ones in `Profile`. Only the provided fields will be updated.",
+                "properties": {
+                  "first_name": {
+                    "type": "string",
+                    "description": "The user's first name.",
+                    "examples": [
+                      "Alex"
+                    ]
+                  },
+                  "last_name": {
+                    "type": "string",
+                    "description": "The user's last name.",
+                    "examples": [
+                      "Morgan"
+                    ]
+                  },
+                  "display_name": {
+                    "type": "string",
+                    "description": "The user's display name. This is the name that is displayed on their profile.",
+                    "examples": [
+                      "Alex Morgan"
+                    ]
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "The about section on a user's profile.",
+                    "examples": [
+                      "I like playing hide and seek."
+                    ]
+                  },
+                  "pronunciation": {
+                    "type": "string",
+                    "description": "The phonetic pronunciation of the user's name.",
+                    "examples": [
+                      "Al-ex Mor-gan"
+                    ]
+                  },
+                  "pronouns": {
+                    "type": "string",
+                    "description": "The pronouns the user uses.",
+                    "examples": [
+                      "She/They"
+                    ]
+                  },
+                  "location": {
+                    "type": "string",
+                    "description": "The user's location.",
+                    "examples": [
+                      "New York, USA"
+                    ]
+                  },
+                  "job_title": {
+                    "type": "string",
+                    "description": "The user's job title.",
+                    "examples": [
+                      "Landscape Architect"
+                    ]
+                  },
+                  "company": {
+                    "type": "string",
+                    "description": "The user's current company's name.",
+                    "examples": [
+                      "ACME Corp"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Profile updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Profile"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }

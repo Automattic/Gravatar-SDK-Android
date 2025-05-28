@@ -11,16 +11,12 @@ import com.gravatar.quickeditor.data.FileUtils
 import com.gravatar.quickeditor.data.ImageDownloader
 import com.gravatar.quickeditor.data.models.QuickEditorError
 import com.gravatar.quickeditor.data.repository.AvatarRepository
-import com.gravatar.quickeditor.data.repository.ProfileRepository
 import com.gravatar.quickeditor.ui.editor.AvatarPickerContentLayout
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
-import com.gravatar.quickeditor.ui.time.Clock
-import com.gravatar.quickeditor.ui.time.SystemClock
 import com.gravatar.restapi.models.Avatar
 import com.gravatar.services.ErrorType
 import com.gravatar.services.GravatarResult
 import com.gravatar.types.Email
-import com.gravatar.ui.components.ComponentState
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -39,18 +35,15 @@ internal class AvatarPickerViewModel(
     private val email: Email,
     private val handleExpiredSession: Boolean,
     private val avatarPickerContentLayout: AvatarPickerContentLayout,
-    private val profileRepository: ProfileRepository,
     private val avatarRepository: AvatarRepository,
     private val imageDownloader: ImageDownloader,
     private val fileUtils: FileUtils,
-    private val clock: Clock,
 ) : ViewModel() {
     private val _uiState =
         MutableStateFlow(
             AvatarPickerUiState(
                 email = email,
                 avatarPickerContentLayout = avatarPickerContentLayout,
-                avatarCacheBuster = clock.getTimeMillis(),
             ),
         )
     val uiState: StateFlow<AvatarPickerUiState> = _uiState.asStateFlow()
@@ -186,9 +179,6 @@ internal class AvatarPickerViewModel(
 
     private fun refresh() {
         fetchAvatars()
-        if (uiState.value.profile !is ComponentState.Loaded) {
-            fetchProfile()
-        }
     }
 
     private fun selectAvatar(avatar: Avatar) {
@@ -203,7 +193,6 @@ internal class AvatarPickerViewModel(
                         _uiState.update { currentState ->
                             currentState.copy(
                                 selectingAvatarId = null,
-                                avatarCacheBuster = clock.getTimeMillis(),
                             )
                         }
                         _actions.send(AvatarPickerAction.AvatarSelected)
@@ -248,11 +237,6 @@ internal class AvatarPickerViewModel(
                         currentState.copy(
                             uploadingAvatar = null,
                             scrollToIndex = null,
-                            avatarCacheBuster = if (avatar.selected == true) {
-                                clock.getTimeMillis()
-                            } else {
-                                currentState.avatarCacheBuster
-                            },
                         )
                     }
                 }
@@ -267,25 +251,6 @@ internal class AvatarPickerViewModel(
                                 error = (result.error as? QuickEditorError.Request)?.type,
                             ),
                         )
-                    }
-                }
-            }
-        }
-    }
-
-    private fun fetchProfile() {
-        viewModelScope.launch {
-            _uiState.update { currentState -> currentState.copy(profile = ComponentState.Loading) }
-            when (val result = profileRepository.getProfile(email)) {
-                is GravatarResult.Success -> {
-                    _uiState.update { currentState ->
-                        currentState.copy(profile = ComponentState.Loaded(result.value))
-                    }
-                }
-
-                is GravatarResult.Failure -> {
-                    _uiState.update { currentState ->
-                        currentState.copy(profile = null)
                     }
                 }
             }
@@ -326,7 +291,11 @@ internal class AvatarPickerViewModel(
 
             is GravatarResult.Failure -> {
                 _uiState.update { currentState ->
-                    currentState.copy(emailAvatars = null, isLoading = false, error = result.error.asSectionError)
+                    currentState.copy(
+                        emailAvatars = null,
+                        isLoading = false,
+                        error = result.error.asSectionError(handleExpiredSession),
+                    )
                 }
             }
         }
@@ -395,15 +364,6 @@ internal class AvatarPickerViewModel(
 
     private suspend fun notifyAvatarDeletedSuccessfully(isSelectedAvatar: Boolean) {
         if (isSelectedAvatar) _actions.send(AvatarPickerAction.AvatarSelected)
-        _uiState.update { currentState ->
-            currentState.copy(
-                avatarCacheBuster = if (isSelectedAvatar) {
-                    clock.getTimeMillis()
-                } else {
-                    currentState.avatarCacheBuster
-                },
-            )
-        }
     }
 
     private fun hideNonSelectedAvatarAlert() {
@@ -447,20 +407,21 @@ internal class AvatarPickerViewModel(
         }
     }
 
-    private val QuickEditorError.asSectionError: SectionError
-        get() = when (this) {
-            QuickEditorError.TokenNotFound -> SectionError.InvalidToken(handleExpiredSession)
-            QuickEditorError.Unknown -> SectionError.Unknown
-            is QuickEditorError.Request -> when (type) {
-                ErrorType.Server -> SectionError.ServerError
-                ErrorType.Network -> SectionError.NoInternetConnection
-                ErrorType.Unauthorized -> SectionError.InvalidToken(handleExpiredSession)
-                else -> SectionError.Unknown
-            }
-        }
-
     private fun Avatar?.shouldUpdateRating(newRating: Avatar.Rating?): Boolean {
         return newRating != null && this?.rating != newRating
+    }
+}
+
+internal fun QuickEditorError.asSectionError(handleExpiredSession: Boolean): SectionError {
+    return when (this) {
+        QuickEditorError.TokenNotFound -> SectionError.InvalidToken(handleExpiredSession)
+        QuickEditorError.Unknown -> SectionError.Unknown
+        is QuickEditorError.Request -> when (type) {
+            ErrorType.Server -> SectionError.ServerError
+            ErrorType.Network -> SectionError.NoInternetConnection
+            ErrorType.Unauthorized -> SectionError.InvalidToken(handleExpiredSession)
+            else -> SectionError.Unknown
+        }
     }
 }
 
@@ -473,12 +434,10 @@ internal class AvatarPickerViewModelFactory(
         return AvatarPickerViewModel(
             handleExpiredSession = handleExpiredSession,
             email = gravatarQuickEditorParams.email,
-            avatarPickerContentLayout = gravatarQuickEditorParams.avatarPickerContentLayout,
-            profileRepository = QuickEditorContainer.getInstance().profileRepository,
+            avatarPickerContentLayout = gravatarQuickEditorParams.scopeOption.avatarPickerContentLayout,
             avatarRepository = QuickEditorContainer.getInstance().avatarRepository,
             imageDownloader = QuickEditorContainer.getInstance().imageDownloader,
             fileUtils = QuickEditorContainer.getInstance().fileUtils,
-            clock = SystemClock(),
         ) as T
     }
 }

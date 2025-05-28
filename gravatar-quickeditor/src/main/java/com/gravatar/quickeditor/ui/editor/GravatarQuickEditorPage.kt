@@ -7,6 +7,7 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -16,7 +17,6 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.gravatar.quickeditor.ui.alttext.AltTextPage
-import com.gravatar.quickeditor.ui.avatarpicker.AvatarPicker
 import com.gravatar.quickeditor.ui.navigation.EditorNavDestinations
 import com.gravatar.quickeditor.ui.navigation.QuickEditorPage
 import com.gravatar.quickeditor.ui.oauth.OAuthPage
@@ -29,8 +29,10 @@ import com.gravatar.quickeditor.ui.splash.SplashPage
  *
  * @param gravatarQuickEditorParams The Quick Editor parameters.
  * @param oAuthParams The OAuth parameters.
- * @param onAvatarSelected The callback for the avatar update.
+ * @param updateHandler The callback for the Quick Editor updates.
  *                       Can be invoked multiple times while the Quick Editor is open
+ * @param confirmDismissal Whether to show the confirmation dialog when dismissing the Quick Editor.
+ * @param onDismissIgnored The callback for the dismiss action when the Quick Editor is ignored.
  * @param onDoneClicked The callback for the done action.
  * @param onDismiss The callback for the dismiss action.
  *                  [GravatarQuickEditorError] will be non-null if the dismiss was caused by an error.
@@ -39,11 +41,19 @@ import com.gravatar.quickeditor.ui.splash.SplashPage
 internal fun GravatarQuickEditorPage(
     gravatarQuickEditorParams: GravatarQuickEditorParams,
     oAuthParams: OAuthParams,
-    onAvatarSelected: () -> Unit,
+    updateHandler: UpdateHandler,
+    confirmDismissal: Boolean,
+    onDismissIgnored: () -> Unit,
     onDoneClicked: () -> Unit,
     onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit = {},
 ) {
     val navController = rememberNavController()
+
+    LaunchedEffect(confirmDismissal) {
+        if (confirmDismissal && navController.currentDestination?.route != EditorNavDestinations.QUICK_EDITOR.name) {
+            onDoneClicked()
+        }
+    }
 
     NavHost(
         navController,
@@ -74,11 +84,13 @@ internal fun GravatarQuickEditorPage(
                 onDoneClicked = onDoneClicked,
             )
         }
-        addAvatarPickerGraph(
+        addEditorGraph(
             gravatarQuickEditorParams = gravatarQuickEditorParams,
             handleExpiredSession = true,
             navController = navController,
-            onAvatarSelected = onAvatarSelected,
+            updateHandler = updateHandler,
+            confirmDismissal = confirmDismissal,
+            onDismissIgnored = onDismissIgnored,
             onSessionExpired = {
                 navController.navigateAndPopupTo(QuickEditorPage.OAUTH.name, QuickEditorPage.EDITOR.name)
             },
@@ -93,8 +105,10 @@ internal fun GravatarQuickEditorPage(
  *
  * @param gravatarQuickEditorParams The Quick Editor parameters.
  * @param authToken The authentication token.
- * @param onAvatarSelected The callback for the avatar update.
+ * @param updateHandler The callback for the Quick Editor updates.
  *                       Can be invoked multiple times while the Quick Editor is open
+ * @param confirmDismissal Whether to show the confirmation dialog when dismissing the Quick Editor.
+ * @param onDismissIgnored The callback for the dismiss action when the Quick Editor is ignored.
  * @param onDoneClicked The callback for the done action.
  * @param onDismiss The callback for the dismiss action.
  *                  [GravatarQuickEditorError] will be non-null if the dismiss was caused by an error.
@@ -103,7 +117,9 @@ internal fun GravatarQuickEditorPage(
 internal fun GravatarQuickEditorPage(
     gravatarQuickEditorParams: GravatarQuickEditorParams,
     authToken: String,
-    onAvatarSelected: () -> Unit,
+    updateHandler: UpdateHandler,
+    confirmDismissal: Boolean,
+    onDismissIgnored: () -> Unit,
     onDoneClicked: () -> Unit,
     onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit = {},
 ) {
@@ -124,11 +140,13 @@ internal fun GravatarQuickEditorPage(
                 navController.navigateAndPopupTo(QuickEditorPage.EDITOR.name, QuickEditorPage.SPLASH.name)
             }
         }
-        addAvatarPickerGraph(
+        addEditorGraph(
             gravatarQuickEditorParams = gravatarQuickEditorParams,
             handleExpiredSession = false,
             navController = navController,
-            onAvatarSelected = onAvatarSelected,
+            updateHandler = updateHandler,
+            confirmDismissal = confirmDismissal,
+            onDismissIgnored = onDismissIgnored,
             onSessionExpired = { onDismiss(GravatarQuickEditorDismissReason.InvalidToken) },
             onDoneClicked = onDoneClicked,
         )
@@ -136,30 +154,34 @@ internal fun GravatarQuickEditorPage(
 }
 
 @Suppress("LongParameterList")
-private fun NavGraphBuilder.addAvatarPickerGraph(
+private fun NavGraphBuilder.addEditorGraph(
     navController: NavHostController,
     gravatarQuickEditorParams: GravatarQuickEditorParams,
     handleExpiredSession: Boolean,
-    onAvatarSelected: () -> Unit,
+    updateHandler: UpdateHandler,
+    confirmDismissal: Boolean,
+    onDismissIgnored: () -> Unit,
     onSessionExpired: () -> Unit,
     onDoneClicked: () -> Unit,
 ) {
     navigation(
         route = QuickEditorPage.EDITOR.name,
-        startDestination = EditorNavDestinations.AVATAR_SELECTION.name,
+        startDestination = EditorNavDestinations.QUICK_EDITOR.name,
     ) {
         composable(
-            route = EditorNavDestinations.AVATAR_SELECTION.name,
+            route = EditorNavDestinations.QUICK_EDITOR.name,
             enterTransition = { fadeIn() },
             popEnterTransition = { fadeIn() + expandVertically() },
             exitTransition = {
                 slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Start) + shrinkVertically()
             },
         ) {
-            AvatarPicker(
+            QuickEditor(
                 gravatarQuickEditorParams = gravatarQuickEditorParams,
                 handleExpiredSession = handleExpiredSession,
-                onAvatarSelected = onAvatarSelected,
+                updateHandler = updateHandler,
+                confirmDismissal = confirmDismissal,
+                onDismissIgnored = onDismissIgnored,
                 onSessionExpired = onSessionExpired,
                 onAltTextTapped = { email, avatarId ->
                     navController.navigate(

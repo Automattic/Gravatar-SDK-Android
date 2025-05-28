@@ -89,13 +89,12 @@ internal class QuickEditorContainer private constructor(
         ProfileService()
     }
 
-    val profileRepository: ProfileRepository by lazy {
-        ProfileRepository(
+    val profileRepository: ProfileRepository
+        get() = ProfileRepository(
             profileService = profileService,
             tokenStorage = tokenStorage,
             dispatcher = Dispatchers.IO,
         )
-    }
 
     val fileUtils: FileUtils by lazy {
         FileUtils(context)
