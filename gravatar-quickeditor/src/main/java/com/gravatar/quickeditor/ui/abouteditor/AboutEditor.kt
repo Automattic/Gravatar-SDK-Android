@@ -42,6 +42,7 @@ import com.gravatar.quickeditor.ui.avatarpicker.titleRes
 import com.gravatar.quickeditor.ui.components.CtaSection
 import com.gravatar.quickeditor.ui.components.QEButton
 import com.gravatar.quickeditor.ui.editor.AboutInputField
+import com.gravatar.quickeditor.ui.editor.bottomsheet.DEFAULT_PAGE_HEIGHT
 import com.gravatar.quickeditor.ui.editor.bottomsheet.positionAwareImePadding
 import com.gravatar.quickeditor.ui.extensions.QESnackbarHost
 import com.gravatar.quickeditor.ui.extensions.SnackbarType
@@ -175,7 +176,7 @@ internal fun AboutEditor(uiState: AboutEditorUiState, onEvent: (AboutEditorEvent
                     uiState.isLoading -> {
                         Box(
                             modifier = Modifier
-                                .height(300.dp)
+                                .height(DEFAULT_PAGE_HEIGHT)
                                 .fillMaxWidth(),
                         ) {
                             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
