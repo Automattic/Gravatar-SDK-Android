@@ -406,4 +406,4 @@ internal data class ModalDetents(
     val detents: List<SheetDetent>,
 )
 
-internal val DEFAULT_PAGE_HEIGHT = 250.dp
+internal val DEFAULT_PAGE_HEIGHT = 300.dp
