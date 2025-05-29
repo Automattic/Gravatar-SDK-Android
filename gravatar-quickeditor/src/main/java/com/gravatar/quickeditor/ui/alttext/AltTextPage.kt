@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
@@ -52,7 +53,6 @@ import com.gravatar.quickeditor.ui.components.QEPage
 import com.gravatar.quickeditor.ui.components.QESectionTitle
 import com.gravatar.quickeditor.ui.components.QETopBar
 import com.gravatar.quickeditor.ui.components.QETopBarTextButton
-import com.gravatar.quickeditor.ui.editor.bottomsheet.positionAwareImePadding
 import com.gravatar.quickeditor.ui.extensions.QESnackbarHost
 import com.gravatar.quickeditor.ui.extensions.SnackbarType
 import com.gravatar.quickeditor.ui.extensions.showQESnackbar
@@ -130,6 +130,7 @@ internal fun AltTextPage(
                 Box(
                     modifier = modifier
                         .padding(16.dp)
+                        .imePadding()
                         .wrapContentSize(),
                 ) {
                     state.let { altTextState ->
@@ -160,7 +161,6 @@ internal fun AltTextPage(
     Surface(modifier = modifier.fillMaxWidth()) {
         Box(
             modifier = Modifier
-                .positionAwareImePadding()
                 .verticalScroll(rememberScrollState())
                 .animateContentSize()
                 .border(
