@@ -37,6 +37,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.layout.findRootCoordinates
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInWindow
@@ -250,6 +251,17 @@ private fun GravatarModalBottomSheet(
     modalBottomSheetState: ModalBottomSheetState,
     content: @Composable () -> Unit,
 ) {
+    val scope = rememberCoroutineScope()
+    var hasFocus by remember { mutableStateOf(false) }
+
+    LaunchedEffect(hasFocus) {
+        scope.launch {
+            if (hasFocus) {
+                modalBottomSheetState.animateTo(FullyExpanded)
+            }
+        }
+    }
+
     val configuration = Configuration(LocalConfiguration.current).apply {
         uiMode = when (colorScheme) {
             GravatarUiMode.LIGHT -> Configuration.UI_MODE_NIGHT_NO
@@ -310,6 +322,9 @@ private fun GravatarModalBottomSheet(
                             }
                             Surface(
                                 modifier = Modifier
+                                    .onFocusChanged { state ->
+                                        hasFocus = state.hasFocus
+                                    }
                                     .fillMaxWidth(),
                                 tonalElevation = 1.dp,
                             ) {
