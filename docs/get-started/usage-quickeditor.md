@@ -1,8 +1,13 @@
 # Quick Editor Module usage
 
-The `:gravatar-quickeditor` module provides a fully featured component that allows the user to modify their avatar without leaving your app.
+The `:gravatar-quickeditor` module provides a fully featured component that allows the user to modify their Gravatar profile information, including their avatar and "About" details, without leaving your app.
 
-To do that the QuickEditor needs an authorization token to perform requests on behalf of the user. There are two ways for that:
+The Quick Editor's functionality can be tailored using `QuickEditorScopeOption` to define what the user can edit. This allows for a focused experience depending on the desired interaction:
+*   **`QuickEditorScopeOption.avatarPicker()`**: Launches the Quick Editor focused solely on avatar management. Users can select an existing image, upload a new one, or remove their current Gravatar through a streamlined interface. This scope is ideal when you only need to offer avatar editing capabilities.
+*   **`QuickEditorScopeOption.aboutEditor()`**: This option presents the Quick Editor with tools to modify the user's "About" profile section. This typically includes details such as their display name, full name, pronouns, a public description or bio, and current location.
+*   **`QuickEditorScopeOption.avatarPickerAndAboutEditor()`**: For a comprehensive profile editing experience, this combined scope allows users to modify both their avatar and their "About Me" details. The Quick Editor will provide a way to navigate between the avatar editing and "About" sections seamlessly without needing to close and re-launch the component.
+
+For all of this to be possible, the QuickEditor needs an authorization token to perform requests on behalf of the user. There are two ways for that:
 
 ### 1. Let the Quick Editor handle the OAuth flow
 
@@ -46,7 +51,7 @@ if (showBottomSheet) {
     GravatarQuickEditorBottomSheet(
         gravatarQuickEditorParams = GravatarQuickEditorParams {
             email = Email("{USER_EMAIL}")
-            avatarPickerContentLayout = AvatarPickerContentLayout.Horizontal
+            scopeOption = QuickEditorScopeOption.avatarPicker()
         },
         authenticationMethod = AuthenticationMethod.OAuth(
             OAuthParams {
@@ -54,7 +59,7 @@ if (showBottomSheet) {
                 redirectUri = "{YOUR_REDIRECT_URL}" // In our example this would be https://yourhost.com/redirect_url
             },
         ),
-        onAvatarSelected = { ... },
+        updateHandler = { updateType -> ... },
         onDismiss = { gravatarQuickEditorDismissReason ->
             showBottomSheet = false
             ...
@@ -143,10 +148,10 @@ if (showBottomSheet) {
     GravatarQuickEditorBottomSheet(
         gravatarQuickEditorParams = GravatarQuickEditorParams {
             email = Email("{USER_EMAIL}")
-            avatarPickerContentLayout = AvatarPickerContentLayout.Horizontal
+            scopeOption = QuickEditorScopeOption.avatarPicker()
         },
         authenticationMethod = AuthenticationMethod.Bearer("{TOKEN}"),
-        onAvatarSelected = { ... },
+        updateHandler = { updateType -> ... },
         onDismiss = { gravatarQuickEditorDismissReason ->
             showBottomSheet = false
             ...
@@ -157,7 +162,7 @@ if (showBottomSheet) {
 
 ### Activity/Fragment compatibility
 
-Gravatar SDK is built with Compose but we do provide some helper functions to launch the Quick Editor from an Activity or Fragment. Here's an example an Activity:
+Gravatar SDK is built with Compose but we do provide some helper functions to launch the Quick Editor from an Activity or Fragment. Here's an example from Activity:
 
 ```kotlin
 GravatarQuickEditor.show(
@@ -203,7 +208,7 @@ public fun Avatar(
 )
 ```
 
-By setting `forceRefresh` to true, you ensure that the avatar is always fetched with the latest changes.
+By setting `forceRefresh` to true, you ensure that the avatar is always fetched with the latest changes. Although this will result in a new avatar, it must be used carefully as the image will be refreshed on each recomposition, which may not be ideal for performance.
 
 If you want a more fine-grained control with the `Avatar` component you can use the version that takes the URL as a parameter and pass the URL with the cacheBuster value created with the `AvatarUrl` class.
 
