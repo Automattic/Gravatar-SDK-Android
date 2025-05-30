@@ -631,14 +631,14 @@ public final class com/gravatar/quickeditor/ui/editor/GravatarQuickEditorParams$
 	public final fun build ()Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorParams;
 	public final fun getAvatarPickerContentLayout ()Lcom/gravatar/quickeditor/ui/editor/AvatarPickerContentLayout;
 	public final fun getEmail ()Lcom/gravatar/types/Email;
-	public final fun getScopeConfig ()Lcom/gravatar/quickeditor/ui/editor/QuickEditorScopeOption;
+	public final fun getScopeOption ()Lcom/gravatar/quickeditor/ui/editor/QuickEditorScopeOption;
 	public final fun getUiMode ()Lcom/gravatar/quickeditor/ui/editor/GravatarUiMode;
 	public final fun setAvatarPickerContentLayout (Lcom/gravatar/quickeditor/ui/editor/AvatarPickerContentLayout;)Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorParams$Builder;
 	public final synthetic fun setAvatarPickerContentLayout (Lcom/gravatar/quickeditor/ui/editor/AvatarPickerContentLayout;)V
 	public final fun setEmail (Lcom/gravatar/types/Email;)Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorParams$Builder;
 	public final synthetic fun setEmail (Lcom/gravatar/types/Email;)V
-	public final fun setScopeConfig (Lcom/gravatar/quickeditor/ui/editor/QuickEditorScopeOption;)Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorParams$Builder;
-	public final synthetic fun setScopeConfig (Lcom/gravatar/quickeditor/ui/editor/QuickEditorScopeOption;)V
+	public final fun setScopeOption (Lcom/gravatar/quickeditor/ui/editor/QuickEditorScopeOption;)Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorParams$Builder;
+	public final synthetic fun setScopeOption (Lcom/gravatar/quickeditor/ui/editor/QuickEditorScopeOption;)V
 	public final fun setUiMode (Lcom/gravatar/quickeditor/ui/editor/GravatarUiMode;)Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorParams$Builder;
 	public final synthetic fun setUiMode (Lcom/gravatar/quickeditor/ui/editor/GravatarUiMode;)V
 }

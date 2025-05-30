@@ -50,7 +50,7 @@ public class GravatarQuickEditorParams private constructor(
         /**
          * The content layout direction used in the Avatar Picker
          */
-        @Deprecated(message = "AvatarPickerContentLayout was moved to ScopeConfig")
+        @Deprecated(message = "AvatarPickerContentLayout was moved to QuickEditorScopeOption")
         @set:JvmSynthetic // Hide 'void' setter from Java
         public var avatarPickerContentLayout: AvatarPickerContentLayout = AvatarPickerContentLayout.Horizontal
 
@@ -64,14 +64,14 @@ public class GravatarQuickEditorParams private constructor(
          * The scope option for the Quick Editor
          */
         @set:JvmSynthetic // Hide 'void' setter from Java
-        public var scopeConfig: QuickEditorScopeOption = QuickEditorScopeOption.default
+        public var scopeOption: QuickEditorScopeOption = QuickEditorScopeOption.default
 
         /**
          * Sets the content layout direction used in the Avatar Picker
          */
         @Deprecated(
-            message = "AvatarPickerContentLayout was moved to ScopeConfig",
-            replaceWith = ReplaceWith("setScopeConfig(scopeConfig)"),
+            message = "AvatarPickerContentLayout was moved to QuickEditorScopeOption",
+            replaceWith = ReplaceWith("setScopeOption(scopeOption)"),
         )
         public fun setAvatarPickerContentLayout(avatarPickerContentLayout: AvatarPickerContentLayout): Builder =
             apply { this.avatarPickerContentLayout = avatarPickerContentLayout }
@@ -89,8 +89,8 @@ public class GravatarQuickEditorParams private constructor(
         /**
          * Sets the scope of the Quick Editor
          */
-        public fun setScopeConfig(scopeConfig: QuickEditorScopeOption): Builder =
-            apply { this.scopeConfig = scopeConfig }
+        public fun setScopeOption(scopeOption: QuickEditorScopeOption): Builder =
+            apply { this.scopeOption = scopeOption }
 
         /**
          * Builds the GravatarQuickEditorParams object
@@ -99,7 +99,7 @@ public class GravatarQuickEditorParams private constructor(
             email!!,
             avatarPickerContentLayout,
             uiMode,
-            scopeConfig.withContentLayout(avatarPickerContentLayout),
+            scopeOption.withContentLayout(avatarPickerContentLayout),
         )
 
         private fun QuickEditorScopeOption.withContentLayout(
