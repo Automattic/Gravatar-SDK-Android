@@ -24,7 +24,7 @@ public class QuickEditorScopeOption private constructor(
         data class AvatarPickerAndAboutEditor(val config: AvatarPickerAndAboutEditorConfiguration) : Scope()
     }
 
-    override fun toString(): String = "ScopeConfig(scope=$scope)"
+    override fun toString(): String = "QuickEditorScopeOption(scope=$scope)"
 
     override fun hashCode(): Int = Objects.hash(scope)
 

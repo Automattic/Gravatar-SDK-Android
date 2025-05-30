@@ -280,7 +280,7 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
                 gravatarQuickEditorParams = GravatarQuickEditorParams {
                     email = Email(userEmail)
                     uiMode = pickerUiMode
-                    scopeConfig = when (editorScope) {
+                    scopeOption = when (editorScope) {
                         QuickEditorScope.Avatar -> QuickEditorScopeOption.avatarPicker(
                             config = AvatarPickerConfiguration(
                                 contentLayout = pickerContentLayout,
