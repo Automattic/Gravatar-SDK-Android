@@ -5,7 +5,7 @@
 * [Authentication](#authentication)
     * [1. Let the Quick Editor handle the OAuth flow](#1-let-the-quick-editor-handle-the-oauth-flow)
     * [2. Obtain the token yourself and provide it to the Quick Editor](#2-obtain-the-token-yourself-and-provide-it-to-the-quick-editor)
-* [Scope Options](#scope-options)
+* [Quick Editor Scopes](#quick-editor-scopes)
 * [Activity/Fragment compatibility](#activityfragment-compatibility)
 * [Cache busting](#cache-busting)
 * [Android Permissions](#android-permissions)
@@ -175,9 +175,9 @@ if (showBottomSheet) {
 }
 ```
 
-## Scope Options
+## Quick Editor Scopes
 
-Quick Editor's scopes were already briefly described in the Overview section, but here is a more detailed explanation of each scope option:
+Quick Editor scopes were already briefly described in the Overview section, but here is a more detailed explanation of each scope option:
 
 ### `QuickEditorScopeOption.avatarPicker()`
 
@@ -207,6 +207,10 @@ GravatarQuickEditorBottomSheet(
 )
 ```
 
+| Horizontal                                     | Vertical                                     |
+|------------------------------------------------|----------------------------------------------|
+| ![](/docs/images/avatar_picker_horizontal.png) | ![](/docs/images/avatar_picker_vertical.png) |
+
 ### `QuickEditorScopeOption.aboutEditor()`
 
 This scope option allows users to edit their "About" section in Gravatar. To check the currently supported fields, refer to the [AboutInputField](https://github.com/Automattic/Gravatar-SDK-Android/blob/adam/GRA-128/gravatar-quickeditor/src/main/java/com/gravatar/quickeditor/ui/editor/AboutInputField.kt) class.
@@ -232,6 +236,10 @@ GravatarQuickEditorBottomSheet(
 )
 ```
 
+| All fields                                    | Only two selected                             |
+|-----------------------------------------------|-----------------------------------------------|
+| ![](/docs/images/about_editor_all_fields.png) | ![](/docs/images/about_editor_two_fields.png) |
+
 ### `QuickEditorScopeOption.avatarPickerAndAboutEditor()`
 
 This scope option combines both the avatar management and "About" section editing functionalities. It allows users to seamlessly switch between editing their avatar and updating their profile information without needing to close and reopen the Quick Editor.
@@ -256,6 +264,10 @@ GravatarQuickEditorBottomSheet(
     ...
 )
 ```
+
+| Avatar Picker and About Editor         |
+|----------------------------------------|
+| ![](/docs/images/avatar_and_about.gif) |
 
 ## Activity/Fragment compatibility
 
