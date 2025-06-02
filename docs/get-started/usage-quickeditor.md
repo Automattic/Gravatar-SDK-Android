@@ -6,6 +6,7 @@
     * [1. Let the Quick Editor handle the OAuth flow](#1-let-the-quick-editor-handle-the-oauth-flow)
     * [2. Obtain the token yourself and provide it to the Quick Editor](#2-obtain-the-token-yourself-and-provide-it-to-the-quick-editor)
 * [Quick Editor Scopes](#quick-editor-scopes)
+* [Update Handler](#update-handler)
 * [Activity/Fragment compatibility](#activityfragment-compatibility)
 * [Cache busting](#cache-busting)
 * [Android Permissions](#android-permissions)
@@ -269,9 +270,34 @@ GravatarQuickEditorBottomSheet(
 |----------------------------------------|
 | ![](/docs/images/avatar_and_about.gif) |
 
+
+### Update Handler
+
+When using the Quick Editor, you need to provide an `updateHandler` that will be called when the user makes changes to their profile. This allows you to handle updates in your app, such as refreshing the UI or saving changes to a local database.
+
+Each invocation of the `updateHandler` will provide a [QuickEditorUpdateType](https://github.com/Automattic/Gravatar-SDK-Android/blob/trunk/gravatar-quickeditor/src/main/java/com/gravatar/quickeditor/ui/editor/UpdateHandler.kt) that indicates what type of update was made. It can be either `AvatarPickerResult` or `AboutEditorResult`, depending on whether the user changed their avatar or their "About" section.
+
+Here's an example of how to implement the `updateHandler`:
+
+```kotlin
+GravatarQuickEditorBottomSheet(
+    ...
+    updateHandler = { updateType ->
+        when (updateType) {
+            is AvatarPickerResult -> {
+                // Handle avatar update
+            }
+            is AboutEditorResult -> {
+                // Handle about section update
+            }
+        }
+    },
+)
+```
+
 ## Activity/Fragment compatibility
 
-Gravatar SDK is built with Compose but we do provide some helper functions to launch the Quick Editor from an Activity or Fragment. Here's an example from Activity:
+Gravatar SDK is built with Compose but we do provide some helper functions to launch the Quick Editor from an Activity or Fragment. Here's an example from an Activity:
 
 ```kotlin
 GravatarQuickEditor.show(
