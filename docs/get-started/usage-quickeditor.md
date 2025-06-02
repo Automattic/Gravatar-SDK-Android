@@ -1,5 +1,18 @@
 # Quick Editor Module usage
 
+## Table of Contents
+* [Overview](#overview)
+* [Authentication](#authentication)
+    * [1. Let the Quick Editor handle the OAuth flow](#1-let-the-quick-editor-handle-the-oauth-flow)
+    * [2. Obtain the token yourself and provide it to the Quick Editor](#2-obtain-the-token-yourself-and-provide-it-to-the-quick-editor)
+* [Scope Options](#scope-options)
+* [Activity/Fragment compatibility](#activityfragment-compatibility)
+* [Cache busting](#cache-busting)
+* [Android Permissions](#android-permissions)
+* [Version migrations](#version-migrations)
+
+## Overview
+
 The `:gravatar-quickeditor` module provides a fully featured component that allows the user to modify their Gravatar profile information, including their avatar and "About" details, without leaving your app.
 
 The Quick Editor's functionality can be tailored using `QuickEditorScopeOption` to define what the user can edit. This allows for a focused experience depending on the desired interaction:
@@ -7,7 +20,9 @@ The Quick Editor's functionality can be tailored using `QuickEditorScopeOption` 
 *   **`QuickEditorScopeOption.aboutEditor()`**: This option presents the Quick Editor with tools to modify the user's "About" profile section. This typically includes details such as their display name, full name, pronouns, a public description or bio, and current location.
 *   **`QuickEditorScopeOption.avatarPickerAndAboutEditor()`**: For a comprehensive profile editing experience, this combined scope allows users to modify both their avatar and their "About Me" details. The Quick Editor will provide a way to navigate between the avatar editing and "About" sections seamlessly without needing to close and re-launch the component.
 
-For all of this to be possible, the QuickEditor needs an authorization token to perform requests on behalf of the user. There are two ways for that:
+For all of this to be possible, the QuickEditor needs an authorization token to perform requests on behalf of the user.
+
+## Authentication
 
 ### 1. Let the Quick Editor handle the OAuth flow
 
@@ -160,7 +175,89 @@ if (showBottomSheet) {
 }
 ```
 
-### Activity/Fragment compatibility
+## Scope Options
+
+Quick Editor's scopes were already briefly described in the Overview section, but here is a more detailed explanation of each scope option:
+
+### `QuickEditorScopeOption.avatarPicker()`
+
+This scope option focuses solely on avatar management. When using this option, the Quick Editor will present a user interface that allows users to:
+- Select an avatar from the uploaded images.
+- Upload an existing image from their device or take a new one.
+- Remove their current Gravatar avatar.
+- Modify the Alt Text for the avatar.
+- Modify the rating of the avatar.
+- Download any of the already uploaded avatars.
+
+**AvatarPicker** scope is configured via `AvatarPickerConfiguration` class. Currently it supports one parameter: `AvatarPickerContentLayout` that defines how the user's avatar will be displayed. It can be either `Horizontal` or `Vertical`. The default value is `Horizontal`.
+
+Here's an example of how to configure the `AvatarPicker` scope:
+
+```kotlin
+GravatarQuickEditorBottomSheet(
+    gravatarQuickEditorParams = GravatarQuickEditorParams {
+        ...
+        scopeOption = QuickEditorScopeOption.avatarPicker(
+            config = AvatarPickerConfiguration(
+                contentLayout = AvatarPickerContentLayout.Vertical,
+            ),
+        )
+    },
+    ...
+)
+```
+
+### `QuickEditorScopeOption.aboutEditor()`
+
+This scope option allows users to edit their "About" section in Gravatar. To check the currently supported fields, refer to the [AboutInputField](https://github.com/Automattic/Gravatar-SDK-Android/blob/adam/GRA-128/gravatar-quickeditor/src/main/java/com/gravatar/quickeditor/ui/editor/AboutInputField.kt) class.
+
+In order to configure the `AboutEditor` scope, you can use the `AboutEditorConfiguration` class. This class allows you to specify which fields should be editable by the user.
+
+Here's an example of how to configure the `AboutEditor` scope:
+
+```kotlin
+GravatarQuickEditorBottomSheet(
+    gravatarQuickEditorParams = GravatarQuickEditorParams {
+        ...
+        scopeOption = QuickEditorScopeOption.aboutEditor(
+            config = AboutEditorConfiguration(
+                fields = setOf(
+                    AboutInputField.DisplayName,
+                    AboutInputField.AboutMe,
+                ),
+            ),
+        )
+    },
+    ...
+)
+```
+
+### `QuickEditorScopeOption.avatarPickerAndAboutEditor()`
+
+This scope option combines both the avatar management and "About" section editing functionalities. It allows users to seamlessly switch between editing their avatar and updating their profile information without needing to close and reopen the Quick Editor.
+
+To configure the `AvatarPickerAndAboutEditor` scope, you can use the `AvatarPickerAndAboutEditorConfiguration` class. It takes all the parameters from both `AvatarPickerConfiguration` and `AboutEditorConfiguration`, allowing you to define how the avatar picker and the "About" editor should behave. 
+On top of that it allows you to define the initial page that will be displayed when the Quick Editor is launched. The initial page can be either `AvatarPicker` or `AboutEditor`.
+
+Here's an example of how to configure the `AvatarPickerAndAboutEditor` scope:
+
+```kotlin
+GravatarQuickEditorBottomSheet(
+    gravatarQuickEditorParams = GravatarQuickEditorParams {
+        ...
+        scopeOption = QuickEditorScopeOption.avatarPickerAndAboutEditor(
+            config = AvatarPickerAndAboutEditorConfiguration(
+                contentLayout = AvatarPickerContentLayout.Vertical,
+                fields = AboutInputField.all,
+                initialPage = AvatarPickerAndAboutEditorConfiguration.Page.AvatarPicker,
+           ),
+        )
+    },
+    ...
+)
+```
+
+## Activity/Fragment compatibility
 
 Gravatar SDK is built with Compose but we do provide some helper functions to launch the Quick Editor from an Activity or Fragment. Here's an example from Activity:
 
@@ -177,13 +274,13 @@ GravatarQuickEditor.show(
 )
 ```
 
-### Cache busting
+## Cache busting
 
 When an avatar is modified, the change is applied immediately, but it may take a few seconds to propagate through the Gravatar servers. As a result, requesting the avatar quickly using the usual URL might sometimes return the previous avatar.
 
 To ensure you receive the updated avatar after a change, you can use a cache buster. Our SDK provides methods to assist you in this process.
 
-#### Using AvatarUrl
+### Using AvatarUrl
 
 The `AvatarUrl` method accepts an optional parameter that we'll add as a cache buster:
 
@@ -193,7 +290,7 @@ public fun url(cacheBuster: String? = null): URL
 
 You can use any string as a cache buster, but ensure that you don't repeat the value when you want to refresh the avatar. A timestamp is a good example of a unique cache buster.
 
-#### Using the Avatar UI Component
+### Using the Avatar UI Component
 
 If you're using our UI Avatar component, you can simply enable the `forceRefresh` parameter when you want to use the cache buster. We'll manage everything for you, updating the cache buster in every recomposition while the `forceRefresh` parameter remains true.
 
@@ -221,7 +318,7 @@ public fun Avatar(
 )
 ```
 
-### Android Permissions
+## Android Permissions
 
 The Quick Editor module requires certain permissions to function correctly. Below is a table listing the permissions and the reasons why they are needed:
 
@@ -232,7 +329,7 @@ The Quick Editor module requires certain permissions to function correctly. Belo
 
 If you use the same permission with different configurations, you might end up with conflicts.
 
-### Version migrations
+## Version migrations
 
 When updating the SDK, you might need to migrate your code to the new version. Here is the list of all the migrations:
 
