@@ -200,7 +200,7 @@ internal fun Profile.aboutFields(visibleAboutFields: Set<AboutInputField>): Set<
                     else -> ""
                 },
                 maxLines = when (it) {
-                    AboutInputField.AboutMe -> 3
+                    AboutInputField.AboutMe -> 4
                     else -> 1
                 },
             )

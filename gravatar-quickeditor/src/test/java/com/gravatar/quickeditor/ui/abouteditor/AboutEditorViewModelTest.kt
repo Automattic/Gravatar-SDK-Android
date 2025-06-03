@@ -360,7 +360,7 @@ class AboutEditorViewModelTest {
                     AboutEditorField(
                         type = AboutInputField.AboutMe,
                         value = profile.description,
-                        maxLines = 3,
+                        maxLines = 4,
                     ),
                     AboutEditorField(
                         type = AboutInputField.Pronunciation,
