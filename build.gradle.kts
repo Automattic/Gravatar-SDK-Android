@@ -46,18 +46,18 @@ apiValidation {
 
 val isTagBuild: Boolean = System.getenv("BUILDKITE_TAG")?.isNotEmpty() == true
 
-val sdkVersion = providers.exec {
+val rawSdkVersion = providers.exec {
     commandLine("git", "describe", "--tags")
-}.standardOutput.asText.get().trim() + if (isTagBuild) "" else "-SNAPSHOT" // Add -SNAPSHOT suffix once 0.31.0 version is released
+}.standardOutput.asText.get().trim()
 
-extra["sdkVersion"] = sdkVersion
+extra["sdkVersion"] = rawSdkVersion + if (isTagBuild) "" else "-SNAPSHOT" // Add -SNAPSHOT suffix once 0.31.0 version is released
 
 tasks.dokkaHtmlMultiModule {
     notCompatibleWithConfigurationCache("https://github.com/Kotlin/dokka/issues/2231")
     val mainDir = projectDir.resolve("docs/dokka/") // docs/dokka/
     val historyDir = mainDir.resolve("history/") // docs/dokka/history/ - all versions
     val currentDir = mainDir.resolve("current/") // docs/dokka/current/ - what we'll serve in github pages
-    val newVersionDir = historyDir.resolve(sdkVersion) // docs/dokka/history/x.x.x/ - new version
+    val newVersionDir = historyDir.resolve(rawSdkVersion) // docs/dokka/history/x.x.x/ - new version
 
     moduleName.set("Gravatar Android SDK")
     outputDirectory.set(newVersionDir)
@@ -68,7 +68,7 @@ tasks.dokkaHtmlMultiModule {
     }
 
     pluginConfiguration<VersioningPlugin, VersioningConfiguration> {
-        version = sdkVersion
+        version = rawSdkVersion
         olderVersionsDir = historyDir
     }
 
