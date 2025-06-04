@@ -42,6 +42,7 @@ internal fun AboutEditField(
             textStyle = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onSurface),
             cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
             maxLines = maxLines,
+            minLines = maxLines,
             singleLine = maxLines == 1,
             enabled = enabled,
             onValueChange = onValueChange,
