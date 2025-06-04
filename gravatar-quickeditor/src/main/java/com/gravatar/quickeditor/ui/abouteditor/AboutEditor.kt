@@ -35,7 +35,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.window.core.layout.WindowHeightSizeClass
 import com.gravatar.quickeditor.R
 import com.gravatar.quickeditor.ui.abouteditor.components.AboutSection
-import com.gravatar.quickeditor.ui.abouteditor.components.DiscardChangesAlertDialog
 import com.gravatar.quickeditor.ui.avatarpicker.SectionError
 import com.gravatar.quickeditor.ui.avatarpicker.buttonTextRes
 import com.gravatar.quickeditor.ui.avatarpicker.messageRes
@@ -56,10 +55,9 @@ import kotlinx.coroutines.withContext
 @Composable
 internal fun AboutEditor(
     onProfileUpdated: (Profile) -> Unit,
-    onDismissIgnored: () -> Unit,
     onSessionExpired: () -> Unit,
+    onUnsavedChangesUpdated: (Boolean) -> Unit,
     onRefresh: () -> Unit,
-    onClose: () -> Unit,
     viewModel: AboutEditorViewModel,
 ) {
     val lifecycle = LocalLifecycleOwner.current.lifecycle
@@ -71,6 +69,10 @@ internal fun AboutEditor(
     val windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass.windowHeightSizeClass
     LaunchedEffect(windowSizeClass) {
         viewModel.onEvent(AboutEditorEvent.OnCompactWindowEnabled(windowSizeClass == WindowHeightSizeClass.COMPACT))
+    }
+
+    LaunchedEffect(uiState.unsavedChanges) {
+        onUnsavedChangesUpdated(uiState.unsavedChanges)
     }
 
     LaunchedEffect(Unit) {
@@ -102,11 +104,6 @@ internal fun AboutEditor(
                             }
                         }
 
-                        AboutEditorAction.CloseEditor -> {
-                            onClose()
-                        }
-
-                        AboutEditorAction.NotifyDismissIgnored -> onDismissIgnored()
                         AboutEditorAction.InvokeAuthFailed -> onSessionExpired()
                     }
                 }
@@ -131,15 +128,6 @@ internal fun AboutEditor(
                 modifier = Modifier
                     .align(Alignment.BottomStart),
                 hostState = snackState,
-            )
-            DiscardChangesAlertDialog(
-                visible = uiState.discardChangesDialogVisible,
-                onKeepEditing = {
-                    viewModel.onEvent(AboutEditorEvent.OnUnsavedChangesKeepEditingClicked)
-                },
-                onDiscardClicked = {
-                    viewModel.onEvent(AboutEditorEvent.OnUnsavedChangesExitClicked)
-                },
             )
         }
     }

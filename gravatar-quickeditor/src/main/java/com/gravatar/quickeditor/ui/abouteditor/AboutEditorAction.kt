@@ -7,9 +7,5 @@ internal sealed class AboutEditorAction {
 
     data object ProfileUpdateFailed : AboutEditorAction()
 
-    data object CloseEditor : AboutEditorAction()
-
-    data object NotifyDismissIgnored : AboutEditorAction()
-
     data object InvokeAuthFailed : AboutEditorAction()
 }

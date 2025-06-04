@@ -18,6 +18,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -160,29 +161,75 @@ class QuickEditorViewModelTest {
         }
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `given current page is AvatarPicker when OnConfirmDismissal event then DismissEditor action is sent`() =
+    fun `given unsaved changes present when OnConfirmDismissal event then alert dialog shown action is sent`() =
         runTest {
             viewModel = initViewModel(initialPage = QuickEditorPage.AvatarPicker)
 
-            viewModel.actions.test {
-                viewModel.onEvent(QuickEditorEvent.OnConfirmDismissal)
+            viewModel.onEvent(QuickEditorEvent.OnAboutEditorUnsavedChangesUpdated(true))
+            viewModel.onEvent(QuickEditorEvent.OnConfirmDismissal)
 
-                assertEquals(QuickEditorAction.DismissEditor, awaitItem())
+            advanceUntilIdle()
+
+            viewModel.uiState.test {
+                assertEquals(true, awaitItem().discardAboutEditorChangesDialogVisible)
             }
         }
 
     @Test
-    fun `given current page is AboutEditor when OnConfirmDismissal event then ConfirmEditorDismissal action is sent`() =
-        runTest {
-            viewModel = initViewModel(initialPage = QuickEditorPage.AboutEditor)
+    fun `given no unsaved changes when OnConfirmDismissal event then DismissEditor action is sent`() = runTest {
+        viewModel = initViewModel(initialPage = QuickEditorPage.AboutEditor)
 
-            viewModel.actions.test {
-                viewModel.onEvent(QuickEditorEvent.OnConfirmDismissal)
+        viewModel.actions.test {
+            viewModel.onEvent(QuickEditorEvent.OnConfirmDismissal)
 
-                assertEquals(QuickEditorAction.ConfirmEditorDismissal, awaitItem())
-            }
+            assertEquals(QuickEditorAction.DismissEditor, awaitItem())
         }
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `given unsaved changes dialog shown when keep editing tapped then hidden`() = runTest {
+        viewModel = initViewModel()
+
+        viewModel.onEvent(QuickEditorEvent.OnAboutEditorUnsavedChangesUpdated(true))
+        viewModel.onEvent(QuickEditorEvent.OnConfirmDismissal)
+
+        advanceUntilIdle()
+
+        viewModel.uiState.test {
+            assertEquals(true, awaitItem().discardAboutEditorChangesDialogVisible)
+
+            viewModel.onEvent(QuickEditorEvent.OnUnsavedChangesKeepEditingClicked)
+            assertEquals(false, awaitItem().discardAboutEditorChangesDialogVisible)
+        }
+
+        viewModel.actions.test {
+            assertEquals(QuickEditorAction.NotifyDismissIgnored, awaitItem())
+        }
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `given unsaved changes dialog shown when exit tapped then editor closed`() = runTest {
+        viewModel = initViewModel()
+
+        viewModel.onEvent(QuickEditorEvent.OnAboutEditorUnsavedChangesUpdated(true))
+        viewModel.onEvent(QuickEditorEvent.OnConfirmDismissal)
+
+        advanceUntilIdle()
+
+        viewModel.uiState.test {
+            Assert.assertEquals(true, awaitItem().discardAboutEditorChangesDialogVisible)
+
+            viewModel.onEvent(QuickEditorEvent.OnUnsavedChangesExitClicked)
+            Assert.assertEquals(false, awaitItem().discardAboutEditorChangesDialogVisible)
+        }
+        viewModel.actions.test {
+            Assert.assertEquals(QuickEditorAction.DismissEditor, awaitItem())
+        }
+    }
 
     private fun initViewModel(
         navigationEnabled: Boolean = false,

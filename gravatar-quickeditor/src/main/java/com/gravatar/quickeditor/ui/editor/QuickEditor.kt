@@ -5,6 +5,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -22,9 +23,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.window.core.layout.WindowHeightSizeClass
 import com.gravatar.quickeditor.ui.abouteditor.AboutEditor
-import com.gravatar.quickeditor.ui.abouteditor.AboutEditorEvent
 import com.gravatar.quickeditor.ui.abouteditor.AboutEditorViewModel
 import com.gravatar.quickeditor.ui.abouteditor.AboutEditorViewModelFactory
+import com.gravatar.quickeditor.ui.abouteditor.components.DiscardChangesAlertDialog
 import com.gravatar.quickeditor.ui.avatarpicker.AvatarPicker
 import com.gravatar.quickeditor.ui.components.EmailLabel
 import com.gravatar.quickeditor.ui.components.ProfileCard
@@ -73,13 +74,8 @@ internal fun QuickEditor(
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.actions.collectLatest { action ->
                     when (action) {
-                        QuickEditorAction.ConfirmEditorDismissal -> {
-                            aboutEditorViewModel.onEvent(AboutEditorEvent.OnDoneClicked)
-                        }
-
-                        QuickEditorAction.DismissEditor -> {
-                            onDoneClicked()
-                        }
+                        QuickEditorAction.DismissEditor -> onDoneClicked()
+                        QuickEditorAction.NotifyDismissIgnored -> onDismissIgnored()
                     }
                 }
             }
@@ -92,44 +88,56 @@ internal fun QuickEditor(
         onEditAvatarClicked = { viewModel.onEvent(QuickEditorEvent.OnEditAvatarClicked) },
         onEditAboutClicked = { viewModel.onEvent(QuickEditorEvent.OnEditAboutClicked) },
     ) {
-        AnimatedContent(
-            targetState = uiState.page,
-            transitionSpec = {
-                fadeIn(animationSpec = tween(220, delayMillis = 90))
-                    .togetherWith(fadeOut(animationSpec = tween(90)))
-            },
-        ) { state ->
-            when (state) {
-                QuickEditorPage.AvatarPicker -> {
-                    AvatarPicker(
-                        gravatarQuickEditorParams = gravatarQuickEditorParams,
-                        handleExpiredSession = handleExpiredSession,
-                        onAvatarSelected = {
-                            updateHandler(AvatarPickerResult)
-                            viewModel.onEvent(QuickEditorEvent.UpdateAvatarCache)
-                        },
-                        onSessionExpired = onSessionExpired,
-                        onAltTextTapped = onAltTextTapped,
-                        onRefresh = {
-                            viewModel.onEvent(QuickEditorEvent.Refresh)
-                        },
-                    )
-                }
+        Box {
+            AnimatedContent(
+                targetState = uiState.page,
+                transitionSpec = {
+                    fadeIn(animationSpec = tween(220, delayMillis = 90))
+                        .togetherWith(fadeOut(animationSpec = tween(90)))
+                },
+            ) { state ->
+                when (state) {
+                    QuickEditorPage.AvatarPicker -> {
+                        AvatarPicker(
+                            gravatarQuickEditorParams = gravatarQuickEditorParams,
+                            handleExpiredSession = handleExpiredSession,
+                            onAvatarSelected = {
+                                updateHandler(AvatarPickerResult)
+                                viewModel.onEvent(QuickEditorEvent.UpdateAvatarCache)
+                            },
+                            onSessionExpired = onSessionExpired,
+                            onAltTextTapped = onAltTextTapped,
+                            onRefresh = {
+                                viewModel.onEvent(QuickEditorEvent.Refresh)
+                            },
+                        )
+                    }
 
-                QuickEditorPage.AboutEditor -> {
-                    AboutEditor(
-                        onDismissIgnored = onDismissIgnored,
-                        onProfileUpdated = { profile ->
-                            updateHandler(AboutEditorResult(profile))
-                            viewModel.onEvent(QuickEditorEvent.OnProfileUpdated(profile))
-                        },
-                        onRefresh = { viewModel.onEvent(QuickEditorEvent.Refresh) },
-                        onSessionExpired = onSessionExpired,
-                        onClose = { onDoneClicked() },
-                        viewModel = aboutEditorViewModel,
-                    )
+                    QuickEditorPage.AboutEditor -> {
+                        AboutEditor(
+                            onProfileUpdated = { profile ->
+                                updateHandler(AboutEditorResult(profile))
+                                viewModel.onEvent(QuickEditorEvent.OnProfileUpdated(profile))
+                            },
+                            onUnsavedChangesUpdated = { unsavedChanges ->
+                                viewModel.onEvent(QuickEditorEvent.OnAboutEditorUnsavedChangesUpdated(unsavedChanges))
+                            },
+                            onRefresh = { viewModel.onEvent(QuickEditorEvent.Refresh) },
+                            onSessionExpired = onSessionExpired,
+                            viewModel = aboutEditorViewModel,
+                        )
+                    }
                 }
             }
+            DiscardChangesAlertDialog(
+                visible = uiState.discardAboutEditorChangesDialogVisible,
+                onKeepEditing = {
+                    viewModel.onEvent(QuickEditorEvent.OnUnsavedChangesKeepEditingClicked)
+                },
+                onDiscardClicked = {
+                    viewModel.onEvent(QuickEditorEvent.OnUnsavedChangesExitClicked)
+                },
+            )
         }
     }
 }
