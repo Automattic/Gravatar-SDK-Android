@@ -16,4 +16,10 @@ internal sealed class QuickEditorEvent {
     data object OnConfirmDismissal : QuickEditorEvent()
 
     data class OnCompactWindowEnabled(val enabled: Boolean) : QuickEditorEvent()
+
+    class OnAboutEditorUnsavedChangesUpdated(val unsavedChanges: Boolean) : QuickEditorEvent()
+
+    data object OnUnsavedChangesKeepEditingClicked : QuickEditorEvent()
+
+    data object OnUnsavedChangesExitClicked : QuickEditorEvent()
 }

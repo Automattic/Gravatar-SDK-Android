@@ -44,9 +44,6 @@ internal class AboutEditorViewModel(
         when (aboutEditorEvent) {
             is AboutEditorEvent.OnAboutFieldUpdated -> updateAboutField(aboutEditorEvent.aboutField)
             AboutEditorEvent.OnSaveClicked -> saveProfile()
-            AboutEditorEvent.OnDoneClicked -> checkForUnsavedChanges()
-            AboutEditorEvent.OnUnsavedChangesKeepEditingClicked -> dismissUnsavedChangesDialog()
-            AboutEditorEvent.OnUnsavedChangesExitClicked -> discardUnsavedChangesDialog()
             AboutEditorEvent.HandleAuthFailureTapped -> {
                 viewModelScope.launch {
                     _actions.send(AboutEditorAction.InvokeAuthFailed)
@@ -56,38 +53,6 @@ internal class AboutEditorViewModel(
             AboutEditorEvent.Refresh -> fetchProfile()
             is AboutEditorEvent.OnCompactWindowEnabled -> _uiState.update { currentState ->
                 currentState.copy(compactWindow = aboutEditorEvent.enabled)
-            }
-        }
-    }
-
-    private fun discardUnsavedChangesDialog() {
-        viewModelScope.launch {
-            _actions.send(AboutEditorAction.CloseEditor)
-        }
-        _uiState.update { currentState ->
-            currentState.copy(discardChangesDialogVisible = false)
-        }
-    }
-
-    private fun dismissUnsavedChangesDialog() {
-        viewModelScope.launch {
-            _actions.send(AboutEditorAction.NotifyDismissIgnored)
-        }
-        _uiState.update { currentState ->
-            currentState.copy(discardChangesDialogVisible = false)
-        }
-    }
-
-    private fun checkForUnsavedChanges() {
-        viewModelScope.launch {
-            if (uiState.value.unsavedChanges) {
-                _uiState.update { currentState ->
-                    currentState.copy(
-                        discardChangesDialogVisible = true,
-                    )
-                }
-            } else {
-                _actions.send(AboutEditorAction.CloseEditor)
             }
         }
     }

@@ -7,12 +7,6 @@ internal sealed class AboutEditorEvent {
 
     data object OnSaveClicked : AboutEditorEvent()
 
-    data object OnDoneClicked : AboutEditorEvent()
-
-    data object OnUnsavedChangesKeepEditingClicked : AboutEditorEvent()
-
-    data object OnUnsavedChangesExitClicked : AboutEditorEvent()
-
     data object HandleAuthFailureTapped : AboutEditorEvent()
 
     data object Refresh : AboutEditorEvent()

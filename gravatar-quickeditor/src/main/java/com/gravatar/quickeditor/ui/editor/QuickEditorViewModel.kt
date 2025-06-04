@@ -62,18 +62,48 @@ internal class QuickEditorViewModel(
 
             QuickEditorEvent.OnEditAboutClicked -> navigateToPage(QuickEditorPage.AboutEditor)
             QuickEditorEvent.OnEditAvatarClicked -> navigateToPage(QuickEditorPage.AvatarPicker)
-            QuickEditorEvent.OnConfirmDismissal -> {
-                viewModelScope.launch(Dispatchers.Main.immediate) {
-                    when (uiState.value.page) {
-                        QuickEditorPage.AvatarPicker -> _actions.send(QuickEditorAction.DismissEditor)
-                        QuickEditorPage.AboutEditor -> _actions.send(QuickEditorAction.ConfirmEditorDismissal)
-                    }
-                }
-            }
-
+            QuickEditorEvent.OnConfirmDismissal -> checkForUnsavedChanges()
             is QuickEditorEvent.OnCompactWindowEnabled -> _uiState.update { currentState ->
                 currentState.copy(compactWindow = event.enabled)
             }
+
+            QuickEditorEvent.OnUnsavedChangesKeepEditingClicked -> dismissUnsavedChangesDialog()
+            QuickEditorEvent.OnUnsavedChangesExitClicked -> discardUnsavedChangesDialog()
+            is QuickEditorEvent.OnAboutEditorUnsavedChangesUpdated -> _uiState.update { currentState ->
+                currentState.copy(aboutEditorUnsavedChangesPresent = event.unsavedChanges)
+            }
+        }
+    }
+
+    private fun checkForUnsavedChanges() {
+        viewModelScope.launch(Dispatchers.Main.immediate) {
+            if (uiState.value.aboutEditorUnsavedChangesPresent) {
+                _uiState.update { currentState ->
+                    currentState.copy(discardAboutEditorChangesDialogVisible = true)
+                }
+            } else {
+                viewModelScope.launch {
+                    _actions.send(QuickEditorAction.DismissEditor)
+                }
+            }
+        }
+    }
+
+    private fun discardUnsavedChangesDialog() {
+        viewModelScope.launch(Dispatchers.Main.immediate) {
+            _actions.send(QuickEditorAction.DismissEditor)
+        }
+        _uiState.update { currentState ->
+            currentState.copy(discardAboutEditorChangesDialogVisible = false)
+        }
+    }
+
+    private fun dismissUnsavedChangesDialog() {
+        viewModelScope.launch(Dispatchers.Main.immediate) {
+            _actions.send(QuickEditorAction.NotifyDismissIgnored)
+        }
+        _uiState.update { currentState ->
+            currentState.copy(discardAboutEditorChangesDialogVisible = false)
         }
     }
 
