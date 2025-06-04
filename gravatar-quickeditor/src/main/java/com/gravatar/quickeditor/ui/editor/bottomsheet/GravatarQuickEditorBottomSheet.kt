@@ -50,7 +50,6 @@ import com.composables.core.SheetDetent.Companion.Hidden
 import com.composables.core.rememberModalBottomSheetState
 import com.composeunstyled.LocalModalWindow
 import com.gravatar.quickeditor.QuickEditorContainer
-import com.gravatar.quickeditor.ui.components.QEDragHandle
 import com.gravatar.quickeditor.ui.editor.AuthenticationMethod
 import com.gravatar.quickeditor.ui.editor.AvatarPickerContentLayout
 import com.gravatar.quickeditor.ui.editor.AvatarPickerResult
@@ -323,7 +322,6 @@ private fun GravatarModalBottomSheet(
                                 Column(
                                     horizontalAlignment = Alignment.CenterHorizontally,
                                 ) {
-                                    QEDragHandle()
                                     content()
                                 }
                             }
