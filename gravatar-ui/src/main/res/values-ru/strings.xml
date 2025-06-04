@@ -11,6 +11,5 @@ Language: ru
     <string name="gravatar_ui_empty_state_view_profile_button">Зарегистрировать профиль</string>
     <string name="gravatar_ui_empty_state_user_info">Добавьте ваше местоположение, местоимения и т. д.</string>
     <string name="gravatar_ui_empty_state_display_name">Ваше имя</string>
-    <string name="gravatar_ui_view_profile_button">Просмотреть профиль</string>
     <string name="gravatar_ui_empty_state_about_me">Расскажите о себе. Ваш аватар и визитка, которые сопровождают вас повсюду в Интернете.</string>
 </resources>

@@ -11,6 +11,5 @@ Language: pt_BR
     <string name="gravatar_ui_empty_state_view_profile_button">Reivindicar perfil</string>
     <string name="gravatar_ui_empty_state_user_info">Adicione sua localização, pronomes, etc.</string>
     <string name="gravatar_ui_empty_state_display_name">Seu nome</string>
-    <string name="gravatar_ui_view_profile_button">Visualizar perfil</string>
     <string name="gravatar_ui_empty_state_about_me">Compartilhe um pouco sobre você com o mundo. Seu avatar e sua bio por toda Internet.</string>
 </resources>

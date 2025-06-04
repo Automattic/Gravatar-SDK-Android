@@ -11,6 +11,5 @@ Language: fr
     <string name="gravatar_ui_empty_state_view_profile_button">Demander un profil</string>
     <string name="gravatar_ui_empty_state_user_info">Ajoutez votre emplacement, vos pronoms, etc.</string>
     <string name="gravatar_ui_empty_state_display_name">Votre nom</string>
-    <string name="gravatar_ui_view_profile_button">Afficher le profil</string>
     <string name="gravatar_ui_empty_state_about_me">Faites savoir au monde qui vous êtes. Votre avatar et votre bio qui vous suivent partout sur le Web.</string>
 </resources>
