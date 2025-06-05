@@ -331,6 +331,15 @@ public final class com/gravatar/quickeditor/ui/editor/AboutEditorConfiguration :
 	public fun writeToParcel (Landroid/os/Parcel;I)V
 }
 
+public final class com/gravatar/quickeditor/ui/editor/AboutEditorConfiguration$Builder {
+	public static final field $stable I
+	public fun <init> ()V
+	public final fun build ()Lcom/gravatar/quickeditor/ui/editor/AboutEditorConfiguration;
+	public final fun getFields ()Ljava/util/Set;
+	public final fun setFields (Ljava/util/Set;)Lcom/gravatar/quickeditor/ui/editor/AboutEditorConfiguration$Builder;
+	public final synthetic fun setFields (Ljava/util/Set;)V
+}
+
 public final class com/gravatar/quickeditor/ui/editor/AboutEditorConfiguration$Creator : android/os/Parcelable$Creator {
 	public fun <init> ()V
 	public final fun createFromParcel (Landroid/os/Parcel;)Lcom/gravatar/quickeditor/ui/editor/AboutEditorConfiguration;
@@ -463,6 +472,21 @@ public final class com/gravatar/quickeditor/ui/editor/AvatarPickerAndAboutEditor
 	public fun writeToParcel (Landroid/os/Parcel;I)V
 }
 
+public final class com/gravatar/quickeditor/ui/editor/AvatarPickerAndAboutEditorConfiguration$Builder {
+	public static final field $stable I
+	public fun <init> ()V
+	public final fun build ()Lcom/gravatar/quickeditor/ui/editor/AvatarPickerAndAboutEditorConfiguration;
+	public final fun getContentLayout ()Lcom/gravatar/quickeditor/ui/editor/AvatarPickerContentLayout;
+	public final fun getFields ()Ljava/util/Set;
+	public final fun getInitialPage-Fs-4V8w ()Ljava/lang/String;
+	public final fun setContentLayout (Lcom/gravatar/quickeditor/ui/editor/AvatarPickerContentLayout;)Lcom/gravatar/quickeditor/ui/editor/AvatarPickerAndAboutEditorConfiguration$Builder;
+	public final synthetic fun setContentLayout (Lcom/gravatar/quickeditor/ui/editor/AvatarPickerContentLayout;)V
+	public final fun setFields (Ljava/util/Set;)Lcom/gravatar/quickeditor/ui/editor/AvatarPickerAndAboutEditorConfiguration$Builder;
+	public final synthetic fun setFields (Ljava/util/Set;)V
+	public final fun setInitialPage-FkoExek (Ljava/lang/String;)Lcom/gravatar/quickeditor/ui/editor/AvatarPickerAndAboutEditorConfiguration$Builder;
+	public final synthetic fun setInitialPage-FkoExek (Ljava/lang/String;)V
+}
+
 public final class com/gravatar/quickeditor/ui/editor/AvatarPickerAndAboutEditorConfiguration$Creator : android/os/Parcelable$Creator {
 	public fun <init> ()V
 	public final fun createFromParcel (Landroid/os/Parcel;)Lcom/gravatar/quickeditor/ui/editor/AvatarPickerAndAboutEditorConfiguration;
@@ -515,6 +539,15 @@ public final class com/gravatar/quickeditor/ui/editor/AvatarPickerConfiguration 
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 	public fun writeToParcel (Landroid/os/Parcel;I)V
+}
+
+public final class com/gravatar/quickeditor/ui/editor/AvatarPickerConfiguration$Builder {
+	public static final field $stable I
+	public fun <init> ()V
+	public final fun build ()Lcom/gravatar/quickeditor/ui/editor/AvatarPickerConfiguration;
+	public final fun getContentLayout ()Lcom/gravatar/quickeditor/ui/editor/AvatarPickerContentLayout;
+	public final fun setContentLayout (Lcom/gravatar/quickeditor/ui/editor/AvatarPickerContentLayout;)Lcom/gravatar/quickeditor/ui/editor/AvatarPickerConfiguration$Builder;
+	public final synthetic fun setContentLayout (Lcom/gravatar/quickeditor/ui/editor/AvatarPickerContentLayout;)V
 }
 
 public final class com/gravatar/quickeditor/ui/editor/AvatarPickerConfiguration$Creator : android/os/Parcelable$Creator {
@@ -681,10 +714,13 @@ public final class com/gravatar/quickeditor/ui/editor/QuickEditorScopeOption : a
 
 public final class com/gravatar/quickeditor/ui/editor/QuickEditorScopeOption$Companion {
 	public final fun aboutEditor (Lcom/gravatar/quickeditor/ui/editor/AboutEditorConfiguration;)Lcom/gravatar/quickeditor/ui/editor/QuickEditorScopeOption;
+	public final synthetic fun aboutEditor (Lkotlin/jvm/functions/Function1;)Lcom/gravatar/quickeditor/ui/editor/QuickEditorScopeOption;
 	public static synthetic fun aboutEditor$default (Lcom/gravatar/quickeditor/ui/editor/QuickEditorScopeOption$Companion;Lcom/gravatar/quickeditor/ui/editor/AboutEditorConfiguration;ILjava/lang/Object;)Lcom/gravatar/quickeditor/ui/editor/QuickEditorScopeOption;
 	public final fun avatarAndAbout (Lcom/gravatar/quickeditor/ui/editor/AvatarPickerAndAboutEditorConfiguration;)Lcom/gravatar/quickeditor/ui/editor/QuickEditorScopeOption;
+	public final synthetic fun avatarAndAbout (Lkotlin/jvm/functions/Function1;)Lcom/gravatar/quickeditor/ui/editor/QuickEditorScopeOption;
 	public static synthetic fun avatarAndAbout$default (Lcom/gravatar/quickeditor/ui/editor/QuickEditorScopeOption$Companion;Lcom/gravatar/quickeditor/ui/editor/AvatarPickerAndAboutEditorConfiguration;ILjava/lang/Object;)Lcom/gravatar/quickeditor/ui/editor/QuickEditorScopeOption;
 	public final fun avatarPicker (Lcom/gravatar/quickeditor/ui/editor/AvatarPickerConfiguration;)Lcom/gravatar/quickeditor/ui/editor/QuickEditorScopeOption;
+	public final synthetic fun avatarPicker (Lkotlin/jvm/functions/Function1;)Lcom/gravatar/quickeditor/ui/editor/QuickEditorScopeOption;
 	public static synthetic fun avatarPicker$default (Lcom/gravatar/quickeditor/ui/editor/QuickEditorScopeOption$Companion;Lcom/gravatar/quickeditor/ui/editor/AvatarPickerConfiguration;ILjava/lang/Object;)Lcom/gravatar/quickeditor/ui/editor/QuickEditorScopeOption;
 }
 
