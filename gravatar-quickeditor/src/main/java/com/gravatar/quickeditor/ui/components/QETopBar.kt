@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
@@ -64,13 +63,11 @@ internal fun QETopBarTextButton(
         onClick = onClick,
     ) {
         Text(
-            style = MaterialTheme.typography.labelLarge,
+            style = MaterialTheme.typography.titleMedium,
             text = label,
         )
     }
 }
-
-private val AppBarHeight = 64.dp
 
 /*
  *  We can replace this Composable with CenterAlignedTopAppBar from the Material3 library
@@ -85,10 +82,11 @@ private fun GravatarCenterAlignedTopAppBar(
 ) {
     Surface(
         modifier = modifier
-            .fillMaxWidth()
-            .height(AppBarHeight),
+            .fillMaxWidth(),
     ) {
-        Box {
+        Box(
+            modifier = Modifier.padding(vertical = 5.dp),
+        ) {
             if (navigationIcon != null) {
                 Box(
                     modifier = Modifier
