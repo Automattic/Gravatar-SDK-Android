@@ -103,5 +103,45 @@ public class QuickEditorScopeOption private constructor(
                 scope = Scope.AvatarPickerAndAboutEditor(config),
             )
         }
+
+        /**
+         * Creates a `QuickEditorScopeOption` configured for the avatar picker scope using a DSL-style builder.
+         *
+         * @param initializer Function literal with AvatarPickerConfiguration.Builder as the receiver
+         * @return A configured instance of `QuickEditorScopeOption` for the avatar picker scope
+         */
+        @JvmSynthetic // Hide from Java callers who should use the static method.
+        public fun avatarPicker(
+            initializer: AvatarPickerConfiguration.Builder.() -> Unit,
+        ): QuickEditorScopeOption {
+            return avatarPicker(AvatarPickerConfiguration.Builder().apply(initializer).build())
+        }
+
+        /**
+         * Creates a `QuickEditorScopeOption` configured for the about editor scope using a DSL-style builder.
+         *
+         * @param initializer Function literal with AboutEditorConfiguration.Builder as the receiver
+         * @return A configured instance of `QuickEditorScopeOption` for the about editor scope
+         */
+        @JvmSynthetic // Hide from Java callers who should use the static method.
+        public fun aboutEditor(
+            initializer: AboutEditorConfiguration.Builder.() -> Unit,
+        ): QuickEditorScopeOption {
+            return aboutEditor(AboutEditorConfiguration.Builder().apply(initializer).build())
+        }
+
+        /**
+         * Creates a `QuickEditorScopeOption` configured for the avatar and about editor scope
+         * using a DSL-style builder.
+         *
+         * @param initializer Function literal with AvatarPickerAndAboutEditorConfiguration.Builder as the receiver
+         * @return A configured instance of `QuickEditorScopeOption` for the avatar and about editor scope
+         */
+        @JvmSynthetic // Hide from Java callers who should use the static method.
+        public fun avatarAndAbout(
+            initializer: AvatarPickerAndAboutEditorConfiguration.Builder.() -> Unit,
+        ): QuickEditorScopeOption {
+            return avatarAndAbout(AvatarPickerAndAboutEditorConfiguration.Builder().apply(initializer).build())
+        }
     }
 }
