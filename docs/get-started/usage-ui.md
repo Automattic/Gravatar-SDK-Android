@@ -1,11 +1,32 @@
 # UI Module usage
 
+The `:gravatar-ui` module provides ready-to-use Jetpack Compose UI components for displaying Gravatar profiles and avatars in your Android application. These components range from simple atomic elements like avatars and display names to complete profile cards with various layouts and information density.
+
+The UI components handle loading states, error states, and data presentation automatically, making it easy to integrate Gravatar into both Compose-based and traditional View-based applications.
+
+## Avatar
+
+The `Avatar` component displays a user's avatar image. It is a simple as providing an email address.
+
+```kotlin
+Avatar(
+    email = Email("gravatar@automattic.com"),
+    size = 64.dp,
+    // Optional query options
+    avatarQueryOptions = AvatarQueryOptions {
+        defaultAvatarOption = DefaultAvatarOption.MonsterId
+        rating = ImageRating.ParentalGuidance
+    }
+)
+```
+
+## Profile Cards
+
 The `:gravatar-ui` module provides various different types of Profile cards to suit your needs. They vary in size and the number of information presented to the user.
 
 | Profile                                  | ProfileSummary                        | LargeProfile                        | LargeProfileSummary                         |
 |------------------------------------------|---------------------------------------|-------------------------------------|---------------------------------------------|
 | ![](/docs/images/profile_light_demo.png) | ![](/docs/images/profile_summary.png) | ![](/docs/images/large_profile.png) | ![](/docs/images/large_profile_summary.png) |
-
 
 ### Add a Profile Component to your Jetpack Compose App
 
@@ -55,14 +76,25 @@ If you are using a View-based app, you can use the following code snippet to int
 In your layout xml file, you need to add the following view:
 
 ```xml
-... 
+<!-- Your layout file (e.g., activity_main.xml) -->
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Other views -->
+
     <androidx.compose.ui.platform.ComposeView
         android:id="@+id/gravatarComposeView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-...
+    <!-- Other views -->
 
+</androidx.constraintlayout.widget.ConstraintLayout>
 ```
 
 From the code, you can set the composable code to that view as follows:
