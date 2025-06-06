@@ -11,16 +11,22 @@ The Gravatar Android SDK is a library that provides a set of UI components and u
 
 If you're also looking to integrate Gravatar in your iOS app, check out our [Gravatar SDK for iOS](https://github.com/Automattic/Gravatar-SDK-iOS)!
 
-<p align="center">
-    <img src="docs/images/profile_light_demo.png" />
-</p>
-
 ## Features
 
-- Ready-to-use asynchronous services for Gravatar REST API based on Kotlin Coroutines.
-- Avatar URL calculator based on email and several query options.
-- Display a profile view or an avatar through ready-to-use Jetpack Compose UI components.
-- QuickEditor: This customizable sheet allows you to manage your avatar and Gravatar profile. You can select an existing avatar or upload a new one, and it provides a summary of your Gravatar profile.
+#### Core services:
+- [Avatar URL calculator](/docs/get-started/usage-core.md#avatarurl-calculator) based on email, email hash, and several [query options](https://docs.gravatar.com/general/images/).
+- Ready-to-use asynchronous services for Gravatar REST API based on Kotlin Coroutines:
+  - [ProfileService](/docs/get-started/usage-core.md#profile-service) to retrieve and update Gravatar user profiles.
+  - [AvatarService](/docs/get-started/usage-core.md#avatar-service) to retrieve, upload and update user's avatars.
+
+#### Gravatar UI:
+- Display a user's avatar image through the [Avatar](/docs/get-started/usage-ui.md#avatar) component.
+- [Display a profile view](/docs/get-started/usage-ui.md#profile-cards) through ready-to-use UI components.
+
+#### Quick Editor
+- [Quick Editor](/docs/get-started/usage-quickeditor.md#overview): This customizable sheet allows you to manage your avatar and Gravatar profile.
+    - [Authenticate with Gravatar](/docs/get-started/usage-quickeditor.md#authentication).
+    - [Quick Editor scopes](/docs/get-started/usage-quickeditor.md#quick-editor-scopes).
 
 ## Installation
 
@@ -50,7 +56,28 @@ For further details on how to integrate in your own app please take a look at ou
 
 ## Documentation
 
-You can find the full API documentation [here](https://automattic.github.io/Gravatar-SDK-Android/current/index.html).
+You can find some detailed articles, tutorials and API docs via these links:
+
+- [Getting started](/docs/get-started/get-started.md)
+- [Gravatar docs](/docs/get-started/usage-core.md)
+  - [Uploading an Avatar](/docs/get-started/usage-core.md#uploading-an-avatar)
+    - Let a user to update their avatar.
+  - [Fetching Profile Information](/docs/get-started/usage-core.md#profile-service)
+    - Fetch a public Gravatar profile.
+  - [AvatarURL Calculator](/docs/get-started/usage-core.md#avatarurl-calculator)
+    - Create and validate Gravatar image URLs
+- [Gravatar UI docs](/docs/get-started/usage-ui.md)
+  - [Avatar component](/docs/get-started/usage-ui.md#avatar)
+    - Use the Avatar component to display a user's avatar image.
+  - [Profile view designs](/docs/get-started/usage-ui.md#profile-cards)
+    - We offer a variety of profile view layouts for different usecases.
+- [Gravatar Quick Editor docs](/docs/get-started/usage-quickeditor.md)
+  - [Authentication](/docs/get-started/usage-quickeditor.md#authentication)
+    - Set up the Gravatar OAuth2 to unlock some features.
+  - [Quick Editor](/docs/get-started/usage-quickeditor.md#overview)
+    - This customizable sheet allows users to update their avatars. Available for both UIKit and SwiftUI.
+
+For those looking for a full API documentation: [click here](https://automattic.github.io/Gravatar-SDK-Android/current/index.html).
 
 ## For Maintainers
 
