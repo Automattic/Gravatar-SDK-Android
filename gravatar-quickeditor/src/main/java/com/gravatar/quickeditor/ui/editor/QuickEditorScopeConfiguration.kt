@@ -20,6 +20,32 @@ public class AvatarPickerConfiguration(
     override fun equals(other: Any?): Boolean = other is AvatarPickerConfiguration &&
         contentLayout == other.contentLayout
 
+    /**
+     * Builder class for AvatarPickerConfiguration.
+     */
+    public class Builder {
+        /**
+         * The layout direction of the Avatar picker in the Quick Editor.
+         */
+        @set:JvmSynthetic // Hide 'void' setter from Java
+        public var contentLayout: AvatarPickerContentLayout = default.contentLayout
+
+        /**
+         * Sets the layout direction of the Avatar picker in the Quick Editor.
+         *
+         * @param contentLayout The layout direction
+         * @return This Builder instance
+         */
+        public fun setContentLayout(contentLayout: AvatarPickerContentLayout): Builder = apply {
+            this.contentLayout = contentLayout
+        }
+
+        /**
+         * Builds the AvatarPickerConfiguration.
+         */
+        public fun build(): AvatarPickerConfiguration = AvatarPickerConfiguration(contentLayout)
+    }
+
     internal companion object {
         val default = AvatarPickerConfiguration(
             contentLayout = AvatarPickerContentLayout.Horizontal,
@@ -42,6 +68,32 @@ public class AboutEditorConfiguration(
 
     override fun equals(other: Any?): Boolean = other is AboutEditorConfiguration &&
         fields == other.fields
+
+    /**
+     * Builder class for AboutEditorConfiguration.
+     */
+    public class Builder {
+        /**
+         * The input fields to be shown in the about editor.
+         */
+        @set:JvmSynthetic // Hide 'void' setter from Java
+        public var fields: Set<AboutInputField> = default.fields
+
+        /**
+         * Sets the input fields to be shown in the about editor.
+         *
+         * @param fields The input fields
+         * @return This Builder instance
+         */
+        public fun setFields(fields: Set<AboutInputField>): Builder = apply {
+            this.fields = fields
+        }
+
+        /**
+         * Builds the AboutEditorConfiguration.
+         */
+        public fun build(): AboutEditorConfiguration = AboutEditorConfiguration(fields)
+    }
 
     internal companion object {
         val default = AboutEditorConfiguration(
@@ -75,6 +127,68 @@ public class AvatarPickerAndAboutEditorConfiguration(
         contentLayout == other.contentLayout &&
         fields == other.fields &&
         initialPage == other.initialPage
+
+    /**
+     * Builder class for AvatarPickerAndAboutEditorConfiguration.
+     */
+    public class Builder {
+        /**
+         * The layout direction of the Avatar picker in the Quick Editor.
+         */
+        @set:JvmSynthetic // Hide 'void' setter from Java
+        public var contentLayout: AvatarPickerContentLayout = default.contentLayout
+
+        /**
+         * The input fields to be shown in the about editor.
+         */
+        @set:JvmSynthetic // Hide 'void' setter from Java
+        public var fields: Set<AboutInputField> = default.fields
+
+        /**
+         * The initial page to be shown in the Quick Editor.
+         */
+        @set:JvmSynthetic // Hide 'void' setter from Java
+        public var initialPage: Page = default.initialPage
+
+        /**
+         * Sets the layout direction of the Avatar picker in the Quick Editor.
+         *
+         * @param contentLayout The layout direction
+         * @return This Builder instance
+         */
+        public fun setContentLayout(contentLayout: AvatarPickerContentLayout): Builder = apply {
+            this.contentLayout = contentLayout
+        }
+
+        /**
+         * Sets the input fields to be shown in the about editor.
+         *
+         * @param fields The input fields
+         * @return This Builder instance
+         */
+        public fun setFields(fields: Set<AboutInputField>): Builder = apply {
+            this.fields = fields
+        }
+
+        /**
+         * Sets the initial page to be shown in the Quick Editor.
+         *
+         * @param initialPage The initial page
+         * @return This Builder instance
+         */
+        public fun setInitialPage(initialPage: Page): Builder = apply {
+            this.initialPage = initialPage
+        }
+
+        /**
+         * Builds the AvatarPickerAndAboutEditorConfiguration.
+         */
+        public fun build(): AvatarPickerAndAboutEditorConfiguration = AvatarPickerAndAboutEditorConfiguration(
+            contentLayout,
+            fields,
+            initialPage,
+        )
+    }
 
     /**
      * The page of the AvatarPickerAndAboutEditor scope.

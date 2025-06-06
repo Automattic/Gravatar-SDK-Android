@@ -53,12 +53,10 @@ import com.gravatar.demoapp.ui.components.GravatarEmailInput
 import com.gravatar.demoapp.ui.components.GravatarPasswordInput
 import com.gravatar.demoapp.ui.components.translatedValue
 import com.gravatar.quickeditor.GravatarQuickEditor
-import com.gravatar.quickeditor.ui.editor.AboutEditorConfiguration
 import com.gravatar.quickeditor.ui.editor.AboutEditorResult
 import com.gravatar.quickeditor.ui.editor.AboutInputField
 import com.gravatar.quickeditor.ui.editor.AuthenticationMethod
 import com.gravatar.quickeditor.ui.editor.AvatarPickerAndAboutEditorConfiguration
-import com.gravatar.quickeditor.ui.editor.AvatarPickerConfiguration
 import com.gravatar.quickeditor.ui.editor.AvatarPickerContentLayout
 import com.gravatar.quickeditor.ui.editor.AvatarPickerResult
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
@@ -281,25 +279,19 @@ fun AvatarUpdateTab(modifier: Modifier = Modifier) {
                     email = Email(userEmail)
                     uiMode = pickerUiMode
                     scopeOption = when (editorScope) {
-                        QuickEditorScope.Avatar -> QuickEditorScopeOption.avatarPicker(
-                            config = AvatarPickerConfiguration(
-                                contentLayout = pickerContentLayout,
-                            ),
-                        )
+                        QuickEditorScope.Avatar -> QuickEditorScopeOption.avatarPicker {
+                            contentLayout = pickerContentLayout
+                        }
 
-                        QuickEditorScope.About -> QuickEditorScopeOption.aboutEditor(
-                            config = AboutEditorConfiguration(
-                                fields = aboutFields,
-                            ),
-                        )
+                        QuickEditorScope.About -> QuickEditorScopeOption.aboutEditor {
+                            fields = aboutFields
+                        }
 
-                        QuickEditorScope.AvatarAndAbout -> QuickEditorScopeOption.avatarAndAbout(
-                            config = AvatarPickerAndAboutEditorConfiguration(
-                                contentLayout = pickerContentLayout,
-                                initialPage = editorInitialPage,
-                                fields = aboutFields,
-                            ),
-                        )
+                        QuickEditorScope.AvatarAndAbout -> QuickEditorScopeOption.avatarAndAbout {
+                            contentLayout = pickerContentLayout
+                            initialPage = editorInitialPage
+                            fields = aboutFields
+                        }
                     }
                 },
                 authenticationMethod = authenticationMethod,
