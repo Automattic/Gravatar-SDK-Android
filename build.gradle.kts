@@ -16,6 +16,7 @@ plugins {
     alias(libs.plugins.binary.compatibility.validator)
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.vanniktech.maven.publish) apply false
+    alias(libs.plugins.compose.compiler) apply false
 }
 
 buildscript {

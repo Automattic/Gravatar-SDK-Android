@@ -4,6 +4,7 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.compose.compiler)
     // Ktlint
     alias(libs.plugins.ktlint)
     // Detekt
@@ -83,9 +84,6 @@ android {
     }
     buildFeatures {
         compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.15"
     }
     detekt {
         config.setFrom("${project.rootDir}/config/detekt/detekt.yml")
