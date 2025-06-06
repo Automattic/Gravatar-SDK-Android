@@ -3,7 +3,6 @@ import io.github.takahirom.roborazzi.RoborazziPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
-import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.configure
 import org.jetbrains.kotlin.compose.compiler.gradle.ComposeCompilerGradlePluginExtension
 import org.jetbrains.kotlin.compose.compiler.gradle.ComposeCompilerGradleSubplugin
@@ -39,9 +38,9 @@ class GravatarComposeConventionPlugin : Plugin<Project> {
 
             extensions.configure<ComposeCompilerGradlePluginExtension> {
                 val composeReportsDir = "reports/compose"
-                reportsDestination = project.layout.buildDirectory.get().dir(composeReportsDir).asFile
-                metricsDestination = project.layout.buildDirectory.get().dir(composeReportsDir).asFile
-                stabilityConfigurationFile = project.file("${project.rootDir}/compose_compiler_config.conf")
+                reportsDestination.set(project.layout.buildDirectory.get().dir(composeReportsDir).asFile)
+                metricsDestination.set(project.layout.buildDirectory.get().dir(composeReportsDir).asFile)
+                stabilityConfigurationFile.set(project.file("${project.rootDir}/compose_compiler_config.conf"))
             }
         }
     }

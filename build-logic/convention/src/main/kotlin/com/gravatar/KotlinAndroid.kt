@@ -5,7 +5,6 @@ import MIN_SDK
 import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.configure
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
@@ -34,7 +33,7 @@ internal fun Project.configureKotlinAndroid(commonExtension: CommonExtension<*, 
 internal fun Project.configureKotlin() {
     extensions.configure<KotlinAndroidProjectExtension> {
         compilerOptions {
-            jvmTarget = JvmTarget.JVM_1_8
+            jvmTarget.set(JvmTarget.JVM_1_8)
         }
     }
     extensions.configure<KotlinProjectExtension> {
