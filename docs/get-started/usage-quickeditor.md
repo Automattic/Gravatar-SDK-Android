@@ -307,7 +307,7 @@ GravatarQuickEditor.show(
         avatarPickerContentLayout = AvatarPickerContentLayout.Horizontal
     },
     authenticationMethod = AuthenticationMethod.Bearer("{TOKEN}"),
-    onAvatarSelected = {  ... },
+    updateHandler = { updateType -> ... },
     onDismiss = { gravatarQuickEditorDismissReason -> ... },
 )
 ```
