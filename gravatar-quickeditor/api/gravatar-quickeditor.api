@@ -39,10 +39,10 @@ public final class com/gravatar/quickeditor/ui/GravatarQuickEditorActivity$Grava
 	public static final field $stable I
 	public static final field CREATOR Landroid/os/Parcelable$Creator;
 	public fun <init> (Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorParams;Lcom/gravatar/quickeditor/ui/editor/AuthenticationMethod;)V
-	public fun describeContents ()I
+	public final fun describeContents ()I
 	public final fun getAuthenticationMethod ()Lcom/gravatar/quickeditor/ui/editor/AuthenticationMethod;
 	public final fun getGravatarQuickEditorParams ()Lcom/gravatar/quickeditor/ui/editor/GravatarQuickEditorParams;
-	public fun writeToParcel (Landroid/os/Parcel;I)V
+	public final fun writeToParcel (Landroid/os/Parcel;I)V
 }
 
 public final class com/gravatar/quickeditor/ui/GravatarQuickEditorActivity$GravatarEditorActivityArguments$Creator : android/os/Parcelable$Creator {
@@ -323,12 +323,12 @@ public final class com/gravatar/quickeditor/ui/editor/AboutEditorConfiguration :
 	public static final field $stable I
 	public static final field CREATOR Landroid/os/Parcelable$Creator;
 	public fun <init> (Ljava/util/Set;)V
-	public fun describeContents ()I
+	public final fun describeContents ()I
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getFields ()Ljava/util/Set;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
-	public fun writeToParcel (Landroid/os/Parcel;I)V
+	public final fun writeToParcel (Landroid/os/Parcel;I)V
 }
 
 public final class com/gravatar/quickeditor/ui/editor/AboutEditorConfiguration$Builder {
@@ -362,8 +362,8 @@ public final class com/gravatar/quickeditor/ui/editor/AboutInputField : android/
 	public static final field Companion Lcom/gravatar/quickeditor/ui/editor/AboutInputField$Companion;
 	public static final synthetic fun box-impl (Ljava/lang/String;)Lcom/gravatar/quickeditor/ui/editor/AboutInputField;
 	public static fun constructor-impl (Ljava/lang/String;)Ljava/lang/String;
-	public fun describeContents ()I
-	public static fun describeContents-impl (Ljava/lang/String;)I
+	public final fun describeContents ()I
+	public static final fun describeContents-impl (Ljava/lang/String;)I
 	public fun equals (Ljava/lang/Object;)Z
 	public static fun equals-impl (Ljava/lang/String;Ljava/lang/Object;)Z
 	public static final fun equals-impl0 (Ljava/lang/String;Ljava/lang/String;)Z
@@ -386,8 +386,8 @@ public final class com/gravatar/quickeditor/ui/editor/AboutInputField : android/
 	public fun toString ()Ljava/lang/String;
 	public static fun toString-impl (Ljava/lang/String;)Ljava/lang/String;
 	public final synthetic fun unbox-impl ()Ljava/lang/String;
-	public fun writeToParcel (Landroid/os/Parcel;I)V
-	public static fun writeToParcel-impl (Ljava/lang/String;Landroid/os/Parcel;I)V
+	public final fun writeToParcel (Landroid/os/Parcel;I)V
+	public static final fun writeToParcel-impl (Ljava/lang/String;Landroid/os/Parcel;I)V
 }
 
 public final class com/gravatar/quickeditor/ui/editor/AboutInputField$Companion {
@@ -422,12 +422,12 @@ public final class com/gravatar/quickeditor/ui/editor/AuthenticationMethod$Beare
 	public static final field $stable I
 	public static final field CREATOR Landroid/os/Parcelable$Creator;
 	public fun <init> (Ljava/lang/String;)V
-	public fun describeContents ()I
+	public final fun describeContents ()I
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getToken ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
-	public fun writeToParcel (Landroid/os/Parcel;I)V
+	public final fun writeToParcel (Landroid/os/Parcel;I)V
 }
 
 public final class com/gravatar/quickeditor/ui/editor/AuthenticationMethod$Bearer$Creator : android/os/Parcelable$Creator {
@@ -442,12 +442,12 @@ public final class com/gravatar/quickeditor/ui/editor/AuthenticationMethod$OAuth
 	public static final field $stable I
 	public static final field CREATOR Landroid/os/Parcelable$Creator;
 	public fun <init> (Lcom/gravatar/quickeditor/ui/oauth/OAuthParams;)V
-	public fun describeContents ()I
+	public final fun describeContents ()I
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getOAuthParams ()Lcom/gravatar/quickeditor/ui/oauth/OAuthParams;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
-	public fun writeToParcel (Landroid/os/Parcel;I)V
+	public final fun writeToParcel (Landroid/os/Parcel;I)V
 }
 
 public final class com/gravatar/quickeditor/ui/editor/AuthenticationMethod$OAuth$Creator : android/os/Parcelable$Creator {
@@ -462,14 +462,14 @@ public final class com/gravatar/quickeditor/ui/editor/AvatarPickerAndAboutEditor
 	public static final field $stable I
 	public static final field CREATOR Landroid/os/Parcelable$Creator;
 	public synthetic fun <init> (Lcom/gravatar/quickeditor/ui/editor/AvatarPickerContentLayout;Ljava/util/Set;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public fun describeContents ()I
+	public final fun describeContents ()I
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getContentLayout ()Lcom/gravatar/quickeditor/ui/editor/AvatarPickerContentLayout;
 	public final fun getFields ()Ljava/util/Set;
 	public final fun getInitialPage-Fs-4V8w ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
-	public fun writeToParcel (Landroid/os/Parcel;I)V
+	public final fun writeToParcel (Landroid/os/Parcel;I)V
 }
 
 public final class com/gravatar/quickeditor/ui/editor/AvatarPickerAndAboutEditorConfiguration$Builder {
@@ -499,8 +499,8 @@ public final class com/gravatar/quickeditor/ui/editor/AvatarPickerAndAboutEditor
 	public static final field CREATOR Landroid/os/Parcelable$Creator;
 	public static final field Companion Lcom/gravatar/quickeditor/ui/editor/AvatarPickerAndAboutEditorConfiguration$Page$Companion;
 	public static final synthetic fun box-impl (Ljava/lang/String;)Lcom/gravatar/quickeditor/ui/editor/AvatarPickerAndAboutEditorConfiguration$Page;
-	public fun describeContents ()I
-	public static fun describeContents-impl (Ljava/lang/String;)I
+	public final fun describeContents ()I
+	public static final fun describeContents-impl (Ljava/lang/String;)I
 	public fun equals (Ljava/lang/Object;)Z
 	public static fun equals-impl (Ljava/lang/String;Ljava/lang/Object;)Z
 	public static final fun equals-impl0 (Ljava/lang/String;Ljava/lang/String;)Z
@@ -512,8 +512,8 @@ public final class com/gravatar/quickeditor/ui/editor/AvatarPickerAndAboutEditor
 	public fun toString ()Ljava/lang/String;
 	public static fun toString-impl (Ljava/lang/String;)Ljava/lang/String;
 	public final synthetic fun unbox-impl ()Ljava/lang/String;
-	public fun writeToParcel (Landroid/os/Parcel;I)V
-	public static fun writeToParcel-impl (Ljava/lang/String;Landroid/os/Parcel;I)V
+	public final fun writeToParcel (Landroid/os/Parcel;I)V
+	public static final fun writeToParcel-impl (Ljava/lang/String;Landroid/os/Parcel;I)V
 }
 
 public final class com/gravatar/quickeditor/ui/editor/AvatarPickerAndAboutEditorConfiguration$Page$Companion {
@@ -533,12 +533,12 @@ public final class com/gravatar/quickeditor/ui/editor/AvatarPickerConfiguration 
 	public static final field $stable I
 	public static final field CREATOR Landroid/os/Parcelable$Creator;
 	public fun <init> (Lcom/gravatar/quickeditor/ui/editor/AvatarPickerContentLayout;)V
-	public fun describeContents ()I
+	public final fun describeContents ()I
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getContentLayout ()Lcom/gravatar/quickeditor/ui/editor/AvatarPickerContentLayout;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
-	public fun writeToParcel (Landroid/os/Parcel;I)V
+	public final fun writeToParcel (Landroid/os/Parcel;I)V
 }
 
 public final class com/gravatar/quickeditor/ui/editor/AvatarPickerConfiguration$Builder {
@@ -566,11 +566,11 @@ public final class com/gravatar/quickeditor/ui/editor/AvatarPickerContentLayout$
 	public static final field $stable I
 	public static final field CREATOR Landroid/os/Parcelable$Creator;
 	public static final field INSTANCE Lcom/gravatar/quickeditor/ui/editor/AvatarPickerContentLayout$Horizontal;
-	public fun describeContents ()I
+	public final fun describeContents ()I
 	public fun equals (Ljava/lang/Object;)Z
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
-	public fun writeToParcel (Landroid/os/Parcel;I)V
+	public final fun writeToParcel (Landroid/os/Parcel;I)V
 }
 
 public final class com/gravatar/quickeditor/ui/editor/AvatarPickerContentLayout$Horizontal$Creator : android/os/Parcelable$Creator {
@@ -585,11 +585,11 @@ public final class com/gravatar/quickeditor/ui/editor/AvatarPickerContentLayout$
 	public static final field $stable I
 	public static final field CREATOR Landroid/os/Parcelable$Creator;
 	public static final field INSTANCE Lcom/gravatar/quickeditor/ui/editor/AvatarPickerContentLayout$Vertical;
-	public fun describeContents ()I
+	public final fun describeContents ()I
 	public fun equals (Ljava/lang/Object;)Z
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
-	public fun writeToParcel (Landroid/os/Parcel;I)V
+	public final fun writeToParcel (Landroid/os/Parcel;I)V
 }
 
 public final class com/gravatar/quickeditor/ui/editor/AvatarPickerContentLayout$Vertical$Creator : android/os/Parcelable$Creator {
@@ -647,7 +647,7 @@ public final class com/gravatar/quickeditor/ui/editor/GravatarQuickEditorParams 
 	public static final field $stable I
 	public static final field CREATOR Landroid/os/Parcelable$Creator;
 	public synthetic fun <init> (Lcom/gravatar/types/Email;Lcom/gravatar/quickeditor/ui/editor/AvatarPickerContentLayout;Lcom/gravatar/quickeditor/ui/editor/GravatarUiMode;Lcom/gravatar/quickeditor/ui/editor/QuickEditorScopeOption;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public fun describeContents ()I
+	public final fun describeContents ()I
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getAvatarPickerContentLayout ()Lcom/gravatar/quickeditor/ui/editor/AvatarPickerContentLayout;
 	public final fun getEmail ()Lcom/gravatar/types/Email;
@@ -655,7 +655,7 @@ public final class com/gravatar/quickeditor/ui/editor/GravatarQuickEditorParams 
 	public final fun getUiMode ()Lcom/gravatar/quickeditor/ui/editor/GravatarUiMode;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
-	public fun writeToParcel (Landroid/os/Parcel;I)V
+	public final fun writeToParcel (Landroid/os/Parcel;I)V
 }
 
 public final class com/gravatar/quickeditor/ui/editor/GravatarQuickEditorParams$Builder {
@@ -705,11 +705,11 @@ public final class com/gravatar/quickeditor/ui/editor/QuickEditorScopeOption : a
 	public static final fun aboutEditor (Lcom/gravatar/quickeditor/ui/editor/AboutEditorConfiguration;)Lcom/gravatar/quickeditor/ui/editor/QuickEditorScopeOption;
 	public static final fun avatarAndAbout (Lcom/gravatar/quickeditor/ui/editor/AvatarPickerAndAboutEditorConfiguration;)Lcom/gravatar/quickeditor/ui/editor/QuickEditorScopeOption;
 	public static final fun avatarPicker (Lcom/gravatar/quickeditor/ui/editor/AvatarPickerConfiguration;)Lcom/gravatar/quickeditor/ui/editor/QuickEditorScopeOption;
-	public fun describeContents ()I
+	public final fun describeContents ()I
 	public fun equals (Ljava/lang/Object;)Z
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
-	public fun writeToParcel (Landroid/os/Parcel;I)V
+	public final fun writeToParcel (Landroid/os/Parcel;I)V
 }
 
 public final class com/gravatar/quickeditor/ui/editor/QuickEditorScopeOption$Companion {
@@ -789,13 +789,13 @@ public final class com/gravatar/quickeditor/ui/oauth/OAuthParams : android/os/Pa
 	public static final field $stable I
 	public static final field CREATOR Landroid/os/Parcelable$Creator;
 	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public fun describeContents ()I
+	public final fun describeContents ()I
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getClientId ()Ljava/lang/String;
 	public final fun getRedirectUri ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
-	public fun writeToParcel (Landroid/os/Parcel;I)V
+	public final fun writeToParcel (Landroid/os/Parcel;I)V
 }
 
 public final class com/gravatar/quickeditor/ui/oauth/OAuthParams$Builder {
