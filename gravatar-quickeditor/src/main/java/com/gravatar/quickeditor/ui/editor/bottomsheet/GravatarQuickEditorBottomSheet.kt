@@ -317,7 +317,6 @@ private fun GravatarModalBottomSheet(
                                         hasFocus = state.hasFocus
                                     }
                                     .fillMaxWidth(),
-                                tonalElevation = 1.dp,
                             ) {
                                 Column(
                                     horizontalAlignment = Alignment.CenterHorizontally,
