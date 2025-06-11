@@ -275,17 +275,12 @@ private fun GravatarModalBottomSheet(
                                 },
                             ),
                     ) {
-                        val paddingValues = WindowInsets.navigationBars
-                            .only(WindowInsetsSides.Vertical)
-                            .asPaddingValues()
                         Sheet(
                             modifier = Modifier
                                 .clip(RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp))
                                 .background(MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp))
                                 .widthIn(max = 640.dp)
-                                .fillMaxWidth()
-                                .padding(paddingValues)
-                                .consumeWindowInsets(paddingValues),
+                                .fillMaxWidth(),
                         ) {
                             val window = LocalModalWindow.current
                             val isDarkTheme = isSystemInDarkTheme()
@@ -294,12 +289,19 @@ private fun GravatarModalBottomSheet(
                                 WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightNavigationBars =
                                     !isDarkTheme
                             }
+
                             Surface(
                                 modifier = Modifier
                                     .fillMaxWidth(),
                             ) {
+                                val paddingValues = WindowInsets.navigationBars
+                                    .only(WindowInsetsSides.Vertical)
+                                    .asPaddingValues()
                                 Column(
                                     horizontalAlignment = Alignment.CenterHorizontally,
+                                    modifier = Modifier
+                                        .padding(paddingValues)
+                                        .consumeWindowInsets(paddingValues),
                                 ) {
                                     content()
                                 }
