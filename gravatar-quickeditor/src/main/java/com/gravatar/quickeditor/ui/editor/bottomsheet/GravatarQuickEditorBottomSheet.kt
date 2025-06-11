@@ -20,7 +20,6 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -38,7 +37,6 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowInsetsControllerCompat
-import androidx.window.core.layout.WindowHeightSizeClass
 import com.composables.core.ModalBottomSheet
 import com.composables.core.ModalBottomSheetState
 import com.composables.core.ModalSheetProperties
@@ -51,14 +49,11 @@ import com.composables.core.rememberModalBottomSheetState
 import com.composeunstyled.LocalModalWindow
 import com.gravatar.quickeditor.QuickEditorContainer
 import com.gravatar.quickeditor.ui.editor.AuthenticationMethod
-import com.gravatar.quickeditor.ui.editor.AvatarPickerContentLayout
 import com.gravatar.quickeditor.ui.editor.AvatarPickerResult
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorDismissReason
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorPage
 import com.gravatar.quickeditor.ui.editor.GravatarQuickEditorParams
 import com.gravatar.quickeditor.ui.editor.GravatarUiMode
-import com.gravatar.quickeditor.ui.editor.QuickEditorPage
-import com.gravatar.quickeditor.ui.editor.QuickEditorScopeOption
 import com.gravatar.quickeditor.ui.editor.UpdateHandler
 import com.gravatar.ui.GravatarTheme
 import com.gravatar.ui.LocalGravatarTheme
@@ -89,7 +84,7 @@ public fun GravatarQuickEditorBottomSheet(
         authenticationMethod = authenticationMethod,
         updateHandler = updateHandler,
         onDismiss = onDismiss,
-        modalDetents = gravatarQuickEditorParams.scopeOption.modalDetents(),
+        modalDetents = modalDetents(),
     )
 }
 
@@ -125,7 +120,7 @@ public fun GravatarQuickEditorBottomSheet(
             }
         },
         onDismiss = onDismiss,
-        modalDetents = gravatarQuickEditorParams.scopeOption.modalDetents(),
+        modalDetents = modalDetents(),
     )
 }
 
@@ -332,64 +327,14 @@ private fun GravatarModalBottomSheet(
     }
 }
 
-private val peek = SheetDetent(identifier = "peek") { containerHeight, _ ->
-    containerHeight * 0.6f
-}
-
 @Composable
-internal fun QuickEditorScopeOption.modalDetents(): ModalDetents {
-    val windowHeightSizeClass = currentWindowAdaptiveInfo().windowSizeClass.windowHeightSizeClass
-
-    val detents = buildDetentsList()
-    val initialDetent = initialDetent(windowHeightSizeClass)
-
-    return ModalDetents(
-        initialDetent = if (detents.contains(initialDetent)) initialDetent else detents.last(),
-        detents = detents,
-    )
-}
-
-private fun QuickEditorScopeOption.buildDetentsList(): List<SheetDetent> {
-    return when (this.scope) {
-        is QuickEditorScopeOption.Scope.AvatarPickerAndAboutEditor,
-        is QuickEditorScopeOption.Scope.AboutEditor,
-        -> buildList {
-            add(Hidden)
-            add(peek)
-            add(FullyExpanded)
-        }
-
-        is QuickEditorScopeOption.Scope.AvatarPicker -> buildList {
-            add(Hidden)
-            if (avatarPickerContentLayout == AvatarPickerContentLayout.Vertical) {
-                add(peek)
-            }
-            add(FullyExpanded)
-        }
-    }
-}
-
-private fun QuickEditorScopeOption.initialDetent(windowHeightSizeClass: WindowHeightSizeClass): SheetDetent {
-    return if (windowHeightSizeClass == WindowHeightSizeClass.COMPACT) {
-        FullyExpanded
-    } else {
-        when (this.scope) {
-            is QuickEditorScopeOption.Scope.AboutEditor -> peek
-            is QuickEditorScopeOption.Scope.AvatarPickerAndAboutEditor,
-            is QuickEditorScopeOption.Scope.AvatarPicker,
-            -> {
-                if (
-                    this.avatarPickerContentLayout == AvatarPickerContentLayout.Horizontal &&
-                    this.initialPage == QuickEditorPage.AvatarPicker
-                ) {
-                    FullyExpanded
-                } else {
-                    peek
-                }
-            }
-        }
-    }
-}
+internal fun modalDetents(): ModalDetents = ModalDetents(
+    initialDetent = FullyExpanded,
+    detents = buildList {
+        add(Hidden)
+        add(FullyExpanded)
+    },
+)
 
 internal data class ModalDetents(
     val initialDetent: SheetDetent,
