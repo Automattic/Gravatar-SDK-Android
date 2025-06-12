@@ -230,7 +230,7 @@ internal fun GravatarQuickEditorBottomSheet(
 }
 
 @Composable
-private fun GravatarModalBottomSheet(
+internal fun GravatarModalBottomSheet(
     onDismiss: (dismissReason: GravatarQuickEditorDismissReason) -> Unit = {},
     colorScheme: GravatarUiMode,
     modalBottomSheetState: ModalBottomSheetState,

@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onRoot
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import coil.Coil
@@ -11,7 +12,6 @@ import coil.ImageLoader
 import coil.annotation.ExperimentalCoilApi
 import coil.test.FakeImageLoaderEngine
 import com.dropbox.differ.SimpleImageComparator
-import com.github.takahirom.roborazzi.ExperimentalRoborazziApi
 import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 import com.github.takahirom.roborazzi.RoborazziOptions
 import com.github.takahirom.roborazzi.RoborazziRule
@@ -35,7 +35,6 @@ abstract class RoborazziTest {
     @get:Rule
     val composeRule = createComposeRule()
 
-    @OptIn(ExperimentalRoborazziApi::class)
     @get:Rule
     val roborazziRule = RoborazziRule(
         options = RoborazziRule.Options(
@@ -62,9 +61,10 @@ abstract class RoborazziTest {
     }
 
     fun screenshotTest(composable: @Composable () -> Unit) {
-        captureRoboImage {
+        composeRule.setContent {
             composable()
         }
+        composeRule.onRoot().captureRoboImage()
     }
 }
 
