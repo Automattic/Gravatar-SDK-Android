@@ -108,7 +108,13 @@ internal fun ProfileCard(
                                 ViewProfileButton(
                                     state = state,
                                     modifier = Modifier.height(32.dp),
-                                )
+                                ) {
+                                    Icon(
+                                        painterResource(R.drawable.ic_external),
+                                        tint = MaterialTheme.colorScheme.onBackground,
+                                        contentDescription = "",
+                                    )
+                                }
                             }
                         },
                     )
