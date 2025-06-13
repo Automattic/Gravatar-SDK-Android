@@ -43,6 +43,18 @@ class QuickEditorTest : RoborazziTest() {
     }
 
     @Test
+    fun quickEditorWithoutEmail() = gravatarScreenshotTest {
+        QuickEditor(
+            uiState = uiState.copy(emailVisible = false),
+            onDoneClicked = { },
+            onEditAvatarClicked = { },
+            onEditAboutClicked = { },
+        ) {
+            AvatarPickerComponent()
+        }
+    }
+
+    @Test
     fun quickEditorWithAvatarPickerWithNavigationEnabled() {
         gravatarScreenshotTest {
             QuickEditor(

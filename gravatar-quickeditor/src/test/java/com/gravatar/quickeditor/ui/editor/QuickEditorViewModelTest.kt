@@ -241,5 +241,6 @@ class QuickEditorViewModelTest {
         initialPage = initialPage,
         navigationEnabled = navigationEnabled,
         compactWindowEnabled = false,
+        showEmail = true,
     )
 }

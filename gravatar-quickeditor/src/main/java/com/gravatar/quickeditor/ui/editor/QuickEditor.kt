@@ -7,7 +7,9 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Surface
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
@@ -38,6 +40,7 @@ import kotlinx.coroutines.withContext
 @Composable
 internal fun QuickEditor(
     gravatarQuickEditorParams: GravatarQuickEditorParams,
+    showEmail: Boolean,
     handleExpiredSession: Boolean,
     updateHandler: UpdateHandler,
     confirmDismissal: Boolean,
@@ -50,6 +53,7 @@ internal fun QuickEditor(
         factory = QuickEditorViewModelFactory(
             gravatarQuickEditorParams = gravatarQuickEditorParams,
             compactWindowEnabled = windowSizeClass == WindowHeightSizeClass.COMPACT,
+            showEmail = showEmail,
         ),
     ),
 ) {
@@ -157,12 +161,14 @@ internal fun QuickEditor(
                 Surface {
                     Column {
                         if (!uiState.compactWindow) {
-                            EmailLabel(
-                                email = uiState.email,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(bottom = 10.dp),
-                            )
+                            if (uiState.emailVisible) {
+                                EmailLabel(
+                                    email = uiState.email,
+                                    modifier = Modifier
+                                        .fillMaxWidth(),
+                                )
+                            }
+                            Spacer(Modifier.height(10.dp))
                             ProfileCard(
                                 profile = uiState.profile,
                                 email = uiState.email,
