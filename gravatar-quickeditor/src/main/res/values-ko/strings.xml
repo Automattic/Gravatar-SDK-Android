@@ -1,11 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: 2025-02-04 09:54:03+0000
+Translation-Revision-Date: 2025-06-05 09:54:03+0000
 Plural-Forms: nplurals=1; plural=0;
 Generator: GlotPress/2.4.0-alpha
 Language: ko_KR
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="gravatar_qe_edit_about_content_description">공개 프로필 편집</string>
+    <string name="gravatar_qe_edit_avatar_content_description">아바타 편집</string>
+    <string name="gravatar_qe_about_discard_changes_dialog_dismiss">계속 편집하기</string>
+    <string name="gravatar_qe_about_discard_changes_dialog_confirm">종료</string>
+    <string name="gravatar_qe_about_discard_changes_dialog_message">지금 나가면 작업을 상실합니다.</string>
+    <string name="gravatar_qe_about_discard_changes_dialog_title">저장되지 않은 변경 사항입니다!</string>
+    <string name="gravatar_qe_about_save_profile_success_message">프로필 업데이트됨</string>
+    <string name="gravatar_qe_about_save_profile_error_message">변경 사항 저장 중 오류가 발생했습니다.</string>
+    <string name="gravatar_qe_about_field_section_description_extras">이 정보는 그라바타 웹 프로필에 표시되지 않지만, 다른 앱과 서비스에서 사용할 수 있습니다.</string>
+    <string name="gravatar_qe_about_field_section_label_extras">추가 사항</string>
+    <string name="gravatar_qe_about_field_section_label_professional">프로</string>
+    <string name="gravatar_qe_about_field_section_label_personal">개인</string>
+    <string name="gravatar_qe_about_field_description_pronunciation">이름을 어떻게 발음하는지 알려주세요.</string>
+    <string name="gravatar_qe_about_field_description_about_me">프로필에 대한 간단한 설명입니다.</string>
+    <string name="gravatar_qe_about_field_label_last_name">성</string>
+    <string name="gravatar_qe_about_field_label_first_name">이름</string>
+    <string name="gravatar_qe_about_field_label_job_title">직책</string>
+    <string name="gravatar_qe_about_field_label_company">회사/단체</string>
+    <string name="gravatar_qe_about_field_label_location">위치</string>
+    <string name="gravatar_qe_about_field_label_pronunciation">발음</string>
+    <string name="gravatar_qe_about_field_label_pronouns">대명사</string>
+    <string name="gravatar_qe_about_field_label_about_me">내 소개</string>
+    <string name="gravatar_qe_about_field_label_display_name">대화명</string>
     <string name="gravatar_qe_picker_submenu_icon_description">확장</string>
     <string name="gravatar_qe_avatar_alt_text_cancel_button">취소</string>
     <string name="gravatar_qe_avatar_alt_text_save_button">저장</string>

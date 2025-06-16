@@ -1,18 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: 2025-01-30 10:01:56+0000
+Translation-Revision-Date: 2025-06-04 16:54:03+0000
 Plural-Forms: nplurals=2; plural=n > 1;
 Generator: GlotPress/2.4.0-alpha
 Language: fr
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="gravatar_qe_edit_about_content_description">Modifier votre profil public</string>
+    <string name="gravatar_qe_edit_avatar_content_description">Modifier votre avatar</string>
+    <string name="gravatar_qe_about_discard_changes_dialog_dismiss">Poursuivre l’édition</string>
+    <string name="gravatar_qe_about_discard_changes_dialog_confirm">Quitter</string>
+    <string name="gravatar_qe_about_discard_changes_dialog_message">Vous perdrez votre travail si vous quittez maintenant.</string>
+    <string name="gravatar_qe_about_discard_changes_dialog_title">Modifications non enregistrées !</string>
+    <string name="gravatar_qe_about_save_profile_success_message">Mise à jour du profil réussie</string>
+    <string name="gravatar_qe_about_save_profile_error_message">Erreur lors de l’enregistrement des modifications.</string>
+    <string name="gravatar_qe_about_field_section_description_extras">Ces informations n’apparaîtront pas sur votre profil Web Gravatar, mais d’autres applications et services peuvent les utiliser.</string>
+    <string name="gravatar_qe_about_field_section_label_extras">Informations supplémentaires</string>
+    <string name="gravatar_qe_about_field_section_label_professional">Professionnel</string>
+    <string name="gravatar_qe_about_field_section_label_personal">Personnel</string>
+    <string name="gravatar_qe_about_field_description_pronunciation">Indiquez comment se prononce votre nom.</string>
+    <string name="gravatar_qe_about_field_description_about_me">Brève description de votre profil.</string>
+    <string name="gravatar_qe_about_field_label_last_name">Nom</string>
+    <string name="gravatar_qe_about_field_label_first_name">Prénom</string>
+    <string name="gravatar_qe_about_field_label_job_title">Intitulé du poste</string>
+    <string name="gravatar_qe_about_field_label_company">Entreprise / Organisation</string>
+    <string name="gravatar_qe_about_field_label_location">Emplacement</string>
+    <string name="gravatar_qe_about_field_label_pronunciation">Prononciation</string>
+    <string name="gravatar_qe_about_field_label_pronouns">Pronoms</string>
+    <string name="gravatar_qe_about_field_label_about_me">À propos de moi</string>
+    <string name="gravatar_qe_about_field_label_display_name">Nom affiché</string>
     <string name="gravatar_qe_picker_submenu_icon_description">Développer</string>
     <string name="gravatar_qe_avatar_alt_text_cancel_button">Annuler</string>
-    <string name="gravatar_qe_avatar_alt_text_save_button">Enregistrer</string>
-    <string name="gravatar_qe_avatar_alt_text_section_placeholder">Rédigez le texte alternatif…</string>
-    <string name="gravatar_qe_avatar_alt_text_section_what_is">Qu’est-ce que le texte alternatif ?</string>
     <string name="gravatar_qe_avatar_alt_text_section_title">Texte alternatif</string>
+    <string name="gravatar_qe_avatar_alt_text_section_what_is">Qu’est-ce que le texte alternatif ?</string>
+    <string name="gravatar_qe_avatar_alt_text_save_button">Enregistrer</string>
     <string name="gravatar_qe_avatar_picker_alt_text_update_error">Oups, un couac est survenu lors de la tentative de mise à jour du texte alternatif.</string>
+    <string name="gravatar_qe_avatar_alt_text_section_placeholder">Rédigez le texte alternatif…</string>
     <string name="gravatar_qe_oauth_page_message">Améliorez votre profil %s avec Gravatar.</string>
     <string name="gravatar_qe_oauth_page_title">Modifier votre profil</string>
     <string name="gravatar_qe_login_required_cta">Continuer</string>
@@ -27,18 +50,18 @@ Language: fr
     <string name="gravatar_qe_alert_banner_close_content_description">Fermer l’alerte</string>
     <string name="gravatar_qe_alert_banner_no_avatar_selected">Aucune image sélectionnée. Veuillez en sélectionner une, faute de quoi l’image par défaut sera utilisée.</string>
     <string name="gravatar_qe_selectable_avatar_more_options_rating_v2">Classification : %s</string>
-    <string name="gravatar_qe_write_external_storage_permission_rationale_message">Pour enregistrer l\'image dans un dossier, vous devez en accorder l\'autorisation dans les paramètres de l\'application.</string>
-    <string name="gravatar_qe_download_manager_disabled_title">DownloadManager est désactivé. Veuillez l\'activer pour pouvoir télécharger les avatars.</string>
-    <string name="gravatar_qe_download_manager_not_available">DownloadManager n\'est pas disponible</string>
-    <string name="gravatar_qe_image_download_queued">Le téléchargement de l\'image a été lancé. Vous recevrez une notification lorsqu\'il sera terminé.</string>
-    <string name="gravatar_qe_avatar_delete_confirmation_cancel">Annuler</string>
-    <string name="gravatar_qe_avatar_delete_confirmation_confirm">Supprimer</string>
-    <string name="gravatar_qe_avatar_delete_confirmation_message">Êtes-vous sûr(e) de vouloir supprimer l\'image ?</string>
-    <string name="gravatar_qe_avatar_delete_confirmation_title">Supprimer l\'image</string>
     <string name="gravatar_qe_selectable_avatar_more_options_download_image">Télécharger l\'image</string>
-    <string name="gravatar_qe_avatar_delete_avatar_error">Erreur de suppression de l\'image.</string>
-    <string name="gravatar_qe_selectable_avatar_more_options_delete_content_description">Supprimer l\'avatar</string>
+    <string name="gravatar_qe_avatar_delete_confirmation_title">Supprimer l\'image</string>
+    <string name="gravatar_qe_avatar_delete_confirmation_message">Êtes-vous sûr(e) de vouloir supprimer l\'image ?</string>
+    <string name="gravatar_qe_avatar_delete_confirmation_confirm">Supprimer</string>
+    <string name="gravatar_qe_avatar_delete_confirmation_cancel">Annuler</string>
+    <string name="gravatar_qe_image_download_queued">Le téléchargement de l\'image a été lancé. Vous recevrez une notification lorsqu\'il sera terminé.</string>
+    <string name="gravatar_qe_download_manager_not_available">DownloadManager n\'est pas disponible</string>
+    <string name="gravatar_qe_download_manager_disabled_title">DownloadManager est désactivé. Veuillez l\'activer pour pouvoir télécharger les avatars.</string>
+    <string name="gravatar_qe_write_external_storage_permission_rationale_message">Pour enregistrer l\'image dans un dossier, vous devez en accorder l\'autorisation dans les paramètres de l\'application.</string>
     <string name="gravatar_qe_selectable_avatar_more_options_delete">Supprimer</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_delete_content_description">Supprimer l\'avatar</string>
+    <string name="gravatar_qe_avatar_delete_avatar_error">Erreur de suppression de l\'image.</string>
     <string name="gravatar_qe_permission_rationale_open_settings">Ouvrir les paramètres</string>
     <string name="gravatar_qe_upload_image_content_description">Charger une image</string>
     <string name="gravatar_qe_happy_face_image_content_description">Image visage joyeux</string>
@@ -67,16 +90,16 @@ Language: fr
     <string name="gravatar_qe_permission_required_alert_title">Autorisation requise</string>
     <string name="gravatar_qe_oauth_email_associated_error_message">Un problème est survenu lors de la vérification de votre adresse e-mail.</string>
     <string name="gravatar_qe_avatar_upload_failure_dialog_remove_upload">Supprimer le chargement</string>
-    <string name="gravatar_qe_avatar_upload_failure_dialog_title">Impossible de charger l’image</string>
     <string name="gravatar_qe_failed_to_load_avatar_content_description">Le chargement a échoué, appuyez pour voir les options.</string>
+    <string name="gravatar_qe_avatar_upload_failure_dialog_title">Impossible de charger l’image</string>
     <string name="gravatar_qe_oauth_wrong_email_authenticated_error_message">Il semblerait que vous ayez utilisé une adresse e-mail incorrecte pour vous connecter. Veuillez réessayer en utilisant %s cette fois. Merci !</string>
     <string name="gravatar_qe_avatar_picker_session_error_no_login_message">La session a expiré pour des raisons de sécurité.</string>
-    <string name="gravatar_qe_avatar_picker_network_error_message">Hum. Il semblerait que vous ne soyez pas connecté(e) à Internet.</string>
     <string name="gravatar_qe_avatar_picker_session_error_message">La session a expiré pour des raisons de sécurité. Veuillez vous connecter pour mettre à jour votre avatar.</string>
     <string name="gravatar_qe_avatar_picker_unknown_error_message">Un problème est malheureusement survenu.</string>
     <string name="gravatar_qe_avatar_picker_server_error_message">Un problème est survenu et nous n’avons pas pu nous connecter aux serveurs Gravatar.</string>
     <string name="gravatar_qe_avatar_selection_error">Oups, une erreur est survenue lors de la sélection de l’avatar.</string>
     <string name="gravatar_qe_avatar_picker_title_empty_state">Configurons votre avatar</string>
+    <string name="gravatar_qe_avatar_picker_network_error_message">Hum. Il semblerait que vous ne soyez pas connecté(e) à Internet.</string>
     <string name="gravatar_qe_avatar_selected_confirmation_v2">Avatar mis à jour ! Cela peut prendre quelques minutes pour que le changement apparaisse partout.</string>
     <string name="gravatar_qe_avatar_picker_description">Choisissez ou chargez vos images d’avatar favorites et connectez-les à votre adresse e-mail.</string>
 </resources>

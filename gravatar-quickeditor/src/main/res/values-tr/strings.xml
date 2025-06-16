@@ -1,11 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: 2025-02-05 11:54:03+0000
+Translation-Revision-Date: 2025-06-16 13:02:04+0000
 Plural-Forms: nplurals=2; plural=(n > 1);
 Generator: GlotPress/2.4.0-alpha
 Language: tr
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="gravatar_qe_edit_about_content_description">Herkese açık profilinizi düzenleyin</string>
+    <string name="gravatar_qe_edit_avatar_content_description">Avatar\'ınızı düzenleyin</string>
+    <string name="gravatar_qe_about_discard_changes_dialog_dismiss">Düzenlemeye devam et</string>
+    <string name="gravatar_qe_about_discard_changes_dialog_confirm">Çık</string>
+    <string name="gravatar_qe_about_discard_changes_dialog_message">Şu anda çıkarsanız çalışmanızı kaybedersiniz.</string>
+    <string name="gravatar_qe_about_discard_changes_dialog_title">Kaydedilmemiş değişiklikler!</string>
+    <string name="gravatar_qe_about_save_profile_success_message">Profil başarıyla güncellendi</string>
+    <string name="gravatar_qe_about_save_profile_error_message">Değişiklikleri kaydederken hata oluştu.</string>
+    <string name="gravatar_qe_about_field_section_description_extras">Bu bilgiler Gravatar Web Profilinizde görüntülenmez ancak diğer uygulamalar ve hizmetler bunu kullanabilir.</string>
+    <string name="gravatar_qe_about_field_section_label_extras">Ekstralar</string>
+    <string name="gravatar_qe_about_field_section_label_professional">Profesyonel</string>
+    <string name="gravatar_qe_about_field_section_label_personal">Kişisel</string>
+    <string name="gravatar_qe_about_field_description_pronunciation">Adınızın nasıl söylendiğini bildirin.</string>
+    <string name="gravatar_qe_about_field_description_about_me">Profilinizin kısa açıklaması.</string>
+    <string name="gravatar_qe_about_field_label_last_name">Soyadı</string>
+    <string name="gravatar_qe_about_field_label_first_name">Ad</string>
+    <string name="gravatar_qe_about_field_label_job_title">İş Ünvanı</string>
+    <string name="gravatar_qe_about_field_label_company">Şirket/Kuruluş</string>
+    <string name="gravatar_qe_about_field_label_location">Konum</string>
+    <string name="gravatar_qe_about_field_label_pronunciation">Telaffuz</string>
+    <string name="gravatar_qe_about_field_label_pronouns">Kişi Zamirleri</string>
+    <string name="gravatar_qe_about_field_label_about_me">Hakkımda</string>
+    <string name="gravatar_qe_about_field_label_display_name">Görünen ad</string>
     <string name="gravatar_qe_picker_submenu_icon_description">Genişlet</string>
     <string name="gravatar_qe_avatar_alt_text_cancel_button">İptal Et</string>
     <string name="gravatar_qe_avatar_alt_text_save_button">Kaydet</string>

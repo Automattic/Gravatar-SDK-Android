@@ -1,11 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: 2025-02-04 09:54:03+0000
+Translation-Revision-Date: 2025-06-05 11:54:03+0000
 Plural-Forms: nplurals=1; plural=0;
 Generator: GlotPress/2.4.0-alpha
 Language: zh_CN
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="gravatar_qe_edit_about_content_description">编辑您的公开个人资料</string>
+    <string name="gravatar_qe_edit_avatar_content_description">编辑您的头像</string>
+    <string name="gravatar_qe_about_discard_changes_dialog_dismiss">继续编辑</string>
+    <string name="gravatar_qe_about_discard_changes_dialog_confirm">退出</string>
+    <string name="gravatar_qe_about_discard_changes_dialog_message">如果现在退出，您的工作内容将会丢失。</string>
+    <string name="gravatar_qe_about_discard_changes_dialog_title">更改未保存！</string>
+    <string name="gravatar_qe_about_save_profile_success_message">个人资料更新成功</string>
+    <string name="gravatar_qe_about_save_profile_error_message">保存更改时出错。</string>
+    <string name="gravatar_qe_about_field_section_description_extras">这些信息不会显示在您的 Gravatar Web 个人资料中，但可以用于其他应用程序和服务。</string>
+    <string name="gravatar_qe_about_field_section_label_extras">其他</string>
+    <string name="gravatar_qe_about_field_section_label_professional">专业版</string>
+    <string name="gravatar_qe_about_field_section_label_personal">个人版</string>
+    <string name="gravatar_qe_about_field_description_pronunciation">告诉他们您名字的读音。</string>
+    <string name="gravatar_qe_about_field_description_about_me">简要描述您的个人资料。</string>
+    <string name="gravatar_qe_about_field_label_last_name">姓氏</string>
+    <string name="gravatar_qe_about_field_label_first_name">名字</string>
+    <string name="gravatar_qe_about_field_label_job_title">职位</string>
+    <string name="gravatar_qe_about_field_label_company">公司/组织</string>
+    <string name="gravatar_qe_about_field_label_location">位置</string>
+    <string name="gravatar_qe_about_field_label_pronunciation">发音</string>
+    <string name="gravatar_qe_about_field_label_pronouns">代号</string>
+    <string name="gravatar_qe_about_field_label_about_me">关于我</string>
+    <string name="gravatar_qe_about_field_label_display_name">显示名称</string>
     <string name="gravatar_qe_picker_submenu_icon_description">展开</string>
     <string name="gravatar_qe_avatar_alt_text_cancel_button">取消</string>
     <string name="gravatar_qe_avatar_alt_text_save_button">保存</string>

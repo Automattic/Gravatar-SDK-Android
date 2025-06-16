@@ -1,11 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: 2025-02-04 15:54:02+0000
+Translation-Revision-Date: 2025-06-03 10:54:03+0000
 Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;
 Generator: GlotPress/2.4.0-alpha
 Language: ar
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="gravatar_qe_edit_about_content_description">تحرير ملفك الشخصي العام</string>
+    <string name="gravatar_qe_edit_avatar_content_description">تحرير صورتك الرمزية</string>
+    <string name="gravatar_qe_about_discard_changes_dialog_dismiss">متابعة التحرير</string>
+    <string name="gravatar_qe_about_discard_changes_dialog_confirm">الخروج</string>
+    <string name="gravatar_qe_about_discard_changes_dialog_message">ستفقد عملك إذا خرجت الآن.</string>
+    <string name="gravatar_qe_about_discard_changes_dialog_title">تغييرات غير محفوظة!</string>
+    <string name="gravatar_qe_about_save_profile_success_message">تم تحديث الملف الشخصي بنجاح</string>
+    <string name="gravatar_qe_about_save_profile_error_message">خطأ في حفظ التغييرات.</string>
+    <string name="gravatar_qe_about_field_section_description_extras">لن تظهر هذه المعلومات على ملفك الشخصي على جرافتار على الويب، ولكن يمكن للتطبيقات والخدمات الأخرى استخدامها.</string>
+    <string name="gravatar_qe_about_field_section_label_extras">إضافات</string>
+    <string name="gravatar_qe_about_field_section_label_professional">مهني</string>
+    <string name="gravatar_qe_about_field_section_label_personal">شخصي</string>
+    <string name="gravatar_qe_about_field_description_pronunciation">اسمح لهم بمعرفة كيف يظهر اسمك.</string>
+    <string name="gravatar_qe_about_field_description_about_me">وصف موجز لملفك الشخصي.</string>
+    <string name="gravatar_qe_about_field_label_last_name">اسم العائلة</string>
+    <string name="gravatar_qe_about_field_label_first_name">الاسم الأول</string>
+    <string name="gravatar_qe_about_field_label_job_title">المسمى الوظيفي</string>
+    <string name="gravatar_qe_about_field_label_company">الشركة/المنظمة</string>
+    <string name="gravatar_qe_about_field_label_location">الموقع</string>
+    <string name="gravatar_qe_about_field_label_pronunciation">والنطق</string>
+    <string name="gravatar_qe_about_field_label_pronouns">الضمائر</string>
+    <string name="gravatar_qe_about_field_label_about_me">نبذة عني</string>
+    <string name="gravatar_qe_about_field_label_display_name">اسم المستخدم</string>
     <string name="gravatar_qe_picker_submenu_icon_description">توسيع</string>
     <string name="gravatar_qe_avatar_alt_text_cancel_button">إلغاء</string>
     <string name="gravatar_qe_avatar_alt_text_save_button">حفظ</string>
@@ -56,10 +79,10 @@ Language: ar
     <string name="gravatar_qe_avatar_upload_error_action">إعادة المحاولة</string>
     <string name="gravatar_qe_avatar_picker_title">الصور الرمزية</string>
     <string name="gravatar_qe_bottom_sheet_done">تم</string>
-    <string name="gravatar_qe_selectable_avatar_more_options_alt_text_content_description">النص البديل</string>
     <string name="gravatar_qe_selectable_avatar_more_options_alt_text">النص البديل</string>
     <string name="gravatar_qe_selectable_avatar_more_options_content_description">مزيد من الخيارات</string>
     <string name="gravatar_qe_selectable_avatar_content_description">صورة رمزية</string>
+    <string name="gravatar_qe_selectable_avatar_more_options_alt_text_content_description">النص البديل</string>
     <string name="gravatar_qe_gravatar">جرافتار</string>
     <string name="gravatar_qe_avatar_upload_failure_image_too_big">تتجاوز الصورة المتوفرة الحد الأقصى للحجم: 10 ميجابايت</string>
     <string name="gravatar_qe_dismiss">تجاهل</string>
