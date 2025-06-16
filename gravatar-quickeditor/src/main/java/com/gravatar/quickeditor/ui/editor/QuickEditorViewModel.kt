@@ -23,6 +23,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+@Suppress("LongParameterList")
 internal class QuickEditorViewModel(
     private val email: Email,
     private val profileRepository: ProfileRepository,
@@ -30,6 +31,7 @@ internal class QuickEditorViewModel(
     initialPage: QuickEditorPage,
     navigationEnabled: Boolean,
     compactWindowEnabled: Boolean,
+    showEmail: Boolean,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(
         QuickEditorUiState(
@@ -38,6 +40,7 @@ internal class QuickEditorViewModel(
             pageNavigationEnabled = navigationEnabled,
             avatarCacheBuster = clock.getTimeMillis(),
             compactWindow = compactWindowEnabled,
+            emailVisible = showEmail,
         ),
     )
     val uiState: StateFlow<QuickEditorUiState> = _uiState.asStateFlow()
@@ -144,6 +147,7 @@ internal class QuickEditorViewModel(
 internal class QuickEditorViewModelFactory(
     private val gravatarQuickEditorParams: GravatarQuickEditorParams,
     private val compactWindowEnabled: Boolean,
+    private val showEmail: Boolean,
 ) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
@@ -155,6 +159,7 @@ internal class QuickEditorViewModelFactory(
             initialPage = scopeConfig.initialPage,
             clock = SystemClock(),
             compactWindowEnabled = compactWindowEnabled,
+            showEmail = showEmail,
         ) as T
     }
 }

@@ -23,6 +23,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,6 +33,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import com.gravatar.AvatarQueryOptions
 import com.gravatar.DefaultAvatarOption
@@ -57,74 +59,87 @@ internal fun ProfileCard(
     onEditAboutClicked: () -> Unit = { },
     avatarCacheBuster: String? = null,
 ) {
-    GravatarCard(modifier) { backgroundColor ->
-        profile?.let {
-            Row(
-                verticalAlignment = Alignment.Top,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(backgroundColor)
-                    .padding(horizontal = 16.dp, vertical = 11.dp),
-            ) {
-                Box(
+    CompositionLocalProvider(
+        LocalDensity provides Density(
+            LocalDensity.current.density,
+            LocalDensity.current.fontScale.coerceAtMost(1.5f),
+        ),
+    ) {
+        GravatarCard(modifier) { backgroundColor ->
+            profile?.let {
+                Row(
+                    verticalAlignment = Alignment.Top,
                     modifier = Modifier
-                        .weight(1f, fill = true),
+                        .fillMaxWidth()
+                        .background(backgroundColor)
+                        .padding(horizontal = 16.dp, vertical = 11.dp),
                 ) {
-                    ProfileSummary(
-                        state = it,
+                    Box(
                         modifier = Modifier
-                            .background(backgroundColor),
-                        avatar = {
-                            val sizePx = with(LocalDensity.current) { 72.dp.roundToPx() }
-                            Box {
-                                Avatar(
-                                    email = email,
-                                    avatarQueryOptions = AvatarQueryOptions {
-                                        preferredSize = sizePx
-                                        rating = ImageRating.X
-                                        defaultAvatarOption = DefaultAvatarOption.Status404
-                                    },
-                                    size = 72.dp,
-                                    modifier = Modifier.clip(CircleShape),
-                                    cacheBuster = avatarCacheBuster,
-                                )
-                                if (editAvatarEnabled) {
-                                    EditButton(
-                                        onClick = onEditAvatarClicked,
-                                        backgroundColor = backgroundColor,
-                                        contentAlignment = Alignment.BottomEnd,
-                                        contentDescription = stringResource(
-                                            R.string.gravatar_qe_edit_avatar_content_description,
-                                        ),
-                                        modifier = Modifier
-                                            .offset(12.dp, 12.dp)
-                                            .align(Alignment.BottomEnd),
+                            .weight(1f, fill = true),
+                    ) {
+                        ProfileSummary(
+                            state = it,
+                            modifier = Modifier
+                                .background(backgroundColor),
+                            avatar = {
+                                val sizePx = with(LocalDensity.current) { 72.dp.roundToPx() }
+                                Box {
+                                    Avatar(
+                                        email = email,
+                                        avatarQueryOptions = AvatarQueryOptions {
+                                            preferredSize = sizePx
+                                            rating = ImageRating.X
+                                            defaultAvatarOption = DefaultAvatarOption.Status404
+                                        },
+                                        size = 72.dp,
+                                        modifier = Modifier.clip(CircleShape),
+                                        cacheBuster = avatarCacheBuster,
                                     )
+                                    if (editAvatarEnabled) {
+                                        EditButton(
+                                            onClick = onEditAvatarClicked,
+                                            backgroundColor = backgroundColor,
+                                            contentAlignment = Alignment.BottomEnd,
+                                            contentDescription = stringResource(
+                                                R.string.gravatar_qe_edit_avatar_content_description,
+                                            ),
+                                            modifier = Modifier
+                                                .offset(12.dp, 12.dp)
+                                                .align(Alignment.BottomEnd),
+                                        )
+                                    }
                                 }
-                            }
-                        },
-                        viewProfile = { state ->
-                            if (state !is ComponentState.Empty) {
-                                ViewProfileButton(
-                                    state = state,
-                                    modifier = Modifier.height(32.dp),
-                                )
-                            }
-                        },
-                    )
-                }
-                if (editAboutEnabled) {
-                    EditButton(
-                        onClick = onEditAboutClicked,
-                        backgroundColor = backgroundColor,
-                        contentAlignment = Alignment.TopEnd,
-                        contentDescription = stringResource(
-                            R.string.gravatar_qe_edit_about_content_description,
-                        ),
-                        modifier = Modifier
-                            .offset(x = 12.dp, y = (-12).dp)
-                            .padding(top = 5.dp),
-                    )
+                            },
+                            viewProfile = { state ->
+                                if (state !is ComponentState.Empty) {
+                                    ViewProfileButton(
+                                        state = state,
+                                        modifier = Modifier.height(32.dp),
+                                    ) {
+                                        Icon(
+                                            painterResource(R.drawable.ic_external),
+                                            tint = MaterialTheme.colorScheme.onBackground,
+                                            contentDescription = "",
+                                        )
+                                    }
+                                }
+                            },
+                        )
+                    }
+                    if (editAboutEnabled) {
+                        EditButton(
+                            onClick = onEditAboutClicked,
+                            backgroundColor = backgroundColor,
+                            contentAlignment = Alignment.TopEnd,
+                            contentDescription = stringResource(
+                                R.string.gravatar_qe_edit_about_content_description,
+                            ),
+                            modifier = Modifier
+                                .offset(x = 12.dp, y = (-12).dp)
+                                .padding(top = 5.dp),
+                        )
+                    }
                 }
             }
         }

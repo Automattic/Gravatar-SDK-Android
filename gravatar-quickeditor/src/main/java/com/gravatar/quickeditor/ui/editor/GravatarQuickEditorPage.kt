@@ -86,6 +86,7 @@ internal fun GravatarQuickEditorPage(
         }
         addEditorGraph(
             gravatarQuickEditorParams = gravatarQuickEditorParams,
+            showEmail = true,
             handleExpiredSession = true,
             navController = navController,
             updateHandler = updateHandler,
@@ -142,6 +143,7 @@ internal fun GravatarQuickEditorPage(
         }
         addEditorGraph(
             gravatarQuickEditorParams = gravatarQuickEditorParams,
+            showEmail = false,
             handleExpiredSession = false,
             navController = navController,
             updateHandler = updateHandler,
@@ -157,6 +159,7 @@ internal fun GravatarQuickEditorPage(
 private fun NavGraphBuilder.addEditorGraph(
     navController: NavHostController,
     gravatarQuickEditorParams: GravatarQuickEditorParams,
+    showEmail: Boolean,
     handleExpiredSession: Boolean,
     updateHandler: UpdateHandler,
     confirmDismissal: Boolean,
@@ -178,6 +181,7 @@ private fun NavGraphBuilder.addEditorGraph(
         ) {
             QuickEditor(
                 gravatarQuickEditorParams = gravatarQuickEditorParams,
+                showEmail = showEmail,
                 handleExpiredSession = handleExpiredSession,
                 updateHandler = updateHandler,
                 confirmDismissal = confirmDismissal,
