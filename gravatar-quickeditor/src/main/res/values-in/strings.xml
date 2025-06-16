@@ -1,18 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: 2025-02-04 09:54:03+0000
+Translation-Revision-Date: 2025-06-05 09:54:03+0000
 Plural-Forms: nplurals=2; plural=n > 1;
 Generator: GlotPress/2.4.0-alpha
 Language: id
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="gravatar_qe_about_discard_changes_dialog_confirm">Keluar</string>
+    <string name="gravatar_qe_about_discard_changes_dialog_message">Progres pekerjaan akan hilang jika Anda keluar sekarang.</string>
+    <string name="gravatar_qe_about_discard_changes_dialog_title">Perubahan belum disimpan!</string>
+    <string name="gravatar_qe_about_save_profile_success_message">Profil berhasil diperbarui</string>
+    <string name="gravatar_qe_about_save_profile_error_message">Terjadi error saat menyimpan perubahan.</string>
+    <string name="gravatar_qe_about_field_section_description_extras">Informasi ini tidak akan ditampilkan di Profil Web Gravatar Anda, tetapi aplikasi dan layanan lain dapat menggunakannya.</string>
+    <string name="gravatar_qe_about_field_section_label_extras">Tambahan</string>
+    <string name="gravatar_qe_about_field_section_label_professional">Profesional</string>
+    <string name="gravatar_qe_about_field_section_label_personal">Personal</string>
+    <string name="gravatar_qe_about_field_description_pronunciation">Beri tahu cara membaca nama Anda.</string>
+    <string name="gravatar_qe_about_field_description_about_me">Deskripsi singkat untuk profil Anda.</string>
+    <string name="gravatar_qe_about_field_label_last_name">Nama Belakang</string>
+    <string name="gravatar_qe_about_field_label_first_name">Nama Depan</string>
+    <string name="gravatar_qe_about_field_label_job_title">Jabatan</string>
+    <string name="gravatar_qe_about_field_label_company">Perusahaan/Organisasi</string>
+    <string name="gravatar_qe_about_field_label_location">Lokasi</string>
+    <string name="gravatar_qe_about_field_label_pronunciation">Pengucapan</string>
+    <string name="gravatar_qe_about_field_label_pronouns">Kata Ganti</string>
+    <string name="gravatar_qe_about_field_label_about_me">Tentang saya</string>
+    <string name="gravatar_qe_about_field_label_display_name">Nama tampilan</string>
+    <string name="gravatar_qe_edit_about_content_description">Edit profil publik</string>
+    <string name="gravatar_qe_edit_avatar_content_description">Edit Avatar</string>
+    <string name="gravatar_qe_about_discard_changes_dialog_dismiss">Lanjutkan mengedit</string>
     <string name="gravatar_qe_picker_submenu_icon_description">Bentangkan</string>
     <string name="gravatar_qe_avatar_alt_text_cancel_button">Batal</string>
     <string name="gravatar_qe_avatar_alt_text_save_button">Simpan</string>
-    <string name="gravatar_qe_avatar_alt_text_section_placeholder">Tulis teks alt …</string>
     <string name="gravatar_qe_avatar_alt_text_section_what_is">Apa itu teks alt?</string>
     <string name="gravatar_qe_avatar_alt_text_section_title">Teks Alt</string>
     <string name="gravatar_qe_avatar_picker_alt_text_update_error">Ups, terjadi kesalahan saat memperbarui teks alt.</string>
+    <string name="gravatar_qe_avatar_alt_text_section_placeholder">Tulis teks alt …</string>
     <string name="gravatar_qe_oauth_page_message">Sempurnakan profil %s Anda dengan Gravatar.</string>
     <string name="gravatar_qe_oauth_page_title">Edit Profil Anda</string>
     <string name="gravatar_qe_login_required_cta">Lanjutkan</string>
@@ -36,9 +59,9 @@ Language: id
     <string name="gravatar_qe_avatar_delete_confirmation_message">Anda yakin ingin menghapus gambar ini?</string>
     <string name="gravatar_qe_avatar_delete_confirmation_title">Hapus Gambar</string>
     <string name="gravatar_qe_selectable_avatar_more_options_download_image">Unduh gambar</string>
-    <string name="gravatar_qe_avatar_delete_avatar_error">Error saat menghapus gambar.</string>
     <string name="gravatar_qe_selectable_avatar_more_options_delete_content_description">Hapus Avatar</string>
     <string name="gravatar_qe_selectable_avatar_more_options_delete">Hapus</string>
+    <string name="gravatar_qe_avatar_delete_avatar_error">Error saat menghapus gambar.</string>
     <string name="gravatar_qe_permission_rationale_open_settings">Buka pengaturan</string>
     <string name="gravatar_qe_upload_image_content_description">Unggah gambar</string>
     <string name="gravatar_qe_happy_face_image_content_description">Gambar wajah senang</string>

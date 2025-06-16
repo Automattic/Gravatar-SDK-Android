@@ -1,11 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: 2025-02-05 15:54:03+0000
+Translation-Revision-Date: 2025-06-05 09:54:03+0000
 Plural-Forms: nplurals=2; plural=n != 1;
 Generator: GlotPress/2.4.0-alpha
 Language: it
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="gravatar_qe_edit_about_content_description">Modifica il tuo profilo pubblico</string>
+    <string name="gravatar_qe_edit_avatar_content_description">Modifica il tuo avatar</string>
+    <string name="gravatar_qe_about_discard_changes_dialog_dismiss">Continua a modificare</string>
+    <string name="gravatar_qe_about_discard_changes_dialog_confirm">Esci</string>
+    <string name="gravatar_qe_about_discard_changes_dialog_message">Se esci ora, le modifiche apportate andranno perse.</string>
+    <string name="gravatar_qe_about_discard_changes_dialog_title">Sono presenti modifiche non salvate.</string>
+    <string name="gravatar_qe_about_save_profile_success_message">Profilo aggiornato correttamente</string>
+    <string name="gravatar_qe_about_save_profile_error_message">Errore durante il salvataggio delle modifiche.</string>
+    <string name="gravatar_qe_about_field_section_description_extras">Queste informazioni non appariranno sul tuo profilo Gravatar web, ma potrebbero essere usate da altre app e altri servizi.</string>
+    <string name="gravatar_qe_about_field_section_label_extras">Extra</string>
+    <string name="gravatar_qe_about_field_section_label_professional">Professionale</string>
+    <string name="gravatar_qe_about_field_section_label_personal">Personale</string>
+    <string name="gravatar_qe_about_field_description_pronunciation">Specifica la pronuncia del tuo nome.</string>
+    <string name="gravatar_qe_about_field_description_about_me">Breve descrizione del tuo profilo.</string>
+    <string name="gravatar_qe_about_field_label_last_name">Cognome</string>
+    <string name="gravatar_qe_about_field_label_first_name">Nome</string>
+    <string name="gravatar_qe_about_field_label_job_title">Titolo professionale</string>
+    <string name="gravatar_qe_about_field_label_company">Azienda/Organizzazione</string>
+    <string name="gravatar_qe_about_field_label_location">Posizione</string>
+    <string name="gravatar_qe_about_field_label_pronunciation">Pronuncia</string>
+    <string name="gravatar_qe_about_field_label_pronouns">Pronomi</string>
+    <string name="gravatar_qe_about_field_label_about_me">Informazioni</string>
+    <string name="gravatar_qe_about_field_label_display_name">Nome visualizzato</string>
     <string name="gravatar_qe_picker_submenu_icon_description">Espandi</string>
     <string name="gravatar_qe_avatar_alt_text_cancel_button">Annulla</string>
     <string name="gravatar_qe_avatar_alt_text_save_button">Salva</string>

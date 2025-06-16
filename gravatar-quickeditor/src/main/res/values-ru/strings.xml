@@ -1,11 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Translation-Revision-Date: 2025-02-04 09:54:03+0000
+Translation-Revision-Date: 2025-06-06 09:54:03+0000
 Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);
 Generator: GlotPress/2.4.0-alpha
 Language: ru
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="gravatar_qe_edit_about_content_description">Редактировать общедоступный профиль</string>
+    <string name="gravatar_qe_edit_avatar_content_description">Редактировать аватар</string>
+    <string name="gravatar_qe_about_discard_changes_dialog_dismiss">Продолжить редактирование</string>
+    <string name="gravatar_qe_about_discard_changes_dialog_confirm">Выйти</string>
+    <string name="gravatar_qe_about_discard_changes_dialog_message">Если вы выйдете сейчас, ваша работа будет потеряна.</string>
+    <string name="gravatar_qe_about_discard_changes_dialog_title">Изменения не сохранены!</string>
+    <string name="gravatar_qe_about_save_profile_success_message">Обновление профиля завершено</string>
+    <string name="gravatar_qe_about_save_profile_error_message">Ошибка при сохранении изменений.</string>
+    <string name="gravatar_qe_about_field_section_description_extras">Эта информация не будет отображаться в вашем веб-профиле Gravatar, но её могут использовать другие приложения и службы.</string>
+    <string name="gravatar_qe_about_field_section_label_extras">Дополнения</string>
+    <string name="gravatar_qe_about_field_section_label_professional">Рабочий</string>
+    <string name="gravatar_qe_about_field_section_label_personal">Личный</string>
+    <string name="gravatar_qe_about_field_description_pronunciation">Укажите, как читается ваше имя.</string>
+    <string name="gravatar_qe_about_field_description_about_me">Краткое описание для вашего профиля.</string>
+    <string name="gravatar_qe_about_field_label_last_name">Фамилия</string>
+    <string name="gravatar_qe_about_field_label_first_name">Имя</string>
+    <string name="gravatar_qe_about_field_label_job_title">Название работы</string>
+    <string name="gravatar_qe_about_field_label_company">Компания/организация</string>
+    <string name="gravatar_qe_about_field_label_location">Местоположение</string>
+    <string name="gravatar_qe_about_field_label_pronunciation">Произношение</string>
+    <string name="gravatar_qe_about_field_label_pronouns">Местоимения</string>
+    <string name="gravatar_qe_about_field_label_about_me">Обо мне</string>
+    <string name="gravatar_qe_about_field_label_display_name">Отображаемое имя</string>
     <string name="gravatar_qe_picker_submenu_icon_description">Развернуть</string>
     <string name="gravatar_qe_avatar_alt_text_cancel_button">Отмена</string>
     <string name="gravatar_qe_avatar_alt_text_save_button">Сохранить</string>
