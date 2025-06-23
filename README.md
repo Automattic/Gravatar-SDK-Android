@@ -81,7 +81,7 @@ For those looking for a full API documentation: [click here](https://automattic.
 
 ## For Maintainers
 
-If you're contributing to or maintaining this project, check out [SDK's technical details](/docs/sdk-technical-details/sdk-techincal-details.md).
+If you're contributing to or maintaining this project, check out [SDK's technical details](/docs/sdk-technical-details/sdk-technical-details.md).
 
 ## Contributing
 
