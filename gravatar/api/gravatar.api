@@ -492,7 +492,10 @@ public final class com/gravatar/restapi/models/Profile {
 	public final fun getPronouns ()Ljava/lang/String;
 	public final fun getPronunciation ()Ljava/lang/String;
 	public final fun getRegistrationDate ()Ljava/lang/String;
+	public final fun getSectionVisibility ()Lcom/gravatar/restapi/models/ProfileSectionVisibility;
 	public final fun getTimezone ()Ljava/lang/String;
+	public final fun getUserId ()Ljava/lang/Integer;
+	public final fun getUserLogin ()Ljava/lang/String;
 	public final fun getVerifiedAccounts ()Ljava/util/List;
 	public fun hashCode ()I
 	public final fun isOrganization ()Ljava/lang/Boolean;
@@ -526,7 +529,10 @@ public final class com/gravatar/restapi/models/Profile$Builder {
 	public final fun getPronouns ()Ljava/lang/String;
 	public final fun getPronunciation ()Ljava/lang/String;
 	public final fun getRegistrationDate ()Ljava/lang/String;
+	public final fun getSectionVisibility ()Lcom/gravatar/restapi/models/ProfileSectionVisibility;
 	public final fun getTimezone ()Ljava/lang/String;
+	public final fun getUserId ()Ljava/lang/Integer;
+	public final fun getUserLogin ()Ljava/lang/String;
 	public final fun getVerifiedAccounts ()Ljava/util/List;
 	public final fun isOrganization ()Ljava/lang/Boolean;
 	public final fun setAvatarAltText (Ljava/lang/String;)Lcom/gravatar/restapi/models/Profile$Builder;
@@ -579,8 +585,14 @@ public final class com/gravatar/restapi/models/Profile$Builder {
 	public final synthetic fun setPronunciation (Ljava/lang/String;)V
 	public final fun setRegistrationDate (Ljava/lang/String;)Lcom/gravatar/restapi/models/Profile$Builder;
 	public final synthetic fun setRegistrationDate (Ljava/lang/String;)V
+	public final fun setSectionVisibility (Lcom/gravatar/restapi/models/ProfileSectionVisibility;)Lcom/gravatar/restapi/models/Profile$Builder;
+	public final synthetic fun setSectionVisibility (Lcom/gravatar/restapi/models/ProfileSectionVisibility;)V
 	public final fun setTimezone (Ljava/lang/String;)Lcom/gravatar/restapi/models/Profile$Builder;
 	public final synthetic fun setTimezone (Ljava/lang/String;)V
+	public final fun setUserId (Ljava/lang/Integer;)Lcom/gravatar/restapi/models/Profile$Builder;
+	public final synthetic fun setUserId (Ljava/lang/Integer;)V
+	public final fun setUserLogin (Ljava/lang/String;)Lcom/gravatar/restapi/models/Profile$Builder;
+	public final synthetic fun setUserLogin (Ljava/lang/String;)V
 	public final fun setVerifiedAccounts (Ljava/util/List;)Lcom/gravatar/restapi/models/Profile$Builder;
 	public final synthetic fun setVerifiedAccounts (Ljava/util/List;)V
 }
@@ -679,6 +691,55 @@ public final class com/gravatar/restapi/models/ProfilePaymentsKt {
 	public static final synthetic fun ProfilePayments (Lkotlin/jvm/functions/Function1;)Lcom/gravatar/restapi/models/ProfilePayments;
 }
 
+public final class com/gravatar/restapi/models/ProfileSectionVisibility {
+	public fun <init> ()V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getHiddenContactInfo ()Ljava/lang/Boolean;
+	public final fun getHiddenInterests ()Ljava/lang/Boolean;
+	public final fun getHiddenLinks ()Ljava/lang/Boolean;
+	public final fun getHiddenPhotos ()Ljava/lang/Boolean;
+	public final fun getHiddenVerifiedAccounts ()Ljava/lang/Boolean;
+	public final fun getHiddenWallet ()Ljava/lang/Boolean;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/gravatar/restapi/models/ProfileSectionVisibility$Builder {
+	public fun <init> ()V
+	public final fun build ()Lcom/gravatar/restapi/models/ProfileSectionVisibility;
+	public final fun getHiddenContactInfo ()Ljava/lang/Boolean;
+	public final fun getHiddenInterests ()Ljava/lang/Boolean;
+	public final fun getHiddenLinks ()Ljava/lang/Boolean;
+	public final fun getHiddenPhotos ()Ljava/lang/Boolean;
+	public final fun getHiddenVerifiedAccounts ()Ljava/lang/Boolean;
+	public final fun getHiddenWallet ()Ljava/lang/Boolean;
+	public final fun setHiddenContactInfo (Ljava/lang/Boolean;)Lcom/gravatar/restapi/models/ProfileSectionVisibility$Builder;
+	public final synthetic fun setHiddenContactInfo (Ljava/lang/Boolean;)V
+	public final fun setHiddenInterests (Ljava/lang/Boolean;)Lcom/gravatar/restapi/models/ProfileSectionVisibility$Builder;
+	public final synthetic fun setHiddenInterests (Ljava/lang/Boolean;)V
+	public final fun setHiddenLinks (Ljava/lang/Boolean;)Lcom/gravatar/restapi/models/ProfileSectionVisibility$Builder;
+	public final synthetic fun setHiddenLinks (Ljava/lang/Boolean;)V
+	public final fun setHiddenPhotos (Ljava/lang/Boolean;)Lcom/gravatar/restapi/models/ProfileSectionVisibility$Builder;
+	public final synthetic fun setHiddenPhotos (Ljava/lang/Boolean;)V
+	public final fun setHiddenVerifiedAccounts (Ljava/lang/Boolean;)Lcom/gravatar/restapi/models/ProfileSectionVisibility$Builder;
+	public final synthetic fun setHiddenVerifiedAccounts (Ljava/lang/Boolean;)V
+	public final fun setHiddenWallet (Ljava/lang/Boolean;)Lcom/gravatar/restapi/models/ProfileSectionVisibility$Builder;
+	public final synthetic fun setHiddenWallet (Ljava/lang/Boolean;)V
+}
+
+public final class com/gravatar/restapi/models/ProfileSectionVisibilityJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lcom/gravatar/restapi/models/ProfileSectionVisibility;
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lcom/gravatar/restapi/models/ProfileSectionVisibility;)V
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/gravatar/restapi/models/ProfileSectionVisibilityKt {
+	public static final synthetic fun ProfileSectionVisibility (Lkotlin/jvm/functions/Function1;)Lcom/gravatar/restapi/models/ProfileSectionVisibility;
+}
+
 public final class com/gravatar/restapi/models/Rating : java/lang/Enum {
 	public static final field Companion Lcom/gravatar/restapi/models/Rating$Companion;
 	public static final field G Lcom/gravatar/restapi/models/Rating;
@@ -761,10 +822,13 @@ public final class com/gravatar/restapi/models/UpdateAvatarRequestKt {
 public final class com/gravatar/restapi/models/UpdateProfileRequest {
 	public fun <init> ()V
 	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCellPhone ()Ljava/lang/String;
 	public final fun getCompany ()Ljava/lang/String;
+	public final fun getContactEmail ()Ljava/lang/String;
 	public final fun getDescription ()Ljava/lang/String;
 	public final fun getDisplayName ()Ljava/lang/String;
 	public final fun getFirstName ()Ljava/lang/String;
+	public final fun getHiddenContactInfo ()Ljava/lang/Boolean;
 	public final fun getJobTitle ()Ljava/lang/String;
 	public final fun getLastName ()Ljava/lang/String;
 	public final fun getLocation ()Ljava/lang/String;
@@ -777,23 +841,32 @@ public final class com/gravatar/restapi/models/UpdateProfileRequest {
 public final class com/gravatar/restapi/models/UpdateProfileRequest$Builder {
 	public fun <init> ()V
 	public final fun build ()Lcom/gravatar/restapi/models/UpdateProfileRequest;
+	public final fun getCellPhone ()Ljava/lang/String;
 	public final fun getCompany ()Ljava/lang/String;
+	public final fun getContactEmail ()Ljava/lang/String;
 	public final fun getDescription ()Ljava/lang/String;
 	public final fun getDisplayName ()Ljava/lang/String;
 	public final fun getFirstName ()Ljava/lang/String;
+	public final fun getHiddenContactInfo ()Ljava/lang/Boolean;
 	public final fun getJobTitle ()Ljava/lang/String;
 	public final fun getLastName ()Ljava/lang/String;
 	public final fun getLocation ()Ljava/lang/String;
 	public final fun getPronouns ()Ljava/lang/String;
 	public final fun getPronunciation ()Ljava/lang/String;
+	public final fun setCellPhone (Ljava/lang/String;)Lcom/gravatar/restapi/models/UpdateProfileRequest$Builder;
+	public final synthetic fun setCellPhone (Ljava/lang/String;)V
 	public final fun setCompany (Ljava/lang/String;)Lcom/gravatar/restapi/models/UpdateProfileRequest$Builder;
 	public final synthetic fun setCompany (Ljava/lang/String;)V
+	public final fun setContactEmail (Ljava/lang/String;)Lcom/gravatar/restapi/models/UpdateProfileRequest$Builder;
+	public final synthetic fun setContactEmail (Ljava/lang/String;)V
 	public final fun setDescription (Ljava/lang/String;)Lcom/gravatar/restapi/models/UpdateProfileRequest$Builder;
 	public final synthetic fun setDescription (Ljava/lang/String;)V
 	public final fun setDisplayName (Ljava/lang/String;)Lcom/gravatar/restapi/models/UpdateProfileRequest$Builder;
 	public final synthetic fun setDisplayName (Ljava/lang/String;)V
 	public final fun setFirstName (Ljava/lang/String;)Lcom/gravatar/restapi/models/UpdateProfileRequest$Builder;
 	public final synthetic fun setFirstName (Ljava/lang/String;)V
+	public final fun setHiddenContactInfo (Ljava/lang/Boolean;)Lcom/gravatar/restapi/models/UpdateProfileRequest$Builder;
+	public final synthetic fun setHiddenContactInfo (Ljava/lang/Boolean;)V
 	public final fun setJobTitle (Ljava/lang/String;)Lcom/gravatar/restapi/models/UpdateProfileRequest$Builder;
 	public final synthetic fun setJobTitle (Ljava/lang/String;)V
 	public final fun setLastName (Ljava/lang/String;)Lcom/gravatar/restapi/models/UpdateProfileRequest$Builder;

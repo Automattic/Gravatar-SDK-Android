@@ -26,6 +26,8 @@ import java.util.Objects
  * @param verifiedAccounts A list of verified accounts the user has added to their profile. This is limited to a max of 4 in unauthenticated requests.
  * @param pronunciation The phonetic pronunciation of the user's name.
  * @param pronouns The pronouns the user uses.
+ * @param userId The unique user ID. NOTE: This is only provided in OAuth2 authenticated requests.
+ * @param userLogin The user's login name. NOTE: This is only provided in OAuth2 authenticated requests.
  * @param timezone The timezone the user has. This is only provided in authenticated API requests.
  * @param languages The languages the user knows. This is only provided in authenticated API requests.
  * @param firstName User's first name. This is only provided in authenticated API requests.
@@ -41,6 +43,7 @@ import java.util.Objects
  * @param numberVerifiedAccounts The number of verified accounts the user has added to their profile. This count includes verified accounts the user is hiding from their profile. This is only provided in authenticated API requests.
  * @param lastProfileEdit The date and time (UTC) the user last edited their profile. This is only provided in authenticated API requests.
  * @param registrationDate The date the user registered their account. This is only provided in authenticated API requests.
+ * @param sectionVisibility
  */
 @JsonClass(generateAdapter = true)
 public class Profile internal constructor(
@@ -80,6 +83,12 @@ public class Profile internal constructor(
     // The pronouns the user uses.
     @Json(name = "pronouns")
     public val pronouns: kotlin.String,
+    // The unique user ID. NOTE: This is only provided in OAuth2 authenticated requests.
+    @Json(name = "user_id")
+    public val userId: kotlin.Int? = null,
+    // The user's login name. NOTE: This is only provided in OAuth2 authenticated requests.
+    @Json(name = "user_login")
+    public val userLogin: kotlin.String? = null,
     // The timezone the user has. This is only provided in authenticated API requests.
     @Json(name = "timezone")
     public val timezone: kotlin.String? = null,
@@ -123,8 +132,10 @@ public class Profile internal constructor(
     // The date the user registered their account. This is only provided in authenticated API requests.
     @Json(name = "registration_date")
     public val registrationDate: String? = null,
+    @Json(name = "section_visibility")
+    public val sectionVisibility: ProfileSectionVisibility? = null,
 ) {
-    override fun toString(): String = "Profile(hash=$hash, displayName=$displayName, profileUrl=$profileUrl, avatarUrl=$avatarUrl, avatarAltText=$avatarAltText, location=$location, description=$description, jobTitle=$jobTitle, company=$company, verifiedAccounts=$verifiedAccounts, pronunciation=$pronunciation, pronouns=$pronouns, timezone=$timezone, languages=$languages, firstName=$firstName, lastName=$lastName, isOrganization=$isOrganization, headerImage=$headerImage, backgroundColor=$backgroundColor, links=$links, interests=$interests, payments=$payments, contactInfo=$contactInfo, gallery=$gallery, numberVerifiedAccounts=$numberVerifiedAccounts, lastProfileEdit=$lastProfileEdit, registrationDate=$registrationDate)"
+    override fun toString(): String = "Profile(hash=$hash, displayName=$displayName, profileUrl=$profileUrl, avatarUrl=$avatarUrl, avatarAltText=$avatarAltText, location=$location, description=$description, jobTitle=$jobTitle, company=$company, verifiedAccounts=$verifiedAccounts, pronunciation=$pronunciation, pronouns=$pronouns, userId=$userId, userLogin=$userLogin, timezone=$timezone, languages=$languages, firstName=$firstName, lastName=$lastName, isOrganization=$isOrganization, headerImage=$headerImage, backgroundColor=$backgroundColor, links=$links, interests=$interests, payments=$payments, contactInfo=$contactInfo, gallery=$gallery, numberVerifiedAccounts=$numberVerifiedAccounts, lastProfileEdit=$lastProfileEdit, registrationDate=$registrationDate, sectionVisibility=$sectionVisibility)"
 
     override fun equals(other: Any?): Boolean = other is Profile &&
         hash == other.hash &&
@@ -139,6 +150,8 @@ public class Profile internal constructor(
         verifiedAccounts == other.verifiedAccounts &&
         pronunciation == other.pronunciation &&
         pronouns == other.pronouns &&
+        userId == other.userId &&
+        userLogin == other.userLogin &&
         timezone == other.timezone &&
         languages == other.languages &&
         firstName == other.firstName &&
@@ -153,9 +166,10 @@ public class Profile internal constructor(
         gallery == other.gallery &&
         numberVerifiedAccounts == other.numberVerifiedAccounts &&
         lastProfileEdit == other.lastProfileEdit &&
-        registrationDate == other.registrationDate
+        registrationDate == other.registrationDate &&
+        sectionVisibility == other.sectionVisibility
 
-    override fun hashCode(): Int = Objects.hash(hash, displayName, profileUrl, avatarUrl, avatarAltText, location, description, jobTitle, company, verifiedAccounts, pronunciation, pronouns, timezone, languages, firstName, lastName, isOrganization, headerImage, backgroundColor, links, interests, payments, contactInfo, gallery, numberVerifiedAccounts, lastProfileEdit, registrationDate)
+    override fun hashCode(): Int = Objects.hash(hash, displayName, profileUrl, avatarUrl, avatarAltText, location, description, jobTitle, company, verifiedAccounts, pronunciation, pronouns, userId, userLogin, timezone, languages, firstName, lastName, isOrganization, headerImage, backgroundColor, links, interests, payments, contactInfo, gallery, numberVerifiedAccounts, lastProfileEdit, registrationDate, sectionVisibility)
 
     public class Builder {
         // The SHA256 hash of the user's primary email address.
@@ -205,6 +219,14 @@ public class Profile internal constructor(
         // The pronouns the user uses.
         @set:JvmSynthetic // Hide 'void' setter from Java
         public var pronouns: kotlin.String? = null
+
+        // The unique user ID. NOTE: This is only provided in OAuth2 authenticated requests.
+        @set:JvmSynthetic // Hide 'void' setter from Java
+        public var userId: kotlin.Int? = null
+
+        // The user's login name. NOTE: This is only provided in OAuth2 authenticated requests.
+        @set:JvmSynthetic // Hide 'void' setter from Java
+        public var userLogin: kotlin.String? = null
 
         // The timezone the user has. This is only provided in authenticated API requests.
         @set:JvmSynthetic // Hide 'void' setter from Java
@@ -264,6 +286,9 @@ public class Profile internal constructor(
         @set:JvmSynthetic // Hide 'void' setter from Java
         public var registrationDate: String? = null
 
+        @set:JvmSynthetic // Hide 'void' setter from Java
+        public var sectionVisibility: ProfileSectionVisibility? = null
+
         public fun setHash(hash: kotlin.String?): Builder = apply { this.hash = hash }
 
         public fun setDisplayName(displayName: kotlin.String?): Builder = apply { this.displayName = displayName }
@@ -287,6 +312,10 @@ public class Profile internal constructor(
         public fun setPronunciation(pronunciation: kotlin.String?): Builder = apply { this.pronunciation = pronunciation }
 
         public fun setPronouns(pronouns: kotlin.String?): Builder = apply { this.pronouns = pronouns }
+
+        public fun setUserId(userId: kotlin.Int?): Builder = apply { this.userId = userId }
+
+        public fun setUserLogin(userLogin: kotlin.String?): Builder = apply { this.userLogin = userLogin }
 
         public fun setTimezone(timezone: kotlin.String?): Builder = apply { this.timezone = timezone }
 
@@ -318,7 +347,9 @@ public class Profile internal constructor(
 
         public fun setRegistrationDate(registrationDate: String?): Builder = apply { this.registrationDate = registrationDate }
 
-        public fun build(): Profile = Profile(hash!!, displayName!!, profileUrl!!, avatarUrl!!, avatarAltText!!, location!!, description!!, jobTitle!!, company!!, verifiedAccounts!!, pronunciation!!, pronouns!!, timezone, languages, firstName, lastName, isOrganization, headerImage, backgroundColor, links, interests, payments, contactInfo, gallery, numberVerifiedAccounts, lastProfileEdit, registrationDate)
+        public fun setSectionVisibility(sectionVisibility: ProfileSectionVisibility?): Builder = apply { this.sectionVisibility = sectionVisibility }
+
+        public fun build(): Profile = Profile(hash!!, displayName!!, profileUrl!!, avatarUrl!!, avatarAltText!!, location!!, description!!, jobTitle!!, company!!, verifiedAccounts!!, pronunciation!!, pronouns!!, userId, userLogin, timezone, languages, firstName, lastName, isOrganization, headerImage, backgroundColor, links, interests, payments, contactInfo, gallery, numberVerifiedAccounts, lastProfileEdit, registrationDate, sectionVisibility)
     }
 }
 

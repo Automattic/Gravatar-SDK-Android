@@ -323,6 +323,20 @@
           "pronouns"
         ],
         "properties": {
+          "user_id": {
+            "type": "integer",
+            "description": "The unique user ID. NOTE: This is only provided in OAuth2 authenticated requests.",
+            "examples": [
+              1234567890
+            ]
+          },
+          "user_login": {
+            "type": "string",
+            "description": "The user's login name. NOTE: This is only provided in OAuth2 authenticated requests.",
+            "examples": [
+              "alex"
+            ]
+          },
           "hash": {
             "type": "string",
             "description": "The SHA256 hash of the user's primary email address.",
@@ -582,6 +596,36 @@
             "examples": [
               "2021-10-01T12:00:00Z"
             ]
+          },
+          "section_visibility": {
+            "type": "object",
+            "description": "The visibility of the user's profile sections.",
+            "properties": {
+              "hidden_contact_info": {
+                "type": "boolean",
+                "description": "Whether the user's contact info section is hidden."
+              },
+              "hidden_links": {
+                "type": "boolean",
+                "description": "Whether the user's links section is hidden."
+              },
+              "hidden_interests": {
+                "type": "boolean",
+                "description": "Whether the user's interests section is hidden."
+              },
+              "hidden_wallet": {
+                "type": "boolean",
+                "description": "Whether the user's wallet section is hidden."
+              },
+              "hidden_photos": {
+                "type": "boolean",
+                "description": "Whether the user's photo gallery section is hidden."
+              },
+              "hidden_verified_accounts": {
+                "type": "boolean",
+                "description": "Whether the user's verified accounts section is hidden."
+              }
+            }
           }
         }
       },
@@ -909,6 +953,27 @@
                     "description": "The user's current company's name.",
                     "examples": [
                       "ACME Corp"
+                    ]
+                  },
+                  "cell_phone": {
+                    "type": "string",
+                    "description": "The user's cell phone number.",
+                    "examples": [
+                      "+1234567890"
+                    ]
+                  },
+                  "contact_email": {
+                    "type": "string",
+                    "description": "The user's contact email address.",
+                    "examples": [
+                      "alex@example.com"
+                    ]
+                  },
+                  "hidden_contact_info": {
+                    "type": "boolean",
+                    "description": "Whether the user's contact information is hidden on their profile.",
+                    "examples": [
+                      true
                     ]
                   }
                 }
