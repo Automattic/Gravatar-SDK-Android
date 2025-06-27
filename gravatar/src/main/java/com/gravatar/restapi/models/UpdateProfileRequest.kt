@@ -23,6 +23,9 @@ import java.util.Objects
  * @param location The user's location.
  * @param jobTitle The user's job title.
  * @param company The user's current company's name.
+ * @param cellPhone The user's cell phone number.
+ * @param contactEmail The user's contact email address.
+ * @param hiddenContactInfo Whether the user's contact information is hidden on their profile.
  */
 @JsonClass(generateAdapter = true)
 public class UpdateProfileRequest internal constructor(
@@ -53,8 +56,17 @@ public class UpdateProfileRequest internal constructor(
     // The user's current company's name.
     @Json(name = "company")
     public val company: kotlin.String? = null,
+    // The user's cell phone number.
+    @Json(name = "cell_phone")
+    public val cellPhone: kotlin.String? = null,
+    // The user's contact email address.
+    @Json(name = "contact_email")
+    public val contactEmail: kotlin.String? = null,
+    // Whether the user's contact information is hidden on their profile.
+    @Json(name = "hidden_contact_info")
+    public val hiddenContactInfo: kotlin.Boolean? = null,
 ) {
-    override fun toString(): String = "UpdateProfileRequest(firstName=$firstName, lastName=$lastName, displayName=$displayName, description=$description, pronunciation=$pronunciation, pronouns=$pronouns, location=$location, jobTitle=$jobTitle, company=$company)"
+    override fun toString(): String = "UpdateProfileRequest(firstName=$firstName, lastName=$lastName, displayName=$displayName, description=$description, pronunciation=$pronunciation, pronouns=$pronouns, location=$location, jobTitle=$jobTitle, company=$company, cellPhone=$cellPhone, contactEmail=$contactEmail, hiddenContactInfo=$hiddenContactInfo)"
 
     override fun equals(other: Any?): Boolean = other is UpdateProfileRequest &&
         firstName == other.firstName &&
@@ -65,9 +77,12 @@ public class UpdateProfileRequest internal constructor(
         pronouns == other.pronouns &&
         location == other.location &&
         jobTitle == other.jobTitle &&
-        company == other.company
+        company == other.company &&
+        cellPhone == other.cellPhone &&
+        contactEmail == other.contactEmail &&
+        hiddenContactInfo == other.hiddenContactInfo
 
-    override fun hashCode(): Int = Objects.hash(firstName, lastName, displayName, description, pronunciation, pronouns, location, jobTitle, company)
+    override fun hashCode(): Int = Objects.hash(firstName, lastName, displayName, description, pronunciation, pronouns, location, jobTitle, company, cellPhone, contactEmail, hiddenContactInfo)
 
     public class Builder {
         // The user's first name.
@@ -106,6 +121,18 @@ public class UpdateProfileRequest internal constructor(
         @set:JvmSynthetic // Hide 'void' setter from Java
         public var company: kotlin.String? = null
 
+        // The user's cell phone number.
+        @set:JvmSynthetic // Hide 'void' setter from Java
+        public var cellPhone: kotlin.String? = null
+
+        // The user's contact email address.
+        @set:JvmSynthetic // Hide 'void' setter from Java
+        public var contactEmail: kotlin.String? = null
+
+        // Whether the user's contact information is hidden on their profile.
+        @set:JvmSynthetic // Hide 'void' setter from Java
+        public var hiddenContactInfo: kotlin.Boolean? = null
+
         public fun setFirstName(firstName: kotlin.String?): Builder = apply { this.firstName = firstName }
 
         public fun setLastName(lastName: kotlin.String?): Builder = apply { this.lastName = lastName }
@@ -124,7 +151,13 @@ public class UpdateProfileRequest internal constructor(
 
         public fun setCompany(company: kotlin.String?): Builder = apply { this.company = company }
 
-        public fun build(): UpdateProfileRequest = UpdateProfileRequest(firstName, lastName, displayName, description, pronunciation, pronouns, location, jobTitle, company)
+        public fun setCellPhone(cellPhone: kotlin.String?): Builder = apply { this.cellPhone = cellPhone }
+
+        public fun setContactEmail(contactEmail: kotlin.String?): Builder = apply { this.contactEmail = contactEmail }
+
+        public fun setHiddenContactInfo(hiddenContactInfo: kotlin.Boolean?): Builder = apply { this.hiddenContactInfo = hiddenContactInfo }
+
+        public fun build(): UpdateProfileRequest = UpdateProfileRequest(firstName, lastName, displayName, description, pronunciation, pronouns, location, jobTitle, company, cellPhone, contactEmail, hiddenContactInfo)
     }
 }
 
