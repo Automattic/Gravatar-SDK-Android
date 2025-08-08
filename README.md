@@ -1,4 +1,4 @@
-<creat Avatar=README.md
+
 <p align="center">
     <img src="/docs/images/gravatar_logo.png" />
 </p>
