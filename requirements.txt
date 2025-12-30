@@ -1,0 +1,3 @@
+```kotliimplementation("com.gravatar:gravatar-ui:<version>")
+    // ORn
+dependencies {
