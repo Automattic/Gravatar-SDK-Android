@@ -1,5 +1,10 @@
-# Configuration files
-.properties
-
-# Build files
+.gradle/
 build/
+!build/reports/
+*/build/
+!*/build/api/
+!*/build/outputs/
+!*/build/reports/
+!*/build/test-results/
+local.properties
+secrets.properties
