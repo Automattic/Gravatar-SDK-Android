@@ -26,6 +26,7 @@ For installation, API key setup, and general usage, see [Get Started](docs/get-s
 ./gradlew ktlintCheck                      # Code formatting check
 ./gradlew ktlintFormat                     # Auto-fix formatting issues
 ./gradlew apiCheck                         # Binary compatibility validation
+./gradlew apiDump                          # Generate/update .api files after public API changes
 ```
 
 Screenshot tests (Roborazzi):
