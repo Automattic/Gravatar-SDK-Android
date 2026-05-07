@@ -257,7 +257,7 @@ GEM
     nap (1.1.0)
     naturally (2.3.0)
     nkf (0.2.0)
-    nokogiri (1.19.1)
+    nokogiri (1.19.3)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
     octokit (6.1.1)
@@ -357,6 +357,7 @@ DEPENDENCIES
   faraday (~> 1.10, >= 1.10.5)
   fastlane (~> 2.222)
   fastlane-plugin-wpmreleasetoolkit (~> 13.0)
+  nokogiri (>= 1.19.3)
   rubocop (~> 1.65)
 
 BUNDLED WITH
