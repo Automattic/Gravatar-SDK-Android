@@ -100,16 +100,23 @@ platform :android do
   def generate_prototype_build_number
     if ENV['BUILDKITE']
       commit = ENV.fetch('BUILDKITE_COMMIT', nil)[0, 7]
-      branch = ENV['BUILDKITE_BRANCH'].parameterize
+      branch = slugify(ENV['BUILDKITE_BRANCH'])
       pr_num = ENV.fetch('BUILDKITE_PULL_REQUEST', nil)
 
       pr_num == 'false' ? "#{branch}-#{commit}" : "pr#{pr_num}-#{commit}"
     else
       repo = Git.open(PROJECT_ROOT_FOLDER)
-      commit = repo.current_branch.parameterize
+      commit = slugify(repo.current_branch)
       branch = repo.revparse('HEAD')[0, 7]
 
       "#{branch}-#{commit}"
     end
+  end
+
+  # Returns a URL-safe slug from the given string, using only lowercase
+  # alphanumeric characters and hyphens (equivalent to ActiveSupport's
+  # String#parameterize with default options).
+  def slugify(str)
+    str.to_s.downcase.gsub(/[^a-z0-9]+/, '-').gsub(/^-+|-+$/, '')
   end
 end
