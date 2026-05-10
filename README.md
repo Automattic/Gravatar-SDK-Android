@@ -2,7 +2,7 @@
     <img src="/docs/images/gravatar_logo.png" />
 </p>
 
-## Gravatar-Android
+## Gravatar-Android-SDK-playstore 
 
 [![Build status](https://badge.buildkite.com/8859512adb21ccf83f8f0aa03249356c6f972ff594bcae602d.svg?branch=trunk)](https://buildkite.com/automattic/gravatar-sdk-android)
 [![License: MPL 2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
