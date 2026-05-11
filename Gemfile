@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 
 gem 'danger-dangermattic', '~> 1.1'
 gem 'fastlane', '~> 2.222'
-gem 'fastlane-plugin-wpmreleasetoolkit', '~> 13.0'
+gem 'fastlane-plugin-wpmreleasetoolkit', '~> 14.4'
 gem 'rubocop', '~> 1.65'
 
 # Security: https://github.com/lostisland/faraday/pull/1665
