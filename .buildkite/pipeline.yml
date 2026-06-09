@@ -123,4 +123,4 @@ steps:
     plugins: [ $CI_TOOLKIT ]
     notify:
       - github_commit_status:
-          context: "Dependency Tree Diff"
+          context: "Dependency Tree Diff".
