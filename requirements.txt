@@ -1,3 +1,7 @@
-```kotliimplementation("com.gravatar:gravatar-ui:<version>")
-    // ORn
-dependencies {
+gradio==4.44.1
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+pydantic==2.5.0
+pydantic[email]==2.5.0
+python-multipart==0.0.6
+firebase-admin==6.2.0

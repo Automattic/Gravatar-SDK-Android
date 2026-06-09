@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "7860:7860"
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - ENABLE_ANALYTICS=false
+    volumes:
+      - ./app.py:/app/app.py
+      - ./api.py:/app/api.py
+      - ./analytics.py:/app/analytics.py
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:7860/config"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
