@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-gem 'danger-dangermattic', '~> 1.3'
+gem 'danger-dangermattic', '~> 1.4'
 gem 'fastlane', '~> 2.237'
 gem 'fastlane-plugin-wpmreleasetoolkit', '~> 14.10'
 gem 'rubocop', '~> 1.88'
