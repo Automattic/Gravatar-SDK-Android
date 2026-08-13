@@ -376,8 +376,7 @@ PLATFORMS
 
 DEPENDENCIES
   danger-dangermattic (~> 1.4)
-  faraday (~> 2.14)
-  fastlane (~> 2.237)
+  fastlane (~> 2.238)
   fastlane-plugin-wpmreleasetoolkit (~> 14.11)
   rubocop (~> 1.89)
 
