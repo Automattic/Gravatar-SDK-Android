@@ -106,15 +106,24 @@ steps:
       - github_commit_status:
           context: "OpenAPI generation"
 
-  - label: "Prototype Builds"
-    if: "build.pull_request.id != null"
-    command: .buildkite/commands/prototype-build.sh
-    plugins: [ $CI_TOOLKIT ]
-    artifact_paths:
-      - "**/build/outputs/apk/**/*"
-    notify:
-      - github_commit_status:
-          context: "Prototype Builds"
+  # On demand, so that an agent doesn't build prototypes for every push to a PR.
+  # The group keeps the input from blocking the steps that follow it.
+  - group: "Prototype Builds"
+    steps:
+      - input: "Deploy Prototype Builds?"
+        prompt: "Share Prototype Builds via Firebase App Distribution?"
+        key: prototype_triggered
+        if: "build.pull_request.id != null"
+      - label: "Prototype Builds"
+        if: "build.pull_request.id != null"
+        depends_on: prototype_triggered
+        command: .buildkite/commands/prototype-build.sh
+        plugins: [ $CI_TOOLKIT ]
+        artifact_paths:
+          - "**/build/outputs/apk/**/*"
+        notify:
+          - github_commit_status:
+              context: "Prototype Builds"
 
   - label: "Dependency Tree Diff"
     command: |
