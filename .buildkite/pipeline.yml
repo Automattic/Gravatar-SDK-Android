@@ -111,13 +111,12 @@ steps:
   # No `github_commit_status` here: it would post "pending" while the step waits for the input,
   # and leave that check pending on every PR where nobody asks for prototypes.
   - group: "Prototype Builds"
+    if: "build.pull_request.id != null"
     steps:
       - input: "Deploy Prototype Builds?"
         prompt: "Share Prototype Builds via Firebase App Distribution?"
         key: prototype_triggered
-        if: "build.pull_request.id != null"
       - label: "Prototype Builds"
-        if: "build.pull_request.id != null"
         depends_on: prototype_triggered
         command: .buildkite/commands/prototype-build.sh
         plugins: [ $CI_TOOLKIT ]
