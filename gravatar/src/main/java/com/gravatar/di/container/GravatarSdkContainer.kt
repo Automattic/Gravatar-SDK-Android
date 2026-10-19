@@ -20,6 +20,17 @@ internal class GravatarSdkContainer private constructor() {
 
         private val WHITESPACE = Regex("\\s+")
         private const val SDK_PRODUCT = "GravatarAndroid"
+
+        /**
+         * Whether [value] can be sent as an HTTP header value.
+         *
+         * OkHttp rejects anything outside tab and printable ASCII, and it does so from inside the
+         * interceptor, which fails the request rather than the call that supplied the value. So
+         * both writers of [appName] and [appVersion] check this up front: `Gravatar.appIdentifier`
+         * rejects the value, and `Gravatar.context` drops it. Whitespace is deliberately allowed —
+         * it is legal in a header value, and only [appName] needs it replaced to stay one token.
+         */
+        internal fun isHeaderSafe(value: String): Boolean = value.all { it == '\t' || it in ' '..'~' }
     }
 
     internal val moshi = Moshi.Builder()
@@ -33,6 +44,15 @@ internal class GravatarSdkContainer private constructor() {
     var apiKey: String? = null
     var appName: String? = null
     var appVersion: String? = null
+
+    /**
+     * Whether [appName] and [appVersion] came from `Gravatar.appIdentifier` rather than being
+     * derived from a `Context`. An explicit identifier is a deliberate choice, so `Gravatar.context`
+     * leaves it alone: otherwise an app that identifies itself in `Application.onCreate` would
+     * silently lose that name the next time anything called `context()`, which is exactly the
+     * per-build-type, localized naming the identifier exists to avoid.
+     */
+    var hasExplicitAppIdentifier: Boolean = false
 
     /**
      * The User-Agent sent with every request, e.g. `wp-android/27.6 GravatarAndroid/2.5.0`.

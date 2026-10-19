@@ -68,8 +68,27 @@ Then you can access the API key in your app's code like this:
 
 ```kotlin
 Gravatar.apiKey(BuildConfig.GRAVATAR_API_KEY)
-    .context(appContext) // Optional but highly encouraged.
+    .appIdentifier("your-app", BuildConfig.VERSION_NAME) // Optional but highly encouraged.
 ```
+
+`appIdentifier` names your app in the `X-Source` header and the `User-Agent` of every SDK request,
+so your traffic can be attributed and allowlisted server-side. Use the identifier your backend
+already knows you by, and keep it stable across releases and build types — one rule then covers you
+everywhere. `Gravatar.userAgent` exposes the composed string if you want to reuse it on requests you
+make yourself.
+
+If you have no such identifier, `Gravatar.context(appContext)` derives the name and version from the
+package instead:
+
+```kotlin
+Gravatar.apiKey(BuildConfig.GRAVATAR_API_KEY)
+    .context(appContext)
+```
+
+That is weaker, because the launcher label is localized and build types usually suffix it, so the
+same app reaches the backend under several names. Calling both is fine in any order: `appIdentifier`
+wins and the `context` call is ignored. Set whichever you use once and early — `Application.onCreate`
+is the natural place — since it has to run before the first request.
 
 # Usage
 
