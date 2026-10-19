@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Environment
 import com.gravatar.BuildConfig
+import com.gravatar.Gravatar
 import com.gravatar.services.GravatarResult
 import java.net.URI
 
@@ -24,6 +25,7 @@ internal class ImageDownloader(
                     .addRequestHeader("X-Platform", "Android")
                     .addRequestHeader("X-SDK-Version", BuildConfig.SDK_VERSION)
                     .addRequestHeader("X-Source", appName)
+                    .addRequestHeader("User-Agent", Gravatar.userAgent)
                     .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
                     .setMimeType("image/*")
                     .setDestinationInExternalPublicDir(
