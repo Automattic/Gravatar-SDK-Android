@@ -72,10 +72,17 @@ Gravatar.apiKey(BuildConfig.GRAVATAR_API_KEY)
 ```
 
 `appIdentifier` names your app in the `X-Source` header and the `User-Agent` of every SDK request,
-so your traffic can be attributed and allowlisted server-side. Use the identifier your backend
-already knows you by, and keep it stable across releases and build types — one rule then covers you
-everywhere. `Gravatar.userAgent` exposes the composed string if you want to reuse it on requests you
-make yourself.
+including the avatar images the UI components load, so your traffic can be attributed and
+allowlisted server-side. Use the identifier your backend already knows you by, and keep it stable
+across releases and build types — one rule then covers you everywhere.
+
+The name has to be a `User-Agent` product token, so it cannot hold whitespace, `/`, `(`, `)` or `;`
+and has to be unaccented ASCII — `wp-android` is fine, `My App` is not. Anything else throws
+`IllegalArgumentException` right at the call, naming the token it would have made, rather than
+failing your requests later. The version is freer, and may hold spaces: `27.6 (hotfix)` is fine.
+
+`Gravatar.userAgent` and `Gravatar.appName` expose what the SDK sends, if you want to reuse them on
+requests you make yourself.
 
 If you have no such identifier, `Gravatar.context(appContext)` derives the name and version from the
 package instead:
@@ -86,7 +93,9 @@ Gravatar.apiKey(BuildConfig.GRAVATAR_API_KEY)
 ```
 
 That is weaker, because the launcher label is localized and build types usually suffix it, so the
-same app reaches the backend under several names. Calling both is fine in any order: `appIdentifier`
+same app reaches the backend under several names. A label is reduced to a product token before it
+is sent, so `Jetpack (Debug)` arrives as `Jetpack-Debug`, and a label with nothing a token can hold
+— one written entirely in kana, say — is not sent at all. Calling both is fine in any order: `appIdentifier`
 wins and the `context` call is ignored. Set whichever you use once and early — `Application.onCreate`
 is the natural place — since it has to run before the first request.
 

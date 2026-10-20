@@ -26,7 +26,8 @@ public object Gravatar {
      *
      * Prefer [appIdentifier] when the launcher label is not the name you want on the wire: it is
      * localized, and build types usually suffix it, so the same app reaches the backend under
-     * several names.
+     * several names. A label is also reduced to something a User-Agent can carry before it is
+     * sent, so `Jetpack (Debug)` identifies itself as `Jetpack-Debug` — see [appName].
      *
      * Does nothing once [appIdentifier] has named the app, in any call order: a derived label is a
      * fallback and must not displace a deliberate identifier.
@@ -59,8 +60,10 @@ public object Gravatar {
      * @param name The app name, e.g. `wp-android`.
      * @param version The app version, e.g. `27.6`. Omitted from the User-Agent when null, which
      * also discards a version [context] had already derived — this call states the whole identity.
-     * @throws IllegalArgumentException if either value is blank or holds a character that cannot
-     * be sent as a header, such as a newline or anything non-ASCII.
+     * @throws IllegalArgumentException if either value is blank, if [version] holds a character
+     * that cannot be sent as a header, such as a newline or anything non-ASCII, or if [name] is
+     * not a product token — whitespace, `/`, `(`, `)`, `;` and accented or non-ASCII letters are
+     * all rejected, and the message names the token it would have made of what you passed.
      */
     public fun appIdentifier(name: String, version: String? = null): Gravatar {
         requireProductToken(name)
