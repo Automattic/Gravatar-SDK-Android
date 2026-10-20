@@ -14,7 +14,6 @@ internal class ImageDownloader(
     private val context: Context,
 ) {
     private val downloadManager: DownloadManager? = context.getSystemService(DownloadManager::class.java)
-    private val appName: String by lazy { context.appName }
 
     fun downloadImage(imageUrl: URI): GravatarResult<Unit, DownloadManagerError> {
         return when {
@@ -24,7 +23,10 @@ internal class ImageDownloader(
                 val request = DownloadManager.Request(Uri.parse(imageUrl.withMaxSizeQueryParam().toString()))
                     .addRequestHeader("X-Platform", "Android")
                     .addRequestHeader("X-SDK-Version", BuildConfig.SDK_VERSION)
-                    .addRequestHeader("X-Source", appName)
+                    // The name the SDK sends on its own requests, rather than the launcher label
+                    // this used to read: a download would otherwise name the app one way in
+                    // `X-Source` and another in the User-Agent just below.
+                    .apply { Gravatar.appName?.let { addRequestHeader("X-Source", it) } }
                     .addRequestHeader("User-Agent", Gravatar.userAgent)
                     .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
                     .setMimeType("image/*")

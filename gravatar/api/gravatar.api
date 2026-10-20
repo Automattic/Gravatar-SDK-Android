@@ -144,6 +144,7 @@ public final class com/gravatar/Gravatar {
 	public final fun appIdentifier (Ljava/lang/String;Ljava/lang/String;)Lcom/gravatar/Gravatar;
 	public static synthetic fun appIdentifier$default (Lcom/gravatar/Gravatar;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lcom/gravatar/Gravatar;
 	public final fun context (Landroid/content/Context;)Lcom/gravatar/Gravatar;
+	public final fun getAppName ()Ljava/lang/String;
 	public final fun getUserAgent ()Ljava/lang/String;
 }
 

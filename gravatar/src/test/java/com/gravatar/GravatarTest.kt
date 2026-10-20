@@ -9,6 +9,7 @@ import io.mockk.every
 import io.mockk.mockk
 import org.junit.Rule
 import org.junit.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
 
@@ -116,6 +117,13 @@ class GravatarTest {
     @Test
     fun `given a name that cannot be sent as a header then the app identifier is rejected`() {
         assertFailsWith<IllegalArgumentException> { Gravatar.appIdentifier("グラバタ", "1.0") }
+    }
+
+    @Test
+    fun `given an app name then it is exposed as the token that goes on the wire`() {
+        every { containerRule.gravatarSdkContainerMock.appNameToken } returns "Jetpack-Debug"
+
+        assertEquals("Jetpack-Debug", Gravatar.appName)
     }
 
     @Test

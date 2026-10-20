@@ -72,6 +72,21 @@ public object Gravatar {
     }
 
     /**
+     * The app name the SDK sends, in the `X-Source` header and at the head of [userAgent], or null
+     * when there is none to send.
+     *
+     * This is what goes on the wire, so a launcher label [context] derived appears reduced to a
+     * User-Agent product token: `Jetpack (Debug)` is sent as `Jetpack-Debug`, and a label with
+     * nothing a token can hold, such as one written entirely in kana, is not sent at all. A name
+     * from [appIdentifier] is sent verbatim, since that call rejects anything a token cannot hold.
+     *
+     * Exposed so callers that make their own requests to Gravatar identify themselves the same way
+     * the SDK does, rather than deriving a second name of their own.
+     */
+    public val appName: String?
+        get() = GravatarSdkContainer.instance.appNameToken
+
+    /**
      * The User-Agent the SDK sends, e.g. `wp-android/27.6 GravatarAndroid/2.5.0`.
      *
      * Reflects whatever [appIdentifier] or [context] last set, and falls back to the SDK token
