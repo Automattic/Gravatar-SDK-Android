@@ -7,6 +7,7 @@ import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 /**
@@ -65,6 +66,74 @@ class GravatarSdkContainerTest {
         container.appVersion = "27.6 (hotfix)"
 
         assertEquals("wp-android/27.6 (hotfix) GravatarAndroid/${BuildConfig.SDK_VERSION}", container.userAgent)
+    }
+
+    @Test
+    fun `given a name holding characters a token cannot then they are replaced`() {
+        container.appName = "A/B Tester"
+        container.appVersion = "2.0"
+
+        // Not `A/B-Tester/2.0`, which would parse as the product `A`.
+        assertEquals("A-B-Tester/2.0 GravatarAndroid/${BuildConfig.SDK_VERSION}", container.userAgent)
+    }
+
+    @Test
+    fun `given an accented name then the letters survive without the accents`() {
+        container.appName = "Café"
+
+        assertEquals("Cafe GravatarAndroid/${BuildConfig.SDK_VERSION}", container.userAgent)
+    }
+
+    @Test
+    fun `given a name with nothing a token can hold then the user agent is just the sdk token`() {
+        container.appName = "グラバタ"
+        container.appVersion = "27.6"
+
+        assertEquals("GravatarAndroid/${BuildConfig.SDK_VERSION}", container.userAgent)
+    }
+
+    @Test
+    fun `given a blank name then the user agent is just the sdk token`() {
+        container.appName = "   "
+        container.appVersion = "27.6"
+
+        // Not `/27.6 GravatarAndroid/...`, which has no app name before the slash.
+        assertEquals("GravatarAndroid/${BuildConfig.SDK_VERSION}", container.userAgent)
+    }
+
+    @Test
+    fun `given an app name then the token sent as the source header matches the user agent`() {
+        container.appName = "Jetpack (Debug)"
+        container.appVersion = "27.6"
+
+        assertEquals("Jetpack-Debug", container.appNameToken)
+        assertEquals("Jetpack-Debug/27.6 GravatarAndroid/${BuildConfig.SDK_VERSION}", container.userAgent)
+    }
+
+    @Test
+    fun `given a name no token can represent then there is no token to send`() {
+        container.appName = "グラバタ"
+
+        assertNull(container.appNameToken)
+    }
+
+    @Test
+    fun `given labels a product token can represent then they are reduced to one`() {
+        assertEquals("wp-android", GravatarSdkContainer.toProductToken("wp-android"))
+        assertEquals("Gravatar-Demo-App", GravatarSdkContainer.toProductToken("Gravatar Demo App"))
+        assertEquals("Jetpack-Debug", GravatarSdkContainer.toProductToken("  Jetpack  Debug "))
+        assertEquals("Jetpack-Debug", GravatarSdkContainer.toProductToken("Jetpack Debug"))
+        assertEquals("A-B-Tester", GravatarSdkContainer.toProductToken("A/B Tester"))
+        assertEquals("Cafe", GravatarSdkContainer.toProductToken("Café"))
+        assertEquals("Jetpack-Debug", GravatarSdkContainer.toProductToken("Jetpack (Debug);"))
+    }
+
+    @Test
+    fun `given labels a product token cannot represent then there is no token`() {
+        assertNull(GravatarSdkContainer.toProductToken("グラバタ"))
+        assertNull(GravatarSdkContainer.toProductToken(""))
+        assertNull(GravatarSdkContainer.toProductToken("   "))
+        assertNull(GravatarSdkContainer.toProductToken("///"))
     }
 
     @Test

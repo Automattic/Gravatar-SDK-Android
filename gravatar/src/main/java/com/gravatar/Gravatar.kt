@@ -50,9 +50,11 @@ public object Gravatar {
      * call this one when the app has a stable name it is already known by server-side. A later
      * [context] call is then ignored.
      *
-     * Both values end up in a header, so both must be non-blank printable ASCII. Anything else
-     * would make OkHttp reject the header from inside the interceptor and fail every request with
-     * an opaque error, so this fails here instead — at the call that supplied the bad value.
+     * Both values end up in a header, so this rejects anything that cannot be sent as one rather
+     * than letting OkHttp fail every request later with an opaque error. The name is held to the
+     * stricter bar of a User-Agent product token — no whitespace, no `/`, unaccented ASCII — so
+     * that the string a server keys a rule on is exactly the string you passed. A label that only
+     * [context] could produce is cleaned up instead; an identifier you chose is not guessed at.
      *
      * @param name The app name, e.g. `wp-android`.
      * @param version The app version, e.g. `27.6`. Omitted from the User-Agent when null, which
@@ -61,7 +63,7 @@ public object Gravatar {
      * be sent as a header, such as a newline or anything non-ASCII.
      */
     public fun appIdentifier(name: String, version: String? = null): Gravatar {
-        requireHeaderSafe(name, "name")
+        requireProductToken(name)
         version?.let { requireHeaderSafe(it, "version") }
         GravatarSdkContainer.instance.appName = name
         GravatarSdkContainer.instance.appVersion = version
@@ -78,6 +80,16 @@ public object Gravatar {
      */
     public val userAgent: String
         get() = GravatarSdkContainer.instance.userAgent
+
+    private fun requireProductToken(name: String) {
+        require(name.isNotBlank()) { "The app name cannot be blank." }
+        val token = GravatarSdkContainer.toProductToken(name)
+        require(token == name) {
+            "The app name must be a User-Agent product token, so it cannot hold whitespace, " +
+                "`/`, `(`, `)` or `;`, and must be unaccented ASCII. Got \"$name\"" +
+                token?.let { "; did you mean \"$it\"?" }.orEmpty()
+        }
+    }
 
     private fun requireHeaderSafe(value: String, field: String) {
         require(value.isNotBlank()) { "The app $field cannot be blank." }

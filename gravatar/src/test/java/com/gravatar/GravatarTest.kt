@@ -10,6 +10,7 @@ import io.mockk.mockk
 import org.junit.Rule
 import org.junit.Test
 import kotlin.test.assertFailsWith
+import kotlin.test.assertTrue
 
 class GravatarTest {
     @get:Rule
@@ -115,6 +116,30 @@ class GravatarTest {
     @Test
     fun `given a name that cannot be sent as a header then the app identifier is rejected`() {
         assertFailsWith<IllegalArgumentException> { Gravatar.appIdentifier("グラバタ", "1.0") }
+    }
+
+    @Test
+    fun `given a name that is not a product token then the app identifier is rejected`() {
+        // A space ends the product, so this would reach the backend as `My`.
+        assertFailsWith<IllegalArgumentException> { Gravatar.appIdentifier("My App", "1.0") }
+        // A slash makes everything after it read as the version.
+        assertFailsWith<IllegalArgumentException> { Gravatar.appIdentifier("A/B Tester", "1.0") }
+        // Legal in a header, but not in a token, and `Cafe` would only be a guess at the intent.
+        assertFailsWith<IllegalArgumentException> { Gravatar.appIdentifier("Café", "1.0") }
+    }
+
+    @Test
+    fun `given a name that is not a product token then the message suggests one`() {
+        val error = assertFailsWith<IllegalArgumentException> { Gravatar.appIdentifier("My App") }
+
+        assertTrue(error.message.orEmpty().contains("\"My-App\""), "was: ${error.message}")
+    }
+
+    @Test
+    fun `given a product token name then it is stored as passed`() {
+        Gravatar.appIdentifier("wp-android", "27.6")
+
+        coVerify(exactly = 1) { containerRule.gravatarSdkContainerMock.appName = "wp-android" }
     }
 
     @Test
