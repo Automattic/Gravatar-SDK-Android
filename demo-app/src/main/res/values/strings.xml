@@ -21,4 +21,7 @@
     <string name="avatar_update_upload_failed_toast">Upload error: %1$s</string>
     <string name="raw_profile_title">Raw Profile</string>
     <string name="open_qe_label">Open QE</string>
+    <string name="sdk_user_agent_label">User-Agent: %1$s</string>
+    <string name="sdk_identity_app_identifier">appIdentifier()</string>
+    <string name="sdk_identity_context">context()</string>
 </resources>
