@@ -8,3 +8,4 @@ build/
 !*/build/test-results/
 local.properties
 secrets.properties
+secrets.local.properties

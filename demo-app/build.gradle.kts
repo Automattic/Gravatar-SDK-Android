@@ -14,7 +14,7 @@ plugins {
 fun secretProperties(): Properties {
     val repoId = rootProject.file(".a8c-secrets/repo-id").readText().trim()
     val a8cSecretsFile = File(System.getProperty("user.home"), ".a8c-secrets/$repoId/secrets.properties")
-    val localSecretsFile = rootProject.file("secrets.properties")
+    val localSecretsFile = rootProject.file("secrets.local.properties")
 
     val properties = Properties()
     listOf(a8cSecretsFile, localSecretsFile)
