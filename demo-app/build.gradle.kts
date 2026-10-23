@@ -12,11 +12,17 @@ plugins {
 }
 
 fun secretProperties(): Properties {
+    val repoId = rootProject.file(".a8c-secrets/repo-id").readText().trim()
+    val a8cSecretsFile = File(System.getProperty("user.home"), ".a8c-secrets/$repoId/secrets.properties")
+    val localSecretsFile = rootProject.file("secrets.properties")
+
     val properties = Properties()
-    rootProject.file("secrets.properties")
-        .takeIf { it.exists() }
+    listOf(a8cSecretsFile, localSecretsFile)
+        .firstOrNull { it.exists() }
         ?.let { properties.load(FileInputStream(it)) }
-        ?: logger.warn("Secret properties file not found. Quick Editor won't work properly.")
+        ?: logger.warn(
+            "$a8cSecretsFile not found. Run `a8c-secrets decrypt`, or Quick Editor won't work properly.",
+        )
     return properties
 }
 
