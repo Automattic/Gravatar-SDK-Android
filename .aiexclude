@@ -8,4 +8,8 @@ build/
 !*/build/test-results/
 local.properties
 secrets.properties
+# Leftover from before a8c-secrets: `configure` decrypted here.
+# Keep ignored until stale copies are unlikely to linger in dev checkouts.
+#
+# See https://linear.app/a8c/issue/AINFRA-3430
 secrets.local.properties
