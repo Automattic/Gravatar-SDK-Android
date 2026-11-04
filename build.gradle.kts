@@ -28,7 +28,7 @@ buildscript {
          * Forcing the use of Jackson Core to avoid a conflict between the version used by
          * Dokka and the one used by OpenAPI Generator.
          */
-        classpath("com.fasterxml.jackson.core:jackson-core:2.15.3")
+        classpath("com.fasterxml.jackson.core:jackson-core:2.18.11")
     }
 }
 
