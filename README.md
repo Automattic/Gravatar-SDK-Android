@@ -32,7 +32,8 @@ If you're also looking to integrate Gravatar in your iOS app, check out our [Gra
 
 To add the Gravatar SDK to your project, you can use the following Gradle dependency:
 
-```kotlin
+```kotliimplementation("com.gravatar:gravatar-ui:<version>")
+    // ORn
 dependencies {
     implementation("com.gravatar:gravatar:<version>")
     // OR
