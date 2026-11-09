@@ -63,6 +63,7 @@ import com.gravatar.demoapp.R
 import com.gravatar.demoapp.theme.GravatarDemoAppTheme
 import com.gravatar.demoapp.ui.components.ExpandableSection
 import com.gravatar.demoapp.ui.components.GravatarEmailInput
+import com.gravatar.demoapp.ui.components.SdkIdentityBar
 import com.gravatar.demoapp.ui.model.SettingsState
 import com.gravatar.demoapp.ui.utils.prettyPrint
 import com.gravatar.restapi.models.Profile
@@ -159,6 +160,7 @@ private fun GravatarTabs(
                 )
             }
         }
+        SdkIdentityBar()
         when (tabIndex) {
             0 -> AvatarTab(
                 gravatarUrl = gravatarUrl,

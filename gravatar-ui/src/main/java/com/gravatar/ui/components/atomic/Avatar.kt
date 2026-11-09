@@ -25,6 +25,7 @@ import com.gravatar.ui.R
 import com.gravatar.ui.components.ComponentState
 import com.gravatar.ui.components.LoadingToLoadedProfileStatePreview
 import com.gravatar.ui.components.isNightModeEnabled
+import com.gravatar.ui.gravatarImageRequest
 import com.gravatar.ui.skeletonEffect
 
 /**
@@ -150,7 +151,7 @@ private fun EmptyAvatar(size: Dp, modifier: Modifier = Modifier) {
 @Composable
 private fun Avatar(model: Any?, size: Dp, modifier: Modifier) {
     AsyncImage(
-        model = model,
+        model = gravatarImageRequest(model),
         contentDescription = stringResource(R.string.gravatar_ui_avatar_content_description),
         modifier = modifier.size(size),
     )
@@ -187,15 +188,17 @@ public fun Avatar(
         modifier = modifier.size(size),
     ) {
         AsyncImage(
-            model = AvatarUrl(
-                hash = email.hash(),
-                avatarQueryOptions = AvatarQueryOptions {
-                    preferredSize = sizePx
-                    rating = avatarQueryOptions?.rating
-                    forceDefaultAvatar = avatarQueryOptions?.forceDefaultAvatar
-                    defaultAvatarOption = avatarQueryOptions?.defaultAvatarOption
-                },
-            ).url(cacheBuster).toString(),
+            model = gravatarImageRequest(
+                AvatarUrl(
+                    hash = email.hash(),
+                    avatarQueryOptions = AvatarQueryOptions {
+                        preferredSize = sizePx
+                        rating = avatarQueryOptions?.rating
+                        forceDefaultAvatar = avatarQueryOptions?.forceDefaultAvatar
+                        defaultAvatarOption = avatarQueryOptions?.defaultAvatarOption
+                    },
+                ).url(cacheBuster).toString(),
+            ),
             contentDescription = stringResource(R.string.gravatar_ui_avatar_content_description),
             onLoading = {
                 state = AvatarState.Loading

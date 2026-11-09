@@ -56,6 +56,7 @@ import com.gravatar.quickeditor.ui.components.QETopBarTextButton
 import com.gravatar.quickeditor.ui.extensions.QESnackbarHost
 import com.gravatar.quickeditor.ui.extensions.SnackbarType
 import com.gravatar.quickeditor.ui.extensions.showQESnackbar
+import com.gravatar.quickeditor.ui.gravatarImageRequest
 import com.gravatar.ui.GravatarTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -201,7 +202,7 @@ internal fun AltTextPage(
                     val avatarSize = 96.dp
                     val sizePx = with(LocalDensity.current) { avatarSize.roundToPx() }
                     AsyncImage(
-                        model = altTextState.imageUrlWithSize(sizePx),
+                        model = gravatarImageRequest(altTextState.imageUrlWithSize(sizePx)),
                         contentDescription = stringResource(
                             id = R.string.gravatar_qe_selectable_avatar_content_description,
                         ),

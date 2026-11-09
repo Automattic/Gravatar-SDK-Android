@@ -18,14 +18,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.decode.SvgDecoder
-import coil.request.ImageRequest
 import com.gravatar.GravatarConstants
 import com.gravatar.extensions.defaultProfile
 import com.gravatar.extensions.profileUrl
@@ -34,6 +32,7 @@ import com.gravatar.restapi.models.VerifiedAccount
 import com.gravatar.ui.R
 import com.gravatar.ui.components.ComponentState
 import com.gravatar.ui.components.LoadingToLoadedProfileStatePreview
+import com.gravatar.ui.gravatarImageRequest
 import com.gravatar.ui.skeletonEffect
 import java.net.MalformedURLException
 import java.net.URI
@@ -150,10 +149,9 @@ public fun SocialIcon(media: SocialMedia, modifier: Modifier = Modifier) {
             )
         } else {
             AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(media.iconUrl.toString())
-                    .decoderFactory(SvgDecoder.Factory())
-                    .build(),
+                model = gravatarImageRequest(media.iconUrl.toString()) {
+                    decoderFactory(SvgDecoder.Factory())
+                },
                 contentDescription = media.name,
                 modifier = Modifier.fillMaxSize(),
                 contentScale = androidx.compose.ui.layout.ContentScale.FillHeight,

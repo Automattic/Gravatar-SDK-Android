@@ -97,4 +97,4 @@ SDK version is derived from `git describe --tags`. Non-tag builds append `-SNAPS
 - **Screenshot test baselines**: Must pass `-Pscreenshot` flag for Roborazzi tasks. Baselines live in `gravatar-ui/screenshotTests/roborazzi/` and `gravatar-quickeditor/screenshotTests/roborazzi/`.
 - **Binary compatibility**: Public API changes require running `./gradlew apiDump` to update `.api` files. CI enforces compatibility via `apiCheck`.
 - **Explicit API mode**: Enabled in strict mode for library modules — all public declarations require explicit visibility modifiers. See [Explicit API mode](docs/sdk-technical-details/sdk-technical-details.md#explicit-api-mode).
-- **`secrets.properties`**: Required for the demo app but managed via `.configure` — never commit actual secrets.
+- **`secrets.properties`**: Required for the demo app but decrypted outside the checkout by `a8c-secrets decrypt` — never commit actual secrets.

@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.gravatar.quickeditor.R
 import com.gravatar.quickeditor.ui.avatarpicker.fullList
+import com.gravatar.quickeditor.ui.gravatarImageRequest
 import com.gravatar.restapi.models.Avatar
 
 private val cornerRadius = 8.dp
@@ -67,7 +68,7 @@ internal fun SelectableAvatar(
             },
     ) {
         AsyncImage(
-            model = imageUrl,
+            model = gravatarImageRequest(imageUrl),
             contentDescription = stringResource(id = R.string.gravatar_qe_selectable_avatar_content_description),
             modifier = Modifier
                 .fillMaxSize()
