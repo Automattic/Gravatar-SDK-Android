@@ -3,6 +3,6 @@
 source 'https://rubygems.org'
 
 gem 'danger-dangermattic', '~> 1.4'
-gem 'fastlane', '~> 2.241'
+gem 'fastlane', '~> 2.242'
 gem 'fastlane-plugin-wpmreleasetoolkit', '~> 15.3'
 gem 'rubocop', '~> 1.92'
