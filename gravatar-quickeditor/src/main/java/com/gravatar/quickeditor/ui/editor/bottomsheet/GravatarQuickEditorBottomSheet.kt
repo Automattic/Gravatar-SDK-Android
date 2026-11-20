@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
@@ -292,7 +293,11 @@ internal fun GravatarModalBottomSheet(
 
                             Surface(
                                 modifier = Modifier
-                                    .fillMaxWidth(),
+                                    .fillMaxWidth()
+                                    // Navigating between pages can measure the content at 0px for a frame. At 0px the
+                                    // Hidden and FullyExpanded detents share an offset, so the sheet snaps to Hidden,
+                                    // which reads as the user dismissing the Quick Editor.
+                                    .heightIn(min = MIN_SHEET_CONTENT_HEIGHT),
                             ) {
                                 val paddingValues = WindowInsets.navigationBars
                                     .only(WindowInsetsSides.Vertical)
@@ -329,3 +334,5 @@ internal data class ModalDetents(
 )
 
 internal val DEFAULT_PAGE_HEIGHT = 300.dp
+
+private val MIN_SHEET_CONTENT_HEIGHT = 1.dp
